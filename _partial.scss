@@ -1,0 +1,20 @@
+//this file can be used to modularize your css code, you can include variables or maps here and @use them in another scss file
+//selectors defined here will also be compiled into the final css file
+
+$custom-string: "yes";                                        //this variable was not defined with !default, so it cannot be changed in another file
+$custom-color: red !default;                                //variables defined with !default can be changed in another file
+$custom-font: 'Times New Roman' !default;                     //but the old value will still be retained in this file
+$custom-font-size: 30px !default;
+$-private: "whatever";                                        //this is a private variable that can only be used here, these variables starts with - or _
+
+@mixin random {
+    border-radius: 30px;
+    position: relative;
+    display: flex;
+}
+
+code {
+    color: red;
+    background-color: dodgerblue;
+    border-color: green;
+}

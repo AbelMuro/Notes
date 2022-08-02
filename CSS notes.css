@@ -1,0 +1,1446 @@
+/* importing some fonts from google fonts*/
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Pacifico&family=Roboto&family=Shadows+Into+Light&display=swap');
+
+/* CSS properties*/
+.BoxModel {
+
+    width: auto;                        /* auto means that the property will automatically adjust based on the content
+        in other words, the content box will grow as more content is added
+        */  
+    color: inherit;                    /* this property will inherit the value from the parent element*/
+    color: initial;                     /* this property will have the default value, e.g black*/
+
+    /* ----------------------------------BOX MODEL------------------------------------------------------------------*/
+    width: 100px;                       /* the width of the CONTENT of the element */
+    max-width:500px;                    /* the maximum width an element can grow*/
+    min-width: 50px;                    /* the minimum width an element can shrink*/
+    height: 100px;                      /* the height of the CONTENT of the element*/
+    max-height: 500px;                  /* the maximum height an element can grow*/
+    min-height: 50px;                   /* the minimum height an element can shrink*/
+
+    padding: 50px;                      /* the padding of the element on all sides (space between the content and the border of the element) */
+    padding-bottom: 10px;               /* the bottom side padding of the element */
+    padding-top: 10px;                  /* the top side padding of the element */
+    padding-left: 10px;                 /* the left side padding of the element */
+    padding-right: 10px;                /* the right side padding of the element */
+
+    border: 1px solid black;           /* SHORTHAND for border properties */
+    border-left: 1px solid red;        /* Shorthand for left border properties */
+    border-right: 1px solid blue;      /* Shorthand for right border properties */
+    border-top: 1px solid green;       /* Shorthand for top border properties */
+    border-bottom: 1px solid orange;   /* Shorthand for bottom border properties */
+    border-color: black;               /* the border color of the element*/
+    border-width: 1px;                   /* the border width of the element*/          
+    border-style: solid, double ,inset, dotted, dashed, groove;/* the border style of the element*/
+    border-radius: 20px;                /* the corner of the border will have a radius of 20px*/
+    border-image: url(./someImage.png) 20 20px 40px round; /* you can also load an external image for the border 
+        keep in mind that this property only works when you have 'border: 1px solid transparent'
+    
+        border-image-source: url(./someImage.png);
+        border-image-slice: 20 fill;                         //the border image will be sliced up into 9 regions, the middle region can be filled with the border image with the keyword fill
+        
+        border-image-width: 20px;                           //the width of the border image on all side
+        border-image-outset: 40px;                          //specifies by how much the border image will be extended past its initial position
+        border-image-repeat: stretch, repeat, round, space  //round will rescale the image to avoid dividing tiles (if necessary), 
+        /                                                    //and space will distribute extra space around the tiles (if necessary)
+    */
+
+    margin: 10px;                       /* the margin of the element (space outside the element)*/
+    margin: auto;                       /* the element will be centered by using all the left and right margin */
+    margin-bottom: 5px;                 /* the bottom side margin of the element*/
+    margin-top: 5px;                    /* the top side margin of the element*/
+    margin-left: 5px;                   /* the left side margin of the element*/
+    margin-right: 5px;                  /* the right side margin of the element*/
+
+/*------------------------------------MISCELLANEOUS BOX PROPERTIES------------------------------------------------------*/
+
+    box-sizing: border-box;             /* this property lets us calculate the total width and height of a box
+        WITHOUT adding the padding and border to the total width/height of the box
+    */
+    box-shadow: 5px 10px 15px red;    /* we create a shadow for the box and move it 
+        5px to the left or right, 
+        10px to the top or bottom, 
+        15px defines by how much we blur the shadow
+        red is the color of the shadow
+    */
+    opacity: 1.0;                        /* defines how transparent the element will be, 1.0 is fully visible, 0.0 is completely transparent*/
+    overflow: hidden, scroll, auto;     /* determines how the content of a container will be displayed if it overflows 
+        hidden: content that overflows will be hidden from view
+        scroll: container will have a scroll bar 
+        auto: container will have a scroll bar ONLY in the moment that the content starts to overflow
+    */
+}
+
+
+
+
+
+
+
+
+
+
+.BackgroundProperties {
+    /*----------------------------------BACKGROUND PROPERTY-----------------------------------------------------------*/
+    background-image: url("images/blue checkered.png");         /* loading an external image file onto an element */
+    background-size: 200px 200px, cover, contain, auto;         /* the width and height of the image background, 
+        cover: will force the image to maintain its aspect-ratio, but will clip the image if the container is too small, and will zoom in if the container is too large 
+        contain: will force the image to maintain its aspect-ratio, the entire image will always be shown but may not cover the entire container
+        auto: will force the image to always maintain it original width/height and its aspect ratio, even after the window has been resized  
+    */
+    background-repeat: no-repeat;                               /* by default, the image will repeat in the background */
+    background-position: center, left, right, top, bottom;      /* determining the position of the image background on the element (this will work if background-size: 200px 300px)*/
+    background-attachment: scroll, fixed;                       /* determining if the image will scroll with the page or stay fixed to one location */
+    background-clip: padding-box, border-box, content-box;      /* padding-box: image will extend to cover the padding and content, 
+        border-box: image will extend to cover the border, padding and content, 
+        content-box: image will extend to cover the only the content
+    */
+    background-origin: padding-box, border-box, content-box;    /* padding-box: image will be positioned from upperleft corner of padding, 
+        border-box: image will be positioned from upperleft corner of border, 
+        content-box: image will be positioned from upperleft corner of content
+    */
+    background-color:white;                                   /* the background color of the element, this color will be hidden if you apply the properties above*/
+
+}
+
+
+
+
+
+
+
+
+
+
+.CursorProperties {
+    /*-----------------------------------CURSOR PROPERTY------------------------------------------------------------------*/
+        /* the new cursor icons will appear when you hover over an element, there are more cursors in the documentation */
+    
+    cursor: default;                                    /* default cursor icon*/
+    cursor: pointer;                                     /* cursor icon that has a hand pointing to something */
+    cursor: text;                                       /* default cursor when you hover over text*/
+    cursor: wait;                                       /* cursor icon with a blue circle*/
+    cursor: move;                                       /* cursor icon that has arrows pointing up, down left and right*/
+    cursor: grab;                                       /* cursor icon that has a hand that is about to grab something */
+    cursor: grabbing;                                   /* cursor icon that is grabbing something*/
+    cursor: help;                                       /* cursor icon with a question mark*/
+    cursor: not-allowed;                                 /* cursor icon with a red circle that has a red line across it*/
+    cursor: zoom-in;                                    /* cursor icon with a magnifying glass and a plus sign*/
+    cursor: zoom-out;                                    /* cursor icon with a magnifying glass and a minus sign*/
+    cursor: url(myCustomCursor.cur);                    /* you can create your own custom cursor*/
+} 
+
+
+
+
+
+
+
+
+
+
+.Image_and_Video_FormattingProperties {
+    /*------------------------------------OBJECT FIT PROPERTIES----------------------------------------------------------*/
+    /* try to find out the original width and height of the images before you start using these properties*/
+
+    object-fit: none, cover, fill, contain, scale-down; /* this property specifies how an img/video 
+        should be resized to fit its container 
+
+            original size of image                     adjusted size of image
+        fill:      (600x400)            ->              (200x400)
+                 ---------------                        -------       
+                | x x x x x x x |                      | x x x |                 'object-fit: fill' will shrink/expand the
+                | x x x x x x x |                      | x x x |                  entire image to make it fit in
+                | x x x x x x x |                      | x x x |                  the given dimension
+                 ---------------                        -------
+        
+        none:   keep in mind that if the width/height is bigger than 
+                the original width/height, it will create an invisible container
+                with the actual width/height that you specified 
+
+                original size of image                     adjusted size of image
+                                  
+                    (600x400)     making the image smaller        (200x400)
+                 ---------------                             ----------------        
+                | x x x x x x x |                           | x x x |        |        'object-fit: none' will CLIP a part of the image
+                | x x x x x x x |                           | x x x |        |         and will NOT resize the image at all
+                | x x x x x x x |                           | x x x |        |
+                 ---------------                             ----------------
+
+                    (600x400)      making the image bigger    (800x400)
+                 ---------------                             ---------------------        
+                | x x x x x x x |                           | x x x x x x x       |      in this case, there will not be any clipping 
+                | x x x x x x x |                           | x x x x x x x       |      however we will create an invisible container
+                | x x x x x x x |                           | x x x x x x x       |
+                 ---------------                             ---------------------
+
+        cover:  'object-fit: cover' will maintain the original
+                aspect ratio of the image, and will zoom-in or 
+                zoom-out when the width/height is bigger or smaller than
+                the original width/height of the image.
+                Please Note, the image will zoom-in indefinitely but
+                the image will NOT zoom-out indefinitely and will 
+                start to clip
+
+        contain: keep in mind that this value will create an invisible 
+                 container that has the true width and height(600x600) 
+                 that you specified, and the image will fit inside the 
+                 container with the aspect ratio in tact 
+
+                    aspect-ratio of original image is 3:7, this ratio is maintained.
+
+                    (600x400)             ->           (700x1000)
+                 ---------------                        ------------------       'object-fit: contain' will maintain the original
+                | x x x x x x x |                      | x x x x x x x x  |       aspect ratio of the image, in other words, if you         
+                | x x x x x x x |                      | x x x x x x x x  |       increase or decrease the width of the image, the height        
+                | x x x x x x x |                      | x x x x x x x x  |       will be adjusted accordingly to make sure that the ratio stays the same         
+                 ---------------                       | x x x x x x x x  |              
+                /                                      |                  |       in this case, since the width and the height is much bigger  
+                /                                      |                  |       than the image, and the ratio MUST stay the same, we create an invisible container 
+                /                                      |                  |
+                /                                       ------------------ 
+
+                    (600x400)             ->           (200x200)
+                 ---------------                        --------             in this case, just imagine that in this tiny container
+                | x x x x x x x |                      |        |            we have the following x's (it will fit, but the image will be much smaller)
+                | x x x x x x x |                      |        |                   x x x x x x x
+                | x x x x x x x |                       --------                    x x x x x x x
+                 ---------------                                                    x x x x x x x 
+                /                                                      
+                
+                
+         
+        scale-down: this property will choose the smallest image from 'none' or 'cover', 
+                    both of these values can return a different sized image
+        
+
+
+
+    */
+    object-position: center, left, right, top, bottom, 100px 100px;  /* this property helps us position an image inside its content box
+        this is especially useful when we want to display a certain part of the image when 
+        the image is either too zoomed-in due to object-fit:cover or if its clipped due to object-fit: none.
+        'Object-Position' can also be useful if we have object-fit: contain, because it will usually create
+        a content-box bigger than the resized verson of the image
+
+
+
+
+        lets assume that the image is clipped and we want to display a certain part of the image...
+            object-fit: none   or  object-fit: cover            
+            object-position: left;
+            width: 100px; 
+            height: 100px 
+
+                (400x100)
+            --------------------
+            |xxxxxxxx|         |        the x's are a section of the image that is (100x100)
+            |xxxxxxxx|         |        and because we have object-position: left,
+            |xxxxxxxx|         |        the section we specified earlier will be positioned to the left
+            |xxxxxxxx|         |        This is what the user will actually see.
+            --------------------
+
+    */ 
+
+
+}
+
+
+
+
+
+
+
+
+
+.TwoDimensionalTransformProperties {
+
+    /*------------------------------------- 2D TRANSFORMS--------------------------------------------------------------------*/
+    transform: translate(50px, -50px);             /* we move the element 50px to the right and up 50px;
+
+        translate(x-axis, y-axis);      
+        x-axis: positive values move the element to the right and negative values move to the left
+        y-axis: positive values move the element to the bottom and negative values move to the top
+    */
+    transform: translateX(50px);                   /* we move the element 50 px to the right*/
+    transform: translateY(-50px);                  /* we move the element 50 px towards the top*/
+    transform: rotate(20deg);                      /* we rotate the element 20deg towards the right 
+        20deg we rotate to the right
+        -20deg we rotate to the left
+    */
+    transform: scale(2, 3);                        /* we increase the size of the element by 2 times its 
+        normal width and 3 times its normal height 
+
+        0.5 will half the size of the element
+        negative values will flip the element but will still increase the size of the element
+        */ 
+    transform: scaleX(2);                          /* we increase the size of the width of the element 2 times 
+        its normal width
+
+        look at the notes for scale() for more info
+    */
+    transform: scaleY(3);                          /* we increase the size of the height of the element 3 times
+        its normal height
+
+        look at the notes for scale() for more info
+    */
+    transform: skew(20deg, 20deg);                 /* we skew the element along the x-axis and y-axis by the given angles*/
+    transform: skewX(20deg);                       /* we skew the element along the x-axis by the given angle 
+         -----------
+        |           |       before skewX()
+        |           |
+        |           |
+        |           |
+         -----------
+    
+    
+          ----------
+          \         \       after skewX()
+           \         \
+            \         \
+             \         \
+               ---------
+    */
+    transform: skewY(20deg);                       /* we skew the element along the y-axis by the given angle 
+
+         -----------
+        |           |       before skewY()
+        |           |
+        |           |
+        |           |
+         -----------
+
+          _
+         | \
+         |   \
+         |     \
+         |       \          after skewY()
+         |         \
+         |           \
+         \            |
+           \          |
+             \        |
+               \      |
+                 \    |
+                   \  |
+                     -
+    */
+    transform: matrix(1, 0.3, 0, 1, 0);            /* the matrix method combines all the properties above into one function 
+
+        syntax:
+        matrix(scaleX(),skewY(),skewX(),scaleY(),translateX(),translateY())
+    */
+    transform-origin: center, top left, 50px 40px, bottom right;/* this property will set a point (origin) for elements 
+        that are transformed using skew() or rotate()
+         -----------
+        |           |       
+        |           |
+        |     X     |           // transform-origin: center
+        |           |
+        |           |
+         -----------
+
+        X ----------
+        |           |       
+        |           |
+        |           |           // transform-origin: top left
+        |           |
+        |           |
+         -----------
+        
+        all the transforms will be based on this origin and transform accordingly.
+
+        FOR EXAMPLE: 
+            if we have rotate(45deg), and we set transform-origin: top left
+            then the center of rotation will be the point marked at the top left
+
+            
+
+    */ 
+
+}
+
+
+
+
+
+
+
+
+
+
+.ThreeDimensionalTransformProperties {
+
+    /*---------------------------------------3D TRANSFORMS------------------------------------------------------------------------*/
+    transform: perspective(500px) translate3d(20px, 30px, 100px); /* we move the element 20px to the right, 30px to the bottom 
+        and 100px towards the user(screen)
+
+        keep in mind that the z-index of this function only works with the perspective(500px) function
+        this function defines the closest pixel to the screen, in other words. 
+        500px is the closest an element can get to the screen, 
+        300px is about half way to the screen
+        0px is the normal position of the element
+
+        negative values will start to shrink the element
+     */
+    transform: perspective(500px) translateZ(100px) scale3d(2, 3, 2) ; /* we increase the size of the element by 2 times its width, 
+        3 times its height, and 2 times its z-index,
+
+        keep in mind that scale() will multiply the width, height and z-index AS LONG AS IT HAS ALREADY BEEN DEFINED
+        Basically, you have to define a z-index with translateZ() and perspective() first
+
+        translateZ(100px) is the initial position of the element in the z-axis
+        perspective(500px) is the closest position the element can reach on the screen
+    */
+    transform: perspective(500px) translateZ(0px) rotate3d(1, 0.5, 1, 25deg); /* we rotate the element 25deg to the right from 
+        its normal position
+
+        rotate3d() creates a 3d vector, this is the basics of linear algebra
+        the element will be positioned based on the 3d vector that we created
+
+        rotate3(1, 2, 1, 25deg) = v1 (1, 2, 1), and the element will be rotated 25deg
+    */
+}
+
+
+
+
+
+
+
+
+
+
+@keyframes customAnimation {                        /*you can only animate certain properties */
+    0%   {background-color: red}   
+    25%  {background-color: green}
+    50%  {background-color: blue}
+    75%  {background-color: pink}
+    100%  {background-color: orange}
+}    
+
+@keyframes anotherAnimation {                       /*another way of writing @keyframes */
+    from {transform: translateX(0px)}
+    to {transform: translateX(100px)}
+}
+
+.AnimationProperties {
+    /*---------------------------------------ANIMATION PROPERTIES---------------------------------------------------------------------------*/
+    animation-name: customAnimation;                         /* this element will be animated*/
+    animation-duration: 5s;                                  /* the time the animation will take to complete*/
+    animation-iteration-count: 3, infinite;                  /* the number of times the animation will occur */
+    animation-delay: 1s;                                     /* delays the animation for a certain amount of time*/
+    animation-direction: normal, reverse, alternate, alternate-reverse; /* specifies the direction the animation will take 
+        normal: the animation will play exactly how we specified in the @keyframes
+        reverse: the animation will play in reverse order
+        alternate: the animation will first play normally, then it will play in reverse
+        alternate-reverse: the animation will first play in reverse, then it will play normally
+    */
+    animation-timing-function: linear, ease, ease-in, ease-out, ease-in-out, steps(3, jump-start) cubic-bezier(0.075, 0.82, 0.165, 1); /* specifies the speed curve of the animation, 
+        linear: the animation will occur with a constant speed throughout the animation
+        ease: (default) the animation begins slow, then fast, then ends slow
+        ease-in: the animation has a slow start
+        ease-out: the animation has a slow end
+        ease-in-out: the animation has both a slow start and a slow end
+        steps(3, jump-start): it will take 3 'steps' to complete the animation between 25% to 50% or 3 steps to complete the animation between from {} and to {}
+                            for example: if we have an animation of translateX(0px) to translateX(200px), and we specified steps(3), then the steps will look like this: translateX(0px) -> translateX(100px) -> translateX(200px)
+                            'jump-start' will skip the first animation between 0% and 25% or 'from {}'
+                            'jump-end' will skip the last animation between 75% and 100% or 'to{}'
+                            'jump-none' will not skip any animation
+        cubic-bezier(1, 0.3, 0.4, 0.9): this function defines two points in a speed curve graph (1, 0.4) and (0.3, 0.9)
+
+            speed curve of animation defined by cubic-bezier
+                 ---------------X
+                |            /  |
+                |     _____/    | time
+                |   /           |                 // the two points defined by cubic-bezier are the two X's on the graph to the left
+                | /             |                  //and the curve of the graph will 'follow' these points to create a different curve
+                X ---------------
+              duration of animation
+        
+    */    
+    animation-fill-mode: none, forwards, backwards, both;     /* this property specifies the style of the element 
+        when the animation is not playing.
+
+        forwards: the element will retain the style specified by the last keyframe AFTER the animation ends
+        backwards: the element will retain the style specified by the first keyframe AFTER the animation ends 
+                   and if animation-delay is set, then the element will retain the style specified by the first keyframe
+        both: if animation-delay is set, then the element will retain the style specified by the first 
+              keyframe for the duration of the delay, and after the animation ends, the element will retain the 
+              style of the last keyframe 
+    */
+}
+
+
+
+
+
+
+
+
+
+
+.TransitionProperties:hover {
+    width: 400px;
+    background-color: green;
+}
+
+.TransitionProperties {
+    /*-------------------------------------TRANSITION PROPERTIES -----------------------------------*/
+    width: 100px;                           /* property that we will use to test transition property*/
+    background-color: red;
+
+    transition: width 2s 3s ease-in, background-color 2s 3s ease-in;   /*SHORTHAND you can include multiple transitions this way*/
+    transition-property: width;             /* property that we want to animate while it changes*/
+    transition-duration: 2s;                /* duration of the transition*/
+    transition-delay: 3s;                   /* delay before the transition takes effect*/
+    transition-timing-function: linear, ease, ease-in, ease-out, ease-in-out, steps(3, jump-start) cubic-bezier(0.075, 0.82, 0.165, 1); /* 
+        look at the notes for animation-timing-function
+    
+    */
+
+}
+
+
+
+
+
+
+
+
+
+
+.PositionalProperties {
+     /*----------------------------------POSITIONAL PROPERTIES----------------------------------------------------------------------- */
+    position: static;  /* the element is initially positioned according to the normal flow of the document
+        the properties top, bottom, left and right have no effect,
+        this is the default value for all elements
+    */   
+    position: relative; /*  the element is initially positioned according to the normal flow of the document 
+        if top, bottom, left, right properties are used, then the element 
+        will move FROM its current position and be REMOVED from the normal flow
+        FOR EXAMPLE... left: 30px will move the element 30px leftwards 
+        from its LEFT side.
+    */                                                               
+    position: absolute; /* the element is REMOVED from the normal flow of the document 
+        and is positioned relative to its ancestor that has 'position: relative', 
+        if there are none, then it will be positioned relative to the viewport itself,
+        FOR EXAMPLE... left: 30px will move the element 30px leftwards
+        from the LEFT BORDER of its container (or viewport)
+    */
+    position: fixed;   /* the element is REMOVED from the normal flow of the document
+        and the element will stay glued on the screen and will move with the scrolling of the page
+        the properties top, bottom, left and right will move the element relative to the viewport
+    */
+    position: sticky; /* the element is initially positioned according to the normal flow of the document
+        the element will 'stick' onto the page while scrolling when a certain threshold is passed.
+        FOR EXAMPLE.. top: 30px means that the element will stick to the screen when the 
+        top border of the viewport is 30px away from the top border of the element itself...
+        Keep in mind that 'position: sticky' can only work if its inside a block level container
+        element and is bigger than the element that has 'position: sticky'...
+    */
+
+    top: 30px;         /* moving the element 30px from the top side*/
+    bottom: 40px;      /* moving the element 40px from the bottom side*/
+    left: 30px;        /* moving the element 30px from the left side*/
+    right: 30px;       /* moving the element 30px from the right side*/
+
+    z-index: 1;        /* this can be used to stack positioned elements on top of each other 
+        positioned elements with 'z-index: 5' will appear on top of elements with 'z-index: 3'
+    */
+   
+}
+
+
+
+
+
+
+
+
+
+
+.FloatingProperties {
+    /*------------------------------------FLOATING PROPERTIES---------------------------------------------------------------------- */
+    /* keep in mind that if a container has a floating element, the container will not expand with the element. 
+       to make it expand, you must use the clearfix hack
+    */
+    
+    float: left;        /* the element will be REMOVED from the normal flow of the document
+        and will make the element 'float' to the left border of its container, 
+        if there is no container, then it will use the viewport's left border
+        */
+    float: right;       /* the element will be REMOVED from the normal flow of the document
+    and will make the element 'float' to the right border of its container, 
+    if there is no container, then it will use the viewport's right border
+    */
+    float: top;         /* the element will be REMOVED from the normal flow of the document
+    and will make the element 'float' to the top border of its container, 
+    if there is no container, then it will use the viewport's top border
+    */
+    float: bottom;      /* the element will be REMOVED from the normal flow of the document
+    and will make the element 'float' to the bottom border of its container, 
+    if there is no container, then it will use the viewport's bottom border
+    */
+
+
+    /* .ClearFix::after { */
+    content: "";
+    clear: both;
+    display: table;
+    /* }          */
+
+}
+
+
+
+
+
+
+
+
+
+
+.DisplayProperties {
+
+/*----------------------------------------DISPLAY PROPERTIES------------------------------------------------------------------------*/
+    display: block;          /* the element will have line breaks on both sides of the element
+        and the width of the element will take up the entire width of the viewport
+        also, keep in mind that you can use justify-content with block containers
+    */
+    display: inline;         /* the element will NOT have line breaks and the width and height 
+        have no effect on the element. Also, the element will not have top and bottom margins/paddings
+    */
+    display: inline-block;   /* the element will NOT have line breaks but you can use width 
+        and height on the element. You still can't use top and bottom margins on inline-block,
+        but you can use top and bottom paddings. Even though it has left and right margins, using
+        margin: auto will not work with inline-block
+    */
+    display: none;           /* the element will be hidden and the space will also be removed*/
+
+
+
+
+
+
+
+
+/*-------------------------------------------TABLE PROPERTIES------------------------------------------------------------------ */
+    /* Tables are made for tabular data, however its best to just use HTML for organizing tabular data*/
+    
+    /* container must have one of the two following values*/
+    display: table;           /* the element basically behaves like a block element, but
+        the width of the element will NOT take up the entire width of the viewport,
+        also, you can use display: table-cell
+    */
+    display: inline-table;    /* the element basically behaves like an inline-block element*/
+    
+    /* the child elements can now use the following values to help organize a table of data */
+    display: table-row;       /* the element will be a container that has the data*/
+    display: table-cell;      /* the element will contain the actual data
+    */
+
+    /* How tables are organized in HTML...
+
+        <table>                             //display: table
+            <caption> Title </caption>
+            <th> Row Title 1 </th>
+            <tr>                            //display: table-row
+                <td> column 1 </td>         //display: table-cell
+                <td> column 2 </td>
+                <td> column 3 </td>
+            </tr>
+            <th> Row Title 2 </th>
+            <tr>    
+                <td> column 1 </td>
+                <td> column 2 </td>
+                <td> column 3 </td>            
+            </tr>
+        </table>
+        */
+
+    /* How tables are organized in CSS...
+
+        <div class="table">                  //display: table
+            <div class="tableRow">           //display: table-row
+                <div class="tableCell">      //display: table-cell
+                    111
+                </div> 
+                <div class="tableCell"> 
+                    222
+                </div> 
+                <div class="tableCell"> 
+                    333
+                </div> 
+            </div> 
+            <div class="tableRow">
+                <div class="tableCell"> 
+                    111
+                </div> 
+                <div class="tableCell"> 
+                    222
+                </div> 
+                <div class="tableCell"> 
+                    333
+                </div> 
+            </div>
+        </div>
+    */
+
+    /* the difference between the two methods shown is..
+
+            <table> already has a set of pre-defined css properties, but 'display: table' doesnt, 
+            so you have to customize your own set of css properties
+
+            its best to just use HTML for tables and use some css properties to create borders
+            and among other things
+*/
+
+
+
+
+
+
+
+
+    /*----------------------------------------FLEX BOX PROPERTIES------------------------------------------------------------------------*/
+    /*                    --Flex Box Model--
+
+
+
+            ********** FLEX-BOX-ROWS *************
+            ^   <______________main axis________________>
+            |     ------------------------------------
+            |    |              |                     |
+  cross-axis|    | flex-item-1  |   flex-item-2       | 
+            |    |              |                     |
+            |     ------------------------------------
+            v    flex-start       center              flex-end
+
+
+
+
+            ********** FLEX-BOX-COLUMNS ************
+            ^   <________cross axis________>
+            |        ------------------   flex-start
+            |       |                 |        
+            |       |    flex-item-1  |
+            |       |                 |     
+            |       |                 |       
+   main-axis|       |-----------------|    center   
+            |       |                 |      
+            |       |    flex-item-2  |      
+            |       |                 |     
+            |       |                 |     
+            |        -----------------    flex-end     
+            v
+
+    */
+    
+    /* Flex Container*/
+    display: flex, inline-flex;  /* flex will make the element behave like a block element,
+        inline-flex will make the element behave like an inline element. 
+        
+        Both flex and inline-flex will use the flexbox model to organize its items. 
+        In other words, this will let you use other flex properties
+    */
+    flex-direction: row, row-reverse, column, column-reverse; /* this property will define the 'main-axis'
+        if you use row, then the main axis will be a horizontal line, if you use column, then it will be a vertical line
+        row: (DEFAULT) all flex items will be stacked horizontally to the left with no margin (initially)
+        row-reverse: all flex items will be stacked horizontally to the right with no margin (initially)
+        column: all flex items will be stacked vertically to the top with no margin (initially)
+        reverse-column: all flex items will be stacked vertically to the bottoom with no margin (initially)
+    */ 
+    justify-content: space-around, space-between, space-evenly, center, left, right; /* this property will align ALL items on the MAIN AXIS
+        this property will also give a pre-defined amount of space(that changes with resize) between the flex items in the flex container
+
+        space-around: distribute space evenly but the items near the border will have a half size space (--item----item----item----item--)
+        space-between: distribute space evenly but the items near the border will not have any space (item----item----item----item)
+        space-evenly: distribute space evenly (----item----item----item----item----)
+
+        center: will center all items with no space in between (----itemitemitemitem----)
+        left: will stack all items to the left with no space in between (itemitemitemitem-----)
+        right: will stack all items to the right with no space in between (----itemitemitemitem)
+    */
+    align-items: center, flex-start, flex-end; /* this property will align all items on the CROSS-AXIS of 
+        the flex box. Look at the flex-box model that i drew above to see what each value does to this property
+        */
+    flex-wrap: wrap, wrap-reverse; /* this property specifies if the flex items are forced into one line or can wrap around multiple lines 
+        Before window is rezised: viewport is about 1500px
+            [flex-item]--[flex-item]--[flex-item]--[flex-item]
+
+        After window is resized: viewport is about 500px
+            [flex-item]--[flex-item]
+            [flex-item]--[flex-item]
+        */ 
+    gap: 30px 20px;          /* SHORTHAND */
+    row-gap: 30px;           /* specifies a constant amount of space (gap) between each item in a row in the flex box*/
+    column-gap: 20px;        /* specifies a constant amount of space (gap) between each item in a column in the flex box */
+
+    /* Flex items */
+    flex: 1 2 120px;        /* SHORTHAND */
+    flex-grow: 1;           /* this property specifies how much the flex item will grow relative to its flex siblings
+        Before window is resized: (viewport is about 500px small)
+            [flex-grow: 1] -- [flex-grow: 2] -- [flex-grow: 1] -- [flex-grow: 3]
+
+        After window is resized: (viewport is about 1500px large) flex items with a higher flex-grow value will grow faster 
+            [flex-grow: 1] -- [  flex-grow: 2  ] -- [flex-grow: 1] -- [   flex-grow: 3   ]
+
+        FLEX-GROW will not work with JUSTIFY-CONTENT.
+        FLEX-GROW should not be used with FLEX-WRAP, because FLEX-WRAP will not resize the flex-items
+    */         
+    flex-shrink: 2;         /* this property specifies how much the flex item will shrink relative to its flex sibling
+        Before Window is resized: (viewport is about 1500px large)
+            [   flex-shrink: 1   ]----[   flex-shrink: 2    ]----[   flex-shrink:1   ]----[   flex-shrink: 2   ]
+
+        After Window is resized: (viewport is about 500px small) elements with a higher flex-shrink value will shrink FASTER
+            [   flex-shrink: 1   ]----[flex-shrink: 2]----[   flex-shrink:1   ]----[flex-shrink: 2]
+
+        FLEX-GROW should not be used with FLEX-WRAP, because FLEX-WRAP will not resize the flex-items
+        */
+    flex-basis: 120px;      /* if the flex box has rows, then this property will define the width of the flex item 
+            however, if the flex box has columns, then this property will define the height of the flex item
+        */    
+    align-self: center, flex-start, flex-end; /* this property will align ONE item on the CROSS AXIS of 
+        the flex box, look at the flex-box model that i drew above to see what each value does to this property
+    */
+
+
+
+
+
+
+    /*---------------------------------------------GRID CONTAINER PROPERTIES------------------------------------------------------------*/
+    /* Grid container*/
+    display: grid, inline-grid;                 /* this will define a grid container
+            grid: defines a block container with the grid
+            inline-grid: defines an inline container with the grid
+        */
+    grid-template-columns: auto auto auto auto; /* this property will define four columns in the grid
+        (you can also specify the size of each column in pixels)
+        
+        each value will represent the width of each column in the grid
+        grid-template-columns: width:auto  width:auto  width:auto  width:auto
+        */
+    grid-template-rows: auto auto auto auto;    /* this property will define the size of each row in the grid
+        if there are 4 rows and you have "grid-template-rows: auto auto", then this property will affect the
+        first two rows in the grid.
+
+        each value will represent the height of each row in the grid
+        grid-template-rows: height:auto  height:auto  height:auto  height:auto
+        */
+    justify-content: space-around, space-between, space-evenly, center, left, right; /* this property will 
+        give a pre-defined amount of space between the COLUMNS and NOT the individual items.
+        It will also align the COLUMNS in the grid container
+
+        Just look at the notes for 'justify-content' in the flex-box
+        */
+    justify-items: center, flex-start, flex-end; /* this property will move ALL the items in the grid
+            within their individual containers. REMEMBER that this property will ignore the values specified
+            in grid-template-columns but NOT in grid-template-rows
+
+            take for example this...
+                grid-template-columns: 300px 300px;      //what this actually does is create a individual container of 300px for each item in the column
+                justify-items: center;                   //this will remove the width specified in grid-template-columns and will make the item as big as its content box
+                                            
+
+            visual example...
+
+                container stays at a constant width of 300px
+             ------------------
+            |                  |
+            |     content      |                        //just imagine that the content has a background-color of blue with the words content
+            |                  |                        //in this case, the blue color will fill up the entire container because the content 
+             ------------------                         //takes up the entire container
+
+
+            if we apply this property 'justify-items: center', 
+            then the content of the item will shrink 
+            BUT the container size stays the same.
+            it will also center the content box in the container
+
+             ------------------
+            |      -------     |                        //now, the blue color does NOT fill up the entire container, and only fills up the content box 
+            |     |content|    |                        
+            |      -------     |                        
+             ------------------
+
+             -----------------
+            |  -------        |                        //justify-items: left
+            | |content|       |                        
+            |  -------        |                        
+             ------------------
+
+
+        */
+    gap: 50px 50px;             /* SHORTHAND */
+    row-gap: 50px;              /* this property will put a constant amount of space (gap) between the rows in the grid */
+    column-gap: 50px;           /* this property will put a constant amount of space (gap) between the columns in the grid*/
+    
+    /* Grid items*/
+    justify-self: center, flex-start, flex-end; /* this property does the same thing as justify-items, but only for ONE item at a time*/
+}
+
+
+
+
+
+
+
+
+
+
+.ColumnContainers {
+    /*----------------------------------------------COLUMN CONTAINERS---------------------------------------------------------------- */
+    /* you should use columns for containers that only have text. Also, 
+    keep in mind that you don't have to organize the text into columns,
+    column-count will do that for you */
+
+    column-width: 200px;                    /* this property will set a minimun width for the columns, 
+        In other words, the number of columns will always change when the window is resized but the width 
+        of the columns stays the same
+
+        just pretend that the columns below have a width of 100px
+
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+
+
+        after we resize the window, we will have 2 columns but the width of those columns will still be 100px
+
+        blah blah blah      blah blah blah
+        blah blah blah      blah blah blah
+        blah blah blah      blah blah blah
+        blah blah blah      blah blah blah
+        blah blah blah      blah blah blah
+        blah blah blah      blah blah blah
+
+    */
+
+    column-count: 4;                        /* this property will divide the text into 4 columns
+        this property should NOT be used with column-width
+    */ 
+    column-gap: 40px;                       /* this property defines a constant space (gap) between the columns*/
+    column-rule: 4px solid pink;          /* SHORTHAND defines a border between the columns*/
+    column-rule-width: 4px;                 /* the width of the border between the columns*/
+    column-rule-style: solid, double ,inset, dotted, dashed, groove;/* the style of the border between the columns*/
+    column-rule-color: pink;              /* the color of the border between the columns*/
+    column-span: all;                       /* this property can be used to create a header for the columns
+    determines if a specific element in the columns will span the entire width of the columns 
+
+    just pretend that the BLAH BLAH BLAH is inside a <h1 style="column-span: all"> </h1>
+
+    <div style="column-count: 3">
+        BLAH BLAH BLAH      blah blah blah      blah blah blah          // without column-span: all
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+    </div>
+
+    <div style="column-count: 3">
+        -----------------BLAH BLAH BLAH----------------------           // just pretend that the --- is just more content
+        blah blah blah      blah blah blah      blah blah blah          // with column-span: all
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      
+    </div>
+
+    
+    */
+}
+
+
+
+
+
+
+
+
+
+
+.MiscellaneousProperties {
+    /*---------------------------------------------MISCELLANEOUS--------------------------------------------------------------------------*/
+    opacity: 1.0;                                                  /* defines how transparent the element will be, 1.0 is fully visible, 0.0 is completely transparent*/
+    content: "random content";                                      /* this property MUST be used with the ::before and ::after pseudo elements 
+        it was designed to insert content before or after an element
+    */
+    
+    
+    vertical-align: baseline, text-top, text-bottom, sub, super;    /* this property must be assign to an <img>; 
+        if the image is bigger than the element next to it, then the ELEMENT will vertically align up or bottom, 
+        if the image is smaller than the element next to it, then the IMAGE will vertically align up or bottom 
+    */   
+    justify-items: stretch, center, start, end; /* defines how all the items are positioned inside their place in it's container
+        look for the property 'justify-self' for more info
+    */
+    justify-self: stretch, center, start, end; /*this property defines how an item is positioned inside its place in its container 
+        stretch: [---item---]
+        center:  [   item   ]   
+        start:   [item      ]      
+        end:     [      item]
+    */
+
+}
+
+
+
+
+
+
+
+
+
+
+@font-face {                                             /* @font-face lets you use fonts other than the pre selected web-safe fonts*/
+    font-family: "myCustomFont";
+    src: url(./Font/ExoBold.otf);                        /* you should only load .ttf and .otf font files */
+};   
+
+.usingFontFace {
+    font-family: myCustomFont;
+
+}
+
+.Text_and_Font_FormattingProperties {
+    /*----------------------------------TEXT FORMATTING PROPERTIES----------------------------------------------------------------------*/
+
+    color: green;                                             /* the color of text*/
+    text-decoration: underline, solid, red, 50%;              /* SHORTHAND*/
+    text-decoration-line: overline, line-through, underline;    /* draws a line over, through, or under a text; you can also combine these values*/ 
+    text-decoration-color: red;                               /* the color of the line that is displayed by the property above */  
+    text-decoration-style: solid, wavy, double;                 /* the style of the line that is displayed by the property above */   
+    text-decoration-thickness: 50px;                            /* the thickness of the line that is displayed by the property above */
+
+    text-indent: 50px;                                          /* the indent for text*/
+    text-align: center, left, right, justify;                   /* will align an INLINE element(text) within a block element, justify extends lines of text to make sure they are all of equal length*/
+    text-justify: inter-word, inter-character;                  /* only works if 'text-align: justify'... inter-word: increases/decreases space between words, inter-character: increases/decreased space between letters... you see the difference when you resize the window */
+    text-overflow: clip, ellipsis;                              /* defines how the text that is overflowing from its container will appear, clip will just remove the text, while ellipsis will show three dots ...*/
+    text-shadow: 20px -20px 5px blue;                         /* creates a shadow behind the text, 20px moves the shadow left and right, 
+        -20px moves the shadow up and down, 
+        5px defines by how much we blur the shadow 
+        and blue is the color of the shadow*/
+    text-transform: uppercase, lowercase, capitalize;           /* this will transform the text to uppercase, lowercase, or will capitalize every first letter of every word*/
+    
+    word-wrap: normal, break-word;                              /* this property defines if a long word will break onto the next line 
+
+             --------------
+            |thisisaveryveryverylongword             
+            |              |        //word-wrap: normal   -> this is default
+            |              |
+            |              |
+             --------------
+
+             ------------
+            | thisisavery|          //word-wrap: break-word
+            | veryveryver|
+            | ylongword  |
+            |            |
+             ------------
+        */
+    direction: rtl, ltr;                                        /* this property defines if the text direction will be read from left to right, or right to left*/
+
+
+
+
+
+
+
+    /*-------------------------------------- FONT FORMATTING PROPERTIES--------------------------------------------------------------------------- */
+    /* keep in mind that in typography, there are TypeFaces and there are fonts*/
+    /* TypeFaces are the style of lettering: Helvetica, Times New Roman */
+    /* Fonts are the size and style of a typeface: size: 12pt  style: Bold*/
+
+    font-family: Helvetica, sans-serif, cursive;                /* defines a web-safe TypeFace for your text, just in case Helvetica is not supported by the browser, it will default to the*/
+    font-size: 40px;                                            /* setting the size of the font */ 
+    font-style: italic, oblique;                                /* determines if we should use the italic or oblique face of the font family */
+    font-weight: bold, 400;                                     /* makes the font bolder*/
+    font-kerning: normal, none;                                 /* (the font must be able to support this property to use it) normal will define how much space between the letters in the font will have*/                               
+    font-stretch: condensed, expanded, 120%;                    /* (the font must be able to support this property to use it) condensed means the font will shrink, expanded means the font will expand, and 120% means that the font will expand 20% past its normal size*/
+
+    font-variant-caps: small-caps, petite-caps, all-small-caps, all-petite-caps, unicase;   /* these values define how the capitalized letters will look like on our text 
+        small-caps: if you typed Difficult, then the output will be:  DIFFICULT but the D will be bigger than the rest of the letters
+        all-small-caps: if you types Difficult, then the output will be: DIFFICULT all letters will be the same size
+        petite-caps: extremely similar to small-caps, i dont see much of a difference really
+        all-petite-caps: extremely similar to all-small-caps, i dont see much of a difference really
+        unicase: all capitalized letters will be the same size as lowecase letters
+    */
+    font-variant-east-asian: normal, ruby, jis78, proportional-width; /* this property was designed for styling languages from east asia */
+    /* the properties below only work with .otf files that must be included with @font-face*/
+    font-variant-ligatures: common-ligatures, no-common-ligatures;   /*  this property defines if two letters should be joined into one; fi, ffi, th, fl*/
+    font-variant-numeric: slashed-zero, diagonal-fractions, ordinal, oldstyle-nums, tabular-nums, proportional-nums; /* this property defines the styling of numbers of the font; 
+        Ordinal: will put the st in 1st on the top
+        Diagonal-fractions: will put a line through all the zeros
+        oldstyle-nums: will make numbers appear like they are not properly aligned horizontaly
+        tabular-nums: will make two numbers with the same number of digits have the same width 
+        proportial-nums: will make two numbers with the same number of digits NOT have the same width
+    */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* when using width and padding in the same element, make sure to use box-sizing: border-box to keep padding from adding to the width of the element*/
+/* outline has the same properties as border (border-color,outline-color; border-style, outline-style)*/
+/* outline-offset defines the space between the outline and the border on all sides*/
+/* AUTO means that the property will be automatically adjusted according to the content of the element*/
+/* use POSITION:fixed/relative/static/absolute to control the position of an element*/
+  
+
+*{                                              /* this will affect EVERY element in the html file*/
+    /*cursor:crosshair;*/                            /* defines how the mouse will look in the webpage*/
+
+}
+
+:root {                                          /* global CSS variables*/
+    --main-color: hotpink;
+    --secondary-color: purple;
+}
+
+.example {                                      
+    background-color: var(--main-color);        /* using var() to assign a global variable to a property*/
+}
+
+.random {
+    color: red;
+}
+
+
+
+
+
+
+
+
+/*-----------------------------------------------------------SELECTORS------------------------------------------------------------------------------------------------------*/
+
+
+/* this will select all <div> elements */
+div {       
+    color:none
+}
+
+/* this will select all the <p> elements that are nested inside every <div> elements*/
+div p {
+    color:none;
+}
+
+/* you can select multiple elements like below*/
+div, p, i, b {
+    color:none;
+}
+
+/* the selector below is similar to div p {}*/
+/* it will not select a <p> element that is nested within another element who is nested within <div>*/
+div > p{
+    color:none;
+}
+
+/* this selector will select the first <p> element that comes after <div>*/
+div + p{
+    color:none;
+}
+
+/* this selector will select all <p> elements that are preceded by <div> */
+div ~ p
+{
+    color:none;
+}
+
+ /* The # defines an ID that can only be used by one element*/
+#HeaderOne{                                     
+    color:none;
+    
+}   
+
+/* this will select <a> elements with the class="className" */
+a.className{
+    color:none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*-------------------------------------------------------------------ATTRIBUTE SELECTORS----------------------------------------------------------------------------------------------------------------------*/
+
+/* this will select all elements with the title attribute*/
+[title]{
+    color:none;
+}
+
+/* this will select only the <p> elements with the name attribute*/
+p[name]{                                      
+    background-color:blue;
+}
+
+/* same as above but will only select elements with attribute name="whatever"*/
+p[name="whatever"]{                            
+    color:blanchedalmond;
+}
+
+/* this will select all <p> elements that have the title attribute containing a space separated list of words, one of which MUST be flower*/
+p[title~=flower]{
+    color:none;
+}
+
+/* this will select any element that has a class name that is exactly "any" or a class name that has "any-"*/
+[class|=any]{
+    color:none;
+}
+
+/* this will select all <p> elements that have a class name that starts with "top"*/
+p[class^="top"]
+{
+    color:none;
+}
+
+/* this will select all elements that have a class name that ENDS with "money" */
+[class$="money"]
+{
+    color:none;
+}
+
+/* this will select all elements that have a class name that contains the words "honey" anywhere in the name*/
+[class*="honey"] {
+    color:none;
+}
+
+[dir=rtl].example{
+    color:none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*--------------------------------------------------------------------------PSEUDO CLASSES--------------------------------------------------------------------------*/
+
+/* this selector will change the background color when the user clicks/focuses on the input element*/
+input:focus{
+    background-color:none;
+}
+
+/* a:hover MUST come after a:link and a:visited in order to be effective! a:active MUST come after a:hover in order to be effective!.*/
+a:link{
+    color:none;
+}
+
+a:hover{                                        /* :hover can be used by other elements*/             
+    color:blue;
+}
+
+a:hover:not(.currentPage) {                     /* all <a> will change their text to blue when you hover over the element EXCEPT the <a> has class=".currentPage" */
+
+    color:blue
+}
+
+/* this will select all the first <p> child elements that are nested within other elements  */
+p:first-child{
+    color:none;
+    content:"";
+}
+
+/* this will select all the first <i> child elements that are nested within <p> elements*/
+p i:first-child{
+    color:none;
+    content:"";
+}
+
+/* this will select all the <p> elements that are nested inside the first <i> elements that are nested inside <body> or other elements*/
+i:first-child p{
+    color:none;
+    content:"";
+}
+
+/* this will select all the even elements from a list of <i> elements, it will also affect nested <i> elements */
+i:nth-child(even) {         
+    color:none;
+
+}
+
+/* selects the first <i> element from a list of <i> elements*/
+i:nth-of-type(1) {              
+    color:none
+}
+
+/* you can add an expression in the parameter below, n will increment one by one and based on the current number, it will select that specific <i>*/
+i:nth-of-type(n) {
+    color:none;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*---------------------------------------------------------PSEUDO ELEMENTS----------------------------------------------------------------------------------------------------------------*/
+/* you can also combine the pseudo elements, in this case, order doesnt matter*/
+/* this selector will choose the first line inside every <p> element */
+p:first-line{       
+    color:none;
+    content:"";
+}
+
+/* This selector will choose the first letter of every <p> element CAN ONLY BE USED WITH BLOCK LEVEL ELEMENTS*/
+article p::first-letter{
+    color:red;
+    font-size:30px;
+    content:"";
+}
+
+/* adding content before each <header> element*/
+header::before{
+    /*content: url("images/faviconThingie.png"); */
+    color:none;
+}
+
+/* adding content AFTER each <p> element*/
+p::after{
+    color:none;
+}
+
+/* will change the content for every marker in all lists*/
+::marker{
+    color:none;
+}
+
+/* ::selection will change how highlighting text is displayed*/
+article p::selection{
+    color:purple;
+    background-color:red;
+}
+
+
+
+
+
+
+
+
+/*------------------------------------------------------------CSS ANIMATION------------------------------------------------------------------------------------*/
+/* these are some useful propeties to use when doing animation*/
+/* to rotate an element, use the property transform: rotateX() or rotateY() or just rotate()*/
+/* check out documentation for the transform: property */
+
+/* you can add more than one @keyframe to an element like this, animation-name: example_one 1s, example_two 3s            each with their properties by using the shorthand notation */
+
+@keyframes example_one {                                    /* this will change an element's background color gradually and then return it to its original color*/
+    from {background-color: red;}                         /* you can change ANY attribute like this*/
+    to {background-color: blue;}
+}
+
+div {
+    animation-name: example_one;                            /* this element will be affected by the @keyframes above */
+    background-color:green;                               /* original color*/  
+    animation-duration: 5s;
+}
+
+
+
+@keyframes example_two {
+    0%   {background-color: red;}                       /* you can also choose what happens in the animation during 25%, 50%, etc.. of its duration*/
+    25%  {background-color: green;}
+    50%  {background-color: yellow;}
+    75%  {background-color: blue;}
+    100% {background-color: pink;}
+}
+
+div {
+    animation-name: example_two;
+    animation-duration: 10s;
+    animation-delay: 2s;
+    animation-iteration-count:3;                            /* number of times the animation will occur       value can also be infinite*/
+    animation-direction:reverse;                            /* value can also be alternate, meaning that the animation will alternate between normal and reverse*/
+    animation-timing-function: ease-in-out;                  /* specifies the speed curve of the animation, there is documentation for this*/
+    animation-fill-mode:forwards;                           /* element will retain the values specified by the last keyframe*/
+}
+
+
+
+/* transitions*/
+div {
+    width: 100px;
+    height: 100px;
+        /*remember that you can transition most properties of an element */
+    transition: width 2s, height 5s, transform 3s;          /* this will create an animation that will transition this <div> element from 100px to 300px in 2 seconds*/
+    transition-timing-function: ease-in;                    /* specifies the timing curve of the transition, (starts slow then finishes fast, etc...)*/
+    transition-delay:0s;
+}
+
+
+div:hover {                                                 /* transition will happen when the user hovers over the element*/
+    width: 300px;
+    height: 300px;
+    transform: rotate(180deg);
+}
+
+
+/*------------------------------------------------------------MEDIA QUERIES-------------------------------------------------------------------------- */
+
+/* @media can be used to change an element when the viewport changes*/
+@media screen and (max-width:750px){
+    div{
+        width:100%;
+        border-bottom: 1px solid white;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+/*-----------------------------------------------------------------CLASSES------------------------------------------------------------------------------------------------------------ */
+
+.linkButton{
+    background-color: rgb(0, 255, 76);
+    color: rgb(255, 0, 0);
+    padding: 5px;         
+    margin-top:10px;   
+    display: inline-block;         /* display property determines if an element is treated as block or inline */
+}                                   /* inline-block allows to set the width and height of the element and does not add a line break AFTER the element*/
+
+.borderColors{
+    border: 2px solid red; /* defines a solid border around the object*/
+}

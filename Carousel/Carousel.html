@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Carousel</title>
+        <link rel="stylesheet" href="Carousel.css"/>      
+        <script src="https://kit.fontawesome.com/29995223a0.js" crossorigin="anonymous"></script>
+        <script src="Carousel.js" defer> </script>
+    </head>
+    
+    <body>
+        <div class="carousel">
+
+            <button class="carouselButton_left"> 
+                 <i class="fa-solid fa-arrow-left icon-size"></i>
+            </button>
+
+            <div class="carouselContainer">
+
+                <ul class="carouselTracker">
+                    <li class="carouselSlide currentSlide">    
+                        <img class="carouselImage" src="./images/cat one.jpg" alt=''/>
+                    </li>
+                    <li class="carouselSlide">                  
+                        <img class="carouselImage" src="./images/cat two.jpg" alt=''/>
+                    </li>
+                    <li class="carouselSlide">                  
+                        <img class="carouselImage" src="./images/cat three.jpg" alt=''/>
+                    </li>
+                </ul>
+
+            </div>
+
+            <button class="carouselButton_right"> 
+                <i class="fa-solid fa-arrow-right icon-size"></i>
+            </button>  
+
+            <div class="carouselNav">
+                <button class="carouselDot currentSlide"> </button>
+                <button class="carouselDot"> </button>
+                <button class="carouselDot"> </button>
+            </div>
+
+        </div>
+    </body>
+
+
+
+
+
+</html>

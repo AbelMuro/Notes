@@ -1,0 +1,839 @@
+//----------------------------------------------------------------------PRE-DEFINED OBJECTS that are native to javascript------------------------------------------------------------------------------------------------------
+Number;
+Object;
+String;
+Boolean;
+Array;
+
+
+
+
+
+
+// ------------------------------------DECLARING VARIABLES    a variable that has not been assigned a value will always have the default value of "undefined"----------------------------------
+g = 45;                                                                 // automatically has global scope
+var x = 50;                                                             // CANNOT have block scope    these variables can also be redefined x = "redefined" and redeclared var x = 4;  
+let a, b, c = 6, s = "This will " + "work";                             // block scoped    {}   these variables CANNOT be redeclared let a;
+const z = "whatever";                                                   // block scoped    {}   constant variable that will not change, also, they must be assigned a value when declared
+            //variables declared inside a function can NEVER be used outside of that function
+            //variables declared outside any function or block, automatically have global scope
+            //variables that have not been declared will automatically have global scope
+            //variables declared with var are hoisted to the top of the block, meaning that you can use the variable before it is declared
+            //all variable declarations are "hoisted" to the top of the block, but variable initializations are NOT hoisted
+
+
+
+
+
+
+
+//--------------------------------------STRINGS  please remember to check out all the documentation for string methods----------------------------------------------------------------------------
+let my_string = "hello" + "world" + 67;                                     //strings can be concantenated, 67 will be treated as if its another string
+my_string.length;                                                           //this will return the length of the string as a number
+my_string[0];                                                               // you cannot assign a different value to s[0], but strings can be accessed as if it was an array
+var newString= my_string.replace("/work/g", "not work");//  /work/g is for all occurences    // replacing the word "work" with the words "not work" in the specified string, will only change the first occurence of 'work'                                  
+var html_code = "<p> it works! </p>";                                        // you can add html code in strings
+
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------DATA STRUCTURES---------------------------------------------------------------------------------------------------
+    //please remember to check out all the documentation for array methods
+    //with const arrays, u can change the contents of the elements of the array, but not the order
+//ARRAYS
+let array = ["first", "second", "third"];   
+array[0] = "reasigned";                                                     //this is how you access the elements of the array
+//keep in mind that changes to j will also affect changes to array
+var j = array;                                                              //you can assign the entire array onto a variable and it will be concantenated   
+array.push("new Element");                                                  //adds a new element to the array at the end of the array, also returns the length of the array
+array.unshift("new element");                                               //adds a new element to the array at the beginning of the array, also returns the length of the array
+array.pop();                                                                //deletes the last element of an array, also returns the element that was deleted
+array.shift();                                                              //deletes the FIRST element of an array, also returns the element that was deleted
+array.sort();                                                               // will sort the array based on the first letter of the strings in the elements (if array is string)
+array.sort((a,b) => {                                                       //you can define how exactly the elements of the array will be sorted 
+            if (a < b) return -1;                                   //a is sorted before b
+            else if( a > b) return 1;                               //b is sorted before a
+            else return 0;                                          //a and b must be equal    
+        });                                                
+array.sort(function(a,b){return a - b});                                    // if array has numbers, then u must use compare function to sort numbers in ascending order
+array.sort(function(a,b){return b - a});                                    // same as above, but this sorts numbers in descending order           
+Array.from($("div"));                                                       //create an array
+
+
+//SPREAD OPERATOR, keep in mind that changed made to arr3 will NOT affect arr2 and arr1
+let arr1 = [1,2,3];
+let arr2 = [4,5,6];
+let arr3 = [...arr1, ...arr2]    //[1,2,3,4,5,6]
+
+
+//SETS are similar to arrays, except that the elements can only occur once in the set, if you add the same element to the set, it will not be saved
+//sets are not iterable objects, u must use my_set.values() to return the iterable object of sets, THEN u can use "for of" loops to iterate 
+let my_set = new Set([1 ,2 ,3 ,4 ,5 ,"whatever"]);                         //you dont have to initialize a Set with an array
+my_set.add("new element");                                                 // adds an element to the end of the Set
+my_set.delete("whatever");                                                 // deletes the specified element
+my_set.has(1);                                                              // returns true if the value exists in the 
+
+//MAPS are similar to objects, but the differences are that the properties can be any value type, and the maps remembers the original insertion of each element
+let my_map = new Map([["name", "abel"],
+                    ["age", 28],
+                    ["city", "san francisco"]]);
+my_map.get("age");                        //this method will return the value associated with the property "age"
+my_map.set("new element", 56);            //adding a new element to the map, u can also use this method to change an existing element's value
+my_map.delete("city");                    //deleting the element "city" from the map
+my_map.has("name");                       // returns true or false if the map contains the specified element
+my_map.forEach(function(value,key) {       //forEach() will call a function for EACH element in the map
+    //code goes here
+});
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------THIS keyword-----------------------------------------------------------------------------------------------------------
+var x = this;                               //x now represents the global window object, in other words, Window.alert() is the same as x.alert()
+
+
+function myFunction(){
+    let that = this;                         //that will now reference this function
+    return this;                            //this will also return the global window object;
+}
+
+
+<button onclick="this.style.backgroundColor='red'"> click this</button> //THIS represents the element itself
+
+
+let new_object = {
+    first_name: "abel",
+    my_method : function(){
+        return this;                          //THIS will return the new_object object
+    }
+};
+
+
+
+
+
+
+//-------------------------------------------------------------------CLASSES------------------------------------------------------------------------------------------------------------------
+
+//you can create new members for a class like this:                   object.new_variable = "t";
+class my_class{
+    constructor(grade) {                                              //every class MUST have a constructor
+        this.grade = grade;                                           //you declare the members of the object like this
+
+    }
+    my_method() { 
+        return this.grade;
+    }
+    static my_second_method() {                                        // static methods are not part of any object, they can be called my_class.my_other_method()
+        return "omg";
+    }
+}
+let abels_object = new my_class("F");                                   //declaring an object of my_class by calling the constructor
+abels_object.my_second_method();                                               //calling method inside object
+
+
+
+
+
+
+
+//inheritance: other_class will inherit all the methods from my_class
+class other_class extends my_class{
+    constructor(one) {
+        this.one = one;
+        super(one);                                                     //calling parent constructor
+    }
+    other_method() {
+        return this.my_method();                                        //you can access the parent methods with "this."
+    }
+    get other_member() {                                                //The "get" keyword can be used for a method that will return a member of an object
+        return this.one;
+    }
+    set other_member(x) {                                               //The "set" keyword can be used for a method that will change a member of an object
+        this.one = x;
+    }
+
+}
+let _object = new other_class("C+");
+_object.my_other_method();
+
+
+
+
+
+
+
+
+class class_one {
+    constructor() {
+            this.name="abel";
+     }
+ }
+
+class_one.class_two = class {
+      constructor() {
+            this.age="28";
+     }
+}
+
+let my_variable = new class_one.class_two();
+
+
+
+
+
+//---------------------------------------------------------------OBJECTS,----------------------------------------------------------------------------------------------------------------------
+//if an object is constant, u can change the contents of the elements within the object, but not the order
+let test_scores = { math: 23, 
+                    science: 45, 
+                    history: 67, 
+                    P_E: "didnt show up", 
+                    my_method: function(){                                  // you can also add functions/methods inside objects
+                        return this.math + this.science;}
+                    };  
+test_scores.math = 56;                                                      //this is how you access the elements of an object
+test_scores[math];                                                          //you can use array notation to access a property from the object
+test_scores.my_method();                                                    // this is how you access an objects' method
+
+let example = {valueOne: 1, valueTwo: 2};
+let anotherExample = {...example, valueThree: 3};                           //you can use the spread operator to join two objects together
+
+
+
+let my_object = new Object();                                               //you can use the keyword "new" to create objects, Object is a predefined constructor
+my_object.name = "abel";                                                    // With new Object(), u can create members and values on the fly;
+
+let other_object = new function_objects("abel", 28, "San Francisco");       // you can create your own object with constructors
+other_object.name = "new name";                                             //this way, you can only access members of the object that are defined in the constructor
+other_object.prototype.new_property = "whaterver";                          //prototype property allows you to create new properties.
+
+
+
+
+//--------------------------------------------------------------------ERROR CATCHING-----------------------------------------------------------------------------------------------------------
+
+//this will try a block of code, if there is any error within this block, then the catch(err) block will execute
+try{
+    //code goes here
+    if(true) throw "anything goes here";                                                          
+}
+catch(err)                                      
+{
+        //err = "anything goes here"
+        //code goes here
+}
+finally{
+    //block of code that will be executed regardless of the try/catch result
+
+}
+//Here are the different types of errors, the name of these errors can be accessed by err.name
+SyntaxError;                                //example: "this is a string         
+ReferenceError;                             //using a variable that has not been declared
+TypeError;                                  //using the wrong type, for example, number.toString()
+
+
+
+
+
+
+
+//------------------------------------------------------------  FETCH API ------------------------------------------------------------------------------------------------------------------------------
+// the fetch API can be used to make requests to servers or used to fetch a resource
+//to display the data of a JSON file, you must use response.json() which will return a promise 
+//to display the data of a text file, you must use response.text() which will return a promise
+
+
+const display = document.querySelector("#useJSON").innerHTML;
+
+fetch('JSON notes.json')                                                //this will will return a promise..... by using then() afterwards, you are accessing the result of the promise
+    .then((result) => {return result.json()})                           //result here is an object that has methods and keys, use console.log() to see them all
+    .then((fileData) => display = fileData.variable)                    //then we can use .then() to access the result of the promise
+
+
+
+
+
+
+
+
+    
+//------------------------------------------------------------ SYNCHRONOUS -------------------------------------------------------------------------------------------------------------------------------
+
+//by default, javascript is synchronous... which means the next line will wait until the previous line finishes executing
+
+function findItem() {
+    var item;
+    while(item_not_found) {                 //this may take up to 10 seconds
+        // search
+    }
+    return item;
+}
+
+var item = findItem();                      //any code that comes after this statement has to **WAIT** until the function finishes executing
+doSomethingElse(item);                      //item is defined at this point because we waited for findItem() to finish executing
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------ ASYNCHRONOUS -------------------------------------------------------------------------------------------------------------------------------
+//asynchronous basically means that the code will take a long time to complete, and javascript will NOT wait until the code finishes and will read the next lines of code
+
+
+async function findItem() {                 //this is an asynchronouse function
+    var item;
+    while(item_not_found) {                 //this may take up to 10 seconds
+        // search
+    }
+    return item;
+}
+var item = findItem()                       //any code that comes after this statement will **NOT** wait until the function finishes executing
+doSomethingElse(item)                       //item is undefined at this point because we did not wait until findItem() finished executing
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------ PROMISES --------------------------------------------------------------------------------------------------------------------
+//Promise objects represents the eventual completion of a task that takes a while to complete
+//Promises are also useful for chaining callbacks together, which in turn prevent callback hell
+//The reason why you want to use promises for an operation that takes a while to complete is because
+// you may want to chain callbacks with then() AFTER the operation has finished executing
+
+
+//The code below will return a "promise" object, 
+//in this case, it will take 5 seconds for the promise to resolve, 
+let myPromise = new Promise((results) => {   
+    setTimeout(() => {                  
+        results("ok")                              //once this line of code has been reached, then the promise has been resolved
+    }, 5000)
+})
+
+myPromise.then((results) => {                       //then() is a function that can be used to access the results of the promise
+    let newResult = doSomethingWith(results);
+    return newResult
+})
+.then((newResult) => {                              //you can also chain callbacks this way to prevent callback hell
+    let newerResult = doSomethingElseWith(newResult);
+    return newerResult;
+})
+
+doSomethingElse();                                  //this function will be called immediately after the Promise constructor is called 
+
+
+
+
+
+
+
+
+//-------------------------------------------------------------- ASYNC/AWAIT -------------------------------------------------------------------------------------------------------------
+//async and await makes promises even easier to write
+//very often we will not need a reject function
+async function createPromise(number) {                                              //async means that the function will always return a promise
+    let results = await new Promise((resolve)=>{                                    //await makes javascript wait until the promise has been resolved
+        setTimeout(() => {                                                                  
+            results("ok")                   
+        }, 5000)
+    })
+    return results;         
+};
+
+let promise = createPromise(10);
+promise.then((results)=>{
+    //do something with the results of the promise
+});
+
+doSomethingElse();                                                                  //this line of code will not be read by javascript UNTIL myPromise has been fulfilled or rejected
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------BOOLEAN VALUES----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Boolean(10 > 2);                                                            //pre define function that returns true or false
+10 > 2;                                                                     //using comparison values can have the same effect as above
+10 == 2;                                                                    // this statement will also return true or false
+10 === 2;                                                                    // must have the same value AND the same data type
+10 !== 2;                                                                   // not equal value and not equal data type
+
+// &&                                                                       // logical and
+// ||                                                                       // logical or    
+// !                                                                        // logical not
+
+let password = "Darkness33";
+let name = (password = "Darkness33") ? "correct pwd": "incorrect pwd";      //if (password="Darkness33") returns true, then "correct pwd" will be assigned to name
+                                                                            //if (password="Darkness33") returns false, then "incorrect pwd" will be assigned to name
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------SELECTION STATEMENTS----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+let age = 25;
+if(age > 19 && age < 34){                                                    //the if statement will only execute if the expression inside returns true
+    //code goes here
+}
+
+else if(age== 15){
+    //code goes here
+}
+
+else{                                                                       //will only execute if all the other if statements above are false
+    //code goes here
+};
+
+
+switch(some_variable_of_any_type){                                          //switch statements check the value of the variable with the cases below                       
+    //cases use === when comparing values
+    case 0:                                                                 //case can be any value of any type
+        //code goes here
+    break;                                                                  //breaks out of the switch block
+
+    case "can be a string too": 
+        //code goes here
+    break;
+
+    default:                                                                //if all cases dont equal the variable in switch(), then default will execute
+        //code goes here
+
+};
+
+
+
+
+
+
+
+
+
+//----------------------------------------------------PREDEFINED functions/methods by javascript--------------------------------------------------------------------------------------------------
+write("this can be a string or a number");                                  //writing something to the webpage, Never call document.write after the document has finished loading. It will overwrite the whole document-->
+alert("this is how you display a message to the user");                     //displaying a message box to the user
+log("can be used for debugging purposes");                                  //displaying a message to the console,  press F12 and then select console to see the message
+debugger;                                                                   //with the console on, u can stop the execution of code with this statement
+print();                                                                    //this is how you print stuff 
+
+typeof(x);                                                                  //returns the data type of the variable as a string: object, number, string
+Math.pow(2,5);                                                              //Math objects has alot of methods that you can use for math calculations                                   
+
+
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------LOOPS-----------------------------------------------------------------------------------------------------------------------------------------------
+
+//Do not use "for in" over an Array if the index order is important.
+//It is better to use a "for loop", a "for of loop", or Array.forEach() when the order is important.
+
+let my_array = ["hello", "world", "how", "are", "you"];
+for (let x of my_array){                                              // "for of" will iterate over the values of an array (can also iterate through the letters of a string)
+        my_array[x];                                                           // x is declared and will contain the first element of the array.. and x will iterate through the array until the last element       
+};
+
+let my_object = {name: "abel", age:"28"};                           
+for(let y in my_object){                                               //"for in" will iterate over the PROPERTY KEYS of an object
+        my_object[y];                                                 //this will access the values of the object
+};
+
+//you can use break statements to break out of a loop
+//you can use continue statements to "skip" the full iteration of one loop
+for (let i = 0; i < my_array.length(); i++){                         //you can declare more than one variable next to i = 0, these variables can be used outside the loop
+    //code you can use with i variable
+};
+
+let d = 0;
+while(d < 10){
+    //if(true){ continue;}                                          continue will skip the code below and continue to the next iteration of the loop
+    d++;
+};
+
+
+do{
+    //code goes here
+}
+while(false);
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------------------LABELS---------------------------------------------------------------------------------------------------------------------
+    //labels start with the syntax "label: statements"
+
+some_label:{                                                        //you can create any type of label with any type of identifier
+    let i = 8;
+    i++;
+    i += 2; 
+    break some_label;                                               //break can be used here as well as continue
+    i += 3;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------------------FUNCTIONS----------------------------------------------------------------------------------------------------------------------
+
+function myFunction(){
+    document.getElementById("changethis").innerHTML = "it has been changed";      //changing the inner content of an element
+}                                                                               // for inline, you can delete document.getElementById and replace it with "this."
+  
+function function_objects(name, age, city){                                     //This is a constructor function, it allows us to create objects
+    this.name = name;
+    this.age = age;
+    this.city = city;
+}
+
+function function_with_parameters(a, b){                                                           
+    return "something";                                                                //this can be used to produce a value that can be assigned to a variable
+}
+
+let examples = [1, 2];
+function_with_parameters(...examples)                                                   //you can use the spread operator for function calls
+
+
+function destructuring({valueOne, valueTwo}){                                        //you can pass an object that has two properties to this function
+}
+
+
+
+
+
+(a, b) => {return "something"};                                                    //This is an arrow function, it has different syntax but it does the same thing as a function
+
+e => e + 1;                                                                         //this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------------------------DOM--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+//keep in mind that every element in a document is considered a "node" and the text inside an element are called text nodes
+document.getElementById("random_ID").childNodes[0];                             //you can use .childNodes[] as an array to reference any child elements
+const node = document.getElementById("random_ID");                              //this returns a reference to an element                      
+document.querySelector("class/tagName").removeChild(node.childNodes[0]);           //removing a nested child element from the parent container
+document.querySelector("class/tagName").removeChild(parent);
+document.querySelector("class/tagName").appendChild(new_node);                     //inserts a child node AT THE END of an parent element
+document.querySelector("class/tagName").insertBefore(new_node, existing_child_node);//inserts a new child element/node before an existing child element/node
+
+
+
+//the different ways to reference an element from the DOM
+document.getElementById("random_ID");                                           
+document.getElementsByTagName("div");                                            //this will return an array of references
+document.getElementsByTagName("div")[0];                                        //you can use array syntax to get the first, second,... element of a specific tag type, this can be used by ALL methods
+document.getElementsByClassName("my_class");                   
+document.querySelector("p.class_name");                                         //this follows the same syntax as css , this will return the first occurance within the document that matches the specified selector
+document.querySelectorAll("p.class_name");                                      //this will return an array with all the elements that have <p class="class_name">
+//you can use either id or name attributes here
+document.forms["form_id"];                                                      //this returns a reference to a form with the ID "form_ID"     
+document.forms["form_id"]["input_name"];                                        //getting a child element <input> that has the attribute name = "input_name" 
+document.forms["form_id"]["input_name"].value;                                  //getting the value inputted by the user
+
+
+//changing the content and attributes of elements
+document.querySelector("class/tagName").innerHTML = "adding text";                 //innerHTML is inside the tags of the element
+document.querySelector("class/tagName").innerHTML;                                 //this will return a text node that contains the text inside the tag elements
+document.querySelector("class/tagName").height = "100px";                           //you can assign a different value to ANY ATTRIBUTE by their name directly
+document.querySelector("class/tagName").style.backgroundColor = "red";             //to change a CSS property, this is the syntax you must use, remember that the properties are camel case
+document.querySelector("class/tagName").setAttribute(color, "red");                //you can also add a new attribute to an element
+
+
+//creating and deleting elements, these elements only show up on the document if they are inserted to an existing element in the document
+document.createElement("div");                                                  //creating a <div> </div> element
+document.createTextNode("hello world!");                                        //creating a text node (same as innerHTML) and returns a reference to that node
+document.body.removeChild(node);                                                //this is how you remove an entire element 
+
+
+document.getElementById("div").childNodes[0].nodeValue;                         //you can reference a child element with childNodes[0],and nodeValue is the same as .innerHTML              
+document.getElementById("div").firstElementChild;                               //references the first child element nested within
+document.getElementById("div").lastElementChild;                                //references the last child element nested within
+document.getElementById("div").closest(".className")                            //will choose the closest parent/grandparent element that has the specified selector
+
+
+//event handlers, remember that these handlers can also be called inline as attributes
+//also remember that these even handlers can be used on the "window" object
+document.getElementById("id").onclick = function() {                
+    //code goes here
+}
+document.getElementById("id").resize = function() {                             //functions is called when the element is resized
+    //code goes here
+}
+document.getElementById("id").onmouseover = function() {                        //function is called when the user hovers over the element
+    //code goes here
+}
+document.getElementById("id").onload = function() {                             //this function is called when the user enters the page          
+    //code goes here                                                            //this can be used to check cookies on the webpage, and check the visitors browser type and version
+}
+document.getElementById("id").onunload = function() {                           //this function is called when the user leaves the page            
+    //code goes here
+}
+document.getElementById("id").onchange = function() {                           //function is called in conjunction with input fields, when the user inputs something, and leaves the field,           
+    //code goes here                                                                the function will be invoked 
+}
+document.getElementById("id").onfocus = function() {                            //function is called when a user focuses on an input field
+    //code goes here
+} 
+document.getElementById("id").addEventListener("click", myFunction);            //this is the same as the event handlers above, this is useful for adding multiple functions for the same event
+document.getElementById("id").addEventListener("click", mySecondFunction);
+document.getElementById("parent").addEventListener("click", mySecondFunction, false)//third parameter specifies whether the parent element or the child element will have their even handleled first
+document.getElementById("child").addEventListener("click", mySecondFunction, false) //default is false, which means that the child event will be handleled first and then the parent event
+document.getElementById("id").addEventListener("click", function() {myThirdFunction(a,b)});     //in case you want to call a function that has parameters
+document.getElementById("id").addEventListener("click", (e) => {
+
+    //keep in mind that you can access any attribute of an element that you target
+    e.target;                           //targeting the element that triggered the event,
+    e.target.parentElement              //targeting the parent element of the element that triggered the event
+    e.target.value                      //targeting the element that triggered the event and getting their value attribute, this is useful for form elements
+    e.target.children                   //targeting the element that triggered the event and returning all child nodes nested within that element
+    e.target.id                         //targeting the element that triggered the event and getting the value in their ID attribute
+    e.target.classList                  //targetting the element that triggered the event and getting the classlist of the element
+    e.target.src                        //targetting the element that triggered the event and getting the src attribute
+    e.target.style.width = "300px"      //targgeting the element that triggered the event and assigning 300px to its width property
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------------------------JQUERY--------------------------------------------------------------------------------------------------------------------
+
+
+//------------------------------------------syntax:  $(element).action(speed, callback)   speed="slow", "fast" or milliseconds----------------------------------
+//                                                  $(element).action(speed) is also allowed
+//make sure to specify the ancestral elements to select a specific element
+
+
+//the methods below can call a function AFTER the effect is finished
+// if you call a function after the method .show(), the function will be called before the method finishes
+$("#my_id");                                                    // ID selectors
+$(".class_name");                                               // class selectors
+$("*");                                                         // selects all elements
+$("p").hide();                                                  // will hide all <p> elements, remember that .hide(speed, callback), speed can be in milliseconds, "slow" or "fast"
+$("p").show();                                                  // will show all <p> elements, remember that .show(speed, callback) -> .show(1000, function(){}).... the function is executed after .show 
+$("p").toggle();                                                // toggles between show and hide
+$("p").fadeIn();                                                // element will fade in, also this method has the same parameters as .show and .hide
+$("p").fadeOut();                                               // same as .show(), except it fades out
+$("p").fadeToggle();                                            // same as .show(), except it toggles between fading in and out
+$("p").fadeTo();                                                // same as .show(), except it has another parameter .fadeTo(speed, opacity, callback), opacity must be a number between 0 and 1, the element will fade to that opacity
+$("p").slideDown();                                             // displays an element by "sliding down" from another element. .slideDown(speed, callback) -> the parameters are the same as .show()
+$("p").slideUp();                                               // hides an element by "sliding up" towards another element... function syntax is the same as above
+$("p").slideToggle();                                           // toggles between sliding up or down, function syntax is the same as .slideDown()
+$("div").css("color", "red").slideUp().slideDown();             // CHAINING METHODS: the methods will be called in the order that it is written
+$("div").wrap(<p></p>);                                         // wraps around <div> with a <p>
+
+
+//inserting elements inside existing elements
+$("div").append("<p> some element </p>");                        // appending element at the end of div element
+$("div").prepend("<p> some element </p>");                       // appending element at the beginning of div element
+
+
+//get and set methods for elements are below
+$("p").text();                                                  //returns the text inside all <p> elements
+$("p").text("<b> setting text for this element </b>");          //setting the specified text inside <p>, remember that you can also assign pre formatted text or any element inside .text()  
+$("p").text(function(index, origText){ })                       //the function will be called and will return the content that will replace whaever is inside <p>...... also, index means the current element in the list of elements selected (if more than one <p> is selected)
+$("<p></p>").text("this goes inside");                          //this will return a string: "<p> this goes inside </p>""
+$("p").html();                                                  //returns the entire content inside <p> including any formatting tags (<b>, <pre>, etc...) as text
+$("p").html("<b> setting pre formatted text </b>");             //setting text that is pre formatted by some tag                                                  
+$("input").value();                                             //returns the value that a user inputted
+$("div").attr("backgroundColor", "red");                        //changing the attribute background color of every <div> to red
+$("div").attr("backgroundColor", function(index, origValue){}); //same as the callback function in .text()
+$("div").attr({                                                 //you can change multiple attributes like this
+    "backgroundColor": "blue",
+    "textAlign": "center",
+    "color" : "green"
+});
+$("div").remove();                                               //removes the selected element from the document, including any child elements
+$("div").empty();                                                //removes the child elements from the parent containter
+$("div").addClass("my_class other_class");                       //adding two new css classes to every element <div>
+$("div").removeClass("my_class");                                //removing my_class from every element "div" 
+$("div").toggleClass("my_class");                                //this method will toggle between addClass() and removeClass()
+
+//dimension methods are below, remember that you can set a width/height for an element by .width(500)
+$("div").width();                                               //returns the width of the element, excluding any padding, border or margin
+$("div").height();
+$("div").innerWidth();                                          //returns the width of the element, inludes padding but not border or margin
+$("div").innerHeight();
+$("div").outerWidth();                                          //returns the width of the element, includes padding and border, but not the margin
+$("div").outerHeight();
+$("div").outerWidth(true);                                      //returns the width of the element, inluding all padding, border and margin
+$("div").outerHeight(true);
+$(window).width();                                               //returns the width of the viewport, this can be extremely useful
+$(window).height();
+
+//jquery arrays
+$.makeArray($("div"));                                            //returns an array
+
+
+
+//--------------------------------------------event handlers, the above methods can go inside the functions() {} below that are nested inside the parameters-----------------------------------------------
+$("p").click(function(){ $(this).hide() });                     //this keyword refers to the <p> element
+$("p").hover(function(){});
+$("input").focus(function(){});
+$("p").on("click", function(){});                               //you can add more than one event handler inside the "on()" method
+$("p").on({                                                     //same as above but just different syntax
+    click: function(){},
+    mouseenter: function(){},
+    mouseleave: function(){}
+});
+
+
+
+
+
+//--------------------------------------------CSS with jquery syntax------------------------------------------------------------
+$("div").css("background-color","red");             // changing the css attribute of every <div>
+$("div").css("background-color");                   /// when you omit the second parameter, the method will return the value of background-color
+$("div").css({                                      // you can set multiple attributes with this method
+    "background-color" : "yellow",
+    "color" : "red",
+    "text-align" : "center"
+});
+$("div p");                                         // selects every <p> that is nested within every <div>
+$["div, p, section"];                               // selecting all <div>, <p>, <section>
+$("div[color=red]");
+
+
+
+
+
+
+
+
+//---------------------------------------------ANIMATE with jquery--------------------------------------------------------------
+
+//make sure to rememeber to set the position of the element as either relative, fixed, or absolute to actually move it
+//you can animate almost ALL css properties, just remember that the syntax is paddingLeft instead of padding-left
+
+$("div").animate({
+    left: "250px",                          //moving the object towards a position that has a distance of 250px from the left of the viewport
+    opacity: "0.5",                         //during the duration of the animation, the element will become half transparent
+    height: "150px",                        //during the timeline of the animation, the element will become bigger and bigger until it reaches 150 px in height
+    width: "150px",                             // and 150px in width        
+    });
+//if height:"+=150" then this means that 150 will be added to the current height of the element 
+$("div").animate({ fontSize: "100px"}, "slow");     //the second parameter of .animate() can take slow, fast or a value in milliseconds, this means that the element will have a "slow" animation and stop until it reaches 100px
+
+
+//when you create multiple .animate(), jquery will call the methods one by one
+$("div").animate({height:"250px"});
+$("div").animate({height:"250px"});
+$("div").animate({height:"250px"});
+$("div").animate({height:"250px"});
+$("div").stop();                                //stops the current animation,  .stop(stopAll, goToEnd)  ->  stopAll is boolean, specifies whether to stop all queued animations, goToEnd is boolean, specified whether to go to end of animations 
+
+
+
+
+
+
+
+
+
+//---------------------------------------document ready function-------------------------------------------
+
+$(document).ready( function(){} );                              // this will call the specified function when the document has finished loading
+$(function(){});                                              // this does the same thing as above
+
+
+
+
+
+
+
+

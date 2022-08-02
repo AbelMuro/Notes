@@ -765,6 +765,24 @@
     align-items: center, flex-start, flex-end; /* this property will align all items on the CROSS-AXIS of 
         the flex box. Look at the flex-box model that i drew above to see what each value does to this property
         */
+    align-content: space-around, space-between, space-evenly; /* this property will control the spacing between 
+        the items on the CROSS AXIS of the flex-box in the same way that justify-content does to the MAIN axis
+        keep in mind that this property only works with flex-wrap: wrap or wrap-reverse
+         ---------------
+        |       ^       |
+        |       |       |       flex-wrap: wrap;
+        |       v       |
+        |  flex-item-1  |       align-content: space-evenly;
+        |       ^       |
+        |       |       |
+        |       v       |
+        |  flex-item-2  |
+        |       ^       |
+        |       |       |
+        |       v       |       
+         ---------------
+    
+    */
     flex-wrap: wrap, wrap-reverse; /* this property specifies if the flex items are forced into one line or can wrap around multiple lines 
         Before window is rezised: viewport is about 1500px
             [flex-item]--[flex-item]--[flex-item]--[flex-item]

@@ -1,20 +1,13 @@
-@font-face {                                                /* with this, you can use fonts other than the pre selected web-safe fonts*/
-    font-family: 'VeganStyle';
-    src: url(./Font/Exo-Black-Italic.otf);
-}   
-
 body {
     height: 3000px;
 }
 
 
-.boxOne {
-    background-image: url("./mars core.jpg");
-    background-size: auto;
-    background-repeat: no-repeat;
+.external {
+    background-color: green;
     padding: 15px;
     border: 1px solid black;
-    width: 100%;
+    width: 100px;
     height: 300px;
     margin: auto;
 }

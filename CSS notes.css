@@ -980,8 +980,14 @@
 
 
 
-.filter{
-    
+.FilterFuntions{
+    filter: blur(5px);           /* will blur an element*/
+    filter: brightness(5px);     
+
+    backdrop-filter: blur(5px)   /* will apply any of the filter functions above to 
+        an element BEHIND it
+    */
+
 }
 
 
@@ -1001,7 +1007,6 @@
     accent-color: red;                                            /* this property will give a color to <input> elements such as
         radio-button, checkboxes, and range input elements
     */
-    backdrop-filter: blur(5px);                                     /* this property will apply a graphical effect to an element BEHIND this one*/
 
     vertical-align: baseline, text-top, text-bottom, sub, super;    /* this property must be assign to an <img>; 
         if the image is bigger than the element next to it, then the ELEMENT will vertically align up or bottom, 

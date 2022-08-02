@@ -982,7 +982,19 @@
 
 .FilterFuntions{
     filter: blur(5px);           /* will blur an element*/
-    filter: brightness(5px);     
+    filter: brightness(75%);     /* will determine the brightness of the element or image 
+        keep in mind that 'brightness' in this case means that the color will either be its
+        original specified color(100%), or it will darken the color to a specified color variant(0%)
+    */
+    filter: contrast(62%);            /* will determine the contrast of the image 
+        contrast, in this case, means that it determines how dark-colored objects are distinguishable from other 
+        light-colored objects in the image
+
+        100% means fully contrast
+        0% means not contrast at all
+
+    */
+    filter:drop-shadow();
 
     backdrop-filter: blur(5px)   /* will apply any of the filter functions above to 
         an element BEHIND it

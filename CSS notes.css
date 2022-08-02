@@ -141,10 +141,11 @@
 
 .Image_and_Video_FormattingProperties {
     /*------------------------------------OBJECT FIT PROPERTIES----------------------------------------------------------*/
-    /* try to find out the original width and height of the images before you start using these properties*/
+    /* try to find out the original width and height of the images before you start using these properties 
+     you can do this by using width: auto and height: auto */
 
     object-fit: none, cover, fill, contain, scale-down; /* this property specifies how an img/video 
-        should be resized to fit its container 
+        should be resized to fit its content-box
 
             original size of image                     adjusted size of image
         fill:      (600x400)            ->              (200x400)
@@ -979,14 +980,29 @@
 
 
 
+.filter{
+    
+}
+
+
+
+
+
+
+
+
+
 .MiscellaneousProperties {
     /*---------------------------------------------MISCELLANEOUS--------------------------------------------------------------------------*/
     opacity: 1.0;                                                  /* defines how transparent the element will be, 1.0 is fully visible, 0.0 is completely transparent*/
     content: "random content";                                      /* this property MUST be used with the ::before and ::after pseudo elements 
         it was designed to insert content before or after an element
     */
-    
-    
+    accent-color: red;                                            /* this property will give a color to <input> elements such as
+        radio-button, checkboxes, and range input elements
+    */
+    backdrop-filter: blur(5px);                                     /* this property will apply a graphical effect to an element BEHIND this one*/
+
     vertical-align: baseline, text-top, text-bottom, sub, super;    /* this property must be assign to an <img>; 
         if the image is bigger than the element next to it, then the ELEMENT will vertically align up or bottom, 
         if the image is smaller than the element next to it, then the IMAGE will vertically align up or bottom 
@@ -994,7 +1010,7 @@
     justify-items: stretch, center, start, end; /* defines how all the items are positioned inside their place in it's container
         look for the property 'justify-self' for more info
     */
-    justify-self: stretch, center, start, end; /*this property defines how an item is positioned inside its place in its container 
+    justify-self: stretch, center, start, end; /*this property defines how an item is positioned inside its place in its content-box 
         stretch: [---item---]
         center:  [   item   ]   
         start:   [item      ]      

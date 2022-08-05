@@ -1145,30 +1145,15 @@
 
 
 
-/* when using width and padding in the same element, make sure to use box-sizing: border-box to keep padding from adding to the width of the element*/
-/* outline has the same properties as border (border-color,outline-color; border-style, outline-style)*/
-/* outline-offset defines the space between the outline and the border on all sides*/
-/* AUTO means that the property will be automatically adjusted according to the content of the element*/
-/* use POSITION:fixed/relative/static/absolute to control the position of an element*/
-  
 
-*{                                              /* this will affect EVERY element in the html file*/
-    /*cursor:crosshair;*/                            /* defines how the mouse will look in the webpage*/
 
-}
 
-:root {                                          /* global CSS variables*/
-    --main-color: hotpink;
-    --secondary-color: purple;
-}
 
-.example {                                      
-    background-color: var(--main-color);        /* using var() to assign a global variable to a property*/
-}
 
-.random {
-    color: red;
-}
+
+
+
+
 
 
 
@@ -1179,6 +1164,21 @@
 
 /*-----------------------------------------------------------SELECTORS------------------------------------------------------------------------------------------------------*/
 
+:root {                                          /* global CSS variables*/
+    --main-color: hotpink;
+    --secondary-color: purple;
+}
+
+.usingGlobalVariables {                                      
+    background-color: var(--main-color);        /* using var() to assign a global variable to a property*/
+}
+
+
+/* this will sellect ALL elements in the document */
+*{                                              
+    color: none;                          
+ 
+}
 
 /* this will select all <div> elements */
 div {       
@@ -1222,6 +1222,8 @@ div ~ p
 a.className{
     color:none;
 }
+
+
 
 
 

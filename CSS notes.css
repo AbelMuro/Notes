@@ -1273,14 +1273,147 @@
 
 
 /* ---------------------------------------------------------- MEDIA QUERIES ---------------------------------------------------------------*/
+/* SYNTAX for @media queries */
+/* if no media type is specified, then the ALL media type is implied*/
 
-/* @media can be used to change an element when the viewport changes*/
-@media screen and (max-width:750px){
+
+    /*-----media types----*/        /*---- media feature: value ------*/
+@media only print, screen, speech and (max-width: 300px) {
+    /*--- styles to be applied ----*/
+    .style{
+        display: none;
+    }
+}
+
+
+
+
+
+/*------------------------ MEDIA FEATURES ---------------------------------------------*/     
+
+/*------------Max-width  Min-width  Max-height  Min-height ------------------------ */
+@media (max-width:750px){            /* @media will trigger the new styles when the viewports width reaches 100px*/                                           
     div{
-        width:100%;
+        width: 100%;
         border-bottom: 1px solid white;
     }
+}
 
+
+
+/* ------------any-pointer   pointer ------------------------------- */
+/* @media will report the 'fineness' of the pointer devices (mouse, touchscreen, or both)*/
+/* any-pointer will check for ALL pointer devices connected to the device */
+/* pointer will only check for the primary pointer device*/
+/* fine: means that at least one pointer device is capable of fine grained control */
+/* coarse: means that at least one pointer device is not very accurate */
+/* none: means that there are no pointer devices connected and the user is using a keyboard only*/
+
+@media (any-pointer: fine) {                /* (@media will apply the style if a mouse or mousepad is connected to the device) */
+    * {
+        width: 100px;
+        height: 100px;
+    }
+}
+@media (any-pointer: coarse) {              /* (@media will apply the styles if a touchscreen is connected to the device) */
+    * {
+        width: 200px;
+        height: 200px;
+    }
+}
+@media (any-pointer: none) {                /* (@media will apply the styles if no pointer device is connected)*/
+    * {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+
+/* @media will report if any of the pointer devices can actually hover over elements to trigger :hover effects*/
+/* hover: means that at least one pointer device (mouse) can hover over elements to trigger :hover effects*/
+/* none: means that no pointer device can hover over elements (touchscreen)  */
+
+.menu .dropdown{
+    visibility: hidden;
+}
+
+.menu:hover .dropdown{
+    visibility: visible;
+}
+
+
+@media (any-hover: none) {                      /* you mainly want to do this when you have a device (touchscreen) */
+    .menu .dropdown{                            /* which cannot let you hover over things */
+        visibility: visible
+    }
+
+}
+/*  output:
+
+    if pointer device allows you to hover (mouse or any device that has a cursor)
+     -------------                   ------------
+    |             |                 |            |
+    |    Menu     |        ->       |   Menu  x  |          //just pretend the x is actually 
+    |             |                 |            |             a button that appears that lets 
+     -------------                   ------------               you make a dropdown 
+
+     if pointer device does NOT allow you to hover (touchscreen or any device that doesnt have a cursor)
+
+
+     -------------
+    |             |
+    |    Menu   x |            //all :hover effects are removed
+    |             |             //so we just make the dropdown button visible
+     -------------
+*/
+
+
+
+/* @media*/
+@media 
+
+
+/*------------------------ @MEDIA PRINT ---------------------------------------------*/
+
+
+/* @media will apply the styles before the document gets printed */
+/* this is useful when you want to remove other content from the document
+    and only want to include the content that you want to print in the document*/
+@media print {
+    .sidebar, .navigationbar, .footer {
+        visibility: hidden;
+    }
+}
+
+
+
+
+
+
+/* */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------------ @SUPPORTS ---------------------------------------------*/
+
+/* you can use @support rule to determine if the current browser supports */
+
+@supports (display: flex) {
+    @media screen and (min-width: 600px) {
+        .someClass {
+            display: flex;
+        } 
+    }
 }
 
 
@@ -1409,11 +1542,12 @@ p[class^="top"]
     color:none;
 }
 
-/* this will select all elements that have a class name that contains the words "honey" anywhere in the name*/
+/* this will select all elements that have a class name that contains the words "honey" anywhere in the value*/
 [class*="honey"] {
     color:none;
 }
 
+/* this will select all elements that have attribute dir = rtl AND have the class name example*/
 [dir=rtl].example{
     color:none;
 }

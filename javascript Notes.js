@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------PRE-DEFINED OBJECTS that are native to javascript------------------------------------------------------------------------------------------------------
+//====================================================================== PRE-DEFINED OBJECTS that are native to javascript ====================================================================== 
 Number;
 Object;
 String;
@@ -10,7 +10,51 @@ Array;
 
 
 
-// ------------------------------------DECLARING VARIABLES    a variable that has not been assigned a value will always have the default value of "undefined"----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== PREDEFINED functions/methods by javascript============================================================== 
+write("this can be a string or a number");                                  //writing something to the webpage, Never call document.write after the document has finished loading. It will overwrite the whole document-->
+alert("this is how you display a message to the user");                     //displaying a message box to the user
+log("can be used for debugging purposes");                                  //displaying a message to the console,  press F12 and then select console to see the message
+debugger;                                                                   //with the console on, u can stop the execution of code with this statement
+print();                                                                    //this is how you print stuff 
+
+typeof(x);                                                                  //returns the data type of the variable as a string: object, number, string
+Math.pow(2,5);                                                              //Math objects has alot of methods that you can use for math calculations                                   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ====================================================================== DECLARING VARIABLES  ====================================================================== 
 g = 45;                                                                 // automatically has global scope
 var x = 50;                                                             // CANNOT have block scope    these variables can also be redefined x = "redefined" and redeclared var x = 4;  
 let a, b, c = 6, s = "This will " + "work";                             // block scoped    {}   these variables CANNOT be redeclared let a;
@@ -27,7 +71,26 @@ const z = "whatever";                                                   // block
 
 
 
-//--------------------------------------STRINGS  please remember to check out all the documentation for string methods----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//====================================================================== STRINGS ====================================================================== 
+"this is a string";
 let my_string = "hello" + "world" + 67;                                     //strings can be concantenated, 67 will be treated as if its another string
 my_string.length;                                                           //this will return the length of the string as a number
 my_string[0];                                                               // you cannot assign a different value to s[0], but strings can be accessed as if it was an array
@@ -42,10 +105,32 @@ var html_code = "<p> it works! </p>";                                        // 
 
 
 
-//-----------------------------------------------------------------------DATA STRUCTURES---------------------------------------------------------------------------------------------------
-    //please remember to check out all the documentation for array methods
-    //with const arrays, u can change the contents of the elements of the array, but not the order
-//ARRAYS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//====================================================================== DATA STRUCTURES =============================================================================
+ 
+
+
+
+//-------------------------------------------------------------------- ARRAYS ------------------------------------------------------------------------------------------
+   //with const arrays, u can change the contents of the elements of the array, but not the order
 let array = ["first", "second", "third"];   
 array[0] = "reasigned";                                                     //this is how you access the elements of the array
 //keep in mind that changes to j will also affect changes to array
@@ -56,37 +141,48 @@ array.pop();                                                                //de
 array.shift();                                                              //deletes the FIRST element of an array, also returns the element that was deleted
 array.sort();                                                               // will sort the array based on the first letter of the strings in the elements (if array is string)
 array.sort((a,b) => {                                                       //you can define how exactly the elements of the array will be sorted 
-            if (a < b) return -1;                                   //a is sorted before b
-            else if( a > b) return 1;                               //b is sorted before a
-            else return 0;                                          //a and b must be equal    
+            if (a < b) return -1;                                           //a is sorted before b
+            else if( a > b) return 1;                                       //b is sorted before a
+            else return 0;                                                  //a and b must be equal    
         });                                                
 array.sort(function(a,b){return a - b});                                    // if array has numbers, then u must use compare function to sort numbers in ascending order
 array.sort(function(a,b){return b - a});                                    // same as above, but this sorts numbers in descending order           
 Array.from($("div"));                                                       //create an array
 
 
-//SPREAD OPERATOR, keep in mind that changed made to arr3 will NOT affect arr2 and arr1
+//SPREAD OPERATOR, keep in mind that changes made to arr3 will NOT affect arr2 and arr1
 let arr1 = [1,2,3];
 let arr2 = [4,5,6];
 let arr3 = [...arr1, ...arr2]    //[1,2,3,4,5,6]
 
+
+//DESTRUCTURING ARRAYS
+let someArray = [1, 2];
+const [first, second] = someArray;                                          // first and second now reference specific elements in the array 
+let someValue = first + second;                                             // and they can be used as variables
+
+
+
+
+
+//------------------------------------------------------------- SETS --------------------------------------------------------------------------------------------
 
 //SETS are similar to arrays, except that the elements can only occur once in the set, if you add the same element to the set, it will not be saved
 //sets are not iterable objects, u must use my_set.values() to return the iterable object of sets, THEN u can use "for of" loops to iterate 
 let my_set = new Set([1 ,2 ,3 ,4 ,5 ,"whatever"]);                         //you dont have to initialize a Set with an array
 my_set.add("new element");                                                 // adds an element to the end of the Set
 my_set.delete("whatever");                                                 // deletes the specified element
-my_set.has(1);                                                              // returns true if the value exists in the 
+my_set.has(1);                                                             // returns true if the value exists in the 
 
 //MAPS are similar to objects, but the differences are that the properties can be any value type, and the maps remembers the original insertion of each element
 let my_map = new Map([["name", "abel"],
                     ["age", 28],
                     ["city", "san francisco"]]);
-my_map.get("age");                        //this method will return the value associated with the property "age"
-my_map.set("new element", 56);            //adding a new element to the map, u can also use this method to change an existing element's value
-my_map.delete("city");                    //deleting the element "city" from the map
-my_map.has("name");                       // returns true or false if the map contains the specified element
-my_map.forEach(function(value,key) {       //forEach() will call a function for EACH element in the map
+my_map.get("age");                                                         //this method will return the value associated with the property "age"
+my_map.set("new element", 56);                                             //adding a new element to the map, u can also use this method to change an existing element's value
+my_map.delete("city");                                                     //deleting the element "city" from the map
+my_map.has("name");                                                        // returns true or false if the map contains the specified element
+my_map.forEach(function(value,key) {                                       //forEach() will call a function for EACH element in the map
     //code goes here
 });
 
@@ -97,17 +193,35 @@ my_map.forEach(function(value,key) {       //forEach() will call a function for 
 
 
 
-//---------------------------------------------------------------------THIS keyword-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== THIS keyword ============================================================== 
 var x = this;                               //x now represents the global window object, in other words, Window.alert() is the same as x.alert()
 
 
 function myFunction(){
-    let that = this;                         //that will now reference this function
+    let that = this;                        //that will now reference this function
     return this;                            //this will also return the global window object;
 }
 
 
-<button onclick="this.style.backgroundColor='red'"> click this</button> //THIS represents the element itself
+<button onclick="this.style.backgroundColor='red'"> click this </button> //THIS represents the element itself
 
 
 let new_object = {
@@ -122,9 +236,29 @@ let new_object = {
 
 
 
-//-------------------------------------------------------------------CLASSES------------------------------------------------------------------------------------------------------------------
 
-//you can create new members for a class like this:                   object.new_variable = "t";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//==============================================================  CLASSES =============================================================================== 
+
+//syntax for creating a class                  
 class my_class{
     constructor(grade) {                                              //every class MUST have a constructor
         this.grade = grade;                                           //you declare the members of the object like this
@@ -133,13 +267,13 @@ class my_class{
     my_method() { 
         return this.grade;
     }
-    static my_second_method() {                                        // static methods are not part of any object, they can be called my_class.my_other_method()
+    static my_second_method() {                                        //static methods are not part of any object, they can be called my_class.my_other_method()
         return "omg";
     }
 }
 let abels_object = new my_class("F");                                   //declaring an object of my_class by calling the constructor
-abels_object.my_second_method();                                               //calling method inside object
-
+abels_object.my_second_method();                                        //calling method inside object
+object.new_variable = "t";                                              //you can create new members for a class like this: 
 
 
 
@@ -172,7 +306,9 @@ _object.my_other_method();
 
 
 
-
+//this is a convenient way of categorizing certain functions/methods
+//this is mostly used with javascript libraries like gsap
+//gsap has functions like gsap.timeline() which require the new keyword
 class class_one {
     constructor() {
             this.name="abel";
@@ -191,22 +327,44 @@ let my_variable = new class_one.class_two();
 
 
 
-//---------------------------------------------------------------OBJECTS,----------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== OBJECTS ============================================================== 
+
 //if an object is constant, u can change the contents of the elements within the object, but not the order
-let test_scores = { math: 23, 
-                    science: 45, 
-                    history: 67, 
-                    P_E: "didnt show up", 
-                    my_method: function(){                                  // you can also add functions/methods inside objects
-                        return this.math + this.science;}
-                    };  
+let test_scores = { 
+    math: 23, 
+    science: 45, 
+    history: 67, 
+    P_E: "didnt show up", 
+    my_method: function(){                                                  // you can also add functions/methods inside objects
+        return this.math + this.science;}
+};  
 test_scores.math = 56;                                                      //this is how you access the elements of an object
 test_scores[math];                                                          //you can use array notation to access a property from the object
 test_scores.my_method();                                                    // this is how you access an objects' method
 
-let example = {valueOne: 1, valueTwo: 2};
-let anotherExample = {...example, valueThree: 3};                           //you can use the spread operator to join two objects together
 
+//clever way of joining two objects together
+let example = {valueOne: 1, valueTwo: 2};
+let anotherExample = {...example, valueThree: 3};                        
+
+
+//you can also destructure objects.
+let randomness = {value: 1, value: 2}
+let {exampleOne, exampleTwo} = randomness;                                  //exampleOne and exampleTwo can be used like variables
+let result = exampleOne + exampleTwo;
 
 
 let my_object = new Object();                                               //you can use the keyword "new" to create objects, Object is a predefined constructor
@@ -219,15 +377,30 @@ other_object.prototype.new_property = "whaterver";                          //pr
 
 
 
-//--------------------------------------------------------------------ERROR CATCHING-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== ERROR CATCHING ============================================================== 
 
 //this will try a block of code, if there is any error within this block, then the catch(err) block will execute
 try{
     //code goes here
     if(true) throw "anything goes here";                                                          
 }
-catch(err)                                      
-{
+catch(err){
         //err = "anything goes here"
         //code goes here
 }
@@ -246,7 +419,29 @@ TypeError;                                  //using the wrong type, for example,
 
 
 
-//------------------------------------------------------------  FETCH API ------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== FETCH API ============================================================== 
 // the fetch API can be used to make requests to servers or used to fetch a resource
 //to display the data of a JSON file, you must use response.json() which will return a promise 
 //to display the data of a text file, you must use response.text() which will return a promise
@@ -266,7 +461,7 @@ fetch('JSON notes.json')                                                //this w
 
 
     
-//------------------------------------------------------------ SYNCHRONOUS -------------------------------------------------------------------------------------------------------------------------------
+//============================================================== SYNCHRONOUS ============================================================== 
 
 //by default, javascript is synchronous... which means the next line will wait until the previous line finishes executing
 
@@ -291,7 +486,7 @@ doSomethingElse(item);                      //item is defined at this point beca
 
 
 
-//------------------------------------------------------------ ASYNCHRONOUS -------------------------------------------------------------------------------------------------------------------------------
+//============================================================== ASYNCHRONOUS ==============================================================
 //asynchronous basically means that the code will take a long time to complete, and javascript will NOT wait until the code finishes and will read the next lines of code
 
 
@@ -319,11 +514,14 @@ doSomethingElse(item)                       //item is undefined at this point be
 
 
 
-//------------------------------------------------------------ PROMISES --------------------------------------------------------------------------------------------------------------------
+
+//==============================================================  PROMISES ============================================================== 
 //Promise objects represents the eventual completion of a task that takes a while to complete
 //Promises are also useful for chaining callbacks together, which in turn prevent callback hell
 //The reason why you want to use promises for an operation that takes a while to complete is because
 // you may want to chain callbacks with then() AFTER the operation has finished executing
+// these callbacks are called in another thread of the application and will join the main thread
+// once the process is complete
 
 
 //The code below will return a "promise" object, 
@@ -352,7 +550,27 @@ doSomethingElse();                                  //this function will be call
 
 
 
-//-------------------------------------------------------------- ASYNC/AWAIT -------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== ASYNC/AWAIT ============================================================== 
 //async and await makes promises even easier to write
 //very often we will not need a reject function
 async function createPromise(number) {                                              //async means that the function will always return a promise
@@ -379,7 +597,24 @@ doSomethingElse();                                                              
 
 
 
-//---------------------------------------------------------------BOOLEAN VALUES----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== BOOLEAN VALUES ============================================================== 
 
 Boolean(10 > 2);                                                            //pre define function that returns true or false
 10 > 2;                                                                     //using comparison values can have the same effect as above
@@ -392,8 +627,8 @@ Boolean(10 > 2);                                                            //pr
 // !                                                                        // logical not
 
 let password = "Darkness33";
-let name = (password = "Darkness33") ? "correct pwd": "incorrect pwd";      //if (password="Darkness33") returns true, then "correct pwd" will be assigned to name
-                                                                            //if (password="Darkness33") returns false, then "incorrect pwd" will be assigned to name
+let name = (password == "Darkness33") ? "correct pwd": "incorrect pwd";      //if (password=="Darkness33") returns true, then "correct pwd" will be assigned to name; if its false, then "incorrect pwd" will be assigned to name
+                                                                            
 
 
 
@@ -403,10 +638,12 @@ let name = (password = "Darkness33") ? "correct pwd": "incorrect pwd";      //if
 
 
 
-//---------------------------------------------------------------SELECTION STATEMENTS----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//============================================================== SELECTION STATEMENTS ============================================================== 
 
+
+//----------------------------------------------- IF/ELSE-IF/ELSE ---------------------------------------------------------------------------------
 let age = 25;
-if(age > 19 && age < 34){                                                    //the if statement will only execute if the expression inside returns true
+if(age > 19 && age < 34){                                                  //the if statement will only execute if the expression inside returns true
     //code goes here
 }
 
@@ -418,6 +655,9 @@ else{                                                                       //wi
     //code goes here
 };
 
+
+
+//------------------------------------------------------ SWITCH ----------------------------------------------------------------------------------
 
 switch(some_variable_of_any_type){                                          //switch statements check the value of the variable with the cases below                       
     //cases use === when comparing values
@@ -442,15 +682,6 @@ switch(some_variable_of_any_type){                                          //sw
 
 
 
-//----------------------------------------------------PREDEFINED functions/methods by javascript--------------------------------------------------------------------------------------------------
-write("this can be a string or a number");                                  //writing something to the webpage, Never call document.write after the document has finished loading. It will overwrite the whole document-->
-alert("this is how you display a message to the user");                     //displaying a message box to the user
-log("can be used for debugging purposes");                                  //displaying a message to the console,  press F12 and then select console to see the message
-debugger;                                                                   //with the console on, u can stop the execution of code with this statement
-print();                                                                    //this is how you print stuff 
-
-typeof(x);                                                                  //returns the data type of the variable as a string: object, number, string
-Math.pow(2,5);                                                              //Math objects has alot of methods that you can use for math calculations                                   
 
 
 
@@ -461,21 +692,18 @@ Math.pow(2,5);                                                              //Ma
 
 
 
-
-
-
-//--------------------------------------------------------------------LOOPS-----------------------------------------------------------------------------------------------------------------------------------------------
+//============================================================== LOOPS ==============================================================
 
 //Do not use "for in" over an Array if the index order is important.
 //It is better to use a "for loop", a "for of loop", or Array.forEach() when the order is important.
 
 let my_array = ["hello", "world", "how", "are", "you"];
 for (let x of my_array){                                              // "for of" will iterate over the values of an array (can also iterate through the letters of a string)
-        my_array[x];                                                           // x is declared and will contain the first element of the array.. and x will iterate through the array until the last element       
+        my_array[x];                                                  // x is declared and will contain the first element of the array.. and x will iterate through the array until the last element       
 };
 
 let my_object = {name: "abel", age:"28"};                           
-for(let y in my_object){                                               //"for in" will iterate over the PROPERTY KEYS of an object
+for(let y in my_object){                                              //"for in" will iterate over the PROPERTY KEYS of an object
         my_object[y];                                                 //this will access the values of the object
 };
 
@@ -487,7 +715,7 @@ for (let i = 0; i < my_array.length(); i++){                         //you can d
 
 let d = 0;
 while(d < 10){
-    //if(true){ continue;}                                          continue will skip the code below and continue to the next iteration of the loop
+    //if(true){ continue;}                                            //continue will skip the code below and continue to the next iteration of the loop
     d++;
 };
 
@@ -505,7 +733,7 @@ while(false);
 
 
 
-//-------------------------------------------------------------------LABELS---------------------------------------------------------------------------------------------------------------------
+//============================================================== LABELS ==============================================================
     //labels start with the syntax "label: statements"
 
 some_label:{                                                        //you can create any type of label with any type of identifier
@@ -527,38 +755,41 @@ some_label:{                                                        //you can cr
 
 
 
-//-------------------------------------------------------------------FUNCTIONS----------------------------------------------------------------------------------------------------------------------
+//============================================================== FUNCTIONS ==============================================================
 
 function myFunction(){
-    document.getElementById("changethis").innerHTML = "it has been changed";      //changing the inner content of an element
+    document.getElementById("changethis").innerHTML = "it has been changed";    //changing the inner content of an element
 }                                                                               // for inline, you can delete document.getElementById and replace it with "this."
   
+function function_with_parameters(a, b){                                                           
+    return "something";                                                         //this can be used to produce a value that can be assigned to a variable
+}
+
+let examples = [1, 2];
+function_with_parameters(...examples);                                           //you can use the spread operator for function calls
+
+
 function function_objects(name, age, city){                                     //This is a constructor function, it allows us to create objects
     this.name = name;
     this.age = age;
     this.city = city;
 }
 
-function function_with_parameters(a, b){                                                           
-    return "something";                                                                //this can be used to produce a value that can be assigned to a variable
-}
-
-let examples = [1, 2];
-function_with_parameters(...examples)                                                   //you can use the spread operator for function calls
 
 
-function destructuring({valueOne, valueTwo}){                                        //you can pass an object that has two properties to this function
+
+
+function destructuring({valueOne, valueTwo}){                                  //you can pass an object that has two properties to this function
+    //valueOne and ValueTwo will be treated as variables
 }
 
 
 
 
 
-(a, b) => {return "something"};                                                    //This is an arrow function, it has different syntax but it does the same thing as a function
+(a, b) => {return "something"};                                                 //This is an arrow function, it has different syntax but it does the same thing as a function
 
-e => e + 1;                                                                         //this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
-
-
+e => e + 1;                                                                      //this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
 
 
 
@@ -577,7 +808,9 @@ e => e + 1;                                                                     
 
 
 
-//------------------------------------------------------------------------------DOM--------------------------------------------------------------------------------------------------------------------
+
+
+//============================================================== DOM ==============================================================
 
 
 
@@ -691,7 +924,7 @@ document.getElementById("id").addEventListener("click", (e) => {
 
 
 
-//------------------------------------------------------------------------------JQUERY--------------------------------------------------------------------------------------------------------------------
+//============================================================== JQUERY ==============================================================
 
 
 //------------------------------------------syntax:  $(element).action(speed, callback)   speed="slow", "fast" or milliseconds----------------------------------

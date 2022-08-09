@@ -794,8 +794,23 @@ e => e + 1;                                                                     
 
 
 
+//====================================================== MEDIA QUERIES WITH JAVASCRIPT =========================================
+//you have more flexibility and control of the css properties when you use window.matchMedia than css media queries
 
 
+let mediaquery = window.matchMedia("(max-width: 1050px)");                      //you can use any media feature here
+mediaQuery.addEventListener("change", changeProperties);                        //the event must be a change event
+
+function changeProperties(mediaQuery) {
+     let elements = document.querySelectorAll(".someClass");                   
+     if(mediaQuery.matches){                                                   //returns true if the viewport is 1050px 
+            elements.style.width = "100px";
+            elements.style.display = "flex";                                //you can change any css property this way 
+     }
+    else{
+            //go back to default values for properties
+    }
+}
 
 
 

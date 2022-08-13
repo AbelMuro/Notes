@@ -40,10 +40,17 @@
             const item = JSON.parse(getItem);                           //parsing the JSON object into a javascript object
 
 
-        //one way to load a JSON file using fetch/then.
-            fetch('JSON notes.json')                                 //this will return an promise                 
-                .then((response) => {return response.json()})           //reading the result object from the promise and calling one of the built in functions of that object
-                .then((data) => document.getElementById("useJSON").innerHTML = data.variable)
+        //one way to load a JSON file using require
+            let JsonData = require(./../someData.json)
+            console.log(JsonData.name);                                 //this will display Abel
+            
+        /*  someData.json
+        
+            {
+                "name": "abel"
+            }
+        
+        */
 
         </script>
 

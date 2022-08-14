@@ -44,14 +44,24 @@
             let JsonData = require(./../someData.json)
             console.log(JsonData.name);                                 //this will display Abel
             
-        /*  someData.json
+            /*  someData.json
         
-            {
-                "name": "abel"
-            }
+                {
+                    "name": "abel"
+                }
         
-        */
-
+            */
+            
+        //you can also store HTML elements into the local storage
+            let element = document.querySelector(".someElement");
+            localStorage.setItem("my element", element.outerHTML)      //outerHTML will return a string that represents the ENTIRE element (including its child elements)
+            //code below is on another file
+            let element = localStorage.getItem("my element");
+            const parser = new DOMParser();                             //DOMParser can parse a string into an html element
+            let newDocument = parser.parseFromString(element, "text/html");//keep in mind that newDocument contains <html> <body></body> </html>
+            let parsedElement = newDocument.querySelector(".someElement") //so make sure to select the element that you are trying to parse
+            document.appendChild(parsedElement);                          
+            
         </script>
 
         

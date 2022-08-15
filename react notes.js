@@ -39,6 +39,21 @@ import './react.css'
 
 
 
+//-----------------------------------------index file in /components folder--------------------------------------------
+
+// /components/index.js
+export {default as NavigationBar} from './NavigationBar';
+export {default as HomePage} from './HomePage';
+export {default as AboutUs} from './AboutUs';
+
+
+// /src/index.js
+import {
+    NavigationBar,
+    HomePage,
+    AboutUs
+} from "./../components";
+
 
 
 

@@ -3,7 +3,25 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 import './react.css'
 
 
+/* 
+        steps to initialize React in your application
+            
+            1) npm init -y                  //creates package.json
 
+            2) npm install react            //installs the react library
+               npm install react-dom        //installs the react dom library 
+            
+            3) npm install webpack --save-dev       //installs webpack core
+               npm install webpack-cli --save-dev   //install webpack command line interface (terminal stuff)
+               npm install webpack-dev-server --save-dev 
+               
+             4) npm install @babel/core --save-dev          //installs the core files for babel (@ means that the package comes in modules)
+                npm install @babel-loader --save-dev        //installs a loader that babel uses to transpile JS code into valid JS code
+                npm install @babel/preset-react --save-dev  //installs a group of plugins that will transpile JSX into valid JS
+                npm install @babel/preset-env --save-dev    //installs a group of plugins that will transpile all the new features of JS 
+                npm install html-webpack-plugin --save-dev  //installs a plugin that will create an html file in the /dist folder based on a template we have in /src
+                                                                (look at webpack notes for more info)
+*/      
 
 
 

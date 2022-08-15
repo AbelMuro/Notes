@@ -26,7 +26,9 @@ import './react.css'
               
               6) create /src folder with index.js and index.html (index.html must have <div id="root"> </div>)
               
-              7) generally, index.js will have 
+              7) generally, index.js will have..
+              
+                 import {App} from './components/App.js'
                  const root = ReactDOM.createRoot(document.getElementById('root'));
                  root.render(<App/ >)
                  

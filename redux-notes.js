@@ -114,7 +114,7 @@ function ChildComponent() {
 
 
 //================================================= STORE ==============================================
-//creating a store (this is usually done in the index.js)
+//creating a store (this is usually done in the /src/index.js)
 import {Provider} from 'react-redux';
 import {rootReducer} from '../reducer/index';
 

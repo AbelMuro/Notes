@@ -22,7 +22,7 @@ module.exports = {
     ],
     module: {
         rules: [                               
-            {
+            {                                   //loaders are transformations that are applied to files (typescript to javascript, sass to css)
                 test: /\.js$/, 
                 use: {
                     loader: 'babel-loader',  //for all .js files, we will load the babel transpiler

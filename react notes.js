@@ -20,9 +20,9 @@ import './react.css'
                 npm install @babel/preset-react --save-dev  //installs a group of plugins that will transpile JSX into valid JS
                 npm install @babel/preset-env --save-dev    //installs a group of plugins that will transpile all the new features of JS 
                 npm install html-webpack-plugin --save-dev  //installs a plugin that will create an html file in the /dist folder based on a template we have in /src
-                                                                (look at webpack notes for more info)
                                                                 
-              5) configure webpack
+                                                                
+              5) configure webpack   (look at webpack notes for more info)
               
               6) create /src folder with index.js and index.html (index.html must have <div id="root"> </div>)
               

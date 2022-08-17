@@ -24,7 +24,6 @@ Array;
 
 
 
-
 //============================================================== PREDEFINED functions/methods by javascript============================================================== 
 write("this can be a string or a number");                                  //writing something to the webpage, Never call document.write after the document has finished loading. It will overwrite the whole document-->
 alert("this is how you display a message to the user");                     //displaying a message box to the user
@@ -376,6 +375,29 @@ other_object.prototype.new_property = "whaterver";                          //pr
 
 
 
+
+
+
+
+
+
+
+
+
+
+//============================================================ PROTOTYPE =================================================================
+//all objects and constructors have a prototype property, its mostly used to add new methods or properties to constructors
+
+function constructor(){
+      this.name = "abel";
+      this.last = "muro";
+      this.age = 678;
+}
+
+constructor.prototype.birthplace = "san francisco";
+
+let myObject = new constructor();                           //everytime you use constructor, the object will also have the new property birthplace
+object.birthplace;                              
 
 
 

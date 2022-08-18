@@ -39,20 +39,38 @@ import './react.css'
 
 
 
-//-----------------------------------------index file in /components folder--------------------------------------------
-
-// /components/index.js
-export {default as NavigationBar} from './NavigationBar';
-export {default as HomePage} from './HomePage';
-export {default as AboutUs} from './AboutUs';
 
 
-// /src/index.js
-import {
-    NavigationBar,
-    HomePage,
-    AboutUs
-} from "./../components";
+
+
+//-----------------------------------------INDEX FILE IN FOLDERS--------------------------------------------
+//With React, you can have folders that contain ALL the modules of a specific component
+//this lets you organize your modules much better
+
+
+// /someFolder/index.js
+import someComponent from './someComponent.js'
+export default someComponent;
+
+// /someFolder/someComponent.js
+function someComponent() { /* some logic*/};
+export default someComponent;
+
+// /someFolder/styles.css
+.someClass {
+      color: black;
+      background-image: url("./someURL.jpg")
+}
+
+
+
+// the file below is in the same directory as ./someFolder
+import someComponent from './SomeFolder';                       //by just importing a component from a folder, react will look for the index.js
+
+
+
+
+
 
 
 
@@ -61,9 +79,10 @@ import {
 
 //-----------------------------------------REACT DOM -----------------------------------------------------------------------------------------
 import ReactDOM from 'react-dom/client';             //importing methods from built in packages in react
+import App from './components';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));  //root is an element from the HTML file that will be managed by the REACT DOM
-//root.render("hello world");                                          //using render() method to print a string onto the root, you can print any expression or REACT element
+root.render(<App /> )                                       //using render() method to print a string onto the root, you can print any expression or REACT element
 
 
 
@@ -80,30 +99,44 @@ const root = ReactDOM.createRoot(document.getElementById('root'));  //root is an
 
 
 //------------------------------------------- JSX syntax ---------------------------------------------------------------------------------------------
-function example() {
-    return "greetings";
-}
+//JSX stands for Javascript syntax extension, it was designed by React for the purpose of using HTML in a javascript file
+//this greatly improves readability.
+//once you have written your JSX code (usually in the return statement of a function component or in the render() of a class component)
+// React will then convert the JSX code into React.createElement
 
-//remember, any valid javascript expression is allowed inside {}
-//also keep in mind that you cannot change an element in the flow of the program, after it has been created
 
+//remember, any valid javascript expression is allowed inside {}    
+//the attributes used in JSX are very similar to the regular attributes in HTML
+//but most are written in camelCase
 const link = "https://wwww.google.com";
 const name = "World";
-const elementONE = <h1 className='name'> hello, {name} </h1>;   //any valid javascript expression can go inside the {}, 
-const elementTWO = <a href={link}> link </a>;                   //you can also add attributes in JSX with {}
-const elementTHREE = <p> {example()} </p>;                      //you can also call functions with {}
-const elementFOUR =  (                                          //you can also add children to the elements
+const elementONE = (
+            <h1 className="someClass"> 
+                  "hello," + {name} 
+             </h1>
+);  
+const elementTWO = (
+             <a href={link}> 
+                "click here" 
+             </a>
+);                
+const elementTHREE = (
+              <p> 
+                {example()} 
+              </p>
+);                      
+const elementFOUR =  (                                         
     <div>                                                       
         <p>
-            you can create elements with children
+            "you can create elements with children"
         </p>
         <p>
-            like this as well
+            "like this as well"
         </p>
     </div>
 );
 
-//React.createElement() does the same thing as elementFOUR
+//JSX will get converted to the function below by react
 const element = React.createElement(
     'h1',                                                       //tag name
     {className: "myClass"},                                     //attributes
@@ -112,7 +145,60 @@ const element = React.createElement(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 //======================================================================== REACT ROUTER ===========================================================================================================================
+
+
+
+function RouterStuff() {
+    return(
+            
+         <BrowserRouter>     
+                <NavigationBar/>                                                //you can also define a NavigationBar component like this
+                <Routes>                                                        //and when you click on one of the <Link>'s in the NavigationBar component
+                        <Route index element={<HomePage />}>                    //it will automatically activate one of the routers below
+                        <Route path="/AboutUs" element={<AboutUs />}>           
+                        <Route path="/Contact" element={<ContactUs />}>
+                        <Route path="/DonateUs" element={<DonateUs />}>
+                </Routes>
+         </BrowserRouter>
+            
+
+
+
+        <BrowserRouter>  
+            <NavigationBar/>                    
+            <Routes>
+                {/* <Route index> will always be rendered first , you can also use <IndexRoute>*/}                
+                <Route index element={<Home/>}/>                                
+                    
+                {/* (1) The parent Route has an <Outlet> that will be replaced by one of the nested Routes*/}
+                <Route path="/ContactUs" element={<NestedNavigationBar/>}>      
+                     <Route path="/ContactUs/email" element={<EmailUs/>}/>           {/* This Route will only be rendered after the parent <Route> is rendered */}   
+                     <Route path="/ContactUs/call" element={<CallUs/>}/>             {/* This Route will only be rendered after the parent <Route> is rendered */}
+                </Route>
+
+                {/*(2) This Route will send a URL parameter to the Route below*/}
+                <Route path="/DonateUs" element={<DonateUs />}/>                
+                <Route path="/DonateUs/:repoName" element={<ThankYou />}/>      {/* :repoName is a placeholder, it can be sent as useParam() to the <ThankYou /> */} 
+                    
+                 {/* (3) This Route can be used for error handling*/}
+                 Route path="*" element={<NoPage />}/>                          {/* <Route path="*">  will only be rendered if the page requested does not exist*/}
+            </Routes>
+        </BrowserRouter>
+    )
+}
+
 
 
 
@@ -132,8 +218,10 @@ function Home() {return(<><p>Home</p></>)}
 
 function AboutUs() {return(<><p>About us</p></>)}
 
-//-------------------------------------------- nested Routes that display automatically after the parent route is clicked
 
+
+//--------------------------------------------------------- (1) ------------------------------------------------------------------------------------------- 
+//nested Routes that display automatically after the parent route is clicked
 function NestedNavigationBar() {
     return(
         <>
@@ -147,29 +235,16 @@ function EmailUs() {return (<p> Email us</p>)}
 
 function CallUs() {return (<p> Call us</p>)}
 
-//-------------------------------------------- Routes can pass URL parameters (data) to other routes 
-
+                           
+                           
+//------------------------------------------------------------ (2) ---------------------------------------------------------------------------- 
+//Routes can pass URL parameters to other routes 
 function DonateUs() {
     const navigate = useNavigate();            //this hook is used to navigate to a different page, its useful if its used inside even handlers          
-
-    {/* navigate hook has the same effect as clicking on one of the <Link>*/}
-    const handleChange = (e) => {
-        if(e.target.value != "")
-            navigate(e.target.value);
-    }
-
+    navigate("/DonateUs/cash");                //when this function hook is called, it will have the same effect as <Link>;
+        
     return(
         <div>
-            <p>Donate Us</p>
-
-            {/* you can use a select tag as if the <option> were <Link> */}
-            <select onChange={handleChange}>
-                <option value=""> Select payment method</option>
-                <option value="/DonateUs/cash"> Cash</option>                       {/* value can be passed to the useParams() in <ThankYou /> */}
-                <option value="/DonateUs/credit"> Credit </option>                  {/* value can be passed to the useParams() in <ThankYou /> */}
-            </select> 
-
-             {/* These <Link> correspond to the <option> above */}
             <Link to="/DonateUs/cash" className="example"> Cash </Link><br/>        {/* 'cash' will be passed to the useParams() in the <ThankYou /> component*/}
             <Link to="/DonateUs/credit" className="example"> Credit </Link><br/>    {/* 'credit' will be passed to the useParams() in the <ThankYou /> component*/}
         </div>
@@ -185,33 +260,10 @@ function ThankYou() {
     )
 }
 
-//------------------------------------------
+//---------------------------------------------------------------- (3) ---------------------------------------------------------------------------------------
 
 function NoPage() {return(<><p>Page doesnt exist</p></>)}
 
-function RouterStuff() {
-    return(
-        <Router> 
-            <Routes>
-                <Route path="/" element={<NavigationBar/>}>                      {/* This Route has an <Outlet> that will be replaced by one of the nested Routes*/}          
-                    <Route index element={<Home/>}/>                                {/* <Route index> will always be rendered first , you can also use <IndexRoute>*/}
-                    <Route path="/AboutUs" element={<AboutUs/>}/>                   {/* <Route path="AboutUs"> will only be displayed if the user clicks on the Link in <Layout>*/}
-                    <Route path="/ContactUs" element={<NestedNavigationBar/>}>      {/* This Route has an <Outlet> that will be replaced by one of the nested Routes*/}
-                        <Route path="/ContactUs/email" element={<EmailUs/>}/>           {/* This Route will only be rendered after the parent <Route> is rendered */}   
-                        <Route path="/ContactUs/call" element={<CallUs/>}/>             {/* This Route will only be rendered after the parent <Route> is rendered */}
-                    </Route>
-                    {/* If you nest <Route path="/DonateUs/:repoName"/> inside <Route path="/DonateUs"/>      then the content in <Route path="/DonateUs"/> will not dissapear*/}
-                    {/* but you must add an <Outlet /> in the parent Route*/}
-                    <Route path="/DonateUs" element={<DonateUs />}/>                {/* This Route will send a URL parameter to the Route below*/}
-                    <Route path="/DonateUs/:repoName" element={<ThankYou />}/>      {/* :repoName is a placeholder, it can be sent as useParam() to the <ThankYou /> */} 
-                    <Route path="*" element={<NoPage />}/>                          {/* <Route path="*">  will only be rendered if the page requested does not exist*/}
-                </Route>
-            </Routes>
-        </Router>
-    )
-}
-
-root.render(<RouterStuff />)
 
 
 

@@ -43,7 +43,51 @@ import './react.css'
 
 
 
-//-----------------------------------------INDEX FILE IN FOLDERS--------------------------------------------
+
+
+
+
+//=========================================== IMPORT STATEMENTS =========================================== 
+
+
+//--------------------------------------------DEFAULT IMPORT------------------------------------------------
+//each file can only have ONE export default
+
+// ./HomePage.js
+export default Home;
+
+
+// ./App.js
+import Home from './HomePage.js';                      //this only works if 'HomePage' file has a 'default export'
+import HomeComponent from './HomePage.js'              // both Home and HomeComponent will resolve to Home
+
+
+
+//----------------------------------------------NAMED IMPORT-------------------------------------------------------
+//a file can export as many components/variables as you want
+
+// ./HomePage.js
+export Home;
+export const number = 34;
+
+
+// ./App.js
+import {Home} from './HomePage.js';                         //this will work
+import {HomeComponent} from './HomePage.js'                 //this will NOT work because HomePage.js is not exporting HomeComponent
+import {number as myNumber} from './HomePage.js'            //this will work
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================== INDEX FILE IN FOLDERS =========================================== 
 //With React, you can have folders that contain ALL the modules of a specific component
 //this lets you organize your modules much better
 
@@ -108,18 +152,21 @@ root.render(<App /> )                                       //using render() met
 //remember, any valid javascript expression is allowed inside {}    
 //the attributes used in JSX are very similar to the regular attributes in HTML
 //but most are written in camelCase
-const link = "https://wwww.google.com";
+            
+
 const name = "World";
 const elementONE = (
             <h1 className="someClass"> 
                   "hello," + {name} 
              </h1>
 );  
+const link = "https://wwww.google.com";
 const elementTWO = (
              <a href={link}> 
                 "click here" 
              </a>
-);                
+);         
+function example() {};
 const elementTHREE = (
               <p> 
                 {example()} 
@@ -166,7 +213,7 @@ function RouterStuff() {
          <BrowserRouter>     
                 <NavigationBar/>                                                //you can also define a NavigationBar component like this
                 <Routes>                                                        //and when you click on one of the <Link>'s in the NavigationBar component
-                        <Route index element={<HomePage />}>                    //it will automatically activate one of the routers below
+                        <Route index element={<HomePage />}>                    //it will automatically activate one of the corresponding routers below
                         <Route path="/AboutUs" element={<AboutUs />}>           
                         <Route path="/Contact" element={<ContactUs />}>
                         <Route path="/DonateUs" element={<DonateUs />}>
@@ -179,7 +226,7 @@ function RouterStuff() {
         <BrowserRouter>  
             <NavigationBar/>                    
             <Routes>
-                {/* <Route index> will always be rendered first , you can also use <IndexRoute>*/}                
+                {/* <Route index> will always be rendered first */}                
                 <Route index element={<Home/>}/>                                
                     
                 {/* (1) The parent Route has an <Outlet> that will be replaced by one of the nested Routes*/}

@@ -226,13 +226,13 @@ function RouterStuff() {
         <BrowserRouter>  
             <NavigationBar/>                    
             <Routes>
-                {/* <Route index> will always be rendered first */}                
+                {/* This router will always be rendered first, index is the same as path="./" */}                
                 <Route index element={<Home/>}/>                                
                     
-                {/* (1) The parent Route has an <Outlet> that will be replaced by one of the nested Routes*/}
+                {/* (1) The parent Route has an <Outlet> that will be replaced by one of the nested Routes below*/} 
                 <Route path="/ContactUs" element={<NestedNavigationBar/>}>      
-                     <Route path="/ContactUs/email" element={<EmailUs/>}/>           {/* This Route will only be rendered after the parent <Route> is rendered */}   
-                     <Route path="/ContactUs/call" element={<CallUs/>}/>             {/* This Route will only be rendered after the parent <Route> is rendered */}
+                     <Route path="/ContactUs/email" element={<EmailUs/>}/>           
+                     <Route path="/ContactUs/call" element={<CallUs/>}/>            
                 </Route>
 
                 {/*(2) This Route will send a URL parameter to the Route below*/}
@@ -256,16 +256,9 @@ function NavigationBar() {
             <Link to="/AboutUs" className="example"> About Us</Link><br/>
             <Link to="/ContactUs" className="example"> Contact Us</Link><br/>
             <Link to="/DonateUs" className="example"> Donate Us</Link> <br/>
-            <hr/>
-            <Outlet />
         </>
     )
 }
-function Home() {return(<><p>Home</p></>)}
-
-function AboutUs() {return(<><p>About us</p></>)}
-
-
 
 //--------------------------------------------------------- (1) ------------------------------------------------------------------------------------------- 
 //nested Routes that display automatically after the parent route is clicked
@@ -278,10 +271,6 @@ function NestedNavigationBar() {
         </>
     )
 }
-function EmailUs() {return (<p> Email us</p>)}
-
-function CallUs() {return (<p> Call us</p>)}
-
                            
                            
 //------------------------------------------------------------ (2) ---------------------------------------------------------------------------- 
@@ -358,7 +347,7 @@ class ClassComponent extends React.Component {
     }
 
     handleState(item) {
-        this.setState(item);                                //React will then call render() once setState() call is finished
+        this.setState(item);                                //React will then call render() because setState() will always cause a re-render
     }                                                      
                                                          
 
@@ -375,8 +364,8 @@ class ClassComponent extends React.Component {
     render() {
         return (
             <div>
-                <h1>state object is: {this.state.value} </h1>
-                <Cat state={this.state} changeState={this.handleState}/>
+                <h1> state object is: {this.state.value} </h1>
+                <SomeComponent state={this.state} changeState={this.handleState}/>
             </div>            
         )
     }
@@ -393,9 +382,13 @@ class ClassComponent extends React.Component {
 
 
 
-//using useState hook to declare a state object and a function that can be used to update that state object
-//after the component has been rendered for the second time, 
+
+//----------------------------------------------------------------USE STATE HOOK---------------------------------------------------------
+
+// useState() hook lets you declare a state object and a function that can be used to update that state object
+// after the component has been rendered for the second time, 
 // useState will have its argument ignored and will instead read the previous state value and store it in the state object
+
 function HooksOne() {
     const[state, setState] = useState(1);           //you can initialize state with any string, object, array or number
     const[stateTwo, setStateTwo] = useState('can be a string');
@@ -404,31 +397,19 @@ function HooksOne() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-//you can pass a callback to setState() to access one of the elements stored inside the state object
-//keep in mind that calling setState() will remove previous data stored inside state variable, unless you pass a callback like in the example below
+// TIP: you can pass a callback to setState() to access one of the elements stored inside the state object
+// keep in mind that calling setState() will remove previous data stored inside state variable, unless you pass a callback like in the example below
 function HooksTwo() {
     const [state, setState] = useState({first: 'pizza', second: 'bannana', third: 'cheese'});
 
     const eventHandler = () => {                            //this is how you declare event handlers in function components
         setState(previousState => {
-            return{...previousState, first: 'blue'}         //...previousState breaks down an object into the number of elements it has
-        })                                                  // first: 'pizza', second: 'bannana', third: 'cheese'  
-    }                                                       //if you have two arguments that are the same, the argument farthest to the right takes precedence
-
-    return(
+            return{...previousState, first: 'blue'}        
+        })                                                 
+    }                                                       
+    return(                                                //this is how you access state 
         <>
-            <div> {state.first}</div>
+            <div> {state.first}</div>                     
             <div> {state.second}</div>
             <div> {state.third}</div>
             <button onClick={eventHandler}> click here</button>
@@ -448,30 +429,26 @@ function HooksTwo() {
 
 
 
-
-//useEffect() is a combination of ComponentDidMount, ComponentDidUpdate, ComponentWillUnmount
-//this function gets called after every re-render (when the state variable changes, it causes a re-render)
-//you can have multiple useEffect() calls in the same function component, this is useful for separating unrelated code and uniting related code
-//keep in mind that after every render, useEffect will 'clean up'/'unmount', this means it will clean up the previous effects and apply the effect in the return statement
-function HooksThree() {
-    const [count, setCount] = useState(0);                      //useState is a Hook, it initializes 'count' to 0 and declares a function 'setCount' to update the 'count'
-    const [calculation, setCalculation] = useState(0)
-
+//------------------------------------------------------------- USE EFFECT HOOK-----------------------------------------------------
+// useEffect() is a combination of ComponentDidMount, ComponentDidUpdate, ComponentWillUnmount
+// this function gets called after the first render, after every re-render, and once the component is unmounted from the DOM
+// you can have multiple useEffect() hooks in the same function component, this is useful for separating unrelated code and uniting related code
+function HooksThree() {  
     useEffect(() => {
-        setCalculation(count + 2);                              //these are 'effects', changes made to the DOM are also effects            
-        return () => {                                          
-            //unmounting on every render              
+       let button =  document.querySelector(".someButton");                              //this gets called after the first render and after every re-render       
+       button.addEventListener("click", nameOfFunction);
+            
+       return () => {                                                                   //unmounting before every re-render
+            button.removeEventListener("click", nameOfFunction)            
         }
     }, [count]); //if you specify a second argument in useEffect(), then useEffect() will only RE-RUN if this variable changes value, if its [] empty, then useEffect() will only run once
            
     return (
         <>
-            <div>{count}</div>
-            <button onClick={()=> setCount(count + 1)}> Click here</button>   
-            <div>{calculation}</div>
-        </>                         //we call setCount function to update our state variable, 
-    )                               //to use an event handler, you must include it in an arrow function 
-}                                   //by default, setState() will only re-render the component if the state variable changes
+            <button className="someButton"> click me </button>
+        </>                         
+    )                               
+}                                   
 
 
 
@@ -485,8 +462,8 @@ function HooksThree() {
 
 
 
-
-//passing state object and setState() to child components by using createContext() and useContext()
+//------------------------------------------------------------ USE CONTEXT HOOK --------------------------------------------
+// you can pass state object and setState() to child components by using createContext() and useContext()
 const StateObject = createContext();
 
 function ComponentOne() {
@@ -494,7 +471,6 @@ function ComponentOne() {
 
     return(                                     //all the child components called inside <StateObject.Provider /> can use the state object
     <>
-        <h1>{state}</h1>
         <StateObject.Provider value={{state, setState}}>    
             <ComponentTwo />                        
         </StateObject.Provider>    
@@ -515,8 +491,7 @@ function ComponentThree() {
 }
 
 function ComponentFour() {
-    const {state, setState} = useContext(StateObject);      //this child component can still display the state object and you can call setState() to update the state object
-
+    const {state, setState} = useContext(StateObject);     
     return(         
         <h2>
             <button type="button" onClick={() => setState("this is now different")}> Click here</button>
@@ -542,8 +517,9 @@ function ComponentFour() {
 
 
 
-
-//useRef() is a hook that initializes a "state" object that does not cause a re-render everytime it gets updated
+//----------------------------------------------------------- USE REF HOOK -----------------------------------------------------
+// useRef() is a hook that can create a constant reference to an element or can be used to reference a value
+// this hook does not cause a re-render everytime it gets updated
 function Ref() {
     const [count, setCount] = useState(0);
     const myRef = useRef(0);            //you can pass any type of argument; string, objects, arrays, numbers.

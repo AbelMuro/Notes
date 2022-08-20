@@ -191,7 +191,12 @@ const element = React.createElement(
 )
 
 
+// rememeber that you can use logical operators inside {} in JSX
+// 'true && expression' will always return the expression
 
+let variable = true
+{variable == true && <MyComponent />}                   //MyComponent will render
+{null && <MyComponent />}                               //MyComponent will not render
 
 
 
@@ -261,7 +266,7 @@ function NavigationBar() {
 }
 
 //--------------------------------------------------------- (1) ------------------------------------------------------------------------------------------- 
-//nested Routes that display automatically after the parent route is clicked
+//nested Routes that will display and replace the <Outlet />
 function NestedNavigationBar() {
     return(
         <>
@@ -297,8 +302,9 @@ function ThankYou() {
 }
 
 //---------------------------------------------------------------- (3) ---------------------------------------------------------------------------------------
+//default page that appears when the user accesses a page that doesnt exist
 
-function NoPage() {return(<><p>Page doesnt exist</p></>)}
+function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}
 
 
 
@@ -334,6 +340,8 @@ class ClassComponent extends React.Component {
     constructor(props) {
         super(props);                                        //we should always call the parent constructor of a class component
         this.state = {value: 0};                             //state is an object that stores data that should only be changed by this component
+        this.handleClick = this.handleClick.bind(this);      //you should always bind(this) with event handlers because 'this' gets lost in the event handlers
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {                                   //lifecycle method that will be called after the component has been first rendered to the DOM
@@ -362,10 +370,12 @@ class ClassComponent extends React.Component {
 
 
     render() {
+            //any data manupulation can go here
+            let currentState = this.state.value;            //accessing state object
         return (
             <div>
-                <h1> state object is: {this.state.value} </h1>
-                <SomeComponent state={this.state} changeState={this.handleState}/>
+                <h1> state object is: {currentState} </h1>
+                <SomeComponent state={this.state} changeState={this.handleState}/>      //this is typically how you pass state and setState to components
             </div>            
         )
     }
@@ -385,9 +395,9 @@ class ClassComponent extends React.Component {
 
 //----------------------------------------------------------------USE STATE HOOK---------------------------------------------------------
 
-// useState() hook lets you declare a state object and a function that can be used to update that state object
-// after the component has been rendered for the second time, 
-// useState will have its argument ignored and will instead read the previous state value and store it in the state object
+// useState() hook lets you declare a state object and a function that can be used to update that state object...
+// after the component has been rendered for the second time, useState will have its argument ignored 
+// and will instead read the previous state value and store it in the state object
 
 function HooksOne() {
     const[state, setState] = useState(1);           //you can initialize state with any string, object, array or number
@@ -500,7 +510,6 @@ function ComponentFour() {
     )
 }
 
-//root.render(<ComponentOne/>)
 
 
 
@@ -524,7 +533,7 @@ function Ref() {
     const [count, setCount] = useState(0);
     const myRef = useRef(0);            //you can pass any type of argument; string, objects, arrays, numbers.
 
-    useEffect(()=>{
+    useEffect(() => {
         myRef.current += 1;             //this doesnt cause a re-render, this can be used to track the number of times something happens
     })
 
@@ -538,20 +547,22 @@ function Ref() {
 
 }
 
-//TIP: you can use useRef() to select an element in the DOM
+//TIP: you can use useRef() to reference an element in the DOM
 // in this case, useRef() has the same effect as querySelector()
 function App() {
     const inputElement = useRef();
+    const DivElement = useRef();
 
     useEffect(()=>{
-        console.log(inputElement.current);                  //this will log the <input type="text">
-        console.log(inputElement.current.value);            //this will return the value that the user typed in the input box
+        console.log(inputElement.current);                   //this will log <input type="text">
+        console.log(inputElement.current.value);             //this will return the value that the user typed in the input box
         console.log(inputElement.current.getAttribute("type"))//keep in mind that you can use any method in the DOM with useRef()
     })
 
     return( //can be any element, doesnt have to be an <input>
         <> 
             <input type="text" ref={inputElement}/>
+            <div ref={DivElement}> </div>
         </>
     )
 }
@@ -568,7 +579,7 @@ function UsingRef() {
 
     return(
         <>
-            <button onClick={()=>setState(state + 1)}> Click Me</button><br/>
+            <button onClick={() => setState(state + 1)}> Click Me</button><br/>
             Current State: {state} <br/>
             Previous State: {previousState.current}     
         </> 
@@ -595,6 +606,7 @@ function UsingRef() {
 
 //---------------------------------------------------- USE REDUCER HOOK ------------------------------------------------------------------
 // useReducer() can be used to extract state management logic out of a component
+// however, the component will still be a statefull componenent, because it still owns the state object
 // this hook must be used with useContext hook to pass down state and the dispatcher
 
 // this is the object that will contain the values to initialize the state object and the dispatch function
@@ -611,14 +623,14 @@ function reducer (state, action) {
     //using a switch statement to determine what to do with the state object
     switch(action.type) {
         case 'addItem':
-            return {list: ...stateList, action.item}
+            return {list: [...stateList, action.item]}
         case 'removeItem':
             return {list: stateList.filter((item) => {                          //filter can be used to remove elements from an array
                         return item != action.item;                         //if this returns false, then the new array will NOT contain the item AT THIS POINT
                 })
             };
         default:
-            throw new Error();        
+            return state;        
     }
 }
 
@@ -643,9 +655,9 @@ function MyComponent() {
             <button onClick={()=> dispatch(actionOne)}> Click here to dipatch</button>
             <button onClick={()=> dispatch(actionTwo)}> Click here to dipatch</button>
 
-            //the component below and all of its child components will be able to use the reducer
+            //the component below and all of its child components will be able to use the reducer and the state
             <StateObject.Provider value={{state, dispatch}}>
-                    <SomeComponent />
+                    <SomeComponent />                           //make sure to use view notes about useContext()
             </StateObject.Provider>
         </>  
     )
@@ -664,7 +676,7 @@ function MyComponent() {
 
 
 //-------------------------------------------------- USE MEMO HOOK -------------------------------------------------------------
-// useMemo() can be used to make a function run only when a certain variable has changed
+// useMemo() can be used to force a function to run only when a certain state has changed
 // this hook should be used for functions that require alot of processing power or just take a long time
 
 function UsingMemo() {
@@ -729,88 +741,36 @@ function expensiveCalculation() {
 // you can create your own custom hooks that encapsulates stateful behavior (calculating something) and makes code reusable
 // remember that every hook has their isolated state variable
 
+//in the example below, we are reusing a function that can 'fetch' data from an external server
 function useCustomHook(URL) {
-    const [custom, setCustom] = useState(random);
+    const [custom, setCustom] = useState(null);
     
     useEffect(() => {
        fetch(URL)
-            .then((response) => {response.JSON})
-            .then((data) => {setState(data)})
+            .then((response) => response.JSON)
+            .then((data) => setState(data))
     },[URL])
         
-  return custom;
+  return [custom];
 }
 
 function ExampleWithCustomHooks() {
-    const myCustom = useCustomHook("./someURLaboutEmployeesNames");
-      
-}
-
-function AnotherExampleWithCustomHooks(props) {
-    const myCustom = useCustomHook("./anotherURLaboutEmployeesNames");
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//------------------------------------------------ COMPONENTS -----------------------------------------------------------------------------------------------------------------------
-
-//FUNCTION components: props means properties
-//keep in mind that you can pass a function component as an argument into another component
-function ExampleOne (props) {
-    return <h1> hello, {props.name} </h1>;
-}
-const myElement = <ExampleOne name="Abel Muro JR"/>;           //syntax used for calling a component function, name is a property of props object
-//root.render(myElement);
-
-
-function ExampleTwo(props) {                                       //you can split large functions into smaller components: this is the whole point of function components 
+    const [data] = useCustomHook("https://jsonplaceholder.typicode.com/todos");
     return (
-        <div>
-            <a href={props.src}> </a>
-            <p> {props.author.name} </p>
-            <p> {props.author.age} </p>   
-            <p> <ExampleTwo name="abel"/> </p>             
-        </div>
-    );  
+        <>
+             {data && data.map((item) => {return <p key={item.id}> {item.title} </p> })} 
+        </>
+    )    
 }
-const me = {name:"John", age: "54" };
-const myOtherElement = <ExampleTwo src="https://www.google.com" author= {me}/>; //you can pass objects to function components
-//root.render(myOtherElement);
+
+function AnotherExampleWithCustomHooks() {
+    const [data] = useCustomHook("https://someServer.whatever.com/someData");
+    return (
+        <>
+            {data && data.map((item) => {return <p key={item.id}> {item.title} </p> })}  
+        </>
+    )
+}
 
 
 
@@ -823,160 +783,53 @@ const myOtherElement = <ExampleTwo src="https://www.google.com" author= {me}/>; 
 
 
 
-//CLASS components: you can pass a class components state to another component(function or class)
-class Welcome extends React.Component {
-    render() {
-        return <h2>hello, world</h2>;
-    }
-}                                    
-//root.render(<Welcome />);                                   //this is the syntax for calling class components
 
 
-class Greetings extends React.Component {
 
-    constructor(props) {
-        super(props);                                       //we should always call the parent constructor of a class component
-        this.state = props;                                 //state is an object that stores data that can only be used by this component
-        //this.whatever = props;                             //remember that you can create a class field with any name
-    }
 
-    componentDidMount() {                                   //lifecycle method that will be called after this class component has been rendered to the DOM
-       this.timerID = setInterval(                          //we use setInterval to repeatedly call a function with a fixed time delay between each call
-        () => this.change(),
-        1000
-       );
-    }
 
-    componentDidUpdate() {                                  //gets called after every render
 
-    }
 
-    componentWillUnmount() {                                //lifecycle method that will be called after the component has been removed from the DOM
-        clearInterval(this.timerID);                        //we clear the interval to free up space
-    }
 
-    change() {
-        this.setState({color: "pizza"});                     //setState is a function that changes the value stored in this.state, React will merge the object with the object already stored inside this.state
-        this.setState(
-            (prevState, props) => ({number: prevState.number + props.number})   //function will recieve previous state object and props retains its first value always
-        )
-    }                                                       //React will then call render() once setState() call is finished
-                                                         
-    render() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------ PROPS -----------------------------------------------------------------------------------------------------------------------
+
+//props means properties
+//props are similar to attributes in HTML, 
+//but props are used to pass data from one component to another
+    
+ function App() {
+        //you can pass any type of data as props to other components
+        const [state, setState] = useState("exmaple");                                  //for passing state, its best that you use useContext() hook       
+        let someString = "passing this as props";
+        const someEventHandler = (e) => {
+             console.log(e.target);
+        } 
+       
         return (
-            <div>
-                <h1> My favorite color is {this.state.color} </h1>
-                <h2> My favorite food is {this.state.food} </h2>
-                <h3> Current Number is {this.state.number} </h3>
-            </div>            
-        )
-    }
-}
-
-//root.render(<Greetings color="purple" food="hot dog" number={1}/>)     //here we are passing two properties to the constructor, React will put these props into an object
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//----------------------------------------------------- CONDITIONAL RENDERING -----------------------------------------------------------------------------
-
-// rememeber that you can use logical operators inside {} in JSX
-// 'true && expression' will always return the expression
-
-
-function UserGreeting() {
-    return <p>Welcome back</p>
-}
-
-function GuestGreeting() {
-    return <p>Welcome Guest</p>
-}
-
-function Greeting(props) {
-    const isLoggedIn = props.isLoggedIn;
-    if(isLoggedIn)
-        return <UserGreeting />
-
-    else
-        return <GuestGreeting />
-}
-//root.render(<Greeting isLoggedIn={true} />);
-
-
-
-
-
-class LoginControl extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {isLoggedIn: false};
-        this.handleLogin = this.handleLogin.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
-    }
-
-    handleLogin() {
-        this.setState(
-            {isLoggedIn: true}
-        );
-    }
-
-    handleLogout() {
-        this.setState(
-            {isLoggedIn: false}
-        );
-    }
-
-    render() {
-        let isLoggedIn = this.state.isLoggedIn;
-        let button;
-
-        if(isLoggedIn) 
-            button = <button onClick={this.logout}> Log out </button>
+             <HomePage myString={someString} myEventHandler={someEventHandler} state={state}/>
         
-        else
-            button = <button onClick={this.login}> Log In </button>
-
-        return (
-            <div>
-                <Greeting isLoggedIn={isLoggedIn} />
-                {button}
-            </div>
         )
-    }
-}
-
-//root.render(<LoginControl />);
-
+        
+ 
+ }
 
 
 
@@ -996,27 +849,9 @@ class LoginControl extends React.Component {
 
 
 
+//----------------------------------------------------------------KEYS ----------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//----------------------------------------------LISTS/ARRAYS AND KEYS ----------------------------------------------------------------------------------
-
-//keys help React identify which list items have changed
+// keys help React identify which list items have changed
 // the 'key' property has a special meaning in React, in the same way that 'this.state' has special meaning
 
 function ListItem(props) {
@@ -1025,34 +860,15 @@ function ListItem(props) {
 
 function MakeList(props) {
     const numbers = props.array;
-    return numbers.map(                                      //using map function to create a <li> for each element in the array
-        (number) =>
+        //using map function to create a <li> for each element in the array
+    return numbers.map((number) =>
         <ListItem key={number.toString()} value={number} />  //keep in mind that every list item must have a unique "key"
     )
 }
 
 const numbers = [1, 2, 3, 4, 5, 6];
 
-//root.render(<MakeList array={numbers}/>);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+root.render(<MakeList array={numbers}/>);
 
 
 
@@ -1076,44 +892,26 @@ const numbers = [1, 2, 3, 4, 5, 6];
 
 
 //------------------------------------------------- EVENT HANDLERS -------------------------------------------------------------------------------------------------------------------
-//event handlers are always camelCase
+//event handlers are always camelCase attributes
+//below are the two different cases for event handlers
+function EvenHandlers() {
+        
+     const handleClick = (e) => {
+          alert("you clicked the first button");
+     }
+     
+     function handleClicked(){
+        alert("you clicked the second button")
+     }
 
-//functions that handle events
-function handleChange(e) {                          //e represents the event itself
-    e.preventDefault();                             //you call the event handlers with e
+    return(
+        <>
+              <button onClick={handleClick}> Click here </button>
+              <button onClick={(e) => {handleClicked(e)}}> Click here </button>
+        </>
+    )
+
 }
-const elementFIVE = <button onClick={handleChange}> Click Here </button>;   //when you call a function in an event handler attribute, you also pass the event itself
-//root.render(elementFIVE);
-
-
-
-
-//classes that handle events
-class TurnLight extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {istoggleLightOn : false};                 
-        this.handleClick = this.handleClick.bind(this);         // We use bind(this) to make sure that 'this' references the methods/members in TurnLight component
-    }                                                           // keep in mind that 'this' in a function represents the global object Window
-
-    handleClick() {                                         
-        this.setState(                                          
-            prevState => ({
-                istoggleLightOn : !prevState.istoggleLightOn
-            })
-        )
-    }
-
-    render() {
-        return (                                                //when lightSwitch method is called via clicking, 'this' will lose its scope, so we must bind it to make sure it references this component
-            <button onClick={this.handleClick}> 
-                {this.state.istoggleLightOn ? 'Light is on' : 'Light is off'}
-            </button>
-        )
-    }
-}
-//root.render(<TurnLight />);
 
 
 
@@ -1133,40 +931,14 @@ class TurnLight extends React.Component {
 
 
 
+//--------------------------------------------------------------------CONTROLLED COMPONENTS---------------------------------------------------------------------------
 
+// Components that handle the data of the input/select/forms with its state are called controlled components
+// you have must better control of what is being inputed by the user
+// KEEP IN MIND, that the value attribute is ONLY for controlled components
+// if you want to use input/select/forms in UNCONTROLLED components, then you should use defaultValue attribute
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//--------------------------------------------------------------------FORMS ---------------------------------------------------------------------------
-
-//even though you will have more lines of code when you let React handle the Forms in HTML, you will have better control over what is being
-//inputed in the forms
-
-class TextBox extends React.Component {
+class InputBox extends React.Component {
 
     constructor(props) {
         super(props);
@@ -1175,11 +947,11 @@ class TextBox extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(e){
-        this.setState({value: e.target.value});                  //e.target is the element that triggered the event, .value is getting the value from that element
+    handleSubmit(e){                                            //in controlled components, the event handlers control EVERY symbol being inputed by the user
+        this.setState({value: e.target.value});               
     }
 
-    handleChange(e) {
+    handleSubmit(e) {
         alert("your input is " + this.state.value);
         e.preventDefault();
     }
@@ -1194,7 +966,7 @@ class TextBox extends React.Component {
     }
 }
 
-//root.render(<TextBox />);
+//root.render(<InputBox />);
 
 
 
@@ -1209,17 +981,17 @@ class TextArea extends React.Component {
     } 
 
     handleChange(e) {
-        this.setState({value: e.target.value});
+        this.setState({value: e.target.value});                        //in controlled components, the event handlers control EVERY symbol being inputed by the user
     }
 
-    handleChange(e) {
+    handleSubmit(e) {
         alert("You have submitted your answer " + this.state.value)
         e.preventDefault();
     }
 
     render() {
         return(
-            <form onSubmit={this.handleChange}>
+            <form onSubmit={this.handleSubmit}>
                 <textarea value={this.state.value} onChange={this.handleChange}></textarea>
                 <input type="submit" value="Submit"/>          
             </form>
@@ -1238,21 +1010,21 @@ class Select extends React.Component {
         super(props);
         this.state = {usersChoice: ""};
         this.handleChange = this.handleChange.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleChange.bind(this);
     }
 
     handleChange(e){
-        this.setState({usersChoice: e.target.value})
+        this.setState({usersChoice: e.target.value})                    //in controlled components, the event handlers control EVERY symbol being inputed by the user
     }
 
-    handleChange(e) {
+    handleSubmit(e) {
         alert("You have choosen " + this.state.usersChoice);
         e.preventDefault();
     }   
 
     render() {
         return (
-            <form onSubmit={this.handleChange}>    
+            <form onSubmit={this.handleSubmit}>    
                 <label>
                     Choose your favorite color: 
                     <select onChange={this.handleChange}>
@@ -1269,174 +1041,6 @@ class Select extends React.Component {
 }
 
 //root.render(<Select />);
-
-
-class MultipleInputs extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            InputOne : "first box",
-            InputTwo : "second box"
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(e) {
-        const inputName = e.target.name;
-        const value = e.target.value;
-
-        this.setState({
-            [inputName]: value                                              //you can use [] in case there are multiple elements calling this method
-        })
-    }
-
-    handleChange(e) {
-        alert(
-            "You have entered " + this.state.InputOne + " " +
-            "You have entered " + this.state.InputTwo
-        );
-    }
-
-    render() {
-        return(                                     //keep in mind that when you assign something to 'value', you prevent the user from changing the textbox 
-            <form onSubmit={this.handleChange}>
-                <input type="text" name="InputOne" value={this.state.InputOne} onChange={this.handleChange}/> 
-                <input type="text" name="InputTwo" value={this.state.InputTwo} onChange={this.handleChange}/>
-                <input type="submit" value="submit"/>
-            </form>
-        )
-    }
-}
-
-//root.render(<MultipleInputs />);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//-------------------------------------------------------------------MANIPULATING STATE -----------------------------------------------------------------------
-
-//When you are dealing with multiple components that are nested within each other,
-//make sure to have only ONE component that has the state object containing ALL the
-//data being manipulated
-
-
-class Pets extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.addPetInfo = this.addPetInfo.bind(this);
-        this.state={
-            cat: {
-                name: "nothing",
-                breed: "",
-                age: "",
-                healthy: true
-            }
-        };
-    }
-
-    addPetInfo(animal, newInfo) {                                       //all child components will call this function to update the state object in this parent component
-        this.setState({
-            [animal]: {
-                name: newInfo.name,
-                breed: newInfo.breed,
-                age: newInfo.age,
-                healthy: newInfo.healthy              
-            }
-        })
-        
-    }
-
-    render() {
-        console.log(this.state.cat);
-        return (                                                        //passing the method (that updates the state object) to the child component
-            <div>                                                       
-                <Cats storePetInfo={this.addPetInfo}/>                  
-            </div>
-        )
-
-       
-    }
-}
-
-class Cats extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleSubmit(e) {
-        this.props.storePetInfo("cat", {                                        // .storePetInfo was passed from the parent component
-                name: e.target.catName.value,
-                breed: e.target.breedName.value,
-                age: e.target.age.value,
-                healthy: e.target.isHealthy.value
-        });
-        e.preventDefault();
-    }
-
-    render() {
-        return(
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Enter the name of your cat:
-                    <input name="catName"type="text"/>                    
-                </label>
-                <label>
-                    Enter the breed:
-                    <input name="breedName" type="text"/>
-                </label>
-                <label>
-                    Enter the age:
-                    <input name="age"type="text"/>
-                </label>
-                <label>
-                    Is your cat healthy? :
-                    <select name="isHealthy">
-                        <option value="true">
-                            yes
-                        </option>
-                        <option value="false">
-                            no
-                        </option>
-                    </select>
-                </label>
-                <input type="submit" value="Submit"/>
-            </form>
-        )
-    }
-};
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1462,18 +1066,18 @@ class Cats extends React.Component {
 
 //you can pass nested elements in JSX to function components
 function CreateBorder(props) {
-    return (                                                        //you can use the built-in property 'children' to pass child elements onto this component
+    return (                                                       
         <div style={{color: props.color}}>                      
-            {props.children}                                  
+            {props.children}                                         //props.children will be replaced by the nested elements
         </div>
-    )                                                               //you can use any property passed from a parent component in the same way that we
-}                                                                   // used props.name
+    )                                                               
+}                                                                   
 
 
 function Dialog() {
-    return (                                                        //everything inside <CreateBorder> </CreateBorder> will be passed as props.children
-        <CreateBorder color={"red"}>
-            <h1>Welcome Home</h1>
+    return (                                                        
+        <CreateBorder color={"red"}>                                 /* everything inside <CreateBorder> </CreateBorder> will be passed as props.children */
+            <h1> Welcome Home </h1>                                    
             <h2> Abel Muro</h2>
         </CreateBorder>
     )
@@ -1487,28 +1091,41 @@ function Dialog() {
 
 
 
-//=========================================================== MEMO ===========================================================================================
 
-//look at the example below
+
+
+
+
+
+
+
+
+//=========================================================== MEMO ===========================================================================================
+// memo() is used to force a function to only re-render when its props have changed, this can improve performance.
+// the functions/components that will be used with memo() are usually components that are used to display data
+
+//look at the example below...
 //DisplayList() component will continue to re-render when MyApp() is re-rendered, even though its props havent changed, this can cause performance issues
 //to solve this problem, you can use memo(DisplayList) while exporting a component to make it only re-render when its props value changes
 
 
 //---------anotherFile.js---------
-// import {memo} from 'react'
+import {memo} from 'react';
+
 function DisplayList(props) {
     let list = props.list;
     return(
         <>
-            {list.map((item)=>{return item})}
+            {list.map((item)=>{return <p key={}> item </p>})}
         </>
     )
 }
-// export default memo(DisplayList);                    //now, DisplayList will only update when its props changes
+ export default memo(DisplayList);                    //now, DisplayList will only update when its props changes
 
 
 //----------index.js----------------
-// import DisplayList from 'anotherFile.js'
+import DisplayList from 'anotherFile.js';
+        
 function MyApp() {
     const [count, setCount] = useState(0);
     const [list, setList] = useState(['pizza', 'burger'])
@@ -1517,59 +1134,26 @@ function MyApp() {
         setCount(count + 1)
     };
 
-    return(
+    return(   //we only want <DisplayList /> to re-render when its props have changed
         <>
-            <DisplayList list={list}/>
-            <button onClick={increment}> increment</button>
+            <DisplayList list={list}/>                  
+            <button onClick={increment}> increment </button>
         </>
-
     )
 }
 
 
-//there is a problem with memo(), if you pass an event handler like this     <DisplayList list={list} function={eventHandler}/>
+//there is a problem with memo(), if you pass an event handler like this <DisplayList list={list} function={eventHandler}/>
 //then its props will change because after every re-render, the functions get recreated, so that means the props have actually changed, so it will re-render regardless
 //one way to fix this is to use the hook useCallback(), this will make sure that the function will only be recreated when necessary
 
 
-//---------anotherFile.js---------
-// import {memo} from 'react'
-function DisplayMyList(props) {
-    let list = props.list;
-    let addItem = props.addItem;
-    return(
-        <>
-            <button onClick={addItem}> Add Item</button>
-            {list.map((item)=>{return item})}
-        </>
-    )
-}
-// export default memo(DisplayList);                    //now, DisplayList will only update when its props changes
+    const handleClick = useCallback((e) => {
+        console.log("you clicked on this button");
+     }, []);                                                    
 
 
-//----------index.js----------------
-// import DisplayList from 'anotherFile.js'
-function UsingCallBack() {
-    const [count, setCount] = useState(0);
-    const [list, setList] = useState(['pizza', 'burger'])
-
-    const increment = () => {
-        setCount(count + 1)
-    };
-
-    const addItem = useCallback(() => {
-    setList((items)=>[...items, 'new item']);
-     }, [list]);                                       //the function will only get recreated when the list state object changes
-
-
-    return(
-        <>
-            <DisplayMyList list={list} addItem={addItem}/>
-            <button onClick={increment}> increment</button>
-        </>
-
-    )
-}
+    <DisplayList list={list} onclick={handleClick}>
 
 
 

@@ -1075,6 +1075,7 @@ class Select extends React.Component {
 
 
 
+
 //----------------------------------------------------------------COMPOSITION (using child components)---------------------------------------------------------------------------------------------
 //remember that PROPS can accept any primitive value, React components and functions
 

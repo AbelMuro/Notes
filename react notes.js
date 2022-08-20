@@ -92,15 +92,15 @@ import {number as myNumber} from './HomePage.js'            //this will work
 //this lets you organize your modules much better
 
 
-// /someFolder/index.js
+// /someFolder/INDEX.js
 import someComponent from './someComponent.js'
 export default someComponent;
 
-// /someFolder/someComponent.js
+// /someFolder/SOMECOMPONENT.js
 function someComponent() { /* some logic*/};
 export default someComponent;
 
-// /someFolder/styles.css
+// /someFolder/STYLES.css
 .someClass {
       color: black;
       background-image: url("./someURL.jpg")
@@ -665,10 +665,24 @@ function MyComponent() {
 
 
 
+//-------------------------------------------------- USE CALLBACK HOOK ----------------------------------------------------
+//useCallback() can be used to force a function to only be recreated when a certain variable changes
+//this hook is similar to useMemo(), but the main difference is that... 
+//useCallback() returns a function
+//useMemo() returns a value
 
-
-
-
+function UsingCallbackHook() {
+        
+   const handleClick = useCallback(() => {                       //this event handler will only be recreated when the second argument's variable changes
+          console.log("you clicked on this button")             //in this case, the variable is []... so this means that the function will only be recreated ONCE
+    }, []);
+        
+    return(
+        <>
+           <button onClick={handleClick}> click me </button>
+        </>
+    )
+}
 
 
 
@@ -676,7 +690,7 @@ function MyComponent() {
 
 
 //-------------------------------------------------- USE MEMO HOOK -------------------------------------------------------------
-// useMemo() can be used to force a function to run only when a certain state has changed
+// useMemo() can be used to force a function to run only when a certain state/object has changed
 // this hook should be used for functions that require alot of processing power or just take a long time
 
 function UsingMemo() {
@@ -684,8 +698,8 @@ function UsingMemo() {
     const [secondCount, setSecondCount] = useState(0);
         
     //below is a good use of useMemo() hook     
-    const calculation = expensiveCalculation();                                 //the function below will be called every time there is a re-render, this can affect performance                             
-    const calculation = useMemo(() => expensiveCalculation(), [secondCount]);   //to solve the problem above, we can useMemo() on the function, now the function below will
+    const calculation = expensiveCalculation();                                 //this function will be called every time there is a re-render, this can affect performance                             
+    const calculation = useMemo(() => expensiveCalculation(), [secondCount]);   //to solve this problem, we can useMemo() on the function, now the function will
                                                                                 //only be called when secondCount changes
         
     const addFirstCount = () => {
@@ -1102,7 +1116,6 @@ function Dialog() {
 
 //=========================================================== MEMO ===========================================================================================
 // memo() is used to force a function to only re-render when its props have changed, this can improve performance.
-// the functions/components that will be used with memo() are usually components that are used to display data
 
 //look at the example below...
 //DisplayList() component will continue to re-render when MyApp() is re-rendered, even though its props havent changed, this can cause performance issues
@@ -1110,13 +1123,13 @@ function Dialog() {
 
 
 //---------anotherFile.js---------
-import {memo} from 'react';
+import {memo, useCallback} from 'react';
 
 function DisplayList(props) {
-    let list = props.list;
+     console.log("component rendered");                      
     return(
         <>
-            {list.map((item)=>{return <p key={}> item </p>})}
+            <p> "this should only be rendered when the props change"</p>
         </>
     )
 }
@@ -1128,32 +1141,24 @@ import DisplayList from 'anotherFile.js';
         
 function MyApp() {
     const [count, setCount] = useState(0);
-    const [list, setList] = useState(['pizza', 'burger'])
 
     const increment = () => {
         setCount(count + 1)
     };
+    
+    const handleClick = useCallback(() => {          //REMEMBER, you must use useCallback() on event handlers that are passed as props to a memoized component
+        alert("you clicked here")                    //these even handlers are recreated every time there is a render, so that means the props have actually changed
+    },[])
 
     return(   //we only want <DisplayList /> to re-render when its props have changed
+              //even though there will be a re-render everytime we click on the button below
+              // DisplayList will not re-render because its props havent changed
         <>
-            <DisplayList list={list}/>                  
-            <button onClick={increment}> increment </button>
+            <DisplayList onclick={handleClick}/>                  
+            <button onClick={increment}> increment </button>                    
         </>
     )
 }
-
-
-//there is a problem with memo(), if you pass an event handler like this <DisplayList list={list} function={eventHandler}/>
-//then its props will change because after every re-render, the functions get recreated, so that means the props have actually changed, so it will re-render regardless
-//one way to fix this is to use the hook useCallback(), this will make sure that the function will only be recreated when necessary
-
-
-    const handleClick = useCallback((e) => {
-        console.log("you clicked on this button");
-     }, []);                                                    
-
-
-    <DisplayList list={list} onclick={handleClick}>
 
 
 
@@ -1178,97 +1183,42 @@ function MyApp() {
 
 //---------------------------------------------------------------- RENDER PROPS ---------------------------------------------------------
 //the idea behind render props is to reuse stateful behavior with other components
-//in the example below we have the stateful behavior inside MouseWithCat
-//but this example will not make it possible to reuse the stateful behavior
-
-class Catss extends React.Component {
-    render() {
-        const mouse = this.props.mouse;
-        return (
-            <img src="./cat.jpg" style={{ position: 'absolute', left: mouse.x, top: mouse.y }} />
-        );
-    }
-}
-class MouseWithCat extends React.Component {
-    constructor(props) {
-      super(props);
-      this.handleMouseMove = this.handleMouseMove.bind(this);
-      this.state = {x: 0, y: 0};
-    }
-    handleMouseMove(event) {
-      this.setState({
-        x: event.clientX,
-        y: event.clientY
-      });
-    }
-    render() {
-      return ( 
-        <div style={{ height: '100vh' }} onMouseMove={this.handleMouseMove}>
-            <Catss mouse={this.state} />                                          
-        </div>
-      );
-    }
-}
-class MouseTrackers extends React.Component {
-    render() {
-      return (
-        <div>
-          <h1>Move the mouse around!</h1>
-          <MouseWithCat />
-        </div>
-      );
-    }
-}
-
-
-
-
 //the example below is how we use render props to make code more reusable
+//keep in mind that MouseTracker should be at the bottom..
 
-class Cat extends React.Component {
-
-    render() {
-        const mouse = this.props.mouse;
-        return (
-            <img src="./cat.jpg" style={{ position: 'absolute', left: mouse.x, top: mouse.y }} />
-        );
-    }
-}
-
-class Mouse extends React.Component {
-    constructor(props) {
-      super(props);
-      this.handleMouseMove = this.handleMouseMove.bind(this);
-      this.state = {x: 0, y: 0};
-    }
-
-    handleMouseMove(event) {
-      this.setState({
-        x: event.clientX,
-        y: event.clientY
-      });
-    }
-
-    render() {
-      return (      //we are calling the render function that was passed down by <MouseTracker />
-        <div style={{ height: '100vh' }} onMouseMove={this.handleMouseMove}>
-           {this.props.render(this.state)}                                               
-        </div>
-      );
-    }
-}
 
 class MouseTracker extends React.Component {
 
     render() {
-      return (              //we are passing a callback function that will render <cat> component with a mouse property
-        <div>
-          <h1>Move the mouse around!</h1>
-          <Mouse render={mouse => (<Cat mouse={mouse}/>)} />
-        </div>
+      return (        
+        <>
+          <Mouse render={mouse => (<Cat mouse={mouse}/>)} />        //with render props, the whole point is to pass another component
+          <Mouse render={mouse => (<Dog mouse={mouse}/>)} />        
+          <Mouse render={mouse => (<Bird mouse={mouse}/>)} />
+          <Mouse render={mouse => (<Chicken mouse={mouse}/>)} />
+       </>
       );
     }
 }
+
+
+//this component is now reusable
+class Mouse extends React.Component {
+    constructor(props) {
+      super(props);
+    }
+
+    render() {
+      return (      
+        <div>                                   //THIS IS THE WHOLE POINT OF RENDER PROPS, 'this.props.render(this.state)' is a placeholder and can be any component
+             {this.props.render(this.state)}    //this is the same as.... <Cat mouse={this.state}/>    <Dog mouse={this.state}/>      <Bird mouse={mouse}/>                          
+        </div>                                              
+      );
+    }
+}
+
+
+
 
 
 

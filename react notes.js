@@ -267,7 +267,7 @@ function NestedNavigationBar() {
         <>
             <Link to="/ContactUs/email" className="example">Email us</Link>  
             <Link to="/ContactUs/call" className="example"> Call us</Link>
-            <Outlet />
+            <Outlet />                                                          //this outlet will be replaced by one of the routers
         </>
     )
 }
@@ -538,12 +538,13 @@ function Ref() {
 
 }
 
-//you can use useRef() to select an element in the DOM
+//TIP: you can use useRef() to select an element in the DOM
+// in this case, useRef() has the same effect as querySelector()
 function App() {
     const inputElement = useRef();
 
     useEffect(()=>{
-        console.log(inputElement.current);          //this will log the <input type="text">
+        console.log(inputElement.current);                  //this will log the <input type="text">
         console.log(inputElement.current.value);            //this will return the value that the user typed in the input box
         console.log(inputElement.current.getAttribute("type"))//keep in mind that you can use any method in the DOM with useRef()
     })
@@ -556,7 +557,7 @@ function App() {
 }
 
 
-//useRef() can be used to store a previous value from the state object
+//TIP: useRef() can be used to store a previous value from the state object
 function UsingRef() {
     const[state, setState] = useState(0);
     const previousState = useRef(0);
@@ -570,7 +571,8 @@ function UsingRef() {
             <button onClick={()=>setState(state + 1)}> Click Me</button><br/>
             Current State: {state} <br/>
             Previous State: {previousState.current}     
-        </> //even though state and previousState have the same value AFTER every render, what is being displayed is different
+        </> 
+       //even though state and previousState have the same value AFTER every render, what is being displayed is different
     )
 
 }
@@ -591,30 +593,27 @@ function UsingRef() {
 
 
 
+//---------------------------------------------------- USE REDUCER HOOK ------------------------------------------------------------------
+// useReducer() can be used to extract state management logic out of a component
+// this hook must be used with useContext hook to pass down state and the dispatcher
 
-//useReducer() can be used to extract state management logic out of a component
-
-//this is the object that will contain the values to initialize the state object
+// this is the object that will contain the values to initialize the state object and the dispatch function
 const initialState = {           
-    counter: 0,
     list: []
 }
 
-//this is the reducer, this is where the state management happens
-//it will return the new state object
+// this is the reducer, this is where the state management happens
+// it will return the new state object
 function reducer (state, action) {
     //accessing the two properties in our state object
-    const stateCounter = state.counter;
     const stateList = state.list;
 
     //using a switch statement to determine what to do with the state object
     switch(action.type) {
         case 'addItem':
-            stateList.push(action.item)
-            return {...state, counter: stateCounter + 1}
+            return {list: ...stateList, action.item}
         case 'removeItem':
-            return {counter: stateCounter - 1, 
-                list: stateList.filter((item) => {                          //filter can be used to remove elements from an array
+            return {list: stateList.filter((item) => {                          //filter can be used to remove elements from an array
                         return item != action.item;                         //if this returns false, then the new array will NOT contain the item AT THIS POINT
                 })
             };
@@ -640,10 +639,14 @@ function MyComponent() {
 
     return (
         <>
+            //the buttons below will dispatch actions to the reducer
             <button onClick={()=> dispatch(actionOne)}> Click here to dipatch</button>
             <button onClick={()=> dispatch(actionTwo)}> Click here to dipatch</button>
-            {state.counter}
-            {state.list}
+
+            //the component below and all of its child components will be able to use the reducer
+            <StateObject.Provider value={{state, dispatch}}>
+                    <SomeComponent />
+            </StateObject.Provider>
         </>  
     )
 }
@@ -660,14 +663,19 @@ function MyComponent() {
 
 
 
-
-//useMemo() can be used to make a component run only when a certain variable has changed
+//-------------------------------------------------- USE MEMO HOOK -------------------------------------------------------------
+// useMemo() can be used to make a function run only when a certain variable has changed
+// this hook should be used for functions that require alot of processing power or just take a long time
 
 function UsingMemo() {
     const [firstCount, setFirstCount] = useState(0);
     const [secondCount, setSecondCount] = useState(0);
-    const calculation = useMemo(() => expensiveCalculation(), [secondCount]);       //since we are using useMemo(), the function will only be recreated, if secondCount changes
-
+        
+    //below is a good use of useMemo() hook     
+    const calculation = expensiveCalculation();                                 //the function below will be called every time there is a re-render, this can affect performance                             
+    const calculation = useMemo(() => expensiveCalculation(), [secondCount]);   //to solve the problem above, we can useMemo() on the function, now the function below will
+                                                                                //only be called when secondCount changes
+        
     const addFirstCount = () => {
         setFirstCount((prevCount) => prevCount + 1)
     }
@@ -696,28 +704,6 @@ function expensiveCalculation() {
 }
 
 
-//root.render(<UsingMemo/>)
-
-
-
-
-
-
-
-
-//using function hooks with inputs
-
-function InputText() {
-    const [value, setValue] = useState('');
-
-    return(
-        <>
-            <input type="text" value={value} onChange={(e)=>setValue(e.target.value)}/>
-            {value}
-        </>
-    )
-
-}
 
 
 
@@ -739,26 +725,29 @@ function InputText() {
 
 
 
-//you can create your own custom hooks that encapsulates stateful behavior (calculating something) and makes code reusable
-//remember that every hook has their isolated state variable
+//------------------------------------------------------ CUSTOM HOOKS --------------------------------------------------
+// you can create your own custom hooks that encapsulates stateful behavior (calculating something) and makes code reusable
+// remember that every hook has their isolated state variable
 
-function useCustomHook(random) {
+function useCustomHook(URL) {
     const [custom, setCustom] = useState(random);
     
-    for(let i=0; i < 20; i++){
-        custom++;
-    }
-
-
-    return custom;
+    useEffect(() => {
+       fetch(URL)
+            .then((response) => {response.JSON})
+            .then((data) => {setState(data)})
+    },[URL])
+        
+  return custom;
 }
 
-function ExampleWithCustomHooks(props) {
-    const myCustom = useCustomHook(props.random);
+function ExampleWithCustomHooks() {
+    const myCustom = useCustomHook("./someURLaboutEmployeesNames");
+      
 }
 
 function AnotherExampleWithCustomHooks(props) {
-    const myCustom = useCustomHook(props.whatever);
+    const myCustom = useCustomHook("./anotherURLaboutEmployeesNames");
 }
 
 

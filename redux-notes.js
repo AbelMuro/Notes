@@ -67,42 +67,48 @@ const reducer = (state = {list: []}, action) => {       //you can initialize sta
 
 
 //--------------You can also split reducers to handle different parts of the state--------------
+// keep in mind that every reducer should 'own' a part of the state
+// in other words, one reducer should handle only ONE property of the state
+// it should not access the property of the state that is 'owned' by another reducer
 
-
-//../reducer/reducerOne
-const reducerOne = (state = {list: []}, action) => {
-    let stateList = state.list;
+//../reducer/ListReducer
+const ListReducer = (state = {list: []}, action) => {
+    let list = state.list;
     switch(action.type) {
         case "add item":
-            return {list: [...stateList, action.item] };
+            return {list: [...list, action.item] };
+        case "remove item":
+            return {list: list.filter((item) => {return item != action.item})}
         default:
             return state;
     }
 }
-export default reducerOne;
+export default ListReducer;
 
 
-//../reducer/reducerTwo
-const reducerTwo = ((state = {list: []}, action)=>{
-    let stateList = state.list;
+//../reducer/CounterReducer
+const CounterReducer = ((state = {counter: 0}, action) => {
+    let currentCounter = state.counter;
     switch(action.type) {
-        case "remove item":
-            return {list: stateList.filter((item)=>{return item != action.item})}
+        case "increment":
+            return {counter: currentCounter++ }
+        case: "decrement":
+            return {counter: currentCounter-- }
         default:
             return state;
     }
 })
-export default reducerTwo;
+export default CounterReducer;
 
 
 //../reducer/index.js
 import {combineReducers} from 'redux';
-import reducerOne from './reducerOne';
-import reducerTwo from './reducerTwo';
+import ListReducer from './ListReducer';
+import CounterReducer from './CounterReducer';
 
 const rootReducer = combineReducers({
-    reducerOne: reducerOne,
-    reducerTwo: reducerTwo
+    list: ListReducer,                           //generally, you want to name the reducers after the property of the state in which they manipulate
+    counter: CounterReducer
 });
 export default rootReducer;
 
@@ -155,23 +161,31 @@ function ChildComponent() {
 
 
 //======================================= USE SELECTOR HOOK ===================================================================
-// you can use useSelector() hook to view the state object
+// you can use useSelector() hook to access the state object
+// keep in mind that every component that has useSelector() 
+// will be re-rendered when the state object changes
 
-import {useSelector} from 'react-redux';
-import {createSelector} from '@reduxjs/toolkit';            //dont forget to view the documentation for reselect
+import {useSelector} from 'react-redux';             //must be used within a component to cause a re-render when state changes
+import {createSelector} from '@reduxjs/toolkit';     //createSelectors enable us to manipulate how the state properties will be viewed        
 
-//createSelectors enable us to manipulate how the state properties will be viewed
+
+//the createSelector below was designed for Apps that only have one reducer
 const selectList = createSelector(
     (state) => state.list,                          //first callback must return a property from the state
-    (list) => {                                     //second callback can be used to manipulate the property 
-        list.forEach((item)=> {})                   // that was pass down from the first callback
-    }
+    (list) => list                                  //second callback can be used to manipulate the property that was pass down from the first callback
 )
 
-function ChildComponent() {
+//the createSelector below was designed for Apps that have more than one reducer
+const selectCounter = createSelector(
+    (state) => state.CounterReducer,                 //first callback must return one of the names of the reducer
+    (CounterReducer) => CounterReducer.counter       //second callback you can access the actual property
+
+)
+
+function SomeComponent() {
     //different ways to access state
-    const selectOne = useSelector((state)=> state.list)     //useSelector will return the property list       
-    const selectTwo = useSelector(selectList);              //useSelector will return the property list after we manipulated it
+    const selectOne = useSelector((state) => state.list)     //useSelector will return the property list from the state object       
+    const selectTwo = useSelector(selectCounter);             //useSelector will return the property list after we manipulated it
 }
 
 
@@ -188,7 +202,7 @@ function ChildComponent() {
 
 
 
-//================================================= STORE ==============================================
+//================================================================= STORE ===================================================================
 //creating a store (this is usually done in the /src/index.js)
 import {Provider} from 'react-redux';
 import {rootReducer} from '../reducer/index';
@@ -306,32 +320,35 @@ const myMiddleware = store => next => action => {
 
 
 
- //=======================================REDUX THUNK=======================================================
- //thunk is a middleware that calls the action creators that return 
- //a function instead of an action object, 
- //this is useful for calling asynchronous functions
+ //========================================================REDUX THUNK=======================================================
+ //thunk is a middleware that is used to define ASYNC action creators that return a function instead of an object
+ // this type of middleware is a perfect place to make external calls to a server with fetch() or axios
  // normally you would have to import thunk from 'redux-thunk'
- //but configureStore() automatically comes with thunk
+ // but configureStore() automatically comes with thunk
 
+
+
+
+// This is an async action creator, it will create an action AFTER it has finished its external call to a server to get data
+// once it finishes, then it will dispatch the action to the reducer
+function usingThunk(URL) {
+    return dispatch => {
+          fetch(URL)
+                .then(response => response.json())
+                .then(json => dispatch(addName("add", json.title)))       //at this point, json is a javascript object
+        )
+    }
+}    
 
  //action creator
-function addItem(addOrRemove, item){    
+function addName(addOrRemove, name){    
     let action = {
         type: addOrRemove,
-        item: item
+        name: name
     }
     return action;
 }
 
-//the action creator above will be called by the async function below after a 5 second delay
-function usingThunk(addOrRemove, item) {
-    return dispatch => {
-        setTimeout(
-            ()=>{dispatch(addItem(addOrRemove, item))},
-            5000,        
-        )
-    }
-}    
 export default usingThunk;
 
 
@@ -402,6 +419,3 @@ describe('reducer', () => {
 
 
 
-
-
-//============================================ CONNECT =======================================================

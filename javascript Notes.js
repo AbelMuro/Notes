@@ -115,10 +115,8 @@ function Hoisting() {
 
 //====================================================================== STRINGS ====================================================================== 
 "this is a string";
-let my_string = "hello" + "world" + 67;                                     //strings can be concantenated, 67 will be treated as if its another string
-my_string.length;                                                           //this will return the length of the string as a number
-my_string[0];                                                               // you cannot assign a different value to s[0], but strings can be accessed as if it was an array
-var newString= my_string.replace("/work/g", "not work");//  /work/g is for all occurences    // replacing the word "work" with the words "not work" in the specified string, will only change the first occurence of 'work'                                  
+let my_string = "hello" + "world" + 67;                                 //strings can be concantenated, 67 will be converted into a string
+my_string[0]                                                           // strings can be accessed as if it was an array                         
 var html_code = "<p> it works! </p>";                                        // you can add html code in strings
 
 

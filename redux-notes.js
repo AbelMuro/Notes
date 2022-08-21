@@ -30,6 +30,8 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 //       2) the event will then dispatch an action to the reducer   
 //            
 //       2.5) if you have a middleware, then the action will first go to the middleware and then to the reducer
+//            if the middleware returns a function, then most likely the function is making an external call to a server with fetch() or axios
+//            the middleware will wait until it gets the requested data from the server, and then it will dispatch an action to the reducer
 //
 //       3) the reducer then receives the action and the old state object in the store and returns the new state if changes occured
 //

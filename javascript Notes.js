@@ -1,14 +1,41 @@
-//====================================================================== PRE-DEFINED OBJECTS that are native to javascript ====================================================================== 
-Object;
-Number;
-String;
-Boolean;
-Array;
+//==================================================================== TYPES =================================================================================
+//javascript is a loosely typed language, meaning that the variables in JS are not bound to any particular type and can be assigned any type at any given time
+
+//these are the types in javascript
+null;                               // a placeholder that is used to assign a variable when we dont need it or when we are debugging
+undefined;                          // a placeholder that is automatically assigned to a variable that is not assign a value
+Boolean;                            // true or false
+Number;                             // a whole number or fraction
+BigInt;                             // an extremely large number or extremely small number
+String;                             // a string 
+Symbol;                             // gives a unique value to a variable with an optional description, let x = Symbol("description");   x will always have a unique value
+Function;                           // a function, basically
+Object;                             // a collection of properties and values
+      
+
+//keep in mind that some of the 'types' above are actually constructors 
+let x = new Object({name: "abel"});                               //these two lines have the same effect                          
+let x = {name: "abel"};
+
+let y = new Boolean(4 > 5);                                       //these two lines have the same effect  
+let y = 4 > 5;
+
+let y = new Number(3);                                            //these two lines have the same effect
+let y = 3;
+
+let x = new Array([1,2,3]);                                       //these two lines have the same effect
+let x = [1,2,3];
 
 
 
+//====================================================================== PROTOTYPE ===================================================================
+// Almost all objects in javascript have a default property called prototype. This property is an object that contains methods that can be used 
+// on the object like .toString() and .hasOwnProperty()
 
-
+.toString();
+.hasOwnProperty();
+.toLocaleString();
+.valueOf();
 
 
 
@@ -65,9 +92,7 @@ function VAR_variables() {
             var z = 10;
       }
           
-     z;                                                                 // z CANT be used here
-                        
-            
+     z;                                                                 // z CANT be used here           
 }
 
 // const variables can be used ANYWHERE inside the {}, where it is declared
@@ -196,6 +221,12 @@ my_set.add("new element");                                                 // ad
 my_set.delete("whatever");                                                 // deletes the specified element
 my_set.has(1);                                                             // returns true if the value exists in the 
 
+
+
+
+
+
+//-------------------------------------------------------------- MAPS -------------------------------------------------------------------------------------------
 //MAPS are similar to objects, but the differences are that the properties can be any value type, and the maps remembers the original insertion of each element
 let my_map = new Map([["name", "abel"],
                     ["age", 28],

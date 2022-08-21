@@ -1,6 +1,6 @@
 //====================================================================== PRE-DEFINED OBJECTS that are native to javascript ====================================================================== 
-Number;
 Object;
+Number;
 String;
 Boolean;
 Array;
@@ -24,50 +24,75 @@ Array;
 
 
 
-//============================================================== PREDEFINED functions/methods by javascript============================================================== 
-write("this can be a string or a number");                                  //writing something to the webpage, Never call document.write after the document has finished loading. It will overwrite the whole document-->
-alert("this is how you display a message to the user");                     //displaying a message box to the user
-log("can be used for debugging purposes");                                  //displaying a message to the console,  press F12 and then select console to see the message
-debugger;                                                                   //with the console on, u can stop the execution of code with this statement
-print();                                                                    //this is how you print stuff 
-
-typeof(x);                                                                  //returns the data type of the variable as a string: object, number, string
-Math.pow(2,5);                                                              //Math objects has alot of methods that you can use for math calculations                                   
 
 
 
 
 
 
+// ====================================================================== SCOPES  ====================================================================== 
+
+// let variables can be used ANYWHERE inside the {}, where it is declared
+function LET_variables() {
+      let x = 10;                                                       // let variables are block scope     
+      let x = 11;                                                       // you CAN'T redeclare a let variable
+            
+      if(true) {
+           let y = 10                                                   // 'y' can ONLY be used here
+           x;                                                           // 'x' can be used here
+      }     
+          
+      x;                                                                // 'x' can be used here  
+      y;                                                                // 'y' CANT be used here
+}
+
+
+//  var variables can be used ANYWHERE inside the function, where it is declared
+function VAR_variables() {
+       var x = 10;                                                      // var variables have function scope
+       var x = 11;                                                      // you can redeclare a var variable
+            
+       if(true){
+            var y = 10;                                                
+            x;                                                          // x can be used here
+       }    
+            
+       x;                                                               // x can be used here
+       y;                                                               // y can be used here
+            
+      function more_VAR_variables() {                                   // nested function
+            x;                                                          // x can be used here      
+            var z = 10;
+      }
+          
+     z;                                                                 // z CANT be used here
+                        
+            
+}
+
+// const variables can be used ANYWHERE inside the {}, where it is declared
+function CONST_variables() {
+       const x = 10;                                                    // const variables have block scope
+       x = 11;                                                          // you CANNOT reassign a value to a const variable
+            
+       //const variables behave like let variables     
+                  
+}
 
 
 
+//-------------------------------------------------------CONST, LET, VAR and FUNCTION can be hoisted ----------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-// ====================================================================== DECLARING VARIABLES  ====================================================================== 
-g = 45;                                                                 // automatically has global scope
-var x = 50;                                                             // CANNOT have block scope    these variables can also be redefined x = "redefined" and redeclared var x = 4;  
-let a, b, c = 6, s = "This will " + "work";                             // block scoped    {}   these variables CANNOT be redeclared let a;
-const z = "whatever";                                                   // block scoped    {}   constant variable that will not change, also, they must be assigned a value when declared
-            //variables declared inside a function can NEVER be used outside of that function
-            //variables declared outside any function or block, automatically have global scope
-            //variables that have not been declared will automatically have global scope
-            //variables declared with var are hoisted to the top of the block, meaning that you can use the variable before it is declared
-            //all variable declarations are "hoisted" to the top of the block, but variable initializations are NOT hoisted
-
-
-
-
-
+//keep in mind that only variable and function declarations are hoisted up, NOT the values
+function Hoisting() {
+            
+       //var x;                                             // this is how hoisting really looks like     
+       
+       console.log("x is " + x);                            // x will be undefined
+        
+        var x = 10;                                         // this will be hoisted to the top of the top of this function
+            
+}
 
 
 

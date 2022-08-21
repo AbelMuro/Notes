@@ -35,7 +35,7 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 //
 //       3) the reducer then receives the action and the old state object in the store and returns the new state if changes occured
 //
-//       4) the components that are subscribed to the state will re-render to show the updated state
+//       4) the components that have useSelector() hook will re-render to show the updated state
 
 
 

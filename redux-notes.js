@@ -1,6 +1,53 @@
 import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
 
+
+//                   TO INSTALL REDUX IN YOUR APPLICATION
+//
+//      1) npm install redux                        //install the core files for redux
+//      2) npm install react-redux                  //installs the library that react uses to work with redux
+//      3) npm install @reduxjs/toolkit             //installs other useful functions/methods for state management
+
+
+//                  REDUX TERMINOLOGY
+//      Action: an object that usually contains two properties, 'type' and 'payload'    
+//              'type' will tell the reducer what to do with the object, 'type: addItem'
+//              'payload' contains the actual data that we want to add to the state object (you can name the property however you want)
+//      
+//      Reducer: a function that uses action objects to mutate state data
+//
+//      Store: a global object that contains the state of the application, this is the single source of truth
+//
+//      Dispatch: a function that is used to 'dispatch' actions to the reducer
+//
+//      Selectors: a function that can retrieve the state from the store
+
+
+//                  REDUX FLOW
+//
+//       1) an event is triggered in the UI by the user
+//              
+//       2) the event will then dispatch an action to the reducer   
+//            
+//       2.5) if you have a middleware, then the action will first go to the middleware and then to the reducer
+//
+//       3) the reducer then receives the action and the old state object in the store and returns the new state if changes occured
+//
+//       4) the components that are subscribed to the state will re-render to show the updated state
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //=================================================REDUCER==============================================
 //The reducer is a function that uses action objects to mutate state data
 //reducer must be a pure function, meaning it must not change the state directly 
@@ -18,7 +65,6 @@ const reducer = (state = {list: []}, action) => {       //you can initialize sta
     }
 }
 
-reducer(undefined, {});                                  //this will return the initial state
 
 //--------------You can also split reducers to handle different parts of the state--------------
 
@@ -64,7 +110,24 @@ export default rootReducer;
 
 
 
-//---------------------------------to dispatch actions to the reducer--------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=============================== USE DISPATCH HOOK =================================================
+// you can use the useDispatch hook to dispatch actions to the reducer
 
 import {useDispatch} from 'react-redux';
 
@@ -81,9 +144,21 @@ function ChildComponent() {
 
 
 
-//-----------------------------------to view state properties from state-----------
+
+
+
+
+
+
+
+
+
+
+//======================================= USE SELECTOR HOOK ===================================================================
+// you can use useSelector() hook to view the state object
+
 import {useSelector} from 'react-redux';
-import {createSelector} from 'reselect';            //dont forget to view the documentation for reselect
+import {createSelector} from '@reduxjs/toolkit';            //dont forget to view the documentation for reselect
 
 //createSelectors enable us to manipulate how the state properties will be viewed
 const selectList = createSelector(

@@ -338,7 +338,7 @@ function usingThunk(URL) {
           fetch(URL)
                 .then(response => response.json())
                 .then(json => dispatch(addName("add", json.title)))       //at this point, json is a javascript object
-        )
+        
     }
 }    
 

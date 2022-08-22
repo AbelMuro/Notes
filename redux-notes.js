@@ -141,6 +141,7 @@ import {useDispatch} from 'react-redux';
 
 function ChildComponent() {
     const dispatch = useDispatch();
+    
     const handleClick = (e) => {
         const newItem = e.target.value;
         dispatch({type: "add item", item: newItem})      //dispatching an action object to the reducer
@@ -166,6 +167,7 @@ function ChildComponent() {
 // you can use useSelector() hook to access the state object
 // keep in mind that every component that has useSelector() 
 // will be re-rendered when the state object changes
+// useSelector() will automatically have the new state every time
 
 import {useSelector} from 'react-redux';             //must be used within a component to cause a re-render when state changes
 import {createSelector} from '@reduxjs/toolkit';     //createSelectors enable us to manipulate how the state properties will be viewed        
@@ -327,7 +329,7 @@ const myMiddleware = store => next => action => {
  // this type of middleware is a perfect place to make external calls to a server with fetch() or axios
  // normally you would have to import thunk from 'redux-thunk'
  // but configureStore() automatically comes with thunk
-
+ 
 
 
 
@@ -337,7 +339,7 @@ function usingThunk(URL) {
     return dispatch => {
           fetch(URL)
                 .then(response => response.json())
-                .then(json => dispatch(addName("add", json.title)))       //at this point, json is a javascript object
+                .then(json => dispatch(addName("add", json.title)))     
         
     }
 }    
@@ -351,7 +353,11 @@ function addName(addOrRemove, name){
     return action;
 }
 
-export default usingThunk;
+function ExampleWithThunk() {
+    const dispatch = useDispatch()
+    dispatch(usingThunk("https://jsonplaceholder.typicode.com/todos/1"));
+    
+}
 
 
 

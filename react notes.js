@@ -841,8 +841,12 @@ function AnotherExampleWithCustomHooks() {
              <HomePage myString={someString} myEventHandler={someEventHandler} state={state}/>
         
         )
+ }
         
- 
+ function HomePage(props){
+        props.myString;                                 //"passing this as props"
+        props.someEventHandler();                       //event handler that was passed as props
+        props.state;                                    //passing the state object to child components   
  }
 
 
@@ -866,7 +870,11 @@ function AnotherExampleWithCustomHooks() {
 //----------------------------------------------------------------KEYS ----------------------------------------------------------------------------------
 
 // keys help React identify which list items have changed
-// the 'key' property has a special meaning in React, in the same way that 'this.state' has special meaning
+// the 'key' property has a special meaning in React, 
+//when you create am array of JSX elements, each element
+//must have a unique key that identifies it.
+//you can use any         
+        
 
 function ListItem(props) {
     return <li>{props.value}</li>

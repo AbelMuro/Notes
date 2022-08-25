@@ -13,7 +13,7 @@
     $custom-font: "courier",     
     $custom-font-size: 100px,
 );   
-@use '_partial.scss' as c;        //c is now a 'NAMESPACE' that can be used to access all the variables as if it were an object
+@use '_partial.scss' as c;        //c is now a 'NAMESPACE' that can be used to access all the SASS variables as if it were an object
 
 .example_one {
     color: partial.$custom-color;       //you can also use the name of the file as a namespace    
@@ -23,7 +23,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 //=======================================SASS VARIABLES============================================================================
+//all SASS variables must start with $
+
 $variable-one: red;                                             //you can create variables in sass and assign them values like in javascript
 $variable-two: blue;
 $variable-three: 150px;
@@ -37,6 +49,15 @@ $font-stack: 'Times New Roman', sans-serif;
     font: $font-stack;
 }
 
+
+
+
+
+
+
+
+
+
 //=====================================NESTING SELECTORS============================================================================
 
 nav {
@@ -46,15 +67,26 @@ nav {
         list-style-type: none;
     }
 }
+
+
 //this will create two selectors, div and div.some_class
 div{
-    background-color:blue;                          
+    background-color:blue;                           //this will select all DIVS and assign the property background-color: blue                    
     &.some_class {                                   //the & operator represents the parent selector
-        color: red;
-    }
+        color: red;                                  //this will select div.some_class and assign the property color: red
+    }                                                //but NOT background-color: blue 
 }
 
-//======================================MIXINS=============================================================================================
+
+
+
+
+
+
+
+
+//======================================@MIXINS and @INCLUDE=============================================================================================
+//MIXINS are similar to JS functions, below is the different ways to define a @mixin
 
 @mixin group-one($color: red) {                             //instead of writing out the same lines of code in css, u can use @mixin to group
     background-color: $color;                                 //together a bunch of css properties and @include them in a selector
@@ -73,7 +105,9 @@ div{
     border: 1px solid red;
 }
 
-#ID_selector________ {
+//after you define your @mixin, you must use @include to include the mixin into your css selector 
+
+#someElement {
     @include group-one {
         display: inline-block;                              //you can pass properties to a mixin only if the mixin has @content
     };
@@ -84,7 +118,19 @@ p {
     @include group-three;
 }
 
-//===================================== EXTEND =============================================================================================
+
+
+
+
+
+
+
+
+
+
+//===================================== @EXTEND =============================================================================================
+// @extend can be used to give the properties of one class to another
+
 %example-one {                              //this is a placeholder class, it will only print in the css file if 
     border: 1px solid blue;               // it's @extended in a selector
     padding: 100px;
@@ -113,6 +159,15 @@ body {
 }
 
 
+
+
+
+
+
+
+
+
+
 //=========================================OPERATORS===================================================================================================
 //build in math functions for sass
 
@@ -122,9 +177,18 @@ div {
 }
 
 
-//===========================================FLOW CONTROL SCOPE=========================================================================================
 
-$random: if(1 == 1, 30px, none);                           //if statements can be defines in one line to assign a value to a variable
+
+
+
+
+
+
+
+
+//===========================================@if, @else-if, @if not ()=========================================================================================
+
+$random: if(1 == 1, 30px, none);                           //if statements can be defined in one line to assign a value to a variable
 
 @mixin theme($theme) {
     @if $theme == red {                                  //this IF statement is similar to the IF statement in javascript
@@ -154,7 +218,7 @@ div.selection {
     width: $random;
 }   
 
-//-------------------------------------------------------EACH------------------------------------------------------------------------------
+//------------------------------------------------------@EACH------------------------------------------------------------------------------
 
 $sizes: 10px, 20px, 30px;           //list
 
@@ -223,7 +287,17 @@ $nested-map: map.deep-remove($nested-map, "Times New Roman", "color");
 
 
 
-//-------------------------------------------------boolean values and maps----------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+//-------------------------------------------------MAP FUNCTIONS----------------------------------------------------------------------------------------------------------------
+// The map functions being used here are map.has-key(), map.keys(), map.values()
+
 
 $another-map: (
     "background-color": red,
@@ -231,40 +305,35 @@ $another-map: (
 );
 
 
-$bool: map.has-key($another-map,"color");                                   //returns true or false if the map has the specified keey
-//@error map.keys($my-colors);                                              //u can use @error to display all the keys in a map on the terminal
-//@error map.values($my-colors);                                            //returns all the values from a map
-.has_key {
-    font: $bool;
-}
+$bool: map.has-key($another-map,"color");                                  //returns true or false if the map has the specified key
+@error map.keys($my-colors);                                               //u can use @error to display all the keys in a map on the terminal
+@error map.values($my-colors);                                             //returns all the values from a map
+$new-map: map.set($another-map, "color", blue);                            //setting new values to a map, you can also change an existing value
+$map-value: map.get($another-map, "font-size");                            //getting a value from the map with a key
 
 
-
-//------------------------------------------------setting values to pre defined maps----------------------------------------------------------------------------------------
-
-$new-map: (
-    "position": relative,
-    "display": flex,
-    "justify-content": center
-);
-$new-map: map.set($new-map, "align-items", center);                          //setting new values onto a map
-$new-map: map.set($new-map, "position", "absolute");                         //you can change an existing value in a map
-.setting_maps {
-    align-items: map.get($new-map, "align-items");
-}
 
 //-------------------------------------------------maps containing functions-----------------------------------------------------------------------------------------------
 
+//syntax for creating functions in SASS
 @function function_one() {
     @return 10px;
 }
 
+//syntax for calling a SASS function
 $function-maps: (
     "function_one": meta.get-function(function_one)                     //you can use predefine module functions as map values
 );
 .function_maps {
     width: meta.call(map.get($function-maps, "function_one"));
 }
+
+
+
+
+
+
+
 
 
 //============================================ LISTS ================================================================================================

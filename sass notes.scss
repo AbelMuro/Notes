@@ -218,6 +218,14 @@ div.selection {
     width: $random;
 }   
 
+
+
+
+
+
+
+
+
 //------------------------------------------------------@EACH------------------------------------------------------------------------------
 
 $sizes: 10px, 20px, 30px;           //list
@@ -241,6 +249,16 @@ $my-map: (
         #{$property}: $value;           //in this case, it will create 3 classes with different properties, not a good example
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 //============================================= MAPS ==================================================================================================================================
@@ -315,7 +333,7 @@ $map-value: map.get($another-map, "font-size");                            //get
 
 //-------------------------------------------------maps containing functions-----------------------------------------------------------------------------------------------
 
-//syntax for creating functions in SASS
+//scroll down below for more info on @functions on sass
 @function function_one() {
     @return 10px;
 }
@@ -327,6 +345,9 @@ $function-maps: (
 .function_maps {
     width: meta.call(map.get($function-maps, "function_one"));
 }
+
+
+
 
 
 
@@ -358,6 +379,12 @@ $another_list: list.set-nth($my-list, -1, 50px);    //positioning a value in a l
 
 
 
+
+
+
+
+
+
 //============================================= INTERPOLATION ========================================================================================
 
 @mixin my-properties($name, $top-or-bottom, $left-or-right) {               //this is interpolation, using a sass variable to define a class name, property
@@ -369,6 +396,13 @@ $another_list: list.set-nth($my-list, -1, 50px);    //positioning a value in a l
 }
 
 @include my-properties("earth_image", top, left);                           //creating a class with @include
+
+
+
+
+
+
+
 
 
 
@@ -388,6 +422,12 @@ $number-two: 10;
 @while $number-one < $number-two {
     $number-one: $number-one + 1;
 }
+
+
+
+
+
+
 
 //==================================================== FUNCTIONS ==================================================================================
 
@@ -410,6 +450,11 @@ $number-two: 10;
     top: my_function(2, 3) * 1px;
     left: my_other_function(1, 2, 3, 4, 5, 6) * 1px;
 }
+
+
+
+
+
 
 //======================================================= COLOR MODULE =================================================================================
 

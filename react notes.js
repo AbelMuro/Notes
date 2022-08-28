@@ -11,7 +11,7 @@ import './react.css'
             2) npm install react            //installs the react library
                npm install react-dom        //installs the react dom library 
             
-            3) npm install webpack --save-dev       //installs webpack core
+             3) npm install webpack --save-dev       //installs webpack core
                npm install webpack-cli --save-dev   //install webpack command line interface (terminal stuff)
                npm install webpack-dev-server --save-dev 
                
@@ -20,8 +20,7 @@ import './react.css'
                 npm install @babel/preset-react --save-dev  //installs a group of plugins that will transpile JSX into valid JS
                 npm install @babel/preset-env --save-dev    //installs a group of plugins that will transpile all the new features of JS 
                 npm install html-webpack-plugin --save-dev  //installs a plugin that will create an html file in the /dist folder based on a template we have in /src
-                                                                
-                                                                
+                                                                                                                 
               5) configure webpack   (look at webpack notes for more info)
               
               6) create /src folder with index.js and index.html (index.html must have <div id="root"> </div>)
@@ -33,6 +32,17 @@ import './react.css'
                  root.render(<App/ >)
                  
                8) then you should create a /components folder that will have all the functions and classes that are exported
+               
+               
+         IF YOU DECIDE TO USE PARCEL AS THE BUNDLER, there is a few differences to note here
+               
+               1) npm install parcel
+               
+               2) the entry point of the application will be the index.html file and NOT the index.js
+               
+               3) the index.html file must include a <script type="module"> tag that imports the index.js file 
+               
+               4) parcel will install babel for you
 */      
 
 

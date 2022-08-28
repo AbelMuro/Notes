@@ -19,19 +19,23 @@ import './react.css'
                 npm install babel-loader --save-dev        //installs a loader that babel uses to transpile JS code into valid JS code
                 npm install @babel/preset-react --save-dev  //installs a group of plugins that will transpile JSX into valid JS
                 npm install @babel/preset-env --save-dev    //installs a group of plugins that will transpile all the new features of JS 
-                npm install html-webpack-plugin --save-dev  //installs a plugin that will create an html file in the /dist folder based on a template we have in /src
-                                                                                                                 
-              5) configure webpack   (look at webpack notes for more info)
+               
+              5) npm install html-webpack-plugin --save-dev  //installs a plugin that will create an html file in the /dist folder based on a template we have in /src
+               
+              6) npm install css-loaders                     //installs the loaders for css files and <style> tags
+                 npm install style-loaders
+               
+              7) configure webpack   (look at webpack notes for more info)
               
-              6) create /src folder with index.js and index.html (index.html must have <div id="root"> </div>)
+              8) create /src folder with index.js and index.html (index.html must have <div id="root"> </div>)
               
-              7) generally, index.js will have..
+              9) generally, index.js will have..
               
                  import {App} from './components/App.js'
                  const root = ReactDOM.createRoot(document.getElementById('root'));
                  root.render(<App/ >)
                  
-               8) then you should create a /components folder that will have all the functions and classes that are exported
+               10) then you should create a /components folder that will have all the functions and classes that are exported
                
                
          IF YOU DECIDE TO USE PARCEL AS THE BUNDLER, there is a few differences to note here

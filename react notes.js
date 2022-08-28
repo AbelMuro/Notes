@@ -22,8 +22,8 @@ import './react.css'
                
               5) npm install html-webpack-plugin --save-dev  //installs a plugin that will create an html file in the /dist folder based on a template we have in /src
                
-              6) npm install css-loaders --save-dev                    //installs the loaders for css files and <style> tags
-                 npm install style-loaders --save-dev
+              6) npm install css-loader --save-dev                    //installs the loaders for css files and <style> tags
+                 npm install style-loader --save-dev
                
               7) configure webpack   (look at webpack notes for more info)
               

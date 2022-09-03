@@ -881,15 +881,17 @@ function AnotherExampleWithCustomHooks() {
 
 
 
-//----------------------------------------------------------------KEYS ----------------------------------------------------------------------------------
+//----------------------------------------------------------------KEYS and UUID----------------------------------------------------------------------------------
 
 // keys help React identify which list items have changed
 // the 'key' property has a special meaning in React, 
-//when you create am array of JSX elements, each element
+//when you create an array of JSX elements, each element
 //must have a unique key that identifies it.
-//you can use any         
+//you can use any string as a key. but its best to use the 
+// uuid api to create universaly unique ID's 
         
-
+import {v4 as uuid} from 'uuid';
+        
 function ListItem(props) {
     return <li>{props.value}</li>
 }
@@ -898,7 +900,7 @@ function MakeList(props) {
     const numbers = props.array;
         //using map function to create a <li> for each element in the array
     return numbers.map((number) =>
-        <ListItem key={number.toString()} value={number} />  //keep in mind that every list item must have a unique "key"
+        <ListItem key={uuid()} value={number} />  //uuid() will always create a unique ID for each key in the array
     )
 }
 

@@ -102,6 +102,7 @@
 
 .BackgroundProperties {
     /*----------------------------------BACKGROUND PROPERTY-----------------------------------------------------------*/
+    /* these properties only affect the content area of the box model*/
     background-image: url("images/blue checkered.png");         /* loading an external image file onto an element */
     background-size: cover, contain, auto, 200px 200px;         /* the width and height of the image background, 
         cover: will force the image to maintain its aspect-ratio, but will clip the image if the container is too small, and will zoom in if the container is too large 
@@ -1243,7 +1244,8 @@
     font-weight: bold, 400;                                     /* makes the font bolder*/
     font-kerning: normal, none;                                 /* (the font must be able to support this property to use it) normal will define how much space between the letters in the font will have*/                               
     font-stretch: condensed, expanded, 120%;                    /* (the font must be able to support this property to use it) condensed means the font will shrink, expanded means the font will expand, and 120% means that the font will expand 20% past its normal size*/
-
+    line-height: 300px;                                         /* this property defines the space between the lines of text in a paragraph */
+    
     font-variant-caps: small-caps, petite-caps, all-small-caps, all-petite-caps, unicase;   /* these values define how the capitalized letters will look like on our text 
         small-caps: if you typed Difficult, then the output will be:  DIFFICULT but the D will be bigger than the rest of the letters
         all-small-caps: if you types Difficult, then the output will be: DIFFICULT all letters will be the same size

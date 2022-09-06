@@ -13,7 +13,7 @@ Function;                           // a function, basically
 Object;                             // a collection of properties and values
       
 
-//keep in mind that some of the 'types' above are actually constructors 
+//keep in mind that some of the 'types' above are actually constructors(functions) 
 let x = new Object({name: "abel"});                               //these two lines have the same effect                          
 let x = {name: "abel"};
 
@@ -29,14 +29,25 @@ let x = [1,2,3];
 
 
 //====================================================================== PROTOTYPE ===================================================================
-// Almost all objects in javascript have a default property called prototype. This property is an object that contains methods that can be used 
-// on the object like .toString() and .hasOwnProperty()
+// All objects in javascript have a default property called prototype. This property is itself an object that contains methods that can be used 
+// on the object. Below are just a few example methods...
 
-.toString();
-.hasOwnProperty();
-.toLocaleString();
-.valueOf();
+let myObject = {whatever: 3};                                     //remember that this is the same as 'new Object'
+myObject.toString();                                              //these methods belong to the Object constructor
+myObject.hasOwnProperty();
+myObject.valueOf();
 
+// even though myObject does not have the methods .toString(), hasOwnProperty(), valueOf() defined inside the {}. it can still use the methods
+// because it has a built in property called prototype which points to those methods
+
+//If we take for example Arrays, since Arrays are also objects in javascript. They also share the prototype property that is passed down from 
+//the object constructor while also maintaining their own set of methods
+
+let myArray = [1,2,3];
+myArray.push(5);                                                  //Array.prototype method
+myArray.pop();                                                    //Array.prototype method
+myArray.forEach(() => {})                                         //Array.prototype method
+myArray.toString();                                               //myArray also has access to all the methods in the Object.prototype
 
 
 

@@ -1250,7 +1250,7 @@
     font-family: Helvetica, sans-serif, cursive;                /* defines a web-safe TypeFace for your text, just in case Helvetica is not supported by the browser, it will default to the*/
     font-size: 40px;                                            /* setting the size of the font */ 
     font-style: italic, oblique;                                /* determines if we should use the italic or oblique face of the font family */
-    font-weight: bold, 400;                                     /* makes the font bolder*/
+    font-weight: bold, 100 ,400, 700, 900;                      /* makes the font bolder ... 100(thin), 400(normal), 700(bold), 900(heavy) */
     font-kerning: normal, none;                                 /* (the font must be able to support this property to use it) normal will define how much space between the letters in the font will have*/                               
     font-stretch: condensed, expanded, 120%;                    /* (the font must be able to support this property to use it) condensed means the font will shrink, expanded means the font will expand, and 120% means that the font will expand 20% past its normal size*/
     line-height: 300px;                                         /* this property defines the space between the lines of text in a paragraph */

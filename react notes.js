@@ -224,7 +224,7 @@ let variable = true
 
 //======================================================================== REACT ROUTER ===========================================================================================================================
 
-
+//keep in mind that you want to use useNavigate() inside the useEffect() hook or in an event handler
 
 function RouterStuff() {
     return(
@@ -257,8 +257,15 @@ function RouterStuff() {
                 {/*(2) This Route will send a URL parameter to the Route below*/}
                 <Route path="/DonateUs" element={<DonateUs />}/>                
                 <Route path="/DonateUs/:repoName" element={<ThankYou />}/>      {/* :repoName is a placeholder, it can be sent as useParam() to the <ThankYou /> */} 
-                    
-                 {/* (3) This Route can be used for error handling*/}
+                <Route path="/DonateUs/:repoName/:otherRepoName" element={<Whatever/>}   
+ 
+                {/*(3) This nested route has nested routes that will each pass a url parameter to the other */}
+                <Route path="/Complaints" element={<Complaints>}>
+                        <Route path="/Complaints/:pageOne" elements={<PageOne/>}>
+                        <Route path="/Complaints/:pageOne/:pageTwo" elements={<PageTwo/>}>                           
+                </Route>
+ 
+                 {/* (4) This Route can be used for error handling*/}
                  Route path="*" element={<NoPage />}/>                          {/* <Route path="*">  will only be rendered if the page requested does not exist*/}
             </Routes>
         </BrowserRouter>
@@ -306,16 +313,50 @@ function DonateUs() {
     )
 }
 
-function ThankYou() {
-    const {repoName} = useParams();                         //repoName is the URL parameter that was passed 'down' from <Route path="/DonateUs">
-    return(
-        <div>
-            <h2>Thank you for donating</h2>
-        </div>
-    )
+function ThankYou() {                                       //repoName = "cash"  
+    const {repoName} = useParams();                         //repoName is the URL parameter that was passed 'down' from <Route path="/DonateUs">                                                         
+    const navigate = useNavigate();
+    navigate("/DonateUs/" + repoName + "whatever")          //"whatever" is another URL parameter that will be passed 'down' to the whatever component
 }
 
-//---------------------------------------------------------------- (3) ---------------------------------------------------------------------------------------
+function Whatever() {
+     const {repoName, otherRepoName} = useParams();                //repoName = "cash"    otherRepoName = "whatever"     
+     const navigate = useNavigate();
+     navigate("/DonateUs/" + repoName + otherRepoName + "somethingElse");   
+     
+}
+//--------------------------------------------------------------- (3) ---------------------------------------------------------------------------------------
+
+function Complaints() {
+       const navigate = useNavigate(); 
+       navigate("/Complaints/page-one");                        
+        return(                                                 
+            <>
+               <Link to="/Complaints/page-one"> 
+                <Outlet/>                                               //this will be replaced by the nested routes                 
+            </> 
+        )
+}
+
+function PageOne(){
+     const {pageOne} = useParams();
+     const navigate = useNavigate();
+        
+     navigate("/Complaints" + pageOne + "page-two")      
+}
+
+function PageTwo(){
+     const {pageOne, pageTwo} = useParams();
+     const navigate = useNavigate();
+        
+     navigate("/Complaints" + pageOne + Page)
+        
+}
+
+
+
+
+//---------------------------------------------------------------- (4) ---------------------------------------------------------------------------------------
 //default page that appears when the user accesses a page that doesnt exist
 
 function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}

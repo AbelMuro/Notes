@@ -54,8 +54,9 @@
 
 /*------------------------------------MISCELLANEOUS BOX PROPERTIES------------------------------------------------------*/
 
-    box-sizing: border-box;             /* this property lets us calculate the total width and height of a box
-        WITHOUT adding the padding and border to the total width/height of the box
+    box-sizing: border-box, content-box;             /* this property lets us calculate the total width and height of a box
+        border-box: the padding, margin and border are NOT added to the width and height of an element
+        content-box: the padding, margin and border are added to the width and height of an element (this is default)
     */
     box-shadow: 5px 10px 15px red;    /* we create a shadow for the box and move it 
         5px to the left or right, 

@@ -867,10 +867,19 @@
             inline-grid: defines an inline container with the grid
         */
     grid-template-columns: auto auto auto auto; /* this property will define four columns in the grid
-        (you can also specify the size of each column in pixels)
-        
         each value will represent the width of each column in the grid
-        grid-template-columns: width:auto  width:auto  width:auto  width:auto
+        
+        Alot of the times, you can use the repeat() function to 'repeat' the values that you write in the values
+    
+        grid-template-columns: auto auto auto auto;                  //these two lines are identical
+        grid-template-columns: repeat(4, auto); 
+    
+        With grid-containers, there is a unit that you can use called 'fr'
+        'fr' stands for fraction, and it represents the faction of the available space in the container
+        Basically, if you want your columns in the grid container to be of equal width, you should do this...
+    
+        grid-template-columns: repeat(4, 1fr);
+           
         */
     grid-template-rows: auto auto auto auto;    /* this property will define the size of each row in the grid
         if there are 4 rows and you have "grid-template-rows: auto auto", then this property will affect the

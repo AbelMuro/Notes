@@ -3,6 +3,9 @@
 // window = {google: {maps: {...}}}
 //as with every pre defined object, it has its set of functions and properties
 
+// to install google maps into your react application, just use...
+// npm install @react-google-maps/api
+
 import React, {useCallback, useState} from 'react';
 import {GoogleMap, useLoadScript, Marker} from '@react-google-maps/api';
 

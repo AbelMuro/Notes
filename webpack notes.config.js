@@ -9,8 +9,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin"); //to use a plugin with
 
 module.exports = {
 
-    entry: './src/index.js', //this is where webpack will start its dependency graph, and will automatically figure out with modules depend on this entry point                  
-    output: {                              
+    entry: './src/index.js',                  //this is where webpack will start its dependency graph, and will automatically figure out with modules depend on this entry point                  
+    output: {                                  //output is where our production code will be sent to               
         path: path.join(__dirname, '/dist'),  //__dirname represents the current directory, /dist is the folder that will contain our production code
         filename: 'bundle.js'                 //the bundled js file
     },

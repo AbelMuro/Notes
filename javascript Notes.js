@@ -177,6 +177,27 @@ var html_code = "<p> it works! </p>";                                  // you ca
 
 
 
+//=========================================================== REG EXP ============================================================================
+//REGEXP are used to create a pattern that can be used to select certain parts of a string
+
+//syntax for regular expressions...  /pattern/modifiers
+
+//modifiers             /i   perform an case-insensitive matching
+//                      /g   perform a global match (doesnt stop at the first match)  
+//                      /m   perform a multi-line match
+
+//patterns
+let myString = "this is just an example for reg exp 1 2 3 4 5";
+myString.replace( / this /g , "");                       //will search for 'this' in the string
+myString.replace( / (this)|(is) /g , "");                //will search for 'this' and 'is' in the string
+myString.replace( / [1-4] /g, "");                       //will search for all numbers between 1 and 4 in the string
+myString.replace( / \d /g, "");                          //will search for a digit in the string
+myString.replace( / greetings\d /g , "");                //will search for 'greetings' and the first digit next to it
+myString.replace( / greetings\d+ /g, "");                //will search for 'greetings' and all the digits next to it 
+myString.replace( / \bLO /g, "");                        //will seach for a word that has 'LO' at the beginning of the word (will not select HELLO, but will select LOOK) 
+myString.replace( / \never\d+\.\d+ /g, "")               //you can chain together reg exp, this will select 'never' then any digit, then a period, then another digit
+myString.replace( / \.js$ /g, "" );                      //the '$' is used to select the pattern at the END of a string
+
 
 
 
@@ -449,28 +470,6 @@ my_object.name = "abel";                                                    // W
 let other_object = new function_objects("abel", 28, "San Francisco");       // you can create your own object with constructors
 other_object.name = "new name";                                             //this way, you can only access members of the object that are defined in the constructor
 other_object.prototype.new_property = "whaterver";                          //prototype property allows you to create new properties.
-
-
-
-//=========================================================== REG EXP ============================================================================
-//REGEXP are used to create a pattern that can be used to select certain parts of a string
-
-//syntax for regular expressions...  /pattern/modifiers
-
-//modifiers             /i   perform an case-insensitive matching
-//                      /g   perform a global match (doesnt stop at the first match)  
-//                      /m   perform a multi-line match
-
-//patterns
-let myString = "this is just an example for reg exp 1 2 3 4 5";
-myString.replace( / this /g , "");                       //will search for 'this' in the string
-myString.replace( / (this)|(is) /g , "");                //will search for 'this' and 'is' in the string
-myString.replace( / [1-4] /g, "");                       //will search for all numbers between 1 and 4 in the string
-myString.replace( / \d /g, "");                          //will search for a digit in the string
-myString.replace( / greetings\d /g , "");                //will search for 'greetings' and the first digit next to it
-myString.replace( / greetings\d+ /g, "");                //will search for 'greetings' and all the digits next to it 
-myString.replace( / \bLO /g, "");                        //will seach for a word that has 'LO' at the beginning of the word (will not select HELLO, but will select LOOK) 
-myString.replace( / \never\d+\.\d+ /g)                   //you can chain together reg exp, this will select 'never' then any digit, then a period, then another digit
 
 
 

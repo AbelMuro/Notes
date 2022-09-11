@@ -27,6 +27,10 @@ import './react.css'
                
               7) configure webpack   (look at webpack notes for more info)
               
+              8) In your package.json file, write the following scripts
+                     "start": "webpack-dev-server --mode development --open",
+                     "build": "webpack --mode production"
+              
               8) create /src folder with index.js and index.html (index.html must have <div id="root"> </div>)
               
               9) generally, index.js will have..

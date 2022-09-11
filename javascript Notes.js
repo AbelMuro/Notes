@@ -10,7 +10,7 @@ BigInt;                             // an extremely large number or extremely sm
 String;                             // a string 
 Symbol;                             // gives a unique value to a variable with an optional description, let x = Symbol("description");   x will always have a unique value
 Function;                           // a function, basically
-Object;                             // a collection of properties and values
+Object;                             // a collection of properties and values that are used to organize data
       
 
 //keep in mind that some of the 'types' above are actually constructors(functions) 
@@ -29,29 +29,45 @@ let x = [1,2,3];
 
 
 //====================================================================== PROTOTYPE ===================================================================
-// All objects in javascript have a default property called prototype. This property is itself an object that contains methods that can be used 
-// on the object. Below are just a few example methods...
+// All objects in javascript have a default property called prototype. This property is itself an object that contains methods/functions that can be used 
+// on the object .Below are just a few example methods/functions...
 
-let myObject = {whatever: 3};                                     //remember that this is the same as 'new Object'
+let myObject = {whatever: 3};                                //remember that this is the same as 'new Object' (Object is a constructor function that has its own methods)
 myObject.toString();                                              //these methods belong to the Object constructor
-myObject.hasOwnProperty();
-myObject.valueOf();
+myObject.hasOwnProperty();                                        //these methods belong to the Object constructor
+myObject.valueOf();                                               //these methods belong to the Object constructor
 
 // even though myObject does not have the methods .toString(), hasOwnProperty(), valueOf() defined inside the {}. it can still use the methods
-// because it has a built in property called prototype which points to those methods
-
-//If we take for example Arrays, since Arrays are also objects in javascript. They also share the prototype property that is passed down from 
-//the object constructor while also maintaining their own set of methods
-
-let myArray = [1,2,3];
-myArray.push(5);                                                  //Array.prototype method
-myArray.pop();                                                    //Array.prototype method
-myArray.forEach(() => {})                                         //Array.prototype method
-myArray.toString();                                               //myArray also has access to all the methods in the Object.prototype
+// because it has a built in property called prototype which points to those methods.
 
 
 
 
+// If we take for example Arrays, since Arrays are also objects in javascript. They also share the prototype property that points to the methods
+// in the Object constructor
+
+let myArray = [1,2,3];                                       //remember that this is the same as 'new Array()' (Array is a constructor that has its own methods)
+myArray.push(5);                                                  //these methods belong to the Array constructor
+myArray.pop();                                                    //these methods belong to the Array constructor
+myArray.forEach(() => {})                                         //these methods belong to the Array constructor
+myArray.toString();                                               //these methods belong to the Object constructor
+myArray.hasOwnProperty();                                         //these methods belong to the Object constructor
+myArray.valueOf();                                                //these methods belong to the Object constructor
+
+
+
+//------------------------------------------------------------------- PROTOTYPE CHAIN ------------------------------------------------------------------
+// visual example... (myArray is an object that has the property Prototype)
+
+//          
+//          myArray -> [[prototype]]: Array  -> pop() 
+//                                           -> forEach()
+//                                           -> push()
+//                                           -> ...
+//                                           -> [[prototype]]: Object --------------------> toString()
+//                                                                                        -> hasOwnProperty()
+//                                                                                        -> valueOf()
+//                                                                                        -> ...
 
 
 
@@ -62,13 +78,9 @@ myArray.toString();                                               //myArray also
 
 
 
-
-
-
-
-
-
-// ====================================================================== SCOPES  ====================================================================== 
+// ====================================================================== LEXICAL SCOPE  ====================================================================== 
+// note, any variable defined outside a function or {} will have global scope, 
+// any variables defined inside a function or {} will have local scope
 
 // let variables can be used ANYWHERE inside the {}, where it is declared
 function LET_variables() {
@@ -151,9 +163,9 @@ function Hoisting() {
 
 //====================================================================== STRINGS ====================================================================== 
 "this is a string";
-let my_string = "hello" + "world" + 67;                                 //strings can be concantenated, 67 will be converted into a string
-my_string[0]                                                           // strings can be accessed as if it was an array                         
-var html_code = "<p> it works! </p>";                                        // you can add html code in strings
+let my_string = "hello" + "world" + 67;                                //strings can be concantenated, 67 will be converted into a string
+my_string[0]                                                           // characters in strings can be accessed as if it was an array                         
+var html_code = "<p> it works! </p>";                                  // you can add html code in strings
 
 
 
@@ -284,8 +296,8 @@ function myFunction(){
     return this;                            //this will also return the global window object;
 }
 
-
-<button onclick="this.style.backgroundColor='red'"> click this </button> //THIS represents the element itself
+//THIS represents the element itself
+<button onclick="this.style.backgroundColor='red'"> click this </button> 
 
 
 let new_object = {

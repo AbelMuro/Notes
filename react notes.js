@@ -16,7 +16,7 @@ import './react.css'
                npm install webpack-dev-server --save-dev 
                
              4) npm install @babel/core --save-dev          //installs the core files for babel (@ means that the package comes in modules)
-                npm install babel-loader --save-dev        //installs a loader that babel uses to transpile JS code into valid JS code
+                npm install babel-loader --save-dev         //installs a loader that webpack uses to transpile JS code into valid JS code
                 npm install @babel/preset-react --save-dev  //installs a group of plugins that will transpile JSX into valid JS
                 npm install @babel/preset-env --save-dev    //installs a group of plugins that will transpile all the new features of JS 
                

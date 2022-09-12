@@ -118,7 +118,7 @@
         contain: will force the image to maintain its aspect-ratio, the entire image will always be shown but may not cover the entire container
         auto: will force the image to always maintain it original width/height and its aspect ratio, even after the window has been resized  
     */
-    background-repeat: no-repeat;                               /* by default, the image will repeat in the background */
+    background-repeat: no-repeat, repeat, repeat-x, repeat-y;   /* by default, the image will repeat in the background */
     background-position: center, left, right, top, bottom;      /* determining the position of the image background on the element 
     (this will work if background-size: 200px 300px, the other values will have no effect)
     */

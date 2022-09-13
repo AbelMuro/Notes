@@ -648,6 +648,33 @@ function UsingRef() {
 }
 
 
+//--------------------------------------------------------forwardRef()---------------------------------------------------------------------------
+//you can use useRef and forwardRef together to make a parent component have control over an element in a child component
+//keep in mind that forwardRef() has the same functionality as a regular React component,
+//the only difference is that you can now pass a ref along with the props
+
+
+function ParentComponent() {
+    const someRef = useRef();
+        
+     useEffect(() => {
+        someRef.current;                //someRef.current now references the <div> element in the ChildComponent
+        
+     })    
+        
+    return(
+        <ChildComponent ref={someRef}>
+    )    
+}
+
+
+const ChildComponent = forwardRef((props, ref) => {
+        return(
+           <div ref={ref}> greetings </div>
+        )
+        
+})
+
 
 
 

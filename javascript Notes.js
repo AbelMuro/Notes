@@ -70,6 +70,20 @@ myArray.valueOf();                                                //these method
 //                                                                                        -> ...
 
 
+//you can also use prototype to add new methods or properties to constructors
+
+function constructor(){
+      this.name = "abel";
+      this.last = "muro";
+      this.age = 678;
+}
+
+constructor.prototype.birthplace = "san francisco";
+
+let myObject = new constructor();                           //everytime you use constructor, the object will also have the new property birthplace
+object.birthplace;                              
+
+
 
 
 
@@ -470,28 +484,6 @@ my_object.name = "abel";                                                    // W
 let other_object = new function_objects("abel", 28, "San Francisco");       // you can create your own object with constructors
 other_object.name = "new name";                                             //this way, you can only access members of the object that are defined in the constructor
 other_object.prototype.new_property = "whaterver";                          //prototype property allows you to create new properties.
-
-
-
-
-
-//============================================================ PROTOTYPE =================================================================
-//all objects and constructors have a prototype property, its mostly used to add new methods or properties to constructors
-
-function constructor(){
-      this.name = "abel";
-      this.last = "muro";
-      this.age = 678;
-}
-
-constructor.prototype.birthplace = "san francisco";
-
-let myObject = new constructor();                           //everytime you use constructor, the object will also have the new property birthplace
-object.birthplace;                              
-
-
-
-
 
 
 
@@ -922,6 +914,20 @@ function changeProperties(mediaQuery) {
     else{
             //go back to default values for properties
     }
+}
+
+
+//or... you can use window.innerWidth and 'resize' for responsive design
+
+window.addEventListener("resize", someEventHandler);
+
+function someEventHandler() {
+      if(window.innerWidth > 1000)
+            document.querySelector(".someClass").style.color = "white";
+      
+      else
+            document.querySelector(".someClass").style.color = "red";
+            
 }
 
 

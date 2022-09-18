@@ -54,6 +54,19 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 //The reducer is a function that uses action objects to mutate state data
 //reducer must be a pure function, meaning it must not change the state directly 
 //and must return a new state if change occured, but must return old state if no change occured
+//to make changes to the state object in the reducer, you want to make use of these array functions
+// that return an updated version of the array and doesnt mutate the original array
+
+// state.filter((element, index) => {           //removes certain elements from the array
+//                  if(element > 1) 
+//                      return true;            //element will be included in the new array
+//                  else
+//                     return false;           //element will be excluded from the new array
+//                })
+//
+// state.map((element, index) => {             //similar to forEach(), but returns an updated array and
+//              return element + 1;            //doesnt affect the original array
+//  })
 
 const reducer = (state = {list: []}, action) => {       //you can initialize state with a global object if you want
     let stateList = state.list;

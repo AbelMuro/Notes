@@ -131,6 +131,19 @@
         <input type="hidden" id="updateDatabase" name="updateDatabase" value="666"> <!-- type="hidden" can be used to update data on the database-->
         <input type="submit" enctype="multipart/form-data">  
     </fieldset>
+        
+            <!-- NUMBER SELECTION WITH VALIDATION-->
+    <fieldset>
+    
+        <form action="server.php" target="_blank" method="post">
+            <label for="quantity">
+                Pick a number between 1 and 20:
+            </label>
+            <input type="number" id="quantity" name="userchoice" min="1" max="20">      <!-- user cannot input a number bigger than 20 and less than 1-->
+            <input type="submit">
+        </form>
+
+    </fieldset>
 
 </form>
 

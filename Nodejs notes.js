@@ -1,0 +1,220 @@
+//Node.js is an open source server environment that allows you to run javascript outside of a browser
+//Node.js uses asynchronous programming
+
+// Below is how Node.js handles file requests
+
+// 1) sends the task to the computers file system
+// 2) ready to handle the next request
+// 3) when the file system has opened and read the file, the server returns the content to the client 
+
+// Node.js eliminates the waiting and simply continues to the next request
+
+// modules are like javascript libraries, a set of pre-built functions that you can use.
+// typically, you will use the require() function to access the functions in the modules
+
+// keep in mind that everything below the require() function must go inside the createServer() function
+
+
+
+
+
+//=========================================================HTTP MODULE=========================================================
+// HYPER TEXT TRANSFER PROTOCOL -> all about requests and responses that are done between clients and servers
+// http module is the most used module in node.js, it uses http to receive requests and send responses to the client
+// below is how you will create a server
+
+
+// req is the request object that is sent by the client
+// res is the response object that will be sent back to the client
+var http = require('http');                                                           
+    http.createServer(function(req, res) {
+        //check out the boilerplate code far below
+    });
+
+
+
+
+
+//=========================================================URL MODULE=========================================================
+var url = require('url');                                       //used for formating the url of the website
+    var adr = 'http://localhost:8080/default.htm?year=2017&month=february';  //normally you would use 'req.url' to get the url
+    var q = url.parse(adr, true)                                //parsing the url into an object
+    q.host;                                                     //returns 'localhost:8080' (domain name)
+    q.pathname;                                                 //returns 'default.htm'
+    q.search;                                                   //returns '?year=2017&month=february'
+    q.query;                                                    //returns an object { year: 2017, month: february}
+
+
+    let filename = q.pathname;                                              
+    formattedUrl = formattedUrl.year + " " + formattedUrl.month; 
+
+
+
+
+
+
+
+//=========================================================FILE SYSTEM MODULE=========================================================
+var fs = require("fs");
+    //updating files (be careful with writeFile())
+    fs.appendFile("./nameOfFile.html", 'Hello World!', function (err) { //appending content "hello world "to the end of a file, if the file doesnt exist, then a new one will be created 
+        if(err) throw err;
+    })
+    fs.writeFile("./nameOfFile.html", "hello World", function (err) { //replacing a file with the same name as the first argument and appending 'hello world' at the end of the new file, 
+        if(err) throw err;                                            //if the file doesnt exist, then a new one will be created
+    })
+    //reading files
+    fs.readFile('./nameOfFile.html', function(err, data) {      //reads a file
+        if(err){
+            res.writeHead(404, {'Content-Type': 'text/html'})
+            return res.end("404 Not Found");
+        }
+        res.writeHead(200, {'Content-Type' : 'text/html'})
+        res.write(data);                                        //data is the actual html that you want to send to the client
+        return res.end();                                       //should return the res.end()
+    })
+    fs.open("./nameOfFile.html", function(err, file) {          //opening a file, if the file doesnt exist, then a new one will be created   (you can add a second argument 'w', it stands for 'writing')
+        if (err) throw err;
+    })
+    //deleting files
+    fs.unlink("./nameOfFile.html", function(err){               //deleting a file
+        if(err) throw err;
+    })
+    //renaming files
+    fs.rename("./nameOfFile.html", "./newFileName.html", function(err) { //renaming an existing file
+        if(err) throw err;
+    })
+    var rs = fs.createReadStream("./demofile.txt");             //createReadStream fires an event everytime the file opens or closes
+    rs.on("open", function() {
+        //do something here
+    })
+
+
+
+
+
+//============================================================== EVENTS MODULE=============================================================================
+//this module handles all types of events that are received from the client 
+
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+
+eventEmitter.on('scream', function() {          //event handler for 'scream' events
+    //do something here
+})
+
+eventEmitter.emit('scream')                     //triggerring the event 
+
+
+
+
+
+
+//============================================================= FORMIDABLE MODULE =========================================================================
+//this module was designed to read form data from an html file
+
+var formidable = require('formidable');                                     //npm install formidable
+
+    //getting files from client
+    http.createServer(function (req, res) {
+        if(req.url == "/fileupload"){
+            var form = new formidable.IncomingForm();                       //creating a form object to read form data
+            form.parse(req, function (err, fields, files) {                 //'files' object is for files uploaded by the client, and 'fields' object are for user input sent by the client
+                var oldpath = files.filetoupload.filepath;                  //getting the name of the file that was uploaded
+                var newpath = "C:/Users/abelm/" + files.filetoupload.originalFilename; //defining a directory for the file to be stored onto local pc
+                fs.rename(oldpath, newpath, function (err) {                //using fs.rename() to place the uploaded file onto the local machine
+                    if(err) throw err;
+                    res.write('File has been uploaded!');
+                    res.end();
+                })
+            })
+        }
+        else{
+            res.writeHead(200, {"Content-Type": "text/html"});
+            res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+            res.write('<input type="file" name="filetoupload"><br>');
+            res.write('<input type="submit">');
+            res.write('</form>');
+            return res.end();        
+        }
+    }).listen(8080);      
+    
+
+    //getting user-input from client
+    http.createServer(function (req, res) {
+        if(req.url == "/sendInput"){
+            var form = new formidable.IncomingForm();                       //creating a form object to read form data                
+            form.parse(req, function (err, fields, files) {                 //'files' object is for files uploaded by the client, and 'fields' object are for user input sent by the client
+                res.write("you entered" + fields.userInput)                 //using the name property of the input element to retrieve user input   
+                return res.end();
+            })
+        }
+        else{
+            res.writeHead(200, {"Content-Type": "text/html"});
+            res.write('<form action="sendInput" method="post">');
+            res.write('<input type="text" name="userInput">');              //this works for all inputs, as long as the input has a name attribute
+            res.write('<input type="submit">');
+            res.write('</form>');
+            return res.end();        
+        }
+
+    })
+
+    
+
+
+
+
+
+
+//============================================================== NPM MODULES ==============================================================
+//keep in mind that you can also include packages/modules from NPM
+
+var uc = require('upper-case');                     //npm install upper-case
+uc.upperCase("hello world");
+
+
+
+
+
+
+
+
+//============================================================== CUSTOM MODULES ==============================================================
+var myModule = require("./myModules");  
+myModule();                                                     //will return "anything"  
+
+//   ./myModules.js 
+exports.anyFunctionName = function() {                          //exports is a keyword that makes any function or variable available outside its file (similar to 'export default')
+    //anything goes here
+    return "anything";
+}
+
+
+
+
+
+//========================================================= BOILERPLATE CODE ============================================================================================
+
+var http = require("http");
+var url = require("url");
+
+
+http.createServer(function (req, res) {
+    var q = url.parse(req.url, true);
+    var filename= "." + q.pathname;                         //remember that q.pathname = /nameOfFile.html
+
+    fs.readFile(filename, function(err, data) {
+        if(err) {
+            res.writeHead(404, {"Content-Type" : "text/html"}) //error handling
+            return res.end("404 Not Found")                
+        }
+        res.writeHead(200, {'Content-Type' : "text/html"});  //defines the content type that will be sent to the client.. 200 is a status code that means everything is ok, 404 is a status code that means something is wrong
+        res.write(data);
+        return res.end();                                    //we end the response here   
+    })
+
+}).listen(8080);                                             //the server listens on port '8080'                           
+
+
+

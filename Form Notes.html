@@ -1,0 +1,136 @@
+<!-- method="get" is for requesting data from a server, while method="post" is for sending data to a server-->
+<!-- for <input> validation.. use "required" attribute to prevent user from entering nothing-->
+<!-- method attribute defines how the data will be sent to the server, with method="post", it will be send as URL variables-->
+<!--AUTOFOCUS attribute can be usefull if a certain input box does not appear while a page loads-->
+<!--VALIDATION ATTRIBUTES and CSS SELECTORS-->
+<!--
+    attributes:
+        name:       most important attribute, the server relies on this attribute to identify data sent by the <input/>
+        action:     sends the value specified to the server as a URL parameter... EXAMPLE: action="random".... "random" is sent to the server
+        method:     method="post" sends the data as URL variables.... method="get" is for requesting data from a server
+        enctype:    defines how the data is encoded before being sent to the server... "multipart/form-data" is for uploading files... "application/x-www-form-urlencoded" is the default
+        multiple:   specifically designed for uploading files, you can upload multiple files with this attribute
+        value:      depends on the input tag, but usually its the text that is initially displayed to the user
+        required:   forces the user to input something to the input box, it cannot be empty
+        
+        max:        the maximum value that a user can input
+        min:        the minimum value that a user can input
+        pattern:    specifies the exact pattern that a user MUST match with their input
+        
+        
+
+    CSS SELECTORS FOR VALIDATION
+        :invalid        selects input elements that have invalid values
+        :optional       selects input elements that have no "required" attribute
+        :required       selects input elements that have the "required" attribute
+        :valid          selects input elements that have valid values 
+
+-->
+
+
+<!--a form should only have one <input type='submit'/> -->
+<form action="sendInput" method="post" autocomplete="on">                                    <!-- action attribute will send the 'sendInput' as a URL parameter to the server-->          
+     <!-- USER LOGGING WITH INPUT BOXES-->                        
+    <fieldset>                                                                               <!-- fieldset groups together a set of inputs within a block-->
+        <label for="username">                                                               <!-- creating a label for the element with ID username-->
+            Username: 
+        </label>                                                          
+        <input type="text" id="username" name="username" required>                          <!-- the name attribute must be specified so the server can reference the user's input-->
+        <br>                                                                                 <!-- value in this case defines the text displayed in the text box initially-->
+        <label for="password"> 
+            Password: 
+        </label>                                                                             <!-- type="password" is also a text box but will hide the text will ****-->  
+        <input type="password" id="password" name="password" required>                       <!-- value in this case defines the text displayed in the text box initially-->          
+        <br> 
+        <input type="submit" value="Login">                                                  <!-- creating a button that sends data to server-->
+        <input type="reset">                                                                 <!-- resets all input values to their default-->
+    </fieldset>
+
+    <!--SEARCH BOXES-->
+    <fieldset>
+        <label for="search">
+            Search Box:
+        </label>
+        <input type="search" id="search" name="search" required>                                     <!-- type="search" will create a search box-->
+        <input type="submit">                                                               
+    </fieldset>
+
+    <!-- TEXT AREA -->
+    <fieldset>
+        <textarea style="resize: none; width: 400px; height: 400px" name="textarea" required> </textarea>
+        <input type="submit"> 
+    <fieldset>
+
+
+    <!-- SELECT OPTIONS-->
+    <fieldset>
+        <select name="selectedOption">
+            <option value="Java">
+                Java
+            </option>
+            <option value="Java">
+                C++
+            </option>
+            <option value="Java">
+                HTML
+            </option>
+        </select>
+        <input type="submit">
+    </fieldset>
+
+
+    <!--RADIO BUTTONS -->
+    <fieldset>  
+        <div id="favcolor1">  
+            <input type="radio" id="blue" name="favColor" value="blue">             <!-- value in this case defines the data inputed by the user-->
+            <label for="blue"> 
+                Blue
+            </label>
+
+            <input type="radio" id="green" name="favColor" value="green">
+            <label for="green"> 
+                Green
+            </label>
+
+            <input type="radio" id="pink" name="favColor" value="pink">
+            <label for="pink"> 
+                Pink
+            </label>
+        </div>
+    </fieldset>
+
+    <!--COLOR SELECTION-->
+    <fieldset>
+        <div id="favcolor2">
+            <label for="favcolor"> 
+                Select your favorite color 
+            </label>
+            <input type="color" id="favcolor" name="favcolor" value="#ff0000">
+        </div>        
+    </fieldset>
+
+
+    <!--DATE SELECTION-->
+    <fieldset>
+        <div id="dateselect">
+            <label for="birthday"> 
+                Enter your birthday 
+            </label>                                                          
+            <input type="date" id="birthday" name="birthday" value="birthday">          <!-- you can use the max and min attributes to create a certain timeframe that the user HAS to select , example; 1993-07-22 through 1996-05-2-->           
+        </div>
+        <input type="submit"> 
+    </fieldset>
+
+    <!--UPLOADING FILES-->
+    <fieldset>
+        <label for="myfile">
+            Select a file:
+        </label>    
+        <input type="file" id="myfile" name="myfile" multiple><br>                  <!-- you can select multiple files with the multiple attribute-->
+        <p> To select multiple files, hold down CTRL key while selecting </p>
+        <input type="hidden" id="updateDatabase" name="updateDatabase" value="666"> <!-- type="hidden" can be used to update data on the database-->
+        <input type="submit" enctype="multipart/form-data">  
+    </fieldset>
+
+</form>
+

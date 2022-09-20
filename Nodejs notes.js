@@ -111,7 +111,7 @@ eventEmitter.emit('scream')                     //triggerring the event
 
 
 //============================================================= FORMIDABLE MODULE =========================================================================
-//this module was designed to read form data from an html file
+//this module was designed to read form data
 
 var formidable = require('formidable');                                     //npm install formidable
 
@@ -124,7 +124,7 @@ var formidable = require('formidable');                                     //np
                 var newpath = "C:/Users/abelm/" + files.filetoupload.originalFilename; //defining a directory for the file to be stored onto local pc
                 fs.rename(oldpath, newpath, function (err) {                //using fs.rename() to place the uploaded file onto the local machine
                     if(err) throw err;
-                    res.write('File has been uploaded!');
+                    res.write('File has been uploaded and moved to a different directory!');
                     res.end();
                 })
             })
@@ -160,8 +160,44 @@ var formidable = require('formidable');                                     //np
 
     })
 
-    
+//============================================================= EMAIL MODULE ===========================================================
 
+//you can use this mail module to send emails from the server
+var nodemailer = require('nodemailer');
+
+
+http.createServer(function (req, res) {
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',                       //keep in mind that google doesnt support less secure apps using its service
+        auth: {                                 //so you have to use an app password to make this work
+            user: "abelmuro93@gmail.com",       
+            pass: "vewyvdjgpbdckqak"                        
+        }
+    })
+
+    var mailOptions = {                         
+        from: 'abelmuro93@gmail.com',          
+        to: 'abelmuro93@gmail.com, anotherEmail@gmail.com',
+        subject: 'Subject',
+        text: 'Content'                                             // keep in mind that you can remove 'text:' and use 'html:' to include html in the body of the email
+    };                                                              // html: '<h1> Welcome </h1> <p> Hello World! </p>'
+
+    transporter.sendMail(mailOptions, function(err, info){          //sending the actual email
+        if(err){
+            console.log(err)
+            res.writeHead(200, {"Content-Type" : "text/html"});
+            res.write("email was not sent");
+            res.end()
+        }
+        else{
+            console.log("Email sent: " + info.response)
+            res.writeHead(200, {"Content-Type" : "text/html"});
+            res.write("email was sent");
+            res.end();
+        }
+    })
+   
+}).listen(8080);   
 
 
 

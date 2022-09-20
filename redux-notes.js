@@ -220,14 +220,24 @@ function SomeComponent() {
 
 
 //================================================================= STORE ===================================================================
-//creating a store (this is usually done in the /src/index.js)
-import {Provider} from 'react-redux';
-import {rootReducer} from '../reducer/index';
+//creating a store
+
+// ./store.js
+import {rootReducer} from './reducer/index.js';
+import {configureStore} from '@reduxjs/toolkit';
 
 const store = configureStore({              //creating a 'store' that will contain our state data
     reducer: rootReducer,                   //our custom reducer
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(myMiddleware) //this property accepts a callback that is used to include a middleware
 }); 
+
+export default store;
+
+
+
+//  ./index.js
+import {Provider} from 'react-redux';
+import store from './store.js';
 
 root.render(
     <Provider store={store}>            {/*you must wrap your application with <provider store={store}> to enable the child components to dispatch actions and view state*/}
@@ -235,7 +245,9 @@ root.render(
     </Provider>
 )
 
-//some built in functions for a store
+
+
+//some built in functions to use for debugging or testing
 store.getState()                                    //will return the current state in the store
 store.dispatch({type: "action"})                    //will dispatch an action object to the reducer
 store.subscribe(() => {console.log(store.getState())})//subscribe will call the callback everytime there is a change in the state

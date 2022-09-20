@@ -133,7 +133,34 @@ export default rootReducer;
 
 
 
+//======================================================== CREATE SLICE ==================================================================
+//createSlice() does multiple things for you at once, it creates a reducer with an initial state, and generates action creators that 
+//correspond to the 'case' or 'types 'in your reducers
 
+
+
+import { createSlice } from '@reduxjs/toolkit'
+
+const initialState = { value: 0 }
+
+const counterSlice = createSlice({
+  name: 'counter',                                                          //name of reducer
+  initialState,                                                             //initial state of reducer
+  reducers: {                                                               //the reducer function
+    increment(state) {                                                      // you can think of this as a 'case' in the 'switch' of a reducer function
+      state.value++
+    },
+    decrement(state) {                                                       // you can think of this as a 'case' in the 'switch' of a reducer function
+      state.value--
+    },
+    incrementByAmount(state, action) {                                       // you can think of this as a 'case' in the 'switch' of a reducer function
+      state.value += action.payload
+    },
+  },
+})
+
+export const { increment, decrement, incrementByAmount } = counterSlice.actions                 //automatically creating action creators to dispatch
+export default counterSlice.reducer                                                             //exporting the reducer
 
 
 

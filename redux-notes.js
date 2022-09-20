@@ -50,7 +50,7 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
 
 
-//=================================================REDUCER==============================================
+//================================================== REDUCER ==============================================
 //The reducer is a function that uses action objects to mutate state data
 //reducer must be a pure function, meaning it must not change the state directly 
 //and must return a new state if change occured, but must return old state if no change occured
@@ -133,10 +133,10 @@ export default rootReducer;
 
 
 
-//======================================================== CREATE SLICE ==================================================================
-//createSlice() does multiple things for you at once, it creates a reducer with an initial state, and generates action creators that 
+//-------------------------------------------------- CREATE SLICE --------------------------------------
+//createSlice() does multiple things for you at once, it creates a reducer, and generates action creators that 
 //correspond to the 'case' or 'types 'in your reducers
-
+//the whole point of this function is to reduce boilerplate code.
 
 
 import { createSlice } from '@reduxjs/toolkit'
@@ -170,11 +170,38 @@ export default counterSlice.reducer                                             
 
 
 
+//------------------------------------------------------- CREATE REDUCER ------------------------
+//another way of creating a reducer, although you have to use createActions() from redux tool kit with createReducer()
+
+import { createAction, createReducer } from '@reduxjs/toolkit'
+
+const increment = createAction('counter/increment')
+const decrement = createAction('counter/decrement')
+const incrementByAmount = createAction('counter/incrementByAmount')
+const initialState = { value: 0 }
+
+const counterReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
+  builder
+    .addCase(increment, (state, action) => {                            //the 'case'
+      state.value++
+    })
+    .addCase(decrement, (state, action) => {
+      state.value--                         
+    })
+    .addCase(incrementByAmount, (state, action) => {
+      state.value += action.payload
+    })
+})
 
 
 
 
-//=============================== USE DISPATCH HOOK =================================================
+
+
+
+
+
+//===================================================== USE DISPATCH HOOK =================================================
 // you can use the useDispatch hook to dispatch actions to the reducer
 
 import {useDispatch} from 'react-redux';

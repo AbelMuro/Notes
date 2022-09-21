@@ -20,6 +20,18 @@ module.exports = {
             template: './src/index.html'      //this is a template for our production html file, we are defining how the html will look like before we make our production html file
         })
     ],
+    devServer: {                              //configuration property for the development server
+        port: 3000,                           //the devServer will start in port 3000
+        proxy: {                              //the proxy will forward all requests to the specified port
+            '/login': {                                     //http://localhost:3000/login
+                target: 'http://localhost:3000',            //will only forward requests that are send from this port
+                router: () => 'http://localhost:5000'       //all requests will be forwarded to this port
+            }
+        }
+    }
+    
+    ,
+    
     module: {
         rules: [                               
             {                                   //loaders are transformations that are applied to files (typescript to javascript, sass to css)

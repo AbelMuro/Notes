@@ -254,3 +254,22 @@ http.createServer(function (req, res) {
 
 
 
+
+//=============================================================== EXPRESS WEB FRAMEWORK =================================================================
+//middleware, a function that does something between the server receiving a request and sending a response 
+
+const express = require('express');
+const app = express();                                       //creating an object that represents the main app
+
+
+app.get('/', (req, res) => {                                 // .get() is the equivalent function to http.createServer, 
+    res.send('hello world');                                 // the difference is that get() will wait until the client's url has the same param as the first argument
+})
+
+
+app.use('/contactPage', () => {                              // .use() is a function that lets you mount a middleware(function)
+})                                                          // onto a route that is specified by the first argument
+
+
+
+app.listen(5000);                                            //listens to port 5000

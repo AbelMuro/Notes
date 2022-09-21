@@ -23,13 +23,25 @@
 // http module is the most used module in node.js, it uses http to receive requests and send responses to the client
 // below is how you will create a server
 
+// if you are using parcel in the client side...
+
+// 1) npm install -D http-proxy-middleware
+// 2) create a .proxyrc configuration file and type in the following json
+/* 3) 
+    {
+        "/login": {
+            "target": "http://localhost:5000"                    //every request sent by the client will be 
+        }                                                        //forwarded to this port
+    } 
+*/
+
 
 // req is the request object that is sent by the client
 // res is the response object that will be sent back to the client
 var http = require('http');                                                           
     http.createServer(function(req, res) {
         //check out the boilerplate code far below
-    });
+    }).listen(5000);
 
 
 
@@ -258,17 +270,28 @@ http.createServer(function (req, res) {
 //=============================================================== EXPRESS WEB FRAMEWORK =================================================================
 //middleware, a function that does something between the server receiving a request and sending a response 
 
+// if you are using parcel in the client side...
+
+// 1) npm install -D http-proxy-middleware
+// 2) create a .proxyrc configuration file and type in the following json
+/* 3) 
+    {
+        "/login": {
+            "target": "http://localhost:5000"                    //every request sent by the client will be 
+        }                                                        //forwarded to this port
+    } 
+*/
+
 const express = require('express');
 const app = express();                                       //creating an object that represents the main app
 
-
-app.get('/', (req, res) => {                                 // .get() is the equivalent function to http.createServer, 
-    res.send('hello world');                                 // the difference is that get() will wait until the client's url has the same param as the first argument
+// 'get' requests
+app.get('/', (req, res) => {                                 // .get() is for handleling 'get' requests from the client
+    res.send('hello world');                                 
 })
-
-
-app.use('/contactPage', () => {                              // .use() is a function that lets you mount a middleware(function)
-})                                                          // onto a route that is specified by the first argument
+// 'use' middleware for /contactPage
+app.use('/contactPage', () => {                              // .use() is a function that will 'use' the function on the second argument
+})                                                          // everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
 
 
 

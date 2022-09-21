@@ -201,7 +201,7 @@ const elementFOUR =  (
     </div>
 );
 
-//JSX will get converted to the function below by react
+//JSX will get transpiled to the function below by react
 const element = React.createElement(
     'h1',                                                       //tag name
     {className: "myClass"},                                     //attributes
@@ -503,6 +503,7 @@ function HooksTwo() {
 // this function gets called after the first render, after every re-render, and once the component is unmounted from the DOM
 // you can have multiple useEffect() hooks in the same function component, this is useful for separating unrelated code and uniting related code
 function HooksThree() {  
+        
     useEffect(() => {
        let button =  document.querySelector(".someButton");                              //this gets called after the first render and after every re-render       
        button.addEventListener("click", nameOfFunction);
@@ -588,6 +589,28 @@ function ComponentFour() {
 //----------------------------------------------------------- USE REF HOOK -----------------------------------------------------
 // useRef() is a hook that can create a constant reference to an element or can be used to reference a value
 // this hook does not cause a re-render everytime it gets updated
+// useRef() has the same effect as querySelector()
+
+function App() {
+    const inputElement = useRef();
+    const DivElement = useRef();
+
+    useEffect(()=>{
+        console.log(inputElement.current);                   //this will log <input type="text">
+        console.log(inputElement.current.value);             //this will return the value that the user typed in the input box
+        console.log(inputElement.current.getAttribute("type"))//keep in mind that you can use any method in the DOM with useRef()
+    })
+
+    return(
+        <> 
+            <input type="text" ref={inputElement}/>
+            <div ref={DivElement}> </div>
+        </>
+    )
+}
+
+
+//TIP: useRef() can be used to store a counter or some value that can be updated
 function Ref() {
     const [count, setCount] = useState(0);
     const myRef = useRef(0);            //you can pass any type of argument; string, objects, arrays, numbers.
@@ -603,48 +626,6 @@ function Ref() {
             {myRef.current}
         </>
     )
-
-}
-
-//TIP: you can use useRef() to reference an element in the DOM
-// in this case, useRef() has the same effect as querySelector()
-function App() {
-    const inputElement = useRef();
-    const DivElement = useRef();
-
-    useEffect(()=>{
-        console.log(inputElement.current);                   //this will log <input type="text">
-        console.log(inputElement.current.value);             //this will return the value that the user typed in the input box
-        console.log(inputElement.current.getAttribute("type"))//keep in mind that you can use any method in the DOM with useRef()
-    })
-
-    return( //can be any element, doesnt have to be an <input>
-        <> 
-            <input type="text" ref={inputElement}/>
-            <div ref={DivElement}> </div>
-        </>
-    )
-}
-
-
-//TIP: useRef() can be used to store a previous value from the state object
-function UsingRef() {
-    const[state, setState] = useState(0);
-    const previousState = useRef(0);
-
-    useEffect(()=>{
-        previousState.current = state;                  //remember, this does NOT cause a re-render!,
-    },[state])              
-
-    return(
-        <>
-            <button onClick={() => setState(state + 1)}> Click Me</button><br/>
-            Current State: {state} <br/>
-            Previous State: {previousState.current}     
-        </> 
-       //even though state and previousState have the same value AFTER every render, what is being displayed is different
-    )
-
 }
 
 
@@ -695,7 +676,7 @@ const ChildComponent = forwardRef((props, ref) => {
 // however, the component will still be a statefull componenent, because it still owns the state object
 // this hook must be used with useContext hook to pass down state and the dispatcher
 
-// this is the object that will contain the values to initialize the state object and the dispatch function
+// this is the object that will contain the values to initialize the state object 
 const initialState = {           
     list: []
 }
@@ -711,8 +692,8 @@ function reducer (state, action) {
         case 'addItem':
             return {list: [...stateList, action.item]}
         case 'removeItem':
-            return {list: stateList.filter((item) => {                          //filter can be used to remove elements from an array
-                        return item != action.item;                         //if this returns false, then the new array will NOT contain the item AT THIS POINT
+            return {list: stateList.filter((item) => {                      //filter can be used to remove elements from an array
+                        return item != action.item;                         //if this returns false, then the new array will NOT contain the item
                 })
             };
         default:
@@ -753,6 +734,7 @@ function MyComponent() {
 
 //-------------------------------------------------- USE CALLBACK HOOK ----------------------------------------------------
 //useCallback() can be used to force a function to only be recreated when a certain variable changes
+//keep in mind that everytime a component get re-rendered, the functions get recreated, which can potentially affect performance
 //this hook is similar to useMemo(), but the main difference is that... 
 //useCallback() returns a function
 //useMemo() returns a value
@@ -816,6 +798,56 @@ function expensiveCalculation() {
 }
 
 
+
+
+
+
+
+//=========================================================== MEMO ===========================================================================================
+// memo() is used to force a function to only re-render when its props have changed, this can improve performance.
+
+//look at the example below...
+//DisplayList() component will continue to re-render when MyApp() is re-rendered, even though its props havent changed, this can cause performance issues
+//to solve this problem, you can use memo(DisplayList) while exporting a component to make it only re-render when its props value changes
+
+
+//---------anotherFile.js---------
+import {memo, useCallback} from 'react';
+
+function DisplayList(props) {
+     console.log("component rendered");                      
+    return(
+        <>
+            <p> "this should only be rendered when the props change"</p>
+        </>
+    )
+}
+ export default memo(DisplayList);                    //now, DisplayList will only update when its props changes
+
+
+//----------index.js----------------
+import DisplayList from 'anotherFile.js';
+        
+function MyApp() {
+    const [count, setCount] = useState(0);
+
+    const increment = () => {
+        setCount(count + 1)
+    };
+    
+    const handleClick = useCallback(() => {          //REMEMBER, you must use useCallback() on event handlers that are passed as props to a memoized component
+        alert("you clicked here")                    //these even handlers are recreated every time there is a render, so that means the props have actually changed
+    },[])
+
+    return(   //we only want <DisplayList /> to re-render when its props have changed
+              //even though there will be a re-render everytime we click on the button below
+              // DisplayList will not re-render because its props havent changed
+        <>
+            <DisplayList onclick={handleClick}/>                  
+            <button onClick={increment}> increment </button>                    
+        </>
+    )
+}
 
 
 
@@ -1205,57 +1237,6 @@ function Dialog() {
 
 
 
-
-
-
-
-
-
-//=========================================================== MEMO ===========================================================================================
-// memo() is used to force a function to only re-render when its props have changed, this can improve performance.
-
-//look at the example below...
-//DisplayList() component will continue to re-render when MyApp() is re-rendered, even though its props havent changed, this can cause performance issues
-//to solve this problem, you can use memo(DisplayList) while exporting a component to make it only re-render when its props value changes
-
-
-//---------anotherFile.js---------
-import {memo, useCallback} from 'react';
-
-function DisplayList(props) {
-     console.log("component rendered");                      
-    return(
-        <>
-            <p> "this should only be rendered when the props change"</p>
-        </>
-    )
-}
- export default memo(DisplayList);                    //now, DisplayList will only update when its props changes
-
-
-//----------index.js----------------
-import DisplayList from 'anotherFile.js';
-        
-function MyApp() {
-    const [count, setCount] = useState(0);
-
-    const increment = () => {
-        setCount(count + 1)
-    };
-    
-    const handleClick = useCallback(() => {          //REMEMBER, you must use useCallback() on event handlers that are passed as props to a memoized component
-        alert("you clicked here")                    //these even handlers are recreated every time there is a render, so that means the props have actually changed
-    },[])
-
-    return(   //we only want <DisplayList /> to re-render when its props have changed
-              //even though there will be a re-render everytime we click on the button below
-              // DisplayList will not re-render because its props havent changed
-        <>
-            <DisplayList onclick={handleClick}/>                  
-            <button onClick={increment}> increment </button>                    
-        </>
-    )
-}
 
 
 

@@ -289,7 +289,7 @@ const app = express();                                       //creating an objec
 app.get('/', (req, res) => {                                 // .get() is for handleling 'get' requests from the client
     res.send('hello world');                                 
 })
-// 'use' middleware for /contactPage
+// app.use will bind a middleware for the path '/contantPage'
 app.use('/contactPage', () => {                              // .use() is a function that will 'use' the function on the second argument
 })                                                          // everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
 

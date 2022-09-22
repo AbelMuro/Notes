@@ -282,6 +282,22 @@ http.createServer(function (req, res) {
     } 
 */
 
+// if you are using webpack in the client side...
+// 1) configure webpack.config file with the following
+//  
+//        module.exports = {
+//            ...
+//            devServer: { 
+//                port: 3000,
+//                proxy: {
+//                    target: 'http://localhost:3000',
+//                    router: () => 'http://localhost: 5000'         //all requests will be forwarded to this port
+//               }
+//           }
+//       }
+        
+   
+
 const express = require('express');
 const app = express();                                       //creating an object that represents the main app
 

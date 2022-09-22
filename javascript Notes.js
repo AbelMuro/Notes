@@ -560,7 +560,7 @@ fetch('/somePath', {                                                    //this w
       body: JSON.stringify({data : "data"}),                            //this is the actual data that we are sending with the post request(it must be in JSON)
 })
 .then(response => { return response.text()                              // response is an object that contains the response from the server
-                           response.json()                              // text() is for text data, json() is for json data that comes from the server   
+                           response.json()                              // text() is for text data, json() is for json data that will be parsed into javascript
                            response.ok});                               // text() and json() will return a promise       
 .then(data => {
       //do something with the data

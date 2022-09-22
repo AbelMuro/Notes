@@ -563,22 +563,25 @@ TypeError;                                  //using the wrong type, for example,
 // the fetch API can be used to make requests to servers or used to fetch a resource
 //to display the data of a JSON file, you must use response.json() which will return a promise 
 //to display the data of a text file, you must use response.text() which will return a promise
-
+//by default, fetch will do a 'GET' request
 
 
 fetch('/somePath', {                                                    //this will will return a promise..... 
       method: "POST",                                                   //POST, GET, PUT, DELETE
+      credentials: "include",                                           //used for including credentials such as cookies
       headers: {                                                        //defines the data that will be sent to the server
           "Content-Type" : "application/json"                           //data will be formatted into json, you can also use 'application/x-www-form-urlencoded'
       },      
       body: JSON.stringify({data : "data"}),                            //this is the actual data that we are sending with the post request(it must be in JSON)
 })
-.then(response => { return response.text()                              // response is an object that contains the response from the server
-                           response.json()                              // text() will parse the data into text, json() will be parse the json data into javascript
-                           response.ok});                               // text() and json() will return a promise       
-.then(data => {
-      //do something with the data
+.then(response => { return response.text();                              // response is an object that contains the response from the server
+                           response.json();                              // text() will parse the data into text, json() will be parse the json data into javascript
+                 });                                                 // text() and json() will return a promise       
+.then(data => {                                                         //using the parsed data
+      //do something with the data                                      //can manipulate the DOM to display data
 })
+
+
 
 
 

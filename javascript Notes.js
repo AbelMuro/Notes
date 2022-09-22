@@ -620,7 +620,7 @@ doSomethingElse(item)                       //item is undefined at this point be
 
 
 //==============================================================  PROMISES ============================================================== 
-//Promise objects represents the eventual completion of a task that takes a while to complete
+//Promise objects were designed to handle async events (calls to a server), and it will be resolved when the event is over
 //Promises are also useful for chaining callbacks together, which in turn prevent callback hell
 //The reason why you want to use promises for an operation that takes a while to complete is because
 // you may want to chain callbacks with then() AFTER the operation has finished executing
@@ -630,6 +630,7 @@ doSomethingElse(item)                       //item is undefined at this point be
 
 //The code below will return a "promise" object, 
 //in this case, it will take 5 seconds for the promise to resolve, 
+//just assume that it will take 5 seconds for the server to respond
 let myPromise = new Promise((results) => {   
     setTimeout(() => {                  
         results("ok")                              //once this line of code has been reached, then the promise has been resolved
@@ -677,6 +678,7 @@ doSomethingElse();                                  //this function will be call
 //============================================================== ASYNC/AWAIT ============================================================== 
 //async and await makes promises even easier to write
 //very often we will not need a reject function
+
 async function createPromise(number) {                                              //async means that the function will always return a promise
     let results = await new Promise((resolve)=>{                                    //await makes javascript wait until the promise has been resolved
         setTimeout(() => {                                                                  

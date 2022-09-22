@@ -24,16 +24,32 @@
 // below is how you will create a server
 
 // if you are using parcel in the client side...
-
 // 1) npm install -D http-proxy-middleware
 // 2) create a .proxyrc configuration file and type in the following json
 /* 3) 
     {
-        "/login": {
+        "/": {
             "target": "http://localhost:5000"                    //every request sent by the client will be 
         }                                                        //forwarded to this port
     } 
 */
+
+// if you are using webpack in the client side...
+// 1) configure webpack.config file with the following
+//  
+//        module.exports = {
+//            ...
+//            devServer: { 
+//                port: 3000,
+//                proxy: {
+//                    '/' : {
+//                        target: 'http://localhost:3000',
+//                        router: () => 'http://localhost: 5000'         //all requests will be forwarded to this port                                     
+//                   }
+//               }
+//           }
+//       }
+        
 
 
 // req is the request object that is sent by the client
@@ -228,17 +244,6 @@ uc.upperCase("hello world");
 
 
 
-//============================================================== CUSTOM MODULES ==============================================================
-var myModule = require("./myModules");  
-myModule();                                                     //will return "anything"  
-
-//   ./myModules.js 
-exports.anyFunctionName = function() {                          //exports is a keyword that makes any function or variable available outside its file (similar to 'export default')
-    //anything goes here
-    return "anything";
-}
-
-
 
 
 
@@ -271,12 +276,11 @@ http.createServer(function (req, res) {
 //middleware, a function that does something between the server receiving a request and sending a response 
 
 // if you are using parcel in the client side...
-
 // 1) npm install -D http-proxy-middleware
 // 2) create a .proxyrc configuration file and type in the following json
 /* 3) 
     {
-        "/login": {
+        "/": {
             "target": "http://localhost:5000"                    //every request sent by the client will be 
         }                                                        //forwarded to this port
     } 
@@ -290,16 +294,18 @@ http.createServer(function (req, res) {
 //            devServer: { 
 //                port: 3000,
 //                proxy: {
-//                    target: 'http://localhost:3000',
-//                    router: () => 'http://localhost: 5000'         //all requests will be forwarded to this port
+//                    '/' : {
+//                        target: 'http://localhost:3000',
+//                        router: () => 'http://localhost: 5000'         //all requests will be forwarded to this port                                     
+//                   }
 //               }
 //           }
 //       }
-        
-   
+ 
 
 const express = require('express');
-const app = express();                                       //creating an object that represents the main app
+const app = express();                                        //creating an object that represents the main app
+const bodyParser = require('body-parser');                    //npm install body-parser, this will parse all incoming fetch() requests
 
 // 'get' requests
 app.get('/', (req, res) => {                                 // .get() is for handleling 'get' requests from the client

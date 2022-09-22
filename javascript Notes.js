@@ -552,13 +552,19 @@ TypeError;                                  //using the wrong type, for example,
 
 
 
-fetch('/login', {                                                       //this will will return a promise..... 
-      method: "POST",                                                   //will send a 'POST' request to the server
-      body: JSON.stringify({example : "this should work"}),             // this is the actual data that we are sending with the post request(it must be in JSON)
-      headers: {
+fetch('/somePath', {                                                    //this will will return a promise..... 
+      method: "POST",                                                   //POST, GET, PUT, DELETE
+      headers: {                                                        //defines the data that will be sent to the server
           "Content-Type" : "application/json"                           //data will be formatted into json, you can also use 'application/x-www-form-urlencoded'
-      },
-}).then(response => {console.log(response.text())});                    //result here is an object that has methods and properties
+      },      
+      body: JSON.stringify({data : "data"}),                            //this is the actual data that we are sending with the post request(it must be in JSON)
+})
+.then(response => { return response.text()                              // response is an object that contains the response from the server
+                           response.json()                              // text() is for text data, json() is for json data that comes from the server   
+                           response.ok});                               // text() and json() will return a promise       
+.then(data => {
+      //do something with the data
+})
 
 
 

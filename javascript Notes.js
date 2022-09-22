@@ -554,7 +554,7 @@ TypeError;                                  //using the wrong type, for example,
 
 fetch('/login', {                                                       //this will will return a promise..... 
       method: "POST",                                                   //will send a 'POST' request to the server
-      body: JSON.stringify({example : "this should work"}),             // this is the actual data that we are sending with the post request
+      body: JSON.stringify({example : "this should work"}),             // this is the actual data that we are sending with the post request(it must be in JSON)
       headers: {
           "Content-Type" : "application/json"                           //data will be formatted into json, you can also use 'application/x-www-form-urlencoded'
       },

@@ -28,6 +28,13 @@ let x = [1,2,3];
 
 
 
+
+
+
+
+
+
+
 //====================================================================== PROTOTYPE ===================================================================
 // All objects in javascript have a default property called prototype. This property is itself an object that contains methods/functions that can be used 
 // on the object .Below are just a few example methods/functions...
@@ -347,6 +354,13 @@ let new_object = {
 
 
 
+
+
+
+//============================================================ COOKIES AND SESSIONS ==========================================================
+//there are two different types of cookies in javascript. Sessions and cookies
+//sessions live on the server side, typically, sessions should be used to store sensitive data such as login info,
+//cookies live on the client side, typically, cookies should be used to store data that is NOT sensitive, such as user's preferences
 
 
 

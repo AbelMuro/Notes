@@ -560,7 +560,7 @@ fetch('/somePath', {                                                    //this w
       body: JSON.stringify({data : "data"}),                            //this is the actual data that we are sending with the post request(it must be in JSON)
 })
 .then(response => { return response.text()                              // response is an object that contains the response from the server
-                           response.json()                              // text() is for text data, json() is for json data that will be parsed into javascript
+                           response.json()                              // text() will parse the data into text, json() will be parse the json data into javascript
                            response.ok});                               // text() and json() will return a promise       
 .then(data => {
       //do something with the data
@@ -598,7 +598,7 @@ doSomethingElse(item);                      //item is defined at this point beca
 
 
 //============================================================== ASYNCHRONOUS ==============================================================
-//asynchronous basically means that the code will take a long time to complete, and javascript will NOT wait until the code finishes and will read the next lines of code
+//asynchronous means NOT simultaneously. async operations occur in a different thread and will join the main thread when the operation is complete
 
 
 async function findItem() {                 //this is an asynchronouse function
@@ -686,8 +686,11 @@ doSomethingElse();                                  //this function will be call
 //async and await makes promises even easier to write
 //very often we will not need a reject function
 
-async function createPromise(number) {                                              //async means that the function will always return a promise
-    let results = await new Promise((resolve)=>{                                    //await makes javascript wait until the promise has been resolved
+//async means that the function will always return a promise
+//await makes javascript wait until the promise has been resolved
+
+async function createPromise(number) {                                              
+    let results = await new Promise((resolve)=>{                                   
         setTimeout(() => {                                                                  
             results("ok")                   
         }, 5000)

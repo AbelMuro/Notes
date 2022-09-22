@@ -551,13 +551,14 @@ TypeError;                                  //using the wrong type, for example,
 //to display the data of a text file, you must use response.text() which will return a promise
 
 
-const display = document.querySelector("#useJSON").innerHTML;
 
-fetch('JSON notes.json')                                                //this will will return a promise..... by using then() afterwards, you are accessing the result of the promise
-    .then((result) => {return result.json()})                           //result here is an object that has methods and keys, use console.log() to see them all
-    .then((fileData) => display = fileData.variable)                    //then we can use .then() to access the result of the promise
-
-
+fetch('/login', {                                                       //this will will return a promise..... 
+      method: "POST",                                                   //will send a 'POST' request to the server
+      body: JSON.stringify({example : "this should work"}),             // this is the actual data that we are sending with the post request
+      headers: {
+          "Content-Type" : "application/json"                           //data will be formatted into json, you can also use 'application/x-www-form-urlencoded'
+      },
+}).then(response => {console.log(response.text())});                    //result here is an object that has methods and properties
 
 
 

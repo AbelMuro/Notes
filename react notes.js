@@ -1080,115 +1080,33 @@ function EvenHandlers() {
 // KEEP IN MIND, that the value attribute is ONLY for controlled components
 // if you want to use input/select/forms in UNCONTROLLED components, then you should use defaultValue attribute
 
-class InputBox extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {value: 'Type here'};
-        this.handleChange = this.handleChange.bind(this); 
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleSubmit(e){                                            //in controlled components, the event handlers control EVERY symbol being inputed by the user
-        this.setState({value: e.target.value});               
-    }
-
-    handleSubmit(e) {
-        alert("your input is " + this.state.value);
-        e.preventDefault();
-    }
-
-    render() {
-        return (
-            <form onSubmit={this.handleChange}>
-                <input type="text" value={this.state.value} onChange={this.handleChange} />
-                <input type="submit" value="Submit"/>
-            </form>
-        );
-    }
-}
-
-//root.render(<InputBox />);
-
-
-
-
-class TextArea extends React.Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {value: "Please Type Here..."};
-        this.handleChange = this.handleChange.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    } 
-
-    handleChange(e) {
-        this.setState({value: e.target.value});                        //in controlled components, the event handlers control EVERY symbol being inputed by the user
-    }
-
-    handleSubmit(e) {
-        alert("You have submitted your answer " + this.state.value)
-        e.preventDefault();
-    }
-
-    render() {
-        return(
-            <form onSubmit={this.handleSubmit}>
-                <textarea value={this.state.value} onChange={this.handleChange}></textarea>
-                <input type="submit" value="Submit"/>          
-            </form>
-        );
-    }
-}
-
-//root.render(<TextArea />);
-
-
-
-
-class Select extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {usersChoice: ""};
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleChange.bind(this);
-    }
-
-    handleChange(e){
-        this.setState({usersChoice: e.target.value})                    //in controlled components, the event handlers control EVERY symbol being inputed by the user
-    }
-
-    handleSubmit(e) {
-        alert("You have choosen " + this.state.usersChoice);
-        e.preventDefault();
-    }   
-
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>    
-                <label>
-                    Choose your favorite color: 
-                    <select onChange={this.handleChange}>
-                        <option value="red"> Red</option>
-                        <option value="green"> green</option>
-                        <option value="blue"> blue</option>
-                        <option selected value="orange"> orange</option>
-                    </select>                    
+//everytime the user inputs something, the entire component gets re-rendered
+function Login() {
+    const [userName, setUserName] = useState("");                      
+    const [password, setPassword] = useState(""); 
+        
+     //this is a useful way of making sure a password meets certain constraints
+     let disable = password.length < 6 || password.match(/[a-zA-Z]/g) == null ||password.match(/\d/g) == null || password.match(/\W/g) == null;
+     //password must has at least one leter, one digit, and must have a non alphanumeric character and must be greater than 6 characters   
+        
+    return(
+        <>
+            <form action="login" method="POST">
+                <label htmlFor="username">
+                    Username: 
                 </label>
-                <input type="submit" value="SUBMIT"/>
-            </form>
-        )
-    }
+                <input type="text" id="username" name="username" value={userName} onChange={(e) => {setUserName(e.target.value)}}/>
+                <label htmlFor="password">
+                    Password: 
+                </label>
+                <input type="password" id="password" name="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
+                <input disabled = {disabled} type="submit" value="Login"/>      
+            </form> 
+        </>
+
+    )
 }
-
-//root.render(<Select />);
-
-
-
-
-
-
 
 
 

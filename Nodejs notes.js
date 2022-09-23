@@ -26,7 +26,7 @@
 // if you are using parcel in the client side...
 // 1) npm install -D http-proxy-middleware
 // 2) create a .proxyrc configuration file and type in the following json
-/* 3) 
+/* 3) every request made from the client will be proxied to port: 5000
     {
         "/": {
             "target": "http://localhost:5000"                    //every request sent by the client will be 
@@ -54,10 +54,25 @@
 
 // req is the request object that is sent by the client
 // res is the response object that will be sent back to the client
-var http = require('http');                                                           
-    http.createServer(function(req, res) {
-        //check out the boilerplate code far below
-    }).listen(5000);
+var http = require("http");
+var url = require("url");
+
+
+http.createServer(function (req, res) {
+    var q = url.parse(req.url, true);
+    var filename= "." + q.pathname;                         //remember that q.pathname = /nameOfFile.html
+
+    fs.readFile(filename, function(err, data) {
+        if(err) {
+            res.writeHead(404, {"Content-Type" : "text/html"}) //error handling
+            return res.end("404 Not Found")                
+        }
+        res.writeHead(200, {'Content-Type' : "text/html"});  //defines the content type that will be sent to the client.. 200 is a status code that means everything is ok, 404 is a status code that means something is wrong
+        res.write(data);
+        return res.end();                                    //we end the response here   
+    })
+
+}).listen(8080);                                             //the server listens on port '8080'                           
 
 
 
@@ -247,29 +262,6 @@ uc.upperCase("hello world");
 
 
 
-//========================================================= BOILERPLATE CODE ============================================================================================
-
-var http = require("http");
-var url = require("url");
-
-
-http.createServer(function (req, res) {
-    var q = url.parse(req.url, true);
-    var filename= "." + q.pathname;                         //remember that q.pathname = /nameOfFile.html
-
-    fs.readFile(filename, function(err, data) {
-        if(err) {
-            res.writeHead(404, {"Content-Type" : "text/html"}) //error handling
-            return res.end("404 Not Found")                
-        }
-        res.writeHead(200, {'Content-Type' : "text/html"});  //defines the content type that will be sent to the client.. 200 is a status code that means everything is ok, 404 is a status code that means something is wrong
-        res.write(data);
-        return res.end();                                    //we end the response here   
-    })
-
-}).listen(8080);                                             //the server listens on port '8080'                           
-
-
 
 
 //=============================================================== EXPRESS WEB FRAMEWORK =================================================================
@@ -306,11 +298,44 @@ http.createServer(function (req, res) {
 const express = require('express');
 const app = express();                                        //creating an object that represents the main app
 const bodyParser = require('body-parser');                    //npm install body-parser, this will parse all incoming fetch() requests
+const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
+
+app.use(bodyParser.json());
+app.use(cookieParser());
+
+fetch('/login', {
+    method: "POST, GET, PUT, DELETE",                             // these requests correspond to the requests below, app.post(), app.get(), etc...
+})
 
 // 'get' requests
-app.get('/', (req, res) => {                                 // .get() is for handleling 'get' requests from the client
-    res.send('hello world');                                 
+app.get('/login', (req, res) => {                                 // .get() is for handleling 'get' requests from the client
+    res.send('data has been sent');                                 
 })
+
+// 'post' request
+app.post('/login', (req, res) => {
+    //do something with req.body (if request came from a fetch())
+    //or use formidable module to get user input from forms
+    res.send('data has been received')
+})
+
+// 'put' request is similar to 'post', but the main difference is that calling the same 'put' request will produce the same result, but calling the same 'post' request will create the same resource over and over again
+app.put('/login', (req, res) => {
+    //do something with req.body (if request came from a fetch())
+    //or use formidable module to get user input from forms
+    res.send('data has been received')
+    
+})
+
+// 'delete' request
+app.delete('/login', (req, res) => {
+    //do something with req.body (if request came from a fetch())
+    //or use formidable module to get user input from forms
+    res.send('data has been deleted')
+})
+
+
+
 // app.use will bind a middleware for the path '/contantPage'
 app.use('/contactPage', () => {                              // .use() is a function that will 'use' the function on the second argument
 })                                                          // everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage

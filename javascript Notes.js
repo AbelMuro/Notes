@@ -361,19 +361,44 @@ let new_object = {
 //there are two different types of cookies in javascript. Sessions and cookies
 //sessions live on the server side, typically, sessions should be used to store sensitive data such as login info,
 //cookies live on the client side, typically, cookies should be used to store data that is NOT sensitive, such as user's preferences
+//by default, a cookie is deleted when the browser is closed
+
+//keep in mind that cookies should always be assigned data that has 'name and value'
+document.cookie = "username=john doe";                                              //all cookies must be in this format... "property: value"
+document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC";            //you can set the expiration date for cookies
+document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC; path='/'"   //path='/' tells the browser which path/route the cookie belongs to
+document.cookie = "username= ; expires=Thu, 09 Dec 1970 00:00:00 UTC; path='/'"           //to delete a cookie, just put the expiration date before today, also you should include the path="/" because some browsers might need it
+
+
+//using .cookie twice wont overwrite the previous value assigned to .cookie
+document.cookie = "usename=HotStuff69";
+document.cookie = "password=cobra69";                                               //console.log() will display 'username=usename=HotStuff69 password=cobra69'
+   
+//because there are no built in functions for cookies, you 
+//have to hard code a function that searches for a certain cookie
+//sets a cookie and gets a cookie
+
+function checkCookie(){
+      let user = getCookie("username");
+      if(user != ""){
+            alert("Welcome back " + user);
+      }
+      else{
+            user = prompt("What is your name?");                                    //prompt is similar to alert() but shows an input box and will return what the user inputed
+            if(user != "" && user != null)
+                  setCookie("username", user, 5);   
+      }
+}
+
+function setCookie(username, user, expirationDays){
+
+}
 
 
 
-
-
-
-
-
-
-
-
-
-
+//below are the Date methods you will need with cookies to set an expiration date that is relative to the current date
+let currentDate = new Date();                                     //returns a new object
+let expirationDate = currentDate.setTime(currentDate.getTime() + (5 * 24 * 60 * 60 * 1000))
 
 
 

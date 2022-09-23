@@ -207,6 +207,25 @@ var html_code = "<p> it works! </p>";                                  // you ca
 //                      /g   perform a global match (doesnt stop at the first match)  
 //                      /m   perform a multi-line match
 
+[a-zA-Z]          //Find a letter character
+\w	            //Find an alphanumeric character (letter and number)
+\W	            //Find an non-alphanumeric character (letter and number)
+\d	            //Find a digit
+\D	            //Find a non-digit character
+\s	            //Find a whitespace character
+\S	            //Find a non-whitespace character
+\b	            //Find a match at the beginning/end of a word,    beginning like this: \bHI,      end like this: HI\b
+\B	            //Find a match, but not at the beginning/end of a word
+\0	            //Find a NULL character
+\n	            //Find a new line character
+\f	            //Find a form feed character
+\t	            //Find a tab character
+\v	            //Find a vertical tab character
+\n+               //Find a string that contains at least one n
+\^n               //Find a string that contains n at the beginning of it
+\n$               //Find a string with n at the end of it
+
+
 //patterns
 let myString = "this is just an example for reg exp 1 2 3 4 5";
 myString.replace( / this /g , "");                       //will search for 'this' in the string

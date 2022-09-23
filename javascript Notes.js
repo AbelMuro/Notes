@@ -390,16 +390,37 @@ function checkCookie(){
       }
 }
 
+//one way to set a cookie
 function setCookie(username, user, expirationDays){
+      let d = new Date();
+      let expirationDate = d.setTime(d.getTime() + (5 * 24 * 60 * 60 * 1000));
+      expirationDate = expirationDate.toUCTString();
+      
+      document.cookie = username + "=" + user + expirationDate + "path='/'";
+}
 
+//one way to get a cookie
+function getCookie(user) {
+      let allCookies = document.cookie.split(";");
+      
+      for(let i = 0; i < allCookies.length; i++){
+            if(allCookies[i].includes(user)){
+                  let value = allCookies[i].split("=")
+                  return value[1];
+            }
+      }
 }
 
 
 
-//below are the Date methods you will need with cookies to set an expiration date that is relative to the current date
-let currentDate = new Date();                                     //returns a new object
-let expirationDate = currentDate.setTime(currentDate.getTime() + (5 * 24 * 60 * 60 * 1000))
 
+// --The logic below will always return a date that is 5 days away from the current date--
+//setTime() will set the new date for the object
+//getTime() will get the current time and convert it to the number of milliseconds from jan 1, 1970
+
+let currentDate = new Date();                                     //gets the current date
+let expirationDate = currentDate.setTime(currentDate.getTime() + (5 * (24 * 60 * 60 * 1000)));   //5 is the number of days... (24 * 60 * 60* 1000) is the number of milliseconds in a day
+expirationDate = "expires=" + expirationDate.toUCTSring();
 
 
 

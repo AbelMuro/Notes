@@ -357,23 +357,25 @@ let new_object = {
 
 
 
-//============================================================ COOKIES AND SESSIONS ==========================================================
-//there are two different types of cookies in javascript. Sessions and cookies
-//sessions live on the server side, typically, sessions should be used to store sensitive data such as login info,
-//cookies live on the client side, typically, cookies should be used to store data that is NOT sensitive, such as user's preferences
-//by default, a cookie is deleted when the browser is closed
+//============================================================ COOKIES ==========================================================
+// cookies have a capacity of 4kb
+// cookies live on the client side, typically, cookies should be used to store data that is NOT sensitive, such as user's preferences
+// by default, a cookie is deleted when the browser is closed
 
 //keep in mind that cookies should always be assigned data that has 'name and value'
 document.cookie = "username=john doe";                                              //all cookies must be in this format... "property: value"
+document.cookie = "username=jane box";                                              //replacing the value in cookie username 
 document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC";            //you can set the expiration date for cookies
 document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC; path='/'"   //path='/' tells the browser which path/route the cookie belongs to
-document.cookie = "username= ; expires=Thu, 09 Dec 1970 00:00:00 UTC; path='/'"           //to delete a cookie, just put the expiration date before today, also you should include the path="/" because some browsers might need it
+document.cookie = "username= ; expires=Thu, 09 Dec 1970 00:00:00 UTC; path='/'"     //to delete a cookie, just put the expiration date before today, also you should include the path="/" because some browsers might need it
 
 
 //using .cookie twice wont overwrite the previous value assigned to .cookie
 document.cookie = "usename=HotStuff69";
 document.cookie = "password=cobra69";                                               //console.log() will display 'username=usename=HotStuff69 password=cobra69'
    
+
+
 //because there are no built in functions for cookies, you 
 //have to hard code a function that searches for a certain cookie
 //sets a cookie and gets a cookie
@@ -390,12 +392,14 @@ function checkCookie(){
       }
 }
 
-//one way to set a cookie
+//one way to set a cookie with an expiration date
+//setTime() will set the new date for the object
+//getTime() will get the current time and convert it to the number of milliseconds from jan 1, 1970
+//The logic below will always return a date that is 5 days away from the current date
 function setCookie(username, user, expirationDays){
       let d = new Date();
-      let expirationDate = d.setTime(d.getTime() + (5 * 24 * 60 * 60 * 1000));
-      expirationDate = expirationDate.toUCTString();
-      
+      let expirationDate = d.setTime(d.getTime() + (5 * 24 * 60 * 60 * 1000));      //5 is the number of days... (24 * 60 * 60* 1000) is the number of milliseconds in a day
+      expirationDate = expirationDate.toUCTString(); 
       document.cookie = username + "=" + user + '; expires=' + expirationDate + "path='/'";
 }
 
@@ -409,21 +413,23 @@ function getCookie(user) {
                   return value[1];
             }
       }
-      
       return "";
 }
 
+//============================================================== SESSION ==============================================================================
+//session is another way of storing data, similar to local storage and cookies
+//sessions have a capacity of 5mb
+//sessions are only for data on the same tab, and will be deleted when the tab closes
+//sessions are only for the browser, they dont get sent to the server like cookies do with every request
+//sessions are more similar to local storage
+//you should use json.stringify() to pass data to the sessionStorage
+//and json.parse() to get the data from the session
 
-
-
-// --The logic below will always return a date that is 5 days away from the current date--
-//setTime() will set the new date for the object
-//getTime() will get the current time and convert it to the number of milliseconds from jan 1, 1970
-
-let currentDate = new Date();                                     //gets the current date
-let expirationDate = currentDate.setTime(currentDate.getTime() + (5 * (24 * 60 * 60 * 1000)));   //5 is the number of days... (24 * 60 * 60* 1000) is the number of milliseconds in a day
-expirationDate = "expires=" + expirationDate.toUCTSring();
-
+sessionStorage.setItem("key", "value");
+sessionStorage.setItem("data" , JSON.stringify(object));
+      
+sessionStorage.getItem("key");                              //returns a string
+sessionStorage.getItem("data");                             //make sure to stringify this JSON formatted data
 
 
 

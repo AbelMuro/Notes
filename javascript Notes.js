@@ -396,7 +396,7 @@ function setCookie(username, user, expirationDays){
       let expirationDate = d.setTime(d.getTime() + (5 * 24 * 60 * 60 * 1000));
       expirationDate = expirationDate.toUCTString();
       
-      document.cookie = username + "=" + user + expirationDate + "path='/'";
+      document.cookie = username + "=" + user + '; expires=' + expirationDate + "path='/'";
 }
 
 //one way to get a cookie
@@ -409,6 +409,8 @@ function getCookie(user) {
                   return value[1];
             }
       }
+      
+      return "";
 }
 
 

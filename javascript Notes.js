@@ -584,6 +584,17 @@ let result = exampleOne + exampleTwo;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 //====================================================================== PROTOTYPE ===================================================================
 // All objects in javascript have a default property called prototype that lets you add methods and properties to that object.
 // All objects in javascript also have a hidden property called [[Prototype]] that points to the object constuctor's methods and properties
@@ -641,6 +652,17 @@ constructor.prototype.birthplace = "san francisco";
 
 let myObject = new constructor();                           //everytime you use constructor, the object will also have the new property birthplace
 object.birthplace;                              
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -727,6 +749,15 @@ fetch('/somePath', {                                                    //this w
 
 
 
+
+
+
+
+
+
+
+
+
     
 //============================================================== SYNCHRONOUS ============================================================== 
 
@@ -747,8 +778,8 @@ console.log("c");
 
 
 //============================================================== ASYNCHRONOUS ==============================================================
-//asynchronous means NOT simultaneously. if a line of code is async, then it will be taken out of the stack, and will be executed in parallel
-//to the execution of the stack
+//asynchronous means NOT simultaneously. if a line of code is async, then it will be taken out of the stack, and will wait until the stack
+//finishes executing before the async operation starts executing
 
 
 console.log(setTimeout("a", 0);                             //because setTimeout is async, it will be taken out of the stack 
@@ -770,13 +801,19 @@ console.log("c");
 
 
 
+
+
+
+
+
+
 //==============================================================  PROMISES ============================================================== 
-//Promise objects were designed to handle async events (calls to a server), and it will be resolved when the event is over
+//Promise objects were designed to handle async events (calls to a server), and it will be resolved when the event is successful
 //Promises are also useful for chaining callbacks together, which in turn prevent callback hell
 //The reason why you want to use promises for an operation that takes a while to complete is because
 // you may want to chain callbacks with then() AFTER the operation has finished executing
-// these callbacks are called in another thread of the application and will join the main thread
-// once the process is complete
+// All synchronous events are taken out of the normal stack of execution and will wait until 
+// the stack finishes executing
 
 
 //The code below will return a "promise" object, 

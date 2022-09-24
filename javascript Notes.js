@@ -1,7 +1,7 @@
 //==================================================================== TYPES =================================================================================
 //javascript is a loosely typed language, meaning that the variables in JS are not bound to any particular type and can be assigned any type at any given time
 
-//these are the types in javascript
+//these are the primitive types in javascript
 null;                               // a placeholder that is used to assign a variable when we dont need it or when we are debugging
 undefined;                          // a placeholder that is automatically assigned to a variable that is not assign a value
 Boolean;                            // true or false
@@ -9,9 +9,12 @@ Number;                             // a whole number or fraction
 BigInt;                             // an extremely large number or extremely small number
 String;                             // a string 
 Symbol;                             // gives a unique value to a variable with an optional description, let x = Symbol("description");   x will always have a unique value
+
+//non-primitive types
 Function;                           // a function, basically
 Object;                             // a collection of properties and values that are used to organize data
-      
+Array;
+Set
 
 //keep in mind that some of the 'types' above are actually constructors(functions) 
 let x = new Object({name: "abel"});                               //these two lines have the same effect                          
@@ -99,7 +102,7 @@ object.birthplace;
 
 
 
-// ====================================================================== LEXICAL SCOPE  ====================================================================== 
+// ====================================================================== SCOPES and LEXICAL SCOPING ====================================================================== 
 // note, any variable defined outside a function or {} will have global scope, 
 // any variables defined inside a function or {} will have local scope
 
@@ -165,14 +168,20 @@ function Hoisting() {
 
 
 
+//---------------------------------------------------------------- CLOSURES -----------------------------------------------------------------------------------------
+//basically what happens is that when a function(A) is returned from another function(B), function(A) will 
+//retain all the variables/environment that were defined in function(B)
 
+function makeFunc() {
+      const name = 'Mozilla';
+      function displayName() {                                    //this function will retain the variable 'name=Mozilla'
+         console.log(name);                                         
+      }
+      return displayName;                                                   
+}
 
-
-
-
-
-
-
+let newFunc = makeFunc();                                         //will return a reference to displayName() that retained 'name = Mozilla' from makeFunc()
+newFunc();                                                        //will console.log("Mozilla");
 
 
 
@@ -498,7 +507,7 @@ object.new_variable = "t";                                              //you ca
 class other_class extends my_class{
     constructor(one) {
         this.one = one;
-        super(one);                                                     //calling parent constructor
+        super(one);                                                     //calling parent constructor in my_class
     }
     other_method() {
         return this.my_method();                                        //you can access the parent methods with "this."
@@ -680,21 +689,14 @@ fetch('/somePath', {                                                    //this w
     
 //============================================================== SYNCHRONOUS ============================================================== 
 
-//by default, javascript is synchronous... which means the next line will wait until the previous line finishes executing
-
-function findItem() {
-    var item;
-    while(item_not_found) {                 //this may take up to 10 seconds
-        // search
-    }
-    return item;
-}
-
-var item = findItem();                      //any code that comes after this statement has to **WAIT** until the function finishes executing
-doSomethingElse(item);                      //item is defined at this point because we waited for findItem() to finish executing
+//by default, javascript is synchronous... which means all the lines are placed in a stack and executed one by one
 
 
+console.log("a");                                           //all these lines of code are placed on a stack and executed in order
+console.log("b");                             
+console.log("c");
 
+//output: a b c
 
 
 
@@ -704,20 +706,15 @@ doSomethingElse(item);                      //item is defined at this point beca
 
 
 //============================================================== ASYNCHRONOUS ==============================================================
-//asynchronous means NOT simultaneously. async operations occur in a different thread and will join the main thread when the operation is complete
+//asynchronous means NOT simultaneously. if a line of code is async, then it will be taken out of the stack, and will wait until
+//the stack finishes executing its code, then the async operation will be executed
 
 
-async function findItem() {                 //this is an asynchronouse function
-    var item;
-    while(item_not_found) {                 //this may take up to 10 seconds
-        // search
-    }
-    return item;
-}
-var item = findItem()                       //any code that comes after this statement will **NOT** wait until the function finishes executing
-doSomethingElse(item)                       //item is undefined at this point because we did not wait until findItem() finished executing
+console.log(setTimeout("a", 0);                             //because setTimeout is async, it will be taken out of the stack 
+console.log("b");                                           //and will wait until the code below finishes executing
+console.log("c");
 
-    
+//output: b c a
 
 
 

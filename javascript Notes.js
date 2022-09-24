@@ -1,7 +1,7 @@
 //==================================================================== TYPES =================================================================================
 //javascript is a loosely typed language, meaning that the variables in JS are not bound to any particular type and can be assigned any type at any given time
 
-//these are the primitive types in javascript
+//primitive types
 null;                               // a placeholder that is used to assign a variable when we dont need it or when we are debugging
 undefined;                          // a placeholder that is automatically assigned to a variable that is not assign a value
 Boolean;                            // true or false
@@ -10,7 +10,7 @@ BigInt;                             // an extremely large number or extremely sm
 String;                             // a string 
 Symbol;                             // gives a unique value to a variable with an optional description, let x = Symbol("description");   x will always have a unique value
 
-//non-primitive types
+//reference types
 Function;                           // a function, basically
 Object;                             // a collection of properties and values that are used to organize data
 Array;
@@ -38,71 +38,10 @@ let x = [1,2,3];
 
 
 
-//====================================================================== PROTOTYPE ===================================================================
-// All objects in javascript have a default property called prototype. This property is itself an object that contains methods/functions that can be used 
-// on the object .Below are just a few example methods/functions...
-
-let myObject = {whatever: 3};                                //remember that this is the same as 'new Object' (Object is a constructor function that has its own methods)
-myObject.toString();                                              //these methods belong to the Object constructor
-myObject.hasOwnProperty();                                        //these methods belong to the Object constructor
-myObject.valueOf();                                               //these methods belong to the Object constructor
-
-// even though myObject does not have the methods .toString(), hasOwnProperty(), valueOf() defined inside the {}. it can still use the methods
-// because it has a built in property called prototype which points to those methods.
 
 
 
-
-// If we take for example Arrays, since Arrays are also objects in javascript. They also share the prototype property that points to the methods
-// in the Object constructor
-
-let myArray = [1,2,3];                                       //remember that this is the same as 'new Array()' (Array is a constructor that has its own methods)
-myArray.push(5);                                                  //these methods belong to the Array constructor
-myArray.pop();                                                    //these methods belong to the Array constructor
-myArray.forEach(() => {})                                         //these methods belong to the Array constructor
-myArray.toString();                                               //these methods belong to the Object constructor
-myArray.hasOwnProperty();                                         //these methods belong to the Object constructor
-myArray.valueOf();                                                //these methods belong to the Object constructor
-
-
-
-//------------------------------------------------------------------- PROTOTYPE CHAIN ------------------------------------------------------------------
-// visual example... (myArray is an object that has the property Prototype)
-
-//          
-//          myArray -> [[prototype]]: Array  -> pop() 
-//                                           -> forEach()
-//                                           -> push()
-//                                           -> ...
-//                                           -> [[prototype]]: Object --------------------> toString()
-//                                                                                        -> hasOwnProperty()
-//                                                                                        -> valueOf()
-//                                                                                        -> ...
-
-
-//you can also use prototype to add new methods or properties to constructors
-
-function constructor(){
-      this.name = "abel";
-      this.last = "muro";
-      this.age = 678;
-}
-
-constructor.prototype.birthplace = "san francisco";
-
-let myObject = new constructor();                           //everytime you use constructor, the object will also have the new property birthplace
-object.birthplace;                              
-
-
-
-
-
-
-
-
-
-
-// ====================================================================== SCOPES and LEXICAL SCOPING ====================================================================== 
+// ====================================================================== SCOPES ====================================================================== 
 // note, any variable defined outside a function or {} will have global scope, 
 // any variables defined inside a function or {} will have local scope
 
@@ -165,23 +104,6 @@ function Hoisting() {
         var x = 10;                                         // this will be hoisted to the top of the top of this function
             
 }
-
-
-
-//---------------------------------------------------------------- CLOSURES -----------------------------------------------------------------------------------------
-//basically what happens is that when a function(A) is returned from another function(B), function(A) will 
-//retain all the variables/environment that were defined in function(B)
-
-function makeFunc() {
-      const name = 'Mozilla';
-      function displayName() {                                    //this function will retain the variable 'name=Mozilla'
-         console.log(name);                                         
-      }
-      return displayName;                                                   
-}
-
-let newFunc = makeFunc();                                         //will return a reference to displayName() that retained 'name = Mozilla' from makeFunc()
-newFunc();                                                        //will console.log("Mozilla");
 
 
 
@@ -357,25 +279,69 @@ my_map.forEach(function(value,key) {                                       //for
 
 
 
-//============================================================== THIS keyword ============================================================== 
-var x = this;                               //x now represents the global window object, in other words, Window.alert() is the same as x.alert()
+//============================================================== THIS ============================================================== 
+//THIS is a keyword that refers to an object in javascript
+
+//-----------------------------THIS in the global scope----------------------------
 
 
+this;                                       //if you use THIS in the global scope, then it refers to the global object Window
+
+
+
+//------------------------------THIS in regular functions------------------------------
+//THIS in functions refers to the object that 'owns' the function
+//remember, for an function to be owned by an object you made, 
+//you must assign the function to one of the properties inside the object
+
+//myObject 'owns' the function 'myMethod'
+let myObject = {
+      name: "abel",
+      age: 29,
+      myMethod: function() {                  //since we assigned this function to one of the properties of myObject, this function belongs to myObject 
+            function inner(){}              //this inner function is not owned by myObject, it is owned by Window global object
+            return this.name + this.age;   //THIS refers to myObject
+      }
+}
+
+//Window 'owns' this function
 function myFunction(){
-    let that = this;                        //that will now reference this function
     return this;                            //this will also return the global window object;
 }
 
-//THIS represents the element itself
-<button onclick="this.style.backgroundColor='red'"> click this </button> 
+
+//-------------------------------THIS in arrow functions------------------------------------
+//THIS in arrow functions refers to the scope of the function
+
+//scope of arrowFunction is the Window object
+let arrowFunction = () => {
+      console.log(this);                              //this will return the global object
+}
+
+//scope of this object is the window object
+let myObject = {
+      name: "john",
+      age: "24",
+      myMethod: () => {
+          console.log(this);                          //even though this arrow function is 'owned' by myObject
+      }                                               //THIS will refer to the scope of myObject, which is the global object Window
+}
+
+//scope of this object is still the window object
+let myObject = {
+      name: "john",
+      age: "24",
+      myMethod: function() {
+           () => {console.log(this)}                  //the scope of the arrow function is myObject, so this will console.log 'myObject'                                                          
+      }       
+}
+
+function example() {
+      let x = () => {console.log(this)}               //THIS will refer to the global object because THIS will refer to the scope of the object that owns it
+      x();
+}
 
 
-let new_object = {
-    first_name: "abel",
-    my_method : function(){
-        return this;                          //THIS will return the new_object object
-    }
-};
 
 
 
@@ -480,6 +446,8 @@ sessionStorage.clickcount = 1;                             //a property that you
 
 
 //==============================================================  CLASSES =============================================================================== 
+//classes are blueprints that you use to define how an object is going to look like
+
 
 //syntax for creating a class                  
 class my_class{
@@ -565,7 +533,7 @@ let my_variable = new class_one.class_two();
 
 //============================================================== OBJECTS ============================================================== 
 
-//if an object is constant, u can change the contents of the elements within the object, but not the order
+//------------------------------------------------------------Object literal----------------------------------
 let test_scores = { 
     math: 23, 
     science: 45, 
@@ -575,10 +543,29 @@ let test_scores = {
         return this.math + this.science;}
 };  
 test_scores.math = 56;                                                      //this is how you access the elements of an object
-test_scores[math];                                                          //you can use array notation to access a property from the object
+test_scores['math'];                                                        //you can use array notation to access a property from the object
 test_scores.my_method();                                                    // this is how you access an objects' method
+test_scores.prototype.english = "45";                                       // all objects have this property called prototype that lets you add properties and methods 
 
 
+//----------------------------------------------------------Constructors------------------------------------------
+//constructors are functions that construct mulitple instances of an object
+function myConstructor(name, age) {
+      this.name = name;
+      this.age = age;
+      this.method = function(){
+            return this.name + this.age;
+      }
+}
+
+let myObject = new myConstructor("abel", "29");                               //same syntax as an object literal
+myObject.name;
+myObject["age"];
+myObject.method();
+myObject.prototype.birthday = "july 22, 1993";                                // all objects have this property called prototype that lets you add properties and methods 
+
+
+//---------------------------------------------------------SPREAD OPERATOR with objects-----------------------------
 //clever way of joining two objects together
 let example = {valueOne: 1, valueTwo: 2};
 let anotherExample = {...example, valueThree: 3};                        
@@ -590,16 +577,70 @@ let {exampleOne, exampleTwo} = randomness;                                  //ex
 let result = exampleOne + exampleTwo;
 
 
-let my_object = new Object();                                               //you can use the keyword "new" to create objects, Object is a predefined constructor
-my_object.name = "abel";                                                    // With new Object(), u can create members and values on the fly;
-
-let other_object = new function_objects("abel", 28, "San Francisco");       // you can create your own object with constructors
-other_object.name = "new name";                                             //this way, you can only access members of the object that are defined in the constructor
-other_object.prototype.new_property = "whaterver";                          //prototype property allows you to create new properties.
 
 
 
 
+
+
+
+//====================================================================== PROTOTYPE ===================================================================
+// All objects in javascript have a default property called prototype that lets you add methods and properties to that object.
+// All objects in javascript also have a hidden property called [[Prototype]] that points to the object constuctor's methods and properties
+
+let myObject = new Object();
+let myObject = {whatever: 3};                                //remember that this is the same as 'new Object' (Object is a constructor function that has its own methods)
+myObject.toString();                                              //these methods belong to the Object constructor
+myObject.hasOwnProperty();                                        //these methods belong to the Object constructor
+myObject.valueOf();                                               //these methods belong to the Object constructor
+
+// even though myObject does not have the methods .toString(), hasOwnProperty(), valueOf() defined inside the {}. it can still use the methods
+// because it has a built in property called prototype which points to those methods.
+
+
+//-------------------------------------------------------------------prototype inheritance---------------------------------------------
+// If we take for example Arrays, since Arrays are also objects in javascript. They also share the prototype property that points to the methods
+// in the Object constructor while also maintaining its own set of methods
+
+let myArray = new Array();
+let myArray = [1,2,3];                                       //remember that this is the same as 'new Array()' (Array is a constructor that has its own methods)
+myArray.push(5);                                                  //these methods belong to the Array constructor
+myArray.pop();                                                    //these methods belong to the Array constructor
+myArray.forEach(() => {})                                         //these methods belong to the Array constructor
+myArray.toString();                                               //these methods belong to the Object constructor
+myArray.hasOwnProperty();                                         //these methods belong to the Object constructor
+myArray.valueOf();                                                //these methods belong to the Object constructor
+
+
+
+//------------------------------------------------------------------- PROTOTYPE CHAIN ------------------------------------------------------------------
+// visual example... (myArray is an object that has the property Prototype)
+
+// let myArray = new Array([1,2,3])                               
+//       |
+//       |   
+//       -> myArray -> [[prototype]]: Array  -> pop() 
+//                                           -> forEach()
+//                                           -> push()
+//                                           -> ...
+//                                           -> [[prototype]]: Object --------------------> toString()
+//                                                                                        -> hasOwnProperty()
+//                                                                                        -> valueOf()
+//                                                                                        -> ...
+
+
+//you can also use prototype to add new methods or properties to constructors
+
+function constructor(){
+      this.name = "abel";
+      this.last = "muro";
+      this.age = 678;
+}
+
+constructor.prototype.birthplace = "san francisco";
+
+let myObject = new constructor();                           //everytime you use constructor, the object will also have the new property birthplace
+object.birthplace;                              
 
 
 
@@ -706,8 +747,8 @@ console.log("c");
 
 
 //============================================================== ASYNCHRONOUS ==============================================================
-//asynchronous means NOT simultaneously. if a line of code is async, then it will be taken out of the stack, and will wait until
-//the stack finishes executing its code, then the async operation will be executed
+//asynchronous means NOT simultaneously. if a line of code is async, then it will be taken out of the stack, and will be executed in parallel
+//to the execution of the stack
 
 
 console.log(setTimeout("a", 0);                             //because setTimeout is async, it will be taken out of the stack 
@@ -860,13 +901,13 @@ let name = (password == "Darkness33") ? "correct pwd": "incorrect pwd";      //i
 //============================================================== SELECTION STATEMENTS ============================================================== 
 
 
-//----------------------------------------------- IF/ELSE-IF/ELSE ---------------------------------------------------------------------------------
+//-------------------------------------------------------- IF/ELSE-IF/ELSE ---------------------------------------------------------------------------------
 let age = 25;
 if(age > 19 && age < 34){                                                  //the if statement will only execute if the expression inside returns true
     //code goes here
 }
 
-else if(age== 15){
+else if(age == 15){
     //code goes here
 }
 
@@ -876,7 +917,7 @@ else{                                                                       //wi
 
 
 
-//------------------------------------------------------ SWITCH ----------------------------------------------------------------------------------
+//---------------------------------------------------------- SWITCH ----------------------------------------------------------------------------------
 
 switch(some_variable_of_any_type){                                          //switch statements check the value of the variable with the cases below                       
     //cases use === when comparing values
@@ -975,40 +1016,70 @@ some_label:{                                                        //you can cr
 
 
 //============================================================== FUNCTIONS ==============================================================
+//Functions are similar to the functions in math, they take an input(argument), process the input, and return an output
+                
 
-function myFunction(){
-    document.getElementById("changethis").innerHTML = "it has been changed";    //changing the inner content of an element
-}                                                                               // for inline, you can delete document.getElementById and replace it with "this."
-  
-function function_with_parameters(a, b){                                                           
-    return "something";                                                         //this can be used to produce a value that can be assigned to a variable
+
+//-----------------pure function; this function does not mutate the arguments passed to it------------------------------------
+function myFunction(a, b){                                      //a and b are called arguments   
+    let c = a + b;
+    return c;                                                                 //function will return a string
 }
+function_with_parameters(1, 2);                                               // this is how you call a function
 
-let examples = [1, 2];
-function_with_parameters(...examples);                                           //you can use the spread operator for function calls
+//----------------inpure function; this function mutates the arguments passed to it--------------------------
+function myOtherFunction(a, b){
+      a = 1;
+      b = 2;
+      return a + b
+}
+myOtherFunction(5, 6)
 
 
-function function_objects(name, age, city){                                     //This is a constructor function, it allows us to create objects
+//-------------------constructor function; this function lets you create objects---------------------------------
+function myConstructor(name, age, city){                                     //This is a constructor function, it allows us to create objects
     this.name = name;
     this.age = age;
     this.city = city;
 }
+let myObject = new myConstructor("abel", 29, "San Francisco");
+
+
+//---------------------------------different ways of accepting arguments in function-----------------
+function destructuring({valueOne, valueTwo})                                  //you can pass an object that has two properties to this function
+function defaultValues(a = 1, b , c = "string")
 
 
 
 
-
-function destructuring({valueOne, valueTwo}){                                  //you can pass an object that has two properties to this function
-    //valueOne and ValueTwo will be treated as variables
-}
-
-
-
+//------------------------------------------ arrow functions--------------------------------------------
+//Arrow functions help reduce the syntax of a regular function
+//another thing to note is that arrow functions dont have their own 'this'
+//meaning that if you use 'this' in an arrow function, then it will refer to the scope in which the function was defined
 
 
 (a, b) => {return "something"};                                                 //This is an arrow function, it has different syntax but it does the same thing as a function
 
 e => e + 1;                                                                      //this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
+
+
+
+
+//---------------------------------------------------------------- CLOSURES -------------------------------------------
+//basically what happens is that when a function(A) is returned from another function(B), function(A) will 
+//retain all the variables/environment that were defined in function(B)
+
+function makeFunc() {
+      const name = 'Mozilla';
+      function displayName() {                                    //this function will retain the variable 'name=Mozilla'
+         console.log(name);                                         
+      }
+      return displayName;                                                   
+}
+
+let newFunc = makeFunc();                                         //will return a reference to displayName() that retained 'name = Mozilla' from makeFunc()
+newFunc();                                                        //will console.log("Mozilla");
+
 
 
 

@@ -9,12 +9,13 @@ Number;                             // a whole number or fraction
 BigInt;                             // an extremely large number or extremely small number
 String;                             // a string 
 Symbol;                             // gives a unique value to a variable with an optional description, let x = Symbol("description");   x will always have a unique value
+Function;                           // a function, basically
 
 //reference types
-Function;                           // a function, basically
 Object;                             // a collection of properties and values that are used to organize data
 Array;
-Set
+Set;
+Map;
 
 //keep in mind that some of the 'types' above are actually constructors(functions) 
 let x = new Object({name: "abel"});                               //these two lines have the same effect                          

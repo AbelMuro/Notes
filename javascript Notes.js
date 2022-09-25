@@ -1,5 +1,6 @@
 //==================================================================== TYPES =================================================================================
 //javascript is a loosely typed language, meaning that the variables in JS are not bound to any particular type and can be assigned any type at any given time
+//also keep in mind, that in javascript, you dont need to put a semi-colon at the end of each line of code, javascript will do that for you
 
 //primitive types
 null;                               // a placeholder that is used to assign a variable when we dont need it or when we are debugging
@@ -93,17 +94,18 @@ function CONST_variables() {
 
 
 
-//-------------------------------------------------------CONST, LET, VAR and FUNCTION can be hoisted ----------------------------------------------------
+//-------------------------------------------------------VAR and LET can be hoisted ----------------------------------------------------
 
 //keep in mind that only variable and function declarations are hoisted up, NOT the values
 function Hoisting() {
             
-       //var x;                                             // this is how hoisting really looks like     
+       //var x = undefined;                                 // this is how hoisting really looks like     
+       //let y;                                             // let variables do not get assigned a value of undefined
        
        console.log("x is " + x);                            // x will be undefined
         
         var x = 10;                                         // this will be hoisted to the top of the top of this function
-            
+        let y = 4;    
 }
 
 
@@ -115,10 +117,13 @@ function Hoisting() {
 
 
 //====================================================================== STRINGS ====================================================================== 
+
+
 "this is a string";
-let my_string = "hello" + "world" + 67;                                //strings can be concantenated, 67 will be converted into a string
-my_string[0]                                                           // characters in strings can be accessed as if it was an array                         
-var html_code = "<p> it works! </p>";                                  // you can add html code in strings
+let x = "hello" + "world" + 67;                                        //strings can be concantenated, 67 will be converted into a string
+x[0]                                                                   // characters in strings can be accessed as if it was an array                
+let y = "2" + 2;                                                       //this will return a string '22'
+let z = "4" - 3;                                                       //this will return a number 1;
 
 
 
@@ -214,6 +219,7 @@ Array.from($("div"));                                                       //cr
 
 
 //SPREAD OPERATOR, keep in mind that changes made to arr3 will NOT affect arr2 and arr1
+//also note, the spread operator will convert the object we are spreading into an array
 let arr1 = [1,2,3];
 let arr2 = [4,5,6];
 let arr3 = [...arr1, ...arr2]    //[1,2,3,4,5,6]
@@ -534,7 +540,14 @@ let my_variable = new class_one.class_two();
 
 //============================================================== OBJECTS ============================================================== 
 
-//------------------------------------------------------------Object literal----------------------------------
+let objectOne = {name: "abel"};
+let objectTwo = {age: "29"};
+Object.assign(objectOne, ObjectTwo);                         // assign will add all the properties from the second argument to the first argument (affects the original object)
+Object.freeze(objectOne);                                    // freeze will prevent you from adding or changing properties on the object
+Object.seal(objectOne);                                      // seal will let you change the properties of an object, but wont let you add new ones 
+Object.defineProperty(objectOne, "birthplace", value: "richmond", writable: false) //lets you add a new property to the object, writable means that you cant change the value
+
+//------------------------------------------------------------Object literal----------------------------------------------------------
 let test_scores = { 
     math: 23, 
     science: 45, 
@@ -549,7 +562,7 @@ test_scores.my_method();                                                    // t
 test_scores.prototype.english = "45";                                       // all objects have this property called prototype that lets you add properties and methods 
 
 
-//----------------------------------------------------------Constructors------------------------------------------
+//----------------------------------------------------------Constructors-----------------------------------------------------------------
 //constructors are functions that construct mulitple instances of an object
 function myConstructor(name, age) {
       this.name = name;
@@ -914,16 +927,23 @@ doSomethingElse();                                                              
 
 //============================================================== BOOLEAN VALUES ============================================================== 
 
-Boolean(10 > 2);                                                            //pre define function that returns true or false
+Boolean(10 > 2);                                                          //pre define function that returns true or false
 10 > 2;                                                                     //using comparison values can have the same effect as above
 10 == 2;                                                                    // this statement will also return true or false
 10 === 2;                                                                    // must have the same value AND the same data type
 10 !== 2;                                                                   // not equal value and not equal data type
 
-// &&                                                                       // logical and
-// ||                                                                       // logical or    
-// !                                                                        // logical not
+&&                                                                       // logical and
+||                                                                       // logical or    
+!                                                                        // logical not
 
+      
+//take note on the line below
+5 < 6 < 7;                                                              //comparison starts at the far left first
+true < 7                                                                //boolean values get converted to 1 when using the < or > operator
+1 < 7                                                                   //true will get converted to 1
+
+//ternary operator
 let password = "Darkness33";
 let name = (password == "Darkness33") ? "correct pwd": "incorrect pwd";      //if (password=="Darkness33") returns true, then "correct pwd" will be assigned to name; if its false, then "incorrect pwd" will be assigned to name
                                                                             
@@ -1055,7 +1075,7 @@ some_label:{                                                        //you can cr
 
 //============================================================== FUNCTIONS ==============================================================
 //Functions are similar to the functions in math, they take an input(argument), process the input, and return an output
-                
+//keep in mind that the return statement should be on the same line as the output being returned from the function                
 
 
 //-----------------pure function; this function does not mutate the arguments passed to it------------------------------------
@@ -1117,6 +1137,15 @@ function makeFunc() {
 
 let newFunc = makeFunc();                                         //will return a reference to displayName() that retained 'name = Mozilla' from makeFunc()
 newFunc();                                                        //will console.log("Mozilla");
+
+
+
+
+
+
+
+
+
 
 
 

@@ -77,7 +77,7 @@ export default Home;
 
 // ./App.js
 import Home from './HomePage.js';                      //this only works if 'HomePage' file has a 'default export'
-import HomeComponent from './HomePage.js'              // both Home and HomeComponent will resolve to Home
+import HomeComponent from './HomePage.js'              // you can use any name for the component that was exported with default
 
 
 
@@ -126,7 +126,7 @@ export default someComponent;
 
 
 
-// the file below is in the same directory as ./someFolder
+// the file below is in the same directory as ./someFolder, but not inside it
 import someComponent from './SomeFolder';                       //by just importing a component from a folder, react will look for the index.js
 
 
@@ -140,6 +140,11 @@ import someComponent from './SomeFolder';                       //by just import
 
 
 //-----------------------------------------REACT DOM -----------------------------------------------------------------------------------------
+//When React first renders all components, it creates a VIRTUAL DOM with react.createElement and all the elements will be initially placed in the real dom
+//when React notices that a component has been updated (state was updated, which causes a re-render), it will generate another VIRTUAL DOM
+//then the two virtual DOMS get compared and react will calculate the best and most efficient way of updated the real DOM
+
+
 import ReactDOM from 'react-dom/client';             //importing methods from built in packages in react
 import App from './components';
 
@@ -161,47 +166,43 @@ root.render(<App /> )                                       //using render() met
 
 
 //------------------------------------------- JSX syntax ---------------------------------------------------------------------------------------------
-//JSX stands for Javascript syntax extension, it was designed by React for the purpose of using HTML in a javascript file
+//JSX stands for Javascript syntax extension, it was designed by React for the purpose of using HTML syntax in a javascript file
 //this greatly improves readability.
 //once you have written your JSX code (usually in the return statement of a function component or in the render() of a class component)
-// React will then convert the JSX code into React.createElement
-
+// React will then convert the JSX code into React.createElement(), which will actually create an element in the DOM
 
 //remember, any valid javascript expression is allowed inside {}    
 //the attributes used in JSX are very similar to the regular attributes in HTML
 //but most are written in camelCase
             
-
-const name = "World";
-const elementONE = (
-            <h1 className="someClass"> 
-                  "hello," + {name} 
-             </h1>
-);  
-const link = "https://wwww.google.com";
-const elementTWO = (
-             <a href={link}> 
-                "click here" 
-             </a>
-);         
-function example() {};
-const elementTHREE = (
-              <p> 
-                {example()} 
-              </p>
-);                      
-const elementFOUR =  (                                         
-    <div>                                                       
-        <p>
-            "you can create elements with children"
-        </p>
-        <p>
-            "like this as well"
-        </p>
-    </div>
-);
-
-//JSX will get transpiled to the function below by react
+function UsingJSX() {
+        
+        //you can use any html semantic tag in JSX, the only difference is that some of the attributes are spelled differently
+        return(
+               <>
+                   <h1 className="someClass"> 
+                        "hello," + {name} 
+                   </h1>
+                   <a href={"http://www.google.com"}> 
+                       "click here" 
+                   </a>
+                   <p> 
+                       {example()} 
+                   </p>    
+                   <div>                                                       
+                        <p>
+                           "you can create elements with children"
+                        </p>
+                        <p>
+                           "like this as well"
+                        </p>
+                   </div>
+               </>     
+        )
+}
+            
+         
+//JSX will get transpiled to the function below by babel
 const element = React.createElement(
     'h1',                                                       //tag name
     {className: "myClass"},                                     //attributes
@@ -213,7 +214,7 @@ const element = React.createElement(
 // 'true && expression' will always return the expression
 
 let variable = true
-{variable == true && <MyComponent />}                   //MyComponent will render
+{true && <MyComponent />}                   //MyComponent will render
 {null && <MyComponent />}                               //MyComponent will not render
 
 
@@ -413,7 +414,7 @@ class ClassComponent extends React.Component {
     componentWillUnmount() {                                //lifecycle method that will be called after the component has been removed from the DOM
     }
 
-    handleState(item) {
+    handleState(item) {                                     //event handler
         this.setState(item);                                //React will then call render() because setState() will always cause a re-render
     }                                                      
                                                          
@@ -429,8 +430,8 @@ class ClassComponent extends React.Component {
 
 
     render() {
-            //any data manupulation can go here
-            let currentState = this.state.value;            //accessing state object
+        //any data manupulation can go here
+        let currentState = this.state.value;            //accessing state object
         return (
             <div>
                 <h1> state object is: {currentState} </h1>
@@ -534,6 +535,7 @@ function HooksThree() {
 
 //------------------------------------------------------------ USE CONTEXT HOOK --------------------------------------------
 // you can pass state object and setState() to child components by using createContext() and useContext()
+
 const StateObject = createContext();
 
 function ComponentOne() {
@@ -629,9 +631,9 @@ function Ref() {
 }
 
 
-//--------------------------------------------------------forwardRef()---------------------------------------------------------------------------
+//--------------------------------------------------------FORWARD REF()---------------------------------------------------------------------------
 //you can use useRef and forwardRef together to make a parent component have control over an element in a child component
-//keep in mind that forwardRef() has the same functionality as a regular React component,
+//keep in mind that forwardRef() on a component has the same functionality as a regular React component,
 //the only difference is that you can now pass a ref along with the props
 
 
@@ -648,7 +650,7 @@ function ParentComponent() {
     )    
 }
 
-
+//syntax is different, but this is still a react component
 const ChildComponent = forwardRef((props, ref) => {
         return(
            <div ref={ref}> greetings </div>

@@ -88,24 +88,28 @@ function CONST_variables() {
        const x = 10;                                                    // const variables have block scope
        x = 11;                                                          // you CANNOT reassign a value to a const variable
             
-       //const variables behave like let variables     
-                  
+       //const variables behave like let variables             
 }
 
 
 
-//-------------------------------------------------------VAR and LET can be hoisted ----------------------------------------------------
+//-------------------------------------------------------VAR, LET, CONST and FUNCTION can be hoisted ----------------------------------------------------
+//hoisting is a process where javascript hoists all variable declarations to the top of its scope, however, their values/definitions do not get hoisted
+//keep in mind that functions get hoisted up with their definitions
 
-//keep in mind that only variable and function declarations are hoisted up, NOT the values
-function Hoisting() {
-            
-       //var x = undefined;                                 // this is how hoisting really looks like     
-       //let y;                                             // let variables do not get assigned a value of undefined
+Hoisting();                                               // this is still legal, but if you use a function expression, then it wont work
+function Hoisting() {                                     // this is how hoisting really looks like    
+     //var x = undefined;                                 // var variables get assigned the value of undefined
+     //let y;                                             // let variables do not get assigned a value of undefined                                    
+     //const z;                                           // const variables do not get assigned a value of undefined
        
-       console.log("x is " + x);                            // x will be undefined
-        
-        var x = 10;                                         // this will be hoisted to the top of the top of this function
-        let y = 4;    
+      console.log(x);                                     // x will be undefined    
+      console.log(y);                                     // will return a reference error
+      console.log(z);                                     // will return a reference error
+      
+      var x = 10;                                         // this will be hoisted to the top of the top of this function
+      let y = 4;                                          // this will be hoisted to the top of the top of this function
+      const z = 5;                                        // this will be hoisted to the top of the top of this function
 }
 
 
@@ -123,7 +127,7 @@ function Hoisting() {
 let x = "hello" + "world" + 67;                                        //strings can be concantenated, 67 will be converted into a string
 x[0]                                                                   // characters in strings can be accessed as if it was an array                
 let y = "2" + 2;                                                       //this will return a string '22'
-let z = "4" - 3;                                                       //this will return a number 1;
+let z = "4" - 3;                                                       //this will return a number 1 because - will convert the string into a number;
 
 
 
@@ -198,7 +202,10 @@ myString.replace( / \.js$ /g, "" );                      //the '$' is used to se
 
 
 //-------------------------------------------------------------------- ARRAYS ------------------------------------------------------------------------------------------
-   //with const arrays, u can change the contents of the elements of the array, but not the order
+//with const arrays, u can change the contents of the elements of the array, but not the order
+//keep in mind that you can also use negative values as an index for an element 
+//array[-1] = 5;
+
 let array = ["first", "second", "third"];   
 array[0] = "reasigned";                                                     //this is how you access the elements of the array
 //keep in mind that changes to j will also affect changes to array
@@ -207,19 +214,14 @@ array.push("new Element");                                                  //ad
 array.unshift("new element");                                               //adds a new element to the array at the beginning of the array, also returns the length of the array
 array.pop();                                                                //deletes the last element of an array, also returns the element that was deleted
 array.shift();                                                              //deletes the FIRST element of an array, also returns the element that was deleted
-array.sort();                                                               // will sort the array based on the first letter of the strings in the elements (if array is string)
-array.sort((a,b) => {                                                       //you can define how exactly the elements of the array will be sorted 
-            if (a < b) return -1;                                           //a is sorted before b
-            else if( a > b) return 1;                                       //b is sorted before a
-            else return 0;                                                  //a and b must be equal    
-        });                                                
-array.sort(function(a,b){return a - b});                                    // if array has numbers, then u must use compare function to sort numbers in ascending order
-array.sort(function(a,b){return b - a});                                    // same as above, but this sorts numbers in descending order           
-Array.from($("div"));                                                       //create an array
+array.sort();                                                               //will sort the array based on the first letter of the strings in the elements, keep in mind that JS will convert any number to string if there is no callback function                                        
+array.sort((a,b) => {return a < b});                                        // sorting the array in ascending order
+array.sort((a,b) => {return a > b});                                         // same as above, but this sorts numbers in descending order           
+Array.from();                                                               //create an array from a string or from a list of DOM elements
 
 
-//SPREAD OPERATOR, keep in mind that changes made to arr3 will NOT affect arr2 and arr1
-//also note, the spread operator will convert the object we are spreading into an array
+//SPREAD OPERATOR, keep in mind that this will create a shallow copy of the arrays,
+//meaning that any changes made to arr3, will affect the affect arr1 and arr2
 let arr1 = [1,2,3];
 let arr2 = [4,5,6];
 let arr3 = [...arr1, ...arr2]    //[1,2,3,4,5,6]
@@ -229,6 +231,13 @@ let arr3 = [...arr1, ...arr2]    //[1,2,3,4,5,6]
 let someArray = [1, 2];
 const [first, second] = someArray;                                          // first and second now reference specific elements in the array 
 let someValue = first + second;                                             // and they can be used as variables
+
+
+//CLONING arrays
+
+
+const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of data
+const deepCopyTwo = structuredClone(data);                           //creates a deep copy of data
 
 
 
@@ -542,7 +551,7 @@ let my_variable = new class_one.class_two();
 
 let objectOne = {name: "abel"};
 let objectTwo = {age: "29"};
-Object.assign(objectOne, ObjectTwo);                         // assign will add all the properties from the second argument to the first argument (affects the original object)
+Object.assign(objectOne, ObjectTwo);                         // assign will add all the properties from the second argument to the first argument (creates a shallow copy)
 Object.freeze(objectOne);                                    // freeze will prevent you from adding or changing properties on the object
 Object.seal(objectOne);                                      // seal will let you change the properties of an object, but wont let you add new ones 
 Object.defineProperty(objectOne, "birthplace", value: "richmond", writable: false) //lets you add a new property to the object, writable means that you cant change the value
@@ -580,6 +589,9 @@ myObject.prototype.birthday = "july 22, 1993";                                //
 
 
 //---------------------------------------------------------SPREAD OPERATOR with objects-----------------------------
+//keep in mind that the spread operator will return a SHALLOW copy of the original object, 
+//meaning that changes made to the new object will affect the original object
+
 //clever way of joining two objects together
 let example = {valueOne: 1, valueTwo: 2};
 let anotherExample = {...example, valueThree: 3};                        
@@ -594,6 +606,15 @@ let result = exampleOne + exampleTwo;
 
 
 
+
+//-------------------------------------------------- CLONING objects------------------------------------------------------
+//to make a DEEP clone of an object, do the following steps below...
+
+let data = {name: "alice", age: "26"};   
+
+const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of data
+
+const deepCopyTwo = structuredClone(data);                           //creates a deep copy of data
 
 
 
@@ -663,6 +684,11 @@ function constructor(){
 }
 
 constructor.prototype.birthplace = "san francisco";
+constructor.prototype = {                                  //you can also add new methods to constructors like this
+      getName() {
+          return this.name
+      }
+} 
 
 let myObject = new constructor();                           //everytime you use constructor, the object will also have the new property birthplace
 object.birthplace;                              
@@ -882,7 +908,7 @@ doSomethingElse();                                  //this function will be call
 //very often we will not need a reject function
 
 //async means that the function will always return a promise
-//await makes javascript wait until the promise has been resolved
+//await will return the results of the promise
 
 async function createPromise(number) {                                              
     let results = await new Promise((resolve)=>{                                   
@@ -899,8 +925,6 @@ promise.then((results)=>{
 });
 
 doSomethingElse();                                                                  //this line of code will not be read by javascript UNTIL myPromise has been fulfilled or rejected
-
-
 
 
 
@@ -1051,6 +1075,14 @@ while(false);
 
 
 
+
+
+
+
+
+
+
+
 //============================================================== LABELS ==============================================================
     //labels start with the syntax "label: statements"
 
@@ -1061,6 +1093,11 @@ some_label:{                                                        //you can cr
     break some_label;                                               //break can be used here as well as continue
     i += 3;
 };
+
+
+
+
+
 
 
 
@@ -1109,6 +1146,14 @@ function defaultValues(a = 1, b , c = "string")
 
 
 
+//---------------------------------IIFE: immediately invoked function expression------------------------
+//IIFE are functions that get called on the spot
+
+//keep in mind that IIFE functions are now part of a block scope
+(function(){                                          //the moment you define the function, it gets called right away
+    let a = 100;
+})();
+
 
 //------------------------------------------ arrow functions--------------------------------------------
 //Arrow functions help reduce the syntax of a regular function
@@ -1124,15 +1169,26 @@ e => e + 1;                                                                     
 
 
 //---------------------------------------------------------------- CLOSURES -------------------------------------------
-//basically what happens is that when a function(A) is returned from another function(B), function(A) will 
-//retain all the variables/environment that were defined in function(B)
+//Closures is a combination of a function and the lexical scope around that function
+//in other words, a function will always have access to the variables defined and declared OUTSIDE of that function
+//but the variables defined and declared INSIDE that function cannot be accessed outside that function
 
-function makeFunc() {
-      const name = 'Mozilla';
-      function displayName() {                                    //this function will retain the variable 'name=Mozilla'
-         console.log(name);                                         
-      }
-      return displayName;                                                   
+var x = 3
+function closure() {                      //this function has a closure with the enviroment outside of it
+      console.log(x);                     //this will console log 3
+      let y = 4;
+}
+console.log(y);                           //this will log a reference error
+
+
+
+
+//a more complicated example with nested functions is below
+
+function outerFunction(x) {
+     return function innerFunction(y) {                                    //innerFunction has access to x because of its closure
+         return x + y                                                      //even though x was never defined in innerFunction
+      }                                            
 }
 
 let newFunc = makeFunc();                                         //will return a reference to displayName() that retained 'name = Mozilla' from makeFunc()

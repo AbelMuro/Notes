@@ -10,15 +10,18 @@ Number;                             // a whole number or fraction
 BigInt;                             // an extremely large number or extremely small number
 String;                             // a string 
 Symbol;                             // gives a unique value to a variable with an optional description, let x = Symbol("description");   x will always have a unique value
-Function;                           // a function, basically
 
-//reference types
+
+//non-primitive types
 Object;                             // a collection of properties and values that are used to organize data
-Array;
+Array;                              
 Set;
 Map;
+Date;                               //object that returns the current date
+Function;                           // a function, basically
 
-//keep in mind that some of the 'types' above are actually constructors(functions) 
+
+//keep in mind that the non-primitive types (except function) above are actually constructors(functions) 
 let x = new Object({name: "abel"});                               //these two lines have the same effect                          
 let x = {name: "abel"};
 
@@ -167,17 +170,19 @@ let z = "4" - 3;                                                       //this wi
 \n$               //Find a string with n at the end of it
 
 
-//patterns
+//its a good idea to use String.match() to use a reg exp to check if the pattern exists in the string
+//match will return an array with the characters that match the pattern, 
+//if the string doesnt contain characters that match the pattern, then match will return null
 let myString = "this is just an example for reg exp 1 2 3 4 5";
-myString.replace( / this /g , "");                       //will search for 'this' in the string
-myString.replace( / (this)|(is) /g , "");                //will search for 'this' and 'is' in the string
-myString.replace( / [1-4] /g, "");                       //will search for all numbers between 1 and 4 in the string
-myString.replace( / \d /g, "");                          //will search for a digit in the string
-myString.replace( / greetings\d /g , "");                //will search for 'greetings' and the first digit next to it
-myString.replace( / greetings\d+ /g, "");                //will search for 'greetings' and all the digits next to it 
-myString.replace( / \bLO /g, "");                        //will seach for a word that has 'LO' at the beginning of the word (will not select HELLO, but will select LOOK) 
-myString.replace( / \never\d+\.\d+ /g, "")               //you can chain together reg exp, this will select 'never' then any digit, then a period, then another digit
-myString.replace( / \.js$ /g, "" );                      //the '$' is used to select the pattern at the END of a string
+myString.match( / this /g );                       //will search for 'this' in the string
+myString.match( / (this)|(is) /g );                //will search for 'this' and 'is' in the string
+myString.match( / [1-4] /g);                       //will search for all numbers between 1 and 4 in the string
+myString.match( / \d /g);                          //will search for a digit in the string
+myString.match( / greetings\d /g);                //will search for 'greetings' and the first digit next to it
+myString.match( / greetings\d+ /g);                //will search for 'greetings' and all the digits next to it 
+myString.match( / \bLO /g);                        //will seach for a word that has 'LO' at the beginning of the word (will not select HELLO, but will select LOOK) 
+myString.match( / \never\d+\.\d+ /g)               //you can chain together reg exp, this will select 'never' then any digit, then a period, then another digit
+myString.match( / \.js$ /g);                      //the '$' is used to select the pattern at the END of a string
 
 
 
@@ -950,6 +955,16 @@ doSomethingElse();                                                              
 
 
 //============================================================== BOOLEAN VALUES ============================================================== 
+//falsey values are the following..
+0
+0n
+null
+undefined
+false
+NaN
+""
+//truthy values are anything BUT the values above
+
 
 Boolean(10 > 2);                                                          //pre define function that returns true or false
 10 > 2;                                                                     //using comparison values can have the same effect as above
@@ -1193,6 +1208,12 @@ function outerFunction(x) {
 
 let newFunc = makeFunc();                                         //will return a reference to displayName() that retained 'name = Mozilla' from makeFunc()
 newFunc();                                                        //will console.log("Mozilla");
+
+
+
+
+
+
 
 
 

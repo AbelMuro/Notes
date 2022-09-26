@@ -142,7 +142,7 @@ import someComponent from './SomeFolder';                       //by just import
 //-----------------------------------------REACT DOM -----------------------------------------------------------------------------------------
 //When React first renders all components, it creates a VIRTUAL DOM with react.createElement and all the elements will be initially placed in the real dom
 //when React notices that a component has been updated (state was updated, which causes a re-render), it will generate another VIRTUAL DOM
-//then the two virtual DOMS get compared and react will calculate the best and most efficient way of updated the real DOM
+//then the two virtual DOMS get compared and react will calculate the best and most efficient way of update the real DOM
 
 
 import ReactDOM from 'react-dom/client';             //importing methods from built in packages in react
@@ -1035,31 +1035,31 @@ root.render(<MakeList array={numbers}/>);
 
 
 
-//------------------------------------------------- SYNTHETIC EVENTS-------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- SYNTHETIC EVENTS and EVENT HANDLERS-------------------------------------------------------------------------------------------------------------------
 //keep in mind that React uses Synthetic events, 
-//React uses a 'wrapper' to pool together all the 
-//different named events across all browsers into one interface
-//synthetic events are the following..
-//onClick
-//onChange
-//onSubmit
+//React uses a cross-browser object that is usually named 'e' (synthetic event)
+//keep in mind that browsers have different interactions for 
+//different events such as preventDefault() and stopPropagation()
+//what react does is pool together these events under a single API
+//and that API will have only one type of interaction with those events
+//in other words, e.preventDefault() will do the same thing across all browsers
 
 
-//event handlers are always camelCase attributes
-//below are the two different cases for event handlers
 
 function EvenHandlers() {
         
-     const handleClick = (e) => {
-          alert("you clicked the first button");
+     const handleClick = (e) => {\
+          e.target;
+          e.preventDefault();
+          alert("e is a synthetic event");
      }
      
      function handleClicked(){
-        alert("you clicked the second button")
+          alert("e is a synthetic event")
      }
 
     return(
-        <>
+        <>              //event handlers are always camelCase attributes
               <button onClick={handleClick}> Click here </button>
               <button onClick={(e) => {handleClicked(e)}}> Click here </button>
         </>

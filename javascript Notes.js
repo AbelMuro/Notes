@@ -332,23 +332,35 @@ function myFunction(){
 
 
 //-------------------------------THIS in arrow functions------------------------------------
-//THIS in arrow functions refers to the scope of the function
+//THIS in arrow functions refers to the parent object of the object that owns the arrow function
+//remember, that functions in javascript are also objects
 
-//scope of arrowFunction is the Window object
+
+//arrowFunction doesnt have a parent object, so THIS will just point to the window object
+window.arrowFunction();
 let arrowFunction = () => {
       console.log(this);                              //this will return the global object
 }
 
-//scope of this object is the window object
+//Parent Object of myObject is the window object
+window.myObject.myMethod();                           //THIS in myMethod will point to the window object because its the parent object
 let myObject = {
       name: "john",
       age: "24",
       myMethod: () => {
           console.log(this);                          //even though this arrow function is 'owned' by myObject
-      }                                               //THIS will refer to the scope of myObject, which is the global object Window
+      }                                               //THIS will refer to the parent object of myObject, which 
 }
 
-//scope of this object is still the window object
+//innerFunction is still owned by the window object
+window.innerFunction();
+function outerFunction() {
+      let innerFunction = () => {console.log(this)}                       //this arrow functions doesnt belong to myFunction()
+}
+
+
+//
+window.myObject.myMethod()
 let myObject = {
       name: "john",
       age: "24",
@@ -782,7 +794,7 @@ fetch('/somePath', {                                                    //this w
 })
 .then(response => { return response.text();                              // response is an object that contains the response from the server
                            response.json();                              // text() will parse the data into text, json() will be parse the json data into javascript
-                 });                                                 // text() and json() will return a promise       
+                 });                                                    // text() and json() will return a promise       
 .then(data => {                                                         //using the parsed data
       //do something with the data                                      //can manipulate the DOM to display data
 })

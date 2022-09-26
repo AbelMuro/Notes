@@ -1035,9 +1035,19 @@ root.render(<MakeList array={numbers}/>);
 
 
 
-//------------------------------------------------- EVENT HANDLERS -------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------- SYNTHETIC EVENTS-------------------------------------------------------------------------------------------------------------------
+//keep in mind that React uses Synthetic events, 
+//React uses a 'wrapper' to pool together all the 
+//different named events across all browsers into one interface
+//synthetic events are the following..
+//onClick
+//onChange
+//onSubmit
+
+
 //event handlers are always camelCase attributes
 //below are the two different cases for event handlers
+
 function EvenHandlers() {
         
      const handleClick = (e) => {

@@ -18,7 +18,7 @@ Array;
 Set;
 Map;
 Date;                               //object that returns the current date
-Function;                           // a function, basically
+Function;                           //functions are objects in javascript
 
 
 //keep in mind that the non-primitive types (except function) above are actually constructors(functions) 
@@ -125,7 +125,8 @@ function Hoisting() {                                     // this is how hoistin
 
 //====================================================================== STRINGS ====================================================================== 
 
-
+let name = "abel"
+`You can add variables to strings like this ${name}`;                  //string interpolation
 "this is a string";
 let x = "hello" + "world" + 67;                                        //strings can be concantenated, 67 will be converted into a string
 x[0]                                                                   // characters in strings can be accessed as if it was an array                

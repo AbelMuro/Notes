@@ -6,10 +6,22 @@
 //   2) //npm install @mui/base
 //      the package above contains all the components in the MUI framework
 //  
+//          keep in mind that all MUI components are organized into 'slots'
+//          you can think of slots as just html tags that are nested within each other
+//          the root 'slot' is the parent html tag and the inner 'slot' is the actual MUI component
+//          for example: the badge component has root slot of <span class="BaseBadge-root"> and the inner slot is another <span class="BaseBadge-badge">
             
 import ButtonUnstyled from '@mui/base/ButtonUnstyled';         //you will have to import every component individually like this
 import BadgeUnstyled from "@mui/base/BadgeUnstyled";            
 import {styled} from '@mui/system';  
+
+
+//its a good idea to have objects store values for css like this
+const blue = {
+    500: "#007FFF",
+    600: "#0072E5",
+    700: "#0059B2"
+}
 
 
 //you can use any css property here
@@ -35,12 +47,22 @@ const Button = styled(ButtonUnstyled)`                    //styled is a function
 
 function MUI() {
 
-
+    const handleClick = () => {
+        console.log("it works");
+    }
+    
+    //not to self: component use uppercase (Root) while componentProps use lowercase(root)
+    // component was meant to overwrite the tag that the component uses, and componentProps was meant to change the props of the component
     return(
         <>
-            <Button> "Click Me" </Button>
-            <BadgeUnstyled component={{Root: 'div'}}/>        {/* the component prop lets use change the html tag that the component get transpiled into */}
-            <BadgeUnstyled component={'div'}/>                {/* this is a shortcut to the above, basically/}
+                {<!--Root slot}
+            <Button onClick={handleClick} id="someID" className="random"> "Click Me" </Button>  {<!-- you can assign any attribute to the component as props, these attributes will be propagated to the root slot}                                                        
+            <BadgeUnstyled component={{Root: 'div'}}/>                                          {<!-- the root slot will be transpiled into a div, (instead of span, which is the default)}
+            <BadgeUnstyled component={'div'}/>                                                  {<!-- this is a shortcut to the above, basically }
+            
+                {<!-- Inner Slot}
+            <BadgeUnstyled componentsProps={{ badge: { className: 'random' } }} />              {<!-- accessing one of the inner slots (badge) of the component and assigning an attribute to that slot}
+            
         </>
     
     )

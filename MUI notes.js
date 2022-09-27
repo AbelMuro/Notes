@@ -1,9 +1,11 @@
 //how to set up MUI base in your application
 //
-//   1) npm install @mui/system  @emotion/react  @emotion/styled
-//      the packages above will enable you to style the MUI components with the styled()``
+//   1) npm install @mui/system  
+//      this package enables you to use styled()
 //
-//   2) //npm install @mui/base
+//   2) npm install @emotion/react  @emotion/styled
+//
+//   3) //npm install @mui/base     or     npm install @mui/material
 //      the package above contains all the components in the MUI framework
 //  
 //     keep in mind that all MUI components are organized into 'slots'
@@ -14,10 +16,29 @@
 import ButtonUnstyled, {ButtonUnstyledClasses} from '@mui/base/ButtonUnstyled';         //you will have to import every component individually like this
 import BadgeUnstyled, {BadgeUnstyledClasses} from "@mui/base/BadgeUnstyled";            //each component has an object that contains all their classes
 import SwitchUnstyled, {switchUnstyledClasses} from '@mui/base/SwitchUnstyled';     
+
 import {styled} from '@mui/system';  
 
 
-//========================================== USING STYLED() TO STYLE MUI COMPONENTS ========================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//====================================================== MUI BASE: UNSTYLED COMPONENTS =======================================================
+
+//-------------------------------------------------- USING STYLED() TO STYLE MUI COMPONENTS ------------------------------------------------------ 
 //its a good idea to have objects store values for css like this
 const blue = {
     500: "#007FFF",
@@ -48,7 +69,7 @@ const Button = styled(ButtonUnstyled)`                    //styled is a function
 `
 //keep in mind that you can also use the class objects above in the same way you are using them below
 
-//============================================ USING OBJECTS TO STYLES MUI COMPONENTS ======================================================
+//------------------------------------------------ USING OBJECTS TO STYLES MUI COMPONENTS --------------------------------------------------
 
 //you can define css classes like this
 const css = `
@@ -65,11 +86,6 @@ const css = `
     }                                                               // this is the reason why you want to use the class object 
 
 `
-
-
-
-
-
 
 function MUI() {
  
@@ -103,12 +119,54 @@ function MUI() {
     
     )
 
-
-
-
-
-
-
-
-
 }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//========================================================= MUI MATERIAL ============================================================================
+
+import Button from '@mui/material/Button';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+
+
+const theme = createTheme({
+      palette: {
+            red: {
+                 main: '#FC3631',                                    //hex code for a shade of red, this will the main color of the button
+                 contrastText: '#FFF'                                //hex code for a shade of gold, this will the color of the text in the button  
+            }
+      }        
+})
+
+
+function MUI() {
+            
+       const handleClick() {}
+
+      return(
+            <ThemeProvider theme={theme}> 
+                <Button variant="contained"> Click me! </Button>                           {//variant prop gives you different themes for the button}
+                <Button sx={{width: 400, backgroundColor: 'red'}}> Click here </Button>      {//sx property lets you change the build in css properties of the components}
+                <Button onClick={handleClick}> </Button>                                    {//you can add event handlers like this}
+            </ThemeProvider>
+      
+      )
+            
+}
+
+
+

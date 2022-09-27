@@ -16,14 +16,6 @@ import BadgeUnstyled, {BadgeUnstyledClasses} from "@mui/base/BadgeUnstyled";    
 import SwitchUnstyled, {switchUnstyledClasses} from '@mui/base/SwitchUnstyled';     
 import {styled} from '@mui/system';  
 
-// The classes object has this syntax [componentName]Classes
-//it is important to use this object when defining the css for
-//the component because MUI already defined alot of the javascript behind
-//the scenes for these components,  and MUI will add one of the classes defined
-// in this class object to the elements in the component.
-
-//for example
-
 
 //========================================== USING STYLED() TO STYLE MUI COMPONENTS ========================================================
 //its a good idea to have objects store values for css like this
@@ -54,19 +46,23 @@ const Button = styled(ButtonUnstyled)`                    //styled is a function
         background-color: red;
     }
 `
+//keep in mind that you can also use the class objects above in the same way you are using them below
 
 //============================================ USING OBJECTS TO STYLES MUI COMPONENTS ======================================================
 
+//you can define css classes like this
 const css = `
-     .myClass{
+     .mySwitch{
             width: 100px;
             height: 100px;
             background-color: blue;
             border-radius: 10px;
             
      }
-
-
+                                                                    // this will select all elements with classes .mySwitch and MuiChecked
+    .mySwitch.${switchUnstyledClasses.checked} {                    // .mySwitch.Mui-checked      
+        background: #007FFF;                                        // when you click on this switch, MUI will automatically add .Mui-checked to the class list of the element                                    
+    }                                                               // this is the reason why you want to use the class object 
 
 `
 
@@ -76,11 +72,7 @@ const css = `
 
 
 function MUI() {
-
-    const handleClick = () => {
-        console.log("it works");
-    }
-    
+ 
     // not to self: component use uppercase (Root) while componentProps use lowercase(root)
     //
     // --------------------OVERWRITTING HTML STRUCTURE----------------------
@@ -94,7 +86,8 @@ function MUI() {
     
     return(
         <>
-            <style type="text/css">{css}</style>   
+            <style type="text/css"> {css} </style>                                              {//you can include an object with all the css like this}
+            <SwitchUnstyled className={"mySwitch"}/>                                            {//you can include the classes like this}
                 {// Root slot}
             <Button onClick={handleClick} id="someID" className="random"> "Click Me" </Button>  {// you can assign any attribute to the component as props, these attributes will be propagated to the root slot}                                                                
             <BadgeUnstyled component={'div'}/>                                                  {// this is a shortcut to the root slot of the component }

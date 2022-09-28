@@ -139,6 +139,8 @@ function MUI() {
     
 //========================================================= MUI MATERIAL ============================================================================
 
+
+//----------------------------------------------------------- BUTTONS ------------------------------------------------------------------------------
 import Button from '@mui/material/Button';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 
@@ -160,9 +162,10 @@ function MUI() {
       return(
             <ThemeProvider theme={theme}> 
                 <Button variant="contained"> Click me! </Button>                           {//variant prop gives you different types of button}
-                <Button sx={{width: 400, backgroundColor: 'red'}}> Click here! </Button>   {//sx property lets you change the build in css properties of the components}
-                <Button onClick={handleClick}> Click me!</Button>                          {//you can add event handlers like this}
+                <Button sx={{width: 400, backgroundColor: 'red'}}> Click here! </Button>   {//sx property lets you change the css of the component}
                 <Button color="customColor"> Click me!</Button>                            {//you can add your own custom colors like this}
+                <Button onClick={handleClick}> Click me!</Button>                          {//you can add event handlers like this}               
+                <Button href={"http://www.google.com"}> Click Me! </Button>                {//}
             </ThemeProvider>
       
       )

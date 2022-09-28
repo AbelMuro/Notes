@@ -42,6 +42,8 @@ import './react.css'
                10) then you should create a /components folder that will have all the functions and classes that are exported
                
                
+               
+               
          IF YOU DECIDE TO USE PARCEL AS THE BUNDLER, there is a few differences to note here
                
                1) npm install parcel
@@ -52,12 +54,17 @@ import './react.css'
                
                4) parcel will install babel for you
                
+               
+               
+               
          Alot of the times, you will use icons for your applicatons, here are the steps to install Font Awesome
          
                 1) npm install @fortawesome/fontawesome-svg-core    @fortawesome/free-solid-svg-icons    @fortawesome/react-fontawesome
                
+                2) import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+                   import {faHouse, faMagnifyingGlass, faCartShopping, faUser, faX} from '@fortawesome/free-solid-svg-icons'; 
                
-               
+                3) <FontAwesomeIcon icon={faMagnifyingGlass} />
 */      
 
 

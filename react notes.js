@@ -51,6 +51,13 @@ import './react.css'
                3) the index.html file must include a <script type="module"> tag that imports the index.js file 
                
                4) parcel will install babel for you
+               
+         Alot of the times, you will use icons for your applicatons, here are the steps to install Font Awesome
+         
+                1) npm install @fortawesome/fontawesome-svg-core    @fortawesome/free-solid-svg-icons    @fortawesome/react-fontawesome
+               
+               
+               
 */      
 
 

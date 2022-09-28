@@ -64,7 +64,7 @@ import './react.css'
                 2) import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
                    import {faHouse, faMagnifyingGlass, faCartShopping, faUser, faX} from '@fortawesome/free-solid-svg-icons'; 
                
-                3) <FontAwesomeIcon icon={faMagnifyingGlass} />
+                3) <FontAwesomeIcon icon={faMagnifyingGlass} className={myClass}/>
 */      
 
 

@@ -142,10 +142,10 @@ function MUI() {
 import Button from '@mui/material/Button';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 
-
+//you can create your own custom colors like this
 const theme = createTheme({
       palette: {
-            red: {
+            customColor: {
                  main: '#FC3631',                                    //hex code for a shade of red, this will the main color of the button
                  contrastText: '#FFF'                                //hex code for a shade of gold, this will the color of the text in the button  
             }
@@ -159,9 +159,10 @@ function MUI() {
 
       return(
             <ThemeProvider theme={theme}> 
-                <Button variant="contained"> Click me! </Button>                           {//variant prop gives you different themes for the button}
-                <Button sx={{width: 400, backgroundColor: 'red'}}> Click here </Button>      {//sx property lets you change the build in css properties of the components}
-                <Button onClick={handleClick}> </Button>                                    {//you can add event handlers like this}
+                <Button variant="contained"> Click me! </Button>                           {//variant prop gives you different types of button}
+                <Button sx={{width: 400, backgroundColor: 'red'}}> Click here! </Button>   {//sx property lets you change the build in css properties of the components}
+                <Button onClick={handleClick}> Click me!</Button>                          {//you can add event handlers like this}
+                <Button color="customColor"> Click me!</Button>                            {//you can add your own custom colors like this}
             </ThemeProvider>
       
       )

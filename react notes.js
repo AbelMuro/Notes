@@ -61,10 +61,14 @@ import './react.css'
          
                 1) npm install @fortawesome/fontawesome-svg-core    @fortawesome/free-solid-svg-icons    @fortawesome/react-fontawesome
                
-                1.5) npm install   @fortawesome/free-brands-svg-icons      this package includes icons for social media
+                1.5) npm install   @fortawesome/free-brands-svg-icons                           this package includes icons for social media
                
                 2) import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
                    import {faHouse, faMagnifyingGlass, faCartShopping, faUser, faX} from '@fortawesome/free-solid-svg-icons'; 
+                                
+               2.5) import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';             for social media icons
+                   import {faTiktok, faTwitter} from '@fortawesome/free-brands-svg-icons'
+               
                
                 3) <FontAwesomeIcon icon={faMagnifyingGlass} className={myClass}/>
 */      

@@ -890,9 +890,13 @@
         */
     justify-content: space-around, space-between, space-evenly, center, left, right; /* this property will 
         give a pre-defined amount of space between the COLUMNS and NOT the individual items.
-        It will also align the COLUMNS in the grid container
 
         Just look at the notes for 'justify-content' in the flex-box
+        */
+    align-content: space-around, space-between, space-evenly, center, left, right /* this property will 
+        give a pre-defined amount of space between the ROWS and NOT the individual items.
+        
+        this property works best with grid containers
         */
     justify-items: center, flex-start, flex-end; /* this property will move ALL the items in the grid
             within their individual containers. REMEMBER that this property will ignore the values specified
@@ -932,6 +936,10 @@
 
 
         */
+    justify-self: center, flex-start, flex-end; /* this property does the same thing as justify-items, but only for ONE item at a time*/
+    align-self: center, flex-start, flex-end;    /* this property is very similar to justify-items, but it aligns the item
+         VERTICALLY, and NOT horizontally  
+    */
     gap: 50px 50px;             /* SHORTHAND */
     row-gap: 50px;              /* this property will put a constant amount of space (gap) between the rows in the grid */
     column-gap: 50px;           /* this property will put a constant amount of space (gap) between the columns in the grid*/
@@ -997,8 +1005,6 @@
     grid-row-end: span 3; /* this property defines the row that the grid item will extend to 
         look at the notes above for more information
     */
-
-    justify-self: center, flex-start, flex-end; /* this property does the same thing as justify-items, but only for ONE item at a time*/
 }
 
 

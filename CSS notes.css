@@ -796,7 +796,12 @@
     */
     align-items: center, flex-start, flex-end; /* this property will align all items on the CROSS-AXIS of 
         the flex box. Look at the flex-box model that i drew above to see what each value does to this property
+        keep in mind that this property will assign align-self with the given value to each item in the flex container
         */
+    align-self: center, flex-start, flex-end; /* this property will align ONE item on the CROSS AXIS of 
+        the flex box, look at the flex-box model that i drew above to see what each value does to this property
+    */
+
     align-content: space-around, space-between, space-evenly; /* this property will control the spacing between 
         the items on the CROSS AXIS of the flex-box in the same way that justify-content does to the MAIN axis
         keep in mind that this property only works with flex-wrap: wrap or wrap-reverse
@@ -851,10 +856,6 @@
     flex-basis: 120px;      /* if the flex box has rows, then this property will define the width of the flex item 
             however, if the flex box has columns, then this property will define the height of the flex item
         */    
-    align-self: center, flex-start, flex-end; /* this property will align ONE item on the CROSS AXIS of 
-        the flex box, look at the flex-box model that i drew above to see what each value does to this property
-    */
-
 
 
 

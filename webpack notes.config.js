@@ -46,13 +46,9 @@ module.exports = {
                 use: [{loader: 'style-loader'}, {loader: 'css-loader'}]             //using style loader and css loader to load css onto application
             },
             {
-                test: /\.(png|jpg|webp)$/,
-                type: 'asset/resource'                                              //using asset/resource to load images
-            },
-            {
-                test: /\.mp4$/,
-                use: {loader: "file-loader"}                                        //using file-loader to load mp4 video files
-            },                                                                      //remember to npm install -D file-loader
+                test: /\.(png|jpg|webp|mp4|wav)$/,
+                type: 'asset/resource'                                              //asset/resource loads files such as images, audio and videos
+            },                                                                     
         ]
     },
 }

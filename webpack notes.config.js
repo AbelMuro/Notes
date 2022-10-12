@@ -17,20 +17,19 @@ module.exports = {
     plugins: [                      
         new HtmlWebpackPlugin({               //this plugin will help us generate the production html file in our /dist
             filename: 'index.html',           //our production html file will be named index.html
+            favicon: './src/favicon.ico',     //loading a favicon in our html template
             template: './src/index.html'      //this is a template for our production html file, we are defining how the html will look like before we make our production html file
         })
     ],
     devServer: {                              //configuration property for the development server
         port: 3000,                           //the devServer will start in port 3000
         proxy: {                              //the proxy will forward all requests to the specified port
-            '/login': {                                     //http://localhost:3000/login
+            '/': {                                     //http://localhost:3000/login
                 target: 'http://localhost:3000',            //will only forward requests that are send from this port
                 router: () => 'http://localhost:5000'       //all requests will be forwarded to this port
             }
         }
-    }
-    
-    ,
+    },
     
     module: {
         rules: [                               

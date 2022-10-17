@@ -926,16 +926,14 @@ doSomethingElse();                                  //this function will be call
 //very often we will not need a reject function
 
 //async means that the function will always return a promise
-//await will return the results of the promise
+//await means that the next line of code in the async function will wait until the promise has been resolved or rejected
 
 async function createPromise(number) {                                              
-    let results = await new Promise((resolve)=>{                                   
-        setTimeout(() => {                                                                  
-            results("ok")                   
-        }, 5000)
-    })
-    return results;         
-};
+    let results = await new Promise((resolve) => { setTimeout(() => { results("ok") }, 5000)
+    console.log(results);                 //this line of code will wait for the promise above, so you dont have to use .then() to chain together callbacks
+    
+    return results;                       //the async function will return another promise with these results  
+};                                        //you dont have to return the results 
 
 let promise = createPromise(10);
 promise.then((results)=>{

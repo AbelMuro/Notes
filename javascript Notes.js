@@ -153,22 +153,23 @@ let z = "4" - 3;                                                       //this wi
 //                      /m   perform a multi-line match
 
 [a-zA-Z]          //Find a letter character
-\w	            //Find an alphanumeric character (letter and number)
-\W	            //Find an non-alphanumeric character (letter and number)
-\d	            //Find a digit
-\D	            //Find a non-digit character
-\s	            //Find a whitespace character
-\S	            //Find a non-whitespace character
-\b	            //Find a match at the beginning/end of a word,    beginning like this: \bHI,      end like this: HI\b
-\B	            //Find a match, but not at the beginning/end of a word
-\0	            //Find a NULL character
-\n	            //Find a new line character
-\f	            //Find a form feed character
-\t	            //Find a tab character
-\v	            //Find a vertical tab character
-\n+               //Find a string that contains at least one n
-\^n               //Find a string that contains n at the beginning of it
-\n$               //Find a string with n at the end of it
+[^a-zA-Z]         //Find a character that is NOT a letter
+/ \w /	      //Find an alphanumeric character (letter and number)
+/ \W /	      //Find an non-alphanumeric character (letter and number)
+/ \d /	      //Find a digit
+/ \D /	      //Find a non-digit character
+/ \s /	      //Find a whitespace character
+/ \S /            //Find a non-whitespace character
+/ \b /	      //Find a match at the beginning/end of a word,    beginning like this: \bHI,      end like this: HI\b
+/ \B /	      //Find a match, but not at the beginning/end of a word
+/ \0 /	      //Find a NULL character
+/ \n /	      //Find a new line character
+/ \f /	      //Find a form feed character
+/ \t /	      //Find a tab character
+/ \v /	      //Find a vertical tab character
+/ \n+ /           //Find a string that contains at least one n
+/ \^n /           //Find a string that contains n at the beginning of it
+/ \n$ /           //Find a string with n at the end of it
 
 
 //its a good idea to use String.match() to use a reg exp to check if the pattern exists in the string

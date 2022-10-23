@@ -152,8 +152,11 @@ let z = "4" - 3;                                                       //this wi
 //                      /g   perform a global match (doesnt stop at the first match)  
 //                      /m   perform a multi-line match
 
-[a-zA-Z]          //Find a letter character
-[^a-zA-Z]         //Find a character that is NOT a letter
+//assertions            ^
+//   
+
+/ [a-zA-Z] /         //Find a letter character
+/ [^a-zA-Z] /        //Find a character that is NOT a letter
 / \w /	      //Find an alphanumeric character (letter and number)
 / \W /	      //Find an non-alphanumeric character (letter and number)
 / \d /	      //Find a digit

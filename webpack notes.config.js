@@ -1,5 +1,7 @@
 const path = require('path');               //path is now a module that has access to pre defined methods that are built into Node.js
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //to use a plugin with webpack, you must use require
+const dotenv = require("dotenv-webpack")     //remember to npm install dotenv-webpack to use env variables
+
 
 //module.exports is a node.js object that accepts objects, arrays, functions and classes as values that can be used in other js modules
 //to use module.exports..
@@ -19,7 +21,8 @@ module.exports = {
             filename: 'index.html',           //our production html file will be named index.html
             favicon: './src/favicon.ico',     //loading a favicon in our html template
             template: './src/index.html'      //this is a template for our production html file, we are defining how the html will look like before we make our production html file
-        })
+        }),
+        new dotenv;                           //this enables the use of env variables, you must use process.env.name_of_variable
     ],
     devServer: {                              //configuration property for the development server
         port: 3000,                           //the devServer will start in port 3000

@@ -280,6 +280,7 @@ function RouterStuff() {
                 </Route>
 
                 {/*(2) This Route will send a URL parameter to the Route below*/}
+                <Route path="/:repoName" element={<Whatever/>}>
                 <Route path="/DonateUs" element={<DonateUs />}/>                
                 <Route path="/DonateUs/:repoName" element={<ThankYou />}/>      {/* :repoName is a placeholder, it can be sent as useParam() to the <ThankYou /> */} 
                 <Route path="/DonateUs/:repoName/:otherRepoName" element={<Whatever/>}   
@@ -306,7 +307,8 @@ function NavigationBar() {
             <Link to="/" className="example"> Home</Link> <br/>               {/*you can style the links with className attribute*/}
             <Link to="/AboutUs" className="example"> About Us</Link><br/>
             <Link to="/ContactUs" className="example"> Contact Us</Link><br/>
-            <Link to="/DonateUs" className="example"> Donate Us</Link> <br/>
+            <Link to="/DonateUs" className="example"> Donate Us</Link> <br/>   
+            <Link to="/thisCanBeAnything" className="example">Cancel Us </Link>   {/*this Link will target the route with path="/:repoName" */}
         </>
     )
 }
@@ -1117,6 +1119,8 @@ function EvenHandlers() {
 function Login() {
     const [userName, setUserName] = useState("");                      
     const [password, setPassword] = useState(""); 
+    const [email, setEmail] = useState("");
+    let pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";                    //you can use this reg exp to validate any email in an input
         
      //this is a useful way of making sure a password meets certain constraints
      let disable = password.length < 6 || password.match(/[a-zA-Z]/g) == null ||password.match(/\d/g) == null || password.match(/\W/g) == null;
@@ -1129,10 +1133,17 @@ function Login() {
                     Username: 
                 </label>
                 <input type="text" id="username" name="username" value={userName} onChange={(e) => {setUserName(e.target.value)}}/>
+
+                <label htmlFor="email">
+                    Email:
+                </label>
+                <input type="email" id="email" name="email" pattern={pattern} value={email} onChange={(e) => {setEmail(e.target.value)}}>
+
                 <label htmlFor="password">
                     Password: 
                 </label>
                 <input type="password" id="password" name="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
+
                 <input disabled = {disabled} type="submit" value="Login"/>      
             </form> 
         </>

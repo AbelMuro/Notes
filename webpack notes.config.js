@@ -23,6 +23,7 @@ module.exports = {
     ],
     devServer: {                              //configuration property for the development server
         port: 3000,                           //the devServer will start in port 3000
+        historyApiFallback: true,             //this property helps with routing in our react app, everytime we refresh the page, react router will send a request to a server, but this property will make sure it searches for an index file first
         proxy: {                              //the proxy will forward all requests to the specified port
             '/': {                                     //http://localhost:3000/login
                 target: 'http://localhost:3000',            //will only forward requests that are send from this port

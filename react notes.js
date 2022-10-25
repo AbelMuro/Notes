@@ -123,42 +123,6 @@ import {number as myNumber} from './HomePage.js'            //this will work
 
 
 
-
-
-//=========================================== INDEX FILE IN FOLDERS =========================================== 
-//With React, you can have folders that contain ALL the modules of a specific component
-//this lets you organize your modules much better
-
-
-// /someFolder/INDEX.js
-import someComponent from './someComponent.js'
-export default someComponent;
-
-// /someFolder/SOMECOMPONENT.js
-function someComponent() { /* some logic*/};
-export default someComponent;
-
-// /someFolder/STYLES.css
-.someClass {
-      color: black;
-      background-image: url("./someURL.jpg")
-}
-
-
-
-// the file below is in the same directory as ./someFolder, but not inside it
-import someComponent from './SomeFolder';                       //by just importing a component from a folder, react will look for the index.js
-
-
-
-
-
-
-
-
-
-
-
 //-----------------------------------------REACT DOM -----------------------------------------------------------------------------------------
 //When React first renders all components, it creates a VIRTUAL DOM with react.createElement and all the elements will be initially placed in the real dom
 //when React notices that a component has been updated (state was updated, which causes a re-render), it will generate another VIRTUAL DOM
@@ -934,7 +898,28 @@ function AnotherExampleWithCustomHooks() {
 
 
 
-
+    
+//--------------------------------------------------------------- REACT POPUPS-----------------------------------------------------------------------------
+//npm install reactjs-popup
+// you can use react popup to display a popup message to the user
+    
+ //its a bit confusing, but everything is wrapped around the <Popup> component   
+        <Popup trigger={
+                <Box className={styles.button}>                                           //this button is what will be initially be displayed to the user
+                    <Button variant="contained">Update Info</Button>                      //once the user clicks on the button, the popup will appear        
+                </Box>} 
+                modal>
+                                                                                                 
+                {close => (                                         //close is a callback can be used to close the popup
+                    <div className={styles.overlay}>                //to display a darkened background behind the popup, use an overlay that covers the entire videwport
+                        <div className={styles.content}>
+                            <h1> Title </h1>
+                            <p> This is a popup</p>
+                            <button onClick={close}>Close Popup</Button>
+                        </div>   
+                    </div> 
+                 )}
+        </Popup>
 
 
 
@@ -1016,7 +1001,7 @@ function AnotherExampleWithCustomHooks() {
 //when you create an array of JSX elements, each element
 //must have a unique key that identifies it.
 //you can use any string as a key. but its best to use the 
-// uuid api to create universaly unique ID's 
+// uuid api to create universally unique ID's 
         
 import {v4 as uuid} from 'uuid';
         
@@ -1070,7 +1055,7 @@ root.render(<MakeList array={numbers}/>);
 
 function EvenHandlers() {
         
-     const handleClick = (e) => {\
+     const handleClick = (e) => {
           e.target;
           e.preventDefault();
           alert("e is a synthetic event");
@@ -1110,7 +1095,7 @@ function EvenHandlers() {
 //--------------------------------------------------------------------CONTROLLED COMPONENTS---------------------------------------------------------------------------
 
 // Components that handle the data of the input/select/forms with its state are called controlled components
-// you have must better control of what is being inputed by the user
+// you have better control of what is being inputed by the user
 // KEEP IN MIND, that the value attribute is ONLY for controlled components
 // if you want to use input/select/forms in UNCONTROLLED components, then you should use defaultValue attribute
 

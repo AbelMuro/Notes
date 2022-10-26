@@ -251,7 +251,7 @@ async function replaceDocument() {
         await setDoc(newDocument, {                                        //setDoc() will replace an existing document in the collection
                 name: "carlos",                                            //if the document doesnt exist, then a new one will be created
                 age: 56
-            }, {merge : false})                                            //the second argument tells firebase to merge the new data with the existing data
+            }, {merge : false})                                            //the second argument tells firebase to merge the new data with the existing data in the document
         }                                                                  // assuming that the document already exists
      }
     catch(error){
@@ -262,7 +262,43 @@ async function replaceDocument() {
 
 
 
-async function replaceDocument
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

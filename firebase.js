@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";               //you need this for your app to use firebase
 import { getDatabase} from 'firebase/database';             //accessing one of the getter functions for the database module
-
+import { getAuth} from 'firebase/auth';
+import { getStorage} from 'firebase/storage';
 
 //the configuration object that you need to initialize firebase
 //keep in mind that every project has their own configuration object
@@ -25,6 +26,9 @@ export const db = getDatabase(app);                                         //al
 
 // Initialize authentication and exporting it
 export const auth = getAuth(app);                                           //alot of the times, to use firebase, you will need to export these objects
+
+// Initialize storage and exporting it
+export const storage = getStorage(app);
 
 
 
@@ -178,6 +182,21 @@ onAuthStateChanged(auth, (currentUser) => {
 
 
 
+//------------------------------------------------------ FIREBASE STORAGE-----------------------------------------------------------------------------
+import {ref as refSB, uploadBytes} from "firebase/storage";                     //some modules have the same function names, such as ref
+import {storage} from './firebase-config';
+
+//the functions below are all asynchronous
+function uploadImagesToStorage(file) {
+     const reference = refSB(storage, "/AbelsImages/" + file.name);                   //its a good idea to store the images in a folder like this
+      uploadBytes(abelsImagesInStorage, file);                                        //file can be the Javascript File that comes from the <input type="file">     
+}                                                                                     //or it can be a blob object
+
+async function downloadImagesFromStorage(fileName){
+    const reference = refSB(storage, "/AbelsImages/" + fileName);
+    let url = await getDownloadURL(reference);
+    //you can then select an img element and assign the url to the src attribute
+}
 
 
 

@@ -225,8 +225,11 @@ import {collection, addDoc, setDoc, doc} from 'firebase/firestore'
 
 //in Firestore, data is organized in documents, which are then organized into collections
 
+//const collectionRef = collection(db, "users");            //selects a collection
+//const docRef = (collectionRef, "Abel")                    //selects a document within the collection
 
 
+//addDoc() should only be used with collection()
 async function addDocument () {
         try{
             const newDocument = collection(db, "example")                   //collection() will create a collection called 'example',
@@ -235,7 +238,7 @@ async function addDocument () {
                 last: "muro",
             });
             console.log(docRef.id);                                         //addDoc will always generate a unique ID for every document in the collection                                  
-        }
+        }                                                                   //you cannot customize the name of the document with addDoc
         catch(error){
             console.log("error");
         }
@@ -244,8 +247,8 @@ async function addDocument () {
 
 
 
-
-async function replaceDocument() {
+//setDoc() should only be used with doc()
+async function setDocument() {
      try{
         const newDocument = doc(db, "cities", "LA");                       //doc() will create a collection called 'cities' and a document called 'LA'
         await setDoc(newDocument, {                                        //setDoc() will replace an existing document in the collection
@@ -255,8 +258,7 @@ async function replaceDocument() {
         }                                                                  // assuming that the document already exists
      }
     catch(error){
-        console.log(error);
-        
+        console.log(error); 
     }
 }
 

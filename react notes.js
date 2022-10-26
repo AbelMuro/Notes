@@ -489,6 +489,7 @@ function HooksTwo() {
 // useEffect() is a combination of ComponentDidMount, ComponentDidUpdate, ComponentWillUnmount
 // this function gets called after the first render, after every re-render, and once the component is unmounted from the DOM
 // you can have multiple useEffect() hooks in the same function component, this is useful for separating unrelated code and uniting related code
+//its a good idea to use the useEffect hook AFTER you call the setState() function
 function HooksThree() {  
         
     useEffect(() => {
@@ -900,10 +901,9 @@ function AnotherExampleWithCustomHooks() {
 
     
 //--------------------------------------------------------------- REACT POPUPS-----------------------------------------------------------------------------
-//npm install reactjs-popup
+// npm install reactjs-popup
 // you can use react popup to display a popup message to the user
-    
- //its a bit confusing, but everything is wrapped around the <Popup> component   
+     
         <Popup trigger={
                 <Box className={styles.button}>                                           //this button is what will be initially be displayed to the user
                     <Button variant="contained">Update Info</Button>                      //once the user clicks on the button, the popup will appear        

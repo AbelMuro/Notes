@@ -44,9 +44,6 @@ function MyGoogleMap() {
     //the map state can be used to change the current position of the map with event handlers
     const [map, setMap] = useState(/** @type google.maps.Map */(null));    
 
-    //make sure you do this in the beginning of your component to be able to use google object
-    const google = window.google;
-
     // <GoogleMaps onLoad={(map)=>{setMap()}}> </GoogleMaps>                // onLoad property will initialize the map state
 
     //useLoadScript will load the <script src="https://maps.googleapis.com....."> </script> in the html file

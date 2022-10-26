@@ -91,6 +91,13 @@ function createNewNode(newData){
 
 
 
+
+
+
+
+
+
+
 //------------------------------------------------------------- AUTHENTICATION ------------------------------------------------------------------
 import { createUserWithEmailAndPassword, updateProfile, signOut, sendEmailVerification, sendSignInLinkToEmail} from 'firebase/auth';
 import {auth} from './firebase-config';
@@ -188,6 +195,14 @@ onAuthStateChanged(auth, (currentUser) => {
 
 
 
+
+
+
+
+
+
+
+
 //------------------------------------------------------ FIREBASE STORAGE-----------------------------------------------------------------------------
 import {ref as refSB, uploadBytes} from "firebase/storage";                     //some modules have the same function names, such as ref
 import {storage} from './firebase-config';
@@ -217,24 +232,36 @@ async function downloadImagesFromStorage(fileName){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 //-------------------------------------------------------- FIRESTORE --------------------------------------------------------------------------------
 import {collection, addDoc, setDoc, doc} from 'firebase/firestore'
 
-
-
-
 //in Firestore, data is organized in documents, which are then organized into collections
 
-//const collectionRef = collection(db, "users");            //selects a collection
-//const docRef = (collectionRef, "Abel")                    //selects a document within the collection
+//this is also legal
+const collectionRef = collection(db, "users");            //selects a collection
+const docRef = doc(collectionRef, "Abel")                 //selects a document within the collection
+
 
 
 //addDoc() should only be used with collection()
-async function addDocument () {
+async function addNewDocument () {
         try{
-            const newDocument = collection(db, "example")                   //collection() will create a collection called 'example',
-            const docRef = await addDoc(newDocument, {                      //this will always add a new document to the collection
-                first: "abel",                                              //if a document exists with the same data, then nothing will happen
+            const myCollection = collection(db, "users")                   //collection() will create or select a collection called 'users',
+            const docRef = await addDoc(myCollection, {                      //this will always add a new document to the collection
+                first: "abel",                                               //if a document exists with the same data, then nothing will happen
                 last: "muro",
             });
             console.log(docRef.id);                                         //addDoc will always generate a unique ID for every document in the collection                                  
@@ -248,9 +275,9 @@ async function addDocument () {
 
 
 //setDoc() should only be used with doc()
-async function setDocument() {
+async function setNewOrReplaceDocument() {
      try{
-        const newDocument = doc(db, "cities", "LA");                       //doc() will create a collection called 'cities' and a document called 'LA'
+        const newDocument = doc(db, "cities", "LA");                       //doc() will create or select a collection called 'cities' and a document called 'LA'
         await setDoc(newDocument, {                                        //setDoc() will replace an existing document in the collection
                 name: "carlos",                                            //if the document doesnt exist, then a new one will be created
                 age: 56

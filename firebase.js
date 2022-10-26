@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";               //you need this for 
 import { getDatabase} from 'firebase/database';             //accessing one of the getter functions for the database module
 import { getAuth} from 'firebase/auth';
 import { getStorage} from 'firebase/storage';
+import { getFirestore} from 'firebase/firestore';
 
 //the configuration object that you need to initialize firebase
 //keep in mind that every project has their own configuration object
@@ -30,21 +31,22 @@ export const auth = getAuth(app);                                           //al
 // Initialize storage and exporting it
 export const storage = getStorage(app);
 
-
+// Initialize firestore database and exporting it
+export const db = getFirestore(app);
 
 
 
 //======================================================== everything below should be in a separate module ===================================================
 
 
-//--------------------------------------------------------------- DATABASE ----------------------------------------------------------------------------------
+//--------------------------------------------------------------- REALTIME DATABASE ----------------------------------------------------------------------------------
 import {ref, set, onValue, push} from 'firebase/database';
 import {db} from './firebase-config';
 import {useRef} from 'react';
 
 let nodeRef = useRef();                                    //its a good idea to use a useRef to reference a node in the database
 
-
+//in realtime, data is stored in JSON
 
 function traverseThroughDatabase(findName) {
      const referenceToDB = ref(db);                     //creating a reference to the entire database
@@ -182,9 +184,16 @@ onAuthStateChanged(auth, (currentUser) => {
 
 
 
+
+
+
+
 //------------------------------------------------------ FIREBASE STORAGE-----------------------------------------------------------------------------
 import {ref as refSB, uploadBytes} from "firebase/storage";                     //some modules have the same function names, such as ref
 import {storage} from './firebase-config';
+
+
+
 
 //the functions below are all asynchronous
 function uploadImagesToStorage(file) {
@@ -197,6 +206,68 @@ async function downloadImagesFromStorage(fileName){
     let url = await getDownloadURL(reference);
     //you can then select an img element and assign the url to the src attribute
 }
+
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------- FIRESTORE --------------------------------------------------------------------------------
+import {collection, addDoc, setDoc, doc} from 'firebase/firestore'
+
+
+
+
+//in Firestore, data is organized in documents, which are then organized into collections
+
+
+
+async function addDocument () {
+        try{
+            const newDocument = collection(db, "example")                   //collection() will create a collection called 'example',
+            const docRef = await addDoc(newDocument, {                      //this will always add a new document to the collection
+                first: "abel",                                              //if a document exists with the same data, then nothing will happen
+                last: "muro",
+            });
+            console.log(docRef.id);                                         //addDoc will always generate a unique ID for every document in the collection                                  
+        }
+        catch(error){
+            console.log("error");
+        }
+}
+
+
+
+
+
+async function replaceDocument() {
+     try{
+        const newDocument = doc(db, "cities", "LA");                       //doc() will create a collection called 'cities' and a document called 'LA'
+        await setDoc(newDocument, {                                        //setDoc() will replace an existing document in the collection
+                name: "carlos",                                            //if the document doesnt exist, then a new one will be created
+                age: 56
+            }, {merge : false})                                            //the second argument tells firebase to merge the new data with the existing data
+        }                                                                  // assuming that the document already exists
+     }
+    catch(error){
+        console.log(error);
+        
+    }
+}
+
+
+
+async function replaceDocument
+
+
+
+
+
 
 
 

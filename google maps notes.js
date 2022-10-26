@@ -1,5 +1,5 @@
 //==================================GOOGLE MAPS WITH REACT================================================================
-//google.maps is part of the global object(window) in javascript
+// REMEMBER: to use the google object from the window object, you HAVE to install google maps api
 // window = {google: {maps: {...}}}
 //as with every pre defined object, it has its set of functions and properties
 

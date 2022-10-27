@@ -36,7 +36,73 @@ export const db = getFirestore(app);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //======================================================== everything below should be in a separate module ===================================================
+
+//-------------------------------------------------------------- REACT HOOKS -----------------------------------------------------------------------------------
+//react hooks follow the same logic as using plain firebase with no hooks, you still have to import the modules for firestore, realtime database, auth, etc...
+//and use those modules on the hooks. These hooks were designed just to display data
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------FIRESTORE HOOKS-------------------------------------------------------------------------------
+import React from 'react';
+import {firestoreDB } from './firebase-config';
+import {collection, doc} from 'firebase/firestore';
+import {useCollectionData, useCollection} from 'react-firebase-hooks/firestore';        
+
+
+// remember. 
+
+
+
+function ReactHooks () {
+    const collectionRef = collection(db, "cities")                                  // collection() returns a reference to a collection
+    const documentRef = doc(collectionRef, "LA")                                    // doc() returns a reference to a document from a collection
+    
+    const [value, loading, error] = useCollectionData(collectionRef);
+    //value                                                                         //this is an array that contains all the documents in the collection
+    //value[0].name
+    
+    const [val, load, error] = useDocumentData(documentRef)
+    //val                                                                          // this is an object that represents the document
+    //val.name                                                                  
+    
+    return loading ? (<>...is loading<>) : (<> Done loading</>)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //--------------------------------------------------------------- REALTIME DATABASE ----------------------------------------------------------------------------------
@@ -290,6 +356,20 @@ async function setNewOrReplaceDocument() {
 }
 
 
+async function getDocument() {
+     try{
+         const docRef = doc(db, "cities", "LA");                            //creating a reference to a document
+         const snapshot = await getDoc(docRef);                             //getDoc() will return a 'snapshot' of all the data in the document
+         if(snapshot.exists())                                              //determining if the document actually exists
+             console.log(snapshot.data())                                   //displaying the data
+         else
+             console.log("document doesnt exist");  
+        }
+     catch(error){
+         console.log(error);
+     }
+    
+}
 
 
 

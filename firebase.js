@@ -64,34 +64,6 @@ export const db = getFirestore(app);
 
 
 
-//-----------------------------------------------------------FIRESTORE HOOKS-------------------------------------------------------------------------------
-import React from 'react';
-import {firestoreDB } from './firebase-config';
-import {collection, doc} from 'firebase/firestore';
-import {useCollectionData, useCollection} from 'react-firebase-hooks/firestore';        
-
-
-// remember. 
-
-
-
-function ReactHooks () {
-    const collectionRef = collection(db, "cities")                                  // collection() returns a reference to a collection
-    const documentRef = doc(collectionRef, "LA")                                    // doc() returns a reference to a document from a collection
-    
-    const [value, loading, error] = useCollectionData(collectionRef);
-    //value                                                                         //this is an array that contains all the documents in the collection
-    //value[0].name
-    
-    const [val, load, error] = useDocumentData(documentRef)
-    //val                                                                          // this is an object that represents the document
-    //val.name                                                                  
-    
-    return loading ? (<>...is loading<>) : (<> Done loading</>)
-}
-
-
-
 
 
 
@@ -256,7 +228,52 @@ onAuthStateChanged(auth, (currentUser) => {
 })
 
 
+//------------------------------------------------------- AUTHENTICATION REACT HOOKS -----------------------------------------------------------------
+import {useSignInWithGoogle, useSignInWithApple, useAuthState} from 'react-firebase-hooks/auth'
+import {auth} from './firebase-config';
 
+
+
+function ChooseSignInMethod() {
+    const [signInWithGoogle, userGoogle, loadingGoogle, errorGoogle] = useSignInWithGoogle(auth);           //userGoogle is an object with all the credentials of the user
+    const [signInWithApple, userApple, loadingApple, errorApple] = useSignInWithApple(auth);
+    
+    const handleGoogle = async () => {
+        try{
+           await signInWithGoogle(); 
+           navigate("/AcountInfo");
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+    const handleApple = async () => {
+        try{
+            await signInWithApple();
+            navigate("/AccountInfo");
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+    return(
+        <>
+            <button onClick={handleGoogle}> "Sign In with Google" </button>   
+            <button onClick={handleApple}> "Sign In with Apple" </button> 
+        <>
+    )
+}
+
+
+function AuthStateChangeHook() {
+    const [user] = useAuthState(auth);
+    
+    return(
+        {user ? <AccountPage/> : <LoginPage/>}
+    )
+
+}
 
 
 
@@ -374,6 +391,28 @@ async function getDocument() {
 
 
 
+//-----------------------------------------------------------FIRESTORE HOOKS-------------------------------------------------------------------------------
+import React from 'react';
+import {firestoreDB } from './firebase-config';
+import {collection, doc} from 'firebase/firestore';
+import {useCollectionData, useCollection} from 'react-firebase-hooks/firestore';        
+
+
+
+function ReactHooks () {
+    const collectionRef = collection(db, "cities")                                  // collection() returns a reference to a collection
+    const documentRef = doc(collectionRef, "LA")                                    // doc() returns a reference to a document from a collection
+    
+    const [value, loading, error] = useCollectionData(collectionRef);
+    //value                                                                         //this is an array that contains all the documents in the collection
+    //value[0].name
+    
+    const [val, load, error] = useDocumentData(documentRef)
+    //val                                                                          // this is an object that represents the document
+    //val.name                                                                  
+    
+    return loading ? (<>...is loading<>) : (<> Done loading</>)
+}
 
 
 

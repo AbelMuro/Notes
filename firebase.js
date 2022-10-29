@@ -296,7 +296,7 @@ import {storage} from './firebase-config';
 //the functions below are all asynchronous
 function uploadImagesToStorage(file) {
      const reference = refSB(storage, "/AbelsImages/" + file.name);                   //its a good idea to store the images in a folder like this
-      uploadBytes(abelsImagesInStorage, file);                                        //file can be the Javascript File that comes from the <input type="file">     
+      uploadBytes(reference, file);                                        //file can be the Javascript File that comes from the <input type="file">     
 }                                                                                     //or it can be a blob object
 
 async function downloadImagesFromStorage(fileName){
@@ -308,13 +308,13 @@ async function downloadImagesFromStorage(fileName){
 
 
 //-------------------------------------------------------- FIREBASE STORAGE REACT HOOKS -----------------------------------------------------------
-import { useDownloadURL } from 'react-firebase-hooks/storage';
-import {storageRef} from 'firebase/storage';
+import { useDownloadURL, useUploadFile } from 'react-firebase-hooks/storage';
+import {ref as refSB} from 'firebase/storage';
 import {storage} from './firebase-config';
 
 
-function Storage() {
-    const ref = storageRef(storage, "/DavidsImages/filename.png")
+function Download(props) {
+    const ref = refSB(storage, "/DavidsImages/" + props.fileName);
     const [downloadUrl, loading, error] = useDownloadURL(ref);
     
     if(loading)
@@ -327,6 +327,22 @@ function Storage() {
 }
 
 
+//not sure about this one yet
+function Upload() {
+    const [uploadFile, uploading, snapshot, error] = useUploadFile();
+    
+    const handleClick = async (e) => {
+        const file = e.target.files;
+        const ref = refSB(storage, "/folderName/" + file.name);
+        await uploadFile(ref, fileUploaded);
+    }
+    
+    return(
+        <input type="file" onClick={handleClick}/>
+    
+    )
+    
+}
 
 
 

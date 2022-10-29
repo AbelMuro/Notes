@@ -287,6 +287,9 @@ function AuthStateChangeHook() {
 
 
 //------------------------------------------------------ FIREBASE STORAGE-----------------------------------------------------------------------------
+//REMEMEBER, YOU MUST SET THE RULES OF THE STORAGE TO ALLOW PEOPLE TO ACCESS YOUR STORAGE.
+//https://console.firebase.google.com/u/0/project/insta-messaging-app/storage/insta-messaging-app.appspot.com/rules
+
 import {ref as refSB, uploadBytes} from "firebase/storage";                     //some modules have the same function names, such as ref
 import {storage} from './firebase-config';
 
@@ -334,7 +337,7 @@ function Upload() {
     const handleClick = async (e) => {
         const file = e.target.files;
         const ref = refSB(storage, "/folderName/" + file.name);
-        await uploadFile(ref, fileUploaded);
+        await uploadFile(ref, file,  );
     }
     
     return(

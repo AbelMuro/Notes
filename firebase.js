@@ -307,6 +307,25 @@ async function downloadImagesFromStorage(fileName){
 
 
 
+//-------------------------------------------------------- FIREBASE STORAGE REACT HOOKS -----------------------------------------------------------
+import { useDownloadURL } from 'react-firebase-hooks/storage';
+import {storageRef} from 'firebase/storage';
+import {storage} from './firebase-config';
+
+
+function Storage() {
+    const ref = storageRef(storage, "/DavidsImages/filename.png")
+    const [downloadUrl, loading, error] = useDownloadURL(ref);
+    
+    if(loading)
+        return(<>still loading</>)
+    
+    else{
+          const url = downloadUrl();
+          return(<img src={url} />)
+     }
+}
+
 
 
 

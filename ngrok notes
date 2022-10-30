@@ -1,4 +1,5 @@
 //ngrok enables you to create a url that displays what you are currently working on in localhost:8080
+//keep in mind that you must have localhost:8080 already running a dev server for ngrok's url to work
 
 //step 1: go to ngrok.com and install the ngrok terminal
 

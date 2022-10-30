@@ -6,3 +6,5 @@
 //        this will sign you in with your authentication token
 
 //step 3: ngrok http --host-header=rewrite 8080 (for webpack dev servers)
+
+//step 4: if you are using firebase auth with ngrok, you must put the url that ngrok gives you into the authorized domain list

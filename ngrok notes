@@ -5,4 +5,4 @@
 //step 2: run ngrok config add-authtoken 2GsG4xYbupQXSCtjwXKPV9RdgC3_3CBD8bQ4JJVdLfcvZ2scZ
 //        this will sign you in with your authentication token
 
-//step 3: ngrok http 8080
+//step 3: ngrok http --host-header=rewrite 8080 (for webpack dev servers)

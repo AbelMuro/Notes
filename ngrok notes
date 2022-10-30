@@ -1,0 +1,8 @@
+//ngrok enables you to create a url that displays what you are currently working on in localhost:8080
+
+//step 1: go to ngrok.com and install the ngrok terminal
+
+//step 2: run ngrok config add-authtoken 2GsG4xYbupQXSCtjwXKPV9RdgC3_3CBD8bQ4JJVdLfcvZ2scZ
+//        this will sign you in with your authentication token
+
+//step 3: ngrok http 8080

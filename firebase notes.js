@@ -138,11 +138,15 @@ function createNewNode(newData){
 
 //------------------------------------------------------------- AUTHENTICATION ------------------------------------------------------------------
 import { createUserWithEmailAndPassword, updateProfile, signOut, sendEmailVerification, sendSignInLinkToEmail} from 'firebase/auth';
+import { GoogleAuthProvider, OAuthProvider, FacebookAuthProvider, signInWithPopup} from 'firebase/auth'
 import {auth} from './firebase-config';
 
 
-//alot of the functions in the authentication module are asynchronous
-//its also a good idea to use a try-catch block to catch any errors and handle them appropriately
+
+
+
+
+
 
 async function createUser(email, password) {
   try{                                                                                              //keep in mind that createUserWithEmailAndPassword will automatically log you in
@@ -157,6 +161,11 @@ async function createUser(email, password) {
        console.log(error.message);
   }
 }
+
+
+
+
+
 
 
 
@@ -175,6 +184,10 @@ async function login(email, password) {
 
 
 
+
+
+
+
 async function createUserWithEmailLink(email) {
     try{
         const actionCodeSettings = {
@@ -189,7 +202,6 @@ async function createUserWithEmailLink(email) {
    }  
 }
 
-
 //its a good idea to put this async function inside a useEffect() so that the user
 //can skip the login page and go directly to the account page
 async function LoginWithEmailLink() {
@@ -200,6 +212,51 @@ async function LoginWithEmailLink() {
             navigate("/adminaccount");                                                  //navigating directly to the account page
        }        
 }
+
+
+
+
+async function LoginWithGoogle() {
+    try{
+        const provider - new GoogleAuthProvider();
+        provider.setCustomParameters({
+            "login_hint": "user@example.com"
+        });
+        await signInWithPopup(auth, provider)    
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+
+async function LoginWithMicrosoft(){
+    try {
+        const provider = new OAuthProvider("microsoft.com");
+        provider.setCustomParameters({
+            prompt: "consent",                       //forces the user to select an account, even if they are already logged in
+            tenant: "9376f0e7-1c43-470a-aaea-06f6e6e413da"          //this seems to be required for this to work
+        })
+       await signInWithPopup(auth, provider)    
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+async function LoginWithFacebook(){
+    try {
+        const provider = new FacebookAuthProvider();
+        await signInWithPopup(auth, provider)    
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+
+
+
 
 
 
@@ -229,19 +286,22 @@ onAuthStateChanged(auth, (currentUser) => {
 
 
 //------------------------------------------------------- AUTHENTICATION REACT HOOKS -----------------------------------------------------------------
-import {useSignInWithGoogle, useSignInWithApple, useAuthState} from 'react-firebase-hooks/auth'
+import {useSignInWithGoogle, useSignInWithApple, useSignInWithMicrosoft, useSignInWithFacebook, useAuthState} from 'react-firebase-hooks/auth'
 import {auth} from './firebase-config';
 
 
 
-function ChooseSignInMethod() {
+//keep in mind, for microsoft and facebook, you will need to configure your developers account for each of these companies to use the 'log in' functionality
+//make sure you use the redirect URI for the configuration 
+function LoginPage() {
     const [signInWithGoogle, userGoogle, loadingGoogle, errorGoogle] = useSignInWithGoogle(auth);           //userGoogle is an object with all the credentials of the user
     const [signInWithApple, userApple, loadingApple, errorApple] = useSignInWithApple(auth);
+    const [signInWithMicrosoft, userMicrosoft, loadingMicrosoft, errorMicrosoft] = useSignInWithMicrosoft(auth);
+    const [signInWithFacebook, userFacebook, loadingFacebook, errorFacebook] = useSignInWithFacebook(auth);
     
     const handleGoogle = async () => {
         try{
-           await signInWithGoogle(); 
-           navigate("/AcountInfo");
+           await signInWithGoogle();                        //after this function is called, the userAuthState() will automatically redirect you to account page
         }
         catch(error){
             console.log(error);
@@ -249,18 +309,38 @@ function ChooseSignInMethod() {
     }
     const handleApple = async () => {
         try{
-            await signInWithApple();
-            navigate("/AccountInfo");
+            await signInWithApple();                        //to use apple log in, you have to buy a subscription that costs $100 a year, fuck that
         }
         catch(error){
             console.log(error);
         }
+    }
+    
+    const handleMicrosoft = async () => {
+        try{                                                //you MUST include the following parameters on the second argument for this to work
+            await signInWithMicrosoft("", {prompt: "consent", tenant: "9376f0e7-1c43-470a-aaea-06f6e6e413da"});     //prompt will ask the user which microsoft account they want to use            
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+    
+    const handleFacebook = async () => {
+        try{
+            await signInWithFacebook();
+        }
+        catch(error){
+            console.log(error);
+        }
+        
     }
 
     return(
         <>
             <button onClick={handleGoogle}> "Sign In with Google" </button>   
             <button onClick={handleApple}> "Sign In with Apple" </button> 
+            <button onClick={handleMicrosoft}> "Sign In with Microsoft" </button> 
+            <button onClick={handleFacebook}> "Sign In with Facebook" </button> 
         <>
     )
 }

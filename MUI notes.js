@@ -143,6 +143,7 @@ function MUI() {
 //----------------------------------------------------------- BUTTONS ------------------------------------------------------------------------------
 import Button from '@mui/material/Button';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {styled} from '@mui/system'
 
 //you can create your own custom colors like this
 const theme = createTheme({
@@ -153,6 +154,20 @@ const theme = createTheme({
             }
       }        
 })
+
+const StyledButton = styled(Button)`                    //styled is a function that lets us use css properties to style MUI components
+    color: white;                                         
+    background-color: ${blue[500]};                       //you can also include any js variable and interpolate it like this
+
+    &:hover {                                              //& operator points to the Button component, this is similar to .Button:hover
+        background-color: ${blue[600]};
+    }
+
+    &:active{                                             //& operator points to the Button component, this is similar to .Button:active
+        background-color: red;
+    }
+`
+
 
 
 function MUI() {
@@ -166,6 +181,9 @@ function MUI() {
                 <Button color="customColor"> Click me!</Button>                            {//you can add your own custom colors like this}
                 <Button onClick={handleClick}> Click me!</Button>                          {//you can add event handlers like this}               
                 <Button href={"http://www.google.com"}> Click Me! </Button>                {//}
+                <StyledButton> 
+                        Click here
+                <StyledButton/>
             </ThemeProvider>
       
       )

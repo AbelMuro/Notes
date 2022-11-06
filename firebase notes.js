@@ -511,6 +511,16 @@ async function getDocument() {
     
 }
 
+async function getAllDocumentsFromCollection() {
+    try{
+        const collectionRef = collection(db, "cities");
+        let query = await getDocs(collectionRef);                           //getDocs() will return an iterable object that you can use to iterate through a collection
+        query.map((document) => {
+            console.log(document);
+        })
+    }
+
+}
 
 
 

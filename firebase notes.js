@@ -456,6 +456,11 @@ const collectionRef = collection(db, "users");            //selects a collection
 const docRef = doc(collectionRef, "Abel")                 //selects a document within the collection
 
 
+//this is how you create nested collections
+const nestedDocumentRef = doc(db, "users", "richard/info/data")   //richard is a document within the users collection, info is a nested collection and data is a document within the nested collection
+const nestedCollectionRef = collection(db, "users/richard/info") //users is a collection, richard is a document, info is a nested collection within richard
+
+
 
 //addDoc() should only be used with collection()
 async function addNewDocument () {

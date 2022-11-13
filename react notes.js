@@ -363,7 +363,7 @@ function HooksThree() {
 
 
 
-//------------------------------------------------------------USE LAYOUT EFFECT()----------------------------------------------------------------
+//------------------------------------------------------------USE LAYOUT EFFECT HOOK----------------------------------------------------------------
 //useLayoutEffect is similar to useEffect(), the difference here is that useLayoutEffect() gets called BEFORE each render.
 //this is usefull if you want to make changes to the DOM after the state object is updated.
 //using useEffect to make changes to the DOM can cause a flickering effect
@@ -1060,13 +1060,6 @@ function MakeList(props) {
 const numbers = [1, 2, 3, 4, 5, 6];
 
 root.render(<MakeList array={numbers}/>);
-
-
-
-
-
-
-
 
 
 

@@ -75,6 +75,22 @@ import './react.css'
 
 
 
+/* 
+                                        COMPONENT RE-RENDERING PROCESS
+                 1) User interacts with App. Let us say the user clicks a button.
+
+                 2) state object is updated because the button triggered a setState()
+
+                 3) DOM is updated 
+                 
+                 3.5) cleanup function from useLayoutEffect() is called here, and then useLayoutEffect() is then called here
+                 
+                 4) changes are painted on the screen
+                 
+                 5) cleanup function is invoked to clean up effects from previous render (clean up function it the callback that is returned from useEffect())
+                 
+                 6) useEffect() is then called
+*/
 
 
 
@@ -200,169 +216,6 @@ const element = React.createElement(
 let variable = true
 {true && <MyComponent />}                   //MyComponent will render
 {null && <MyComponent />}                               //MyComponent will not render
-
-
-
-
-
-
-
-
-
-
-
-//======================================================================== REACT ROUTER ===========================================================================================================================
-
-//keep in mind that you want to use useNavigate() inside the useEffect() hook or in an event handler
-
-function RouterStuff() {
-    return(
-            
-         <BrowserRouter>     
-                <NavigationBar/>                                                //you can also define a NavigationBar component like this
-                <Routes>                                                        //and when you click on one of the <Link>'s in the NavigationBar component
-                        <Route index element={<HomePage />}>                    //it will automatically activate one of the corresponding routers below
-                        <Route path="/AboutUs" element={<AboutUs />}>           
-                        <Route path="/Contact" element={<ContactUs />}>
-                        <Route path="/DonateUs" element={<DonateUs />}>
-                </Routes>
-         </BrowserRouter>
-            
-
-
-
-        <BrowserRouter>  
-            <NavigationBar/>                    
-            <Routes>
-                {/* This router will always be rendered first, index is the same as path="./" */}                
-                <Route index element={<Home/>}/>                                
-                    
-                {/* (1) The parent Route has an <Outlet> that will be replaced by one of the nested Routes below*/} 
-                <Route path="/ContactUs" element={<NestedNavigationBar/>}>      
-                     <Route path="/ContactUs/email" element={<EmailUs/>}/>           
-                     <Route path="/ContactUs/call" element={<CallUs/>}/>            
-                </Route>
-
-                {/*(2) This Route will send a URL parameter to the Route below*/}
-                <Route path="/:repoName" element={<Whatever/>}>
-                <Route path="/DonateUs" element={<DonateUs />}/>                
-                <Route path="/DonateUs/:repoName" element={<ThankYou />}/>      {/* :repoName is a placeholder, it can be sent as useParam() to the <ThankYou /> */} 
-                <Route path="/DonateUs/:repoName/:otherRepoName" element={<Whatever/>}   
- 
-                {/*(3) This nested route has nested routes that will each pass a url parameter to the other */}
-                <Route path="/Complaints" element={<Complaints>}>
-                        <Route path="/Complaints/:pageOne" elements={<PageOne/>}>
-                        <Route path="/Complaints/:pageOne/:pageTwo" elements={<PageTwo/>}>                           
-                </Route>
- 
-                 {/* (4) This Route can be used for error handling*/}
-                 Route path="*" element={<NoPage />}/>                          {/* <Route path="*">  will only be rendered if the page requested does not exist*/}
-            </Routes>
-        </BrowserRouter>
-    )
-}
-
-
-
-
-function NavigationBar() {
-    return(
-        <>
-            <Link to="/" className="example"> Home</Link> <br/>               {/*you can style the links with className attribute*/}
-            <Link to="/AboutUs" className="example"> About Us</Link><br/>
-            <Link to="/ContactUs" className="example"> Contact Us</Link><br/>
-            <Link to="/DonateUs" className="example"> Donate Us</Link> <br/>   
-            <Link to="/thisCanBeAnything" className="example">Cancel Us </Link>   {/*this Link will target the route with path="/:repoName" */}
-        </>
-    )
-}
-
-//--------------------------------------------------------- (1) ------------------------------------------------------------------------------------------- 
-//nested Routes that will display and replace the <Outlet />
-function NestedNavigationBar() {
-    return(
-        <>
-            <Link to="/ContactUs/email" className="example">Email us</Link>  
-            <Link to="/ContactUs/call" className="example"> Call us</Link>
-            <Outlet />                                                          //this outlet will be replaced by one of the routers
-        </>
-    )
-}
-                           
-                           
-//------------------------------------------------------------ (2) ---------------------------------------------------------------------------- 
-//Routes can pass URL parameters to other routes 
-function DonateUs() {
-    const navigate = useNavigate();            //this hook is used to navigate to a different page, its useful if its used inside even handlers          
-    navigate("/DonateUs/cash");                //when this function hook is called, it will have the same effect as <Link>;
-        
-    return(
-        <div>
-            <Link to="/DonateUs/cash" className="example"> Cash </Link><br/>        {/* 'cash' will be passed to the useParams() in the <ThankYou /> component*/}
-            <Link to="/DonateUs/credit" className="example"> Credit </Link><br/>    {/* 'credit' will be passed to the useParams() in the <ThankYou /> component*/}
-        </div>
-    )
-}
-
-function ThankYou() {                                       //repoName = "cash"  
-    const {repoName} = useParams();                         //repoName is the URL parameter that was passed 'down' from <Route path="/DonateUs">                                                         
-    const navigate = useNavigate();
-    navigate("/DonateUs/" + repoName + "whatever")          //"whatever" is another URL parameter that will be passed 'down' to the whatever component
-}
-
-function Whatever() {
-     const {repoName, otherRepoName} = useParams();                //repoName = "cash"    otherRepoName = "whatever"     
-     const navigate = useNavigate();
-     navigate("/DonateUs/" + repoName + otherRepoName + "somethingElse");   
-     
-}
-//--------------------------------------------------------------- (3) ---------------------------------------------------------------------------------------
-
-function Complaints() {
-       const navigate = useNavigate(); 
-       navigate("/Complaints/page-one");                        
-        return(                                                 
-            <>
-               <Link to="/Complaints/page-one"> 
-                <Outlet/>                                               //this will be replaced by the nested routes                 
-            </> 
-        )
-}
-
-function PageOne(){
-     const {pageOne} = useParams();
-     const navigate = useNavigate();
-        
-     navigate("/Complaints" + pageOne + "page-two")      
-}
-
-function PageTwo(){
-     const {pageOne, pageTwo} = useParams();
-     const navigate = useNavigate();
-        
-     navigate("/Complaints" + pageOne + Page)
-        
-}
-
-
-
-
-//---------------------------------------------------------------- (4) ---------------------------------------------------------------------------------------
-//default page that appears when the user accesses a page that doesnt exist
-
-function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -510,6 +363,26 @@ function HooksThree() {
 
 
 
+//------------------------------------------------------------USE LAYOUT EFFECT()----------------------------------------------------------------
+//useLayoutEffect is similar to useEffect(), the difference here is that useLayoutEffect() gets called BEFORE each render.
+//this is usefull if you want to make changes to the DOM after the state object is updated.
+//using useEffect to make changes to the DOM can cause a flickering effect
+//useLayoutEffect can prevent this
+
+
+
+function Example() {
+        
+        useLayoutEffect(() => {
+             const document.querySelector("div").innerHTML = 5;                 //this is typically how you want to use useLayoutEffect()
+        })
+        
+        return(
+              <div>
+                  3
+              <div>
+        )
+}
 
 
 
@@ -522,6 +395,8 @@ function HooksThree() {
 
 //------------------------------------------------------------ USE CONTEXT HOOK --------------------------------------------
 // you can pass state object and setState() to child components by using createContext() and useContext()
+//its a good idea to export const StateObject = createContext() if you are modularizing your code
+
 
 const StateObject = createContext();
 
@@ -642,11 +517,54 @@ const ChildComponent = forwardRef((props, ref) => {
         return(
            <div ref={ref}> greetings </div>
         )
-        
 })
 
+//------------------------------------------------------USE IMPERATIVE HANDLE HOOK-----------------------------------------------------------------
+//useImperativeHandle() was designed to be used together with forwardRef(), it enables the parent component to access MULTIPLE refs from the child component
 
 
+function ParentComponent() {
+     const example = useRef();
+        
+     const handleClick = () => {
+        example.current.inputOne;               //you are calling the inputOne method inside useImperativeHandle() in the child component, the () is not necessary
+        example.current.inputTwo;               //this returns one of the refs in the child component
+        example.current.inputThree.value;
+     }   
+        
+     return(<ChildComponent ref={example} onClick={handleClick}/>)
+        
+}
+
+const ChildComponent = forwardRef((props, ref) => {
+     const inputOne = useRef();
+     const inputTwo = useRef();
+     const inputThree = useRef();
+        
+     useImperativeHandle(ref, () => ({
+        get inputOne(){
+              return inputOne.current
+        }
+        get inputTwo() {
+              return inputTwo.current;                 
+        }
+        get inputThree() {
+              return inputThree.current;
+        }
+     }));
+
+
+     return(
+             <div>
+                <input ref={inputOne}/>
+                <input ref={inputTwo}/>
+                <input ref={inputThree}/>
+             <div>
+     
+     )
+
+
+});
 
 
 
@@ -896,34 +814,156 @@ function AnotherExampleWithCustomHooks() {
 
 
 
+    
+    
+    
+    
+    
 
 
 
     
-//--------------------------------------------------------------- REACT POPUPS-----------------------------------------------------------------------------
-// npm install reactjs-popup
-// you can use react popup to display a popup message to the user
+
+//======================================================================== REACT ROUTER ===========================================================================================================================
+
+//keep in mind that you want to use useNavigate() inside the useEffect() hook or in an event handler
+
+function RouterStuff() {
+    return(
+            
+         <BrowserRouter>     
+                <NavigationBar/>                                                //you can also define a NavigationBar component like this
+                <Routes>                                                        //and when you click on one of the <Link>'s in the NavigationBar component
+                        <Route index element={<HomePage />}>                    //it will automatically activate one of the corresponding routers below
+                        <Route path="/AboutUs" element={<AboutUs />}>           
+                        <Route path="/Contact" element={<ContactUs />}>
+                        <Route path="/DonateUs" element={<DonateUs />}>
+                </Routes>
+         </BrowserRouter>
+            
+
+
+
+        <BrowserRouter>  
+            <NavigationBar/>                    
+            <Routes>
+                {/* This router will always be rendered first, index is the same as path="./" */}                
+                <Route index element={<Home/>}/>                                
+                    
+                {/* (1) The parent Route has an <Outlet> that will be replaced by one of the nested Routes below*/} 
+                <Route path="/ContactUs" element={<NestedNavigationBar/>}>      
+                     <Route path="/ContactUs/email" element={<EmailUs/>}/>           
+                     <Route path="/ContactUs/call" element={<CallUs/>}/>            
+                </Route>
+
+                {/*(2) This Route will send a URL parameter to the Route below*/}
+                <Route path="/:repoName" element={<Whatever/>}>
+                <Route path="/DonateUs" element={<DonateUs />}/>                
+                <Route path="/DonateUs/:repoName" element={<ThankYou />}/>      {/* :repoName is a placeholder, it can be sent as useParam() to the <ThankYou /> */} 
+                <Route path="/DonateUs/:repoName/:otherRepoName" element={<Whatever/>}   
+ 
+                {/*(3) This nested route has nested routes that will each pass a url parameter to the other */}
+                <Route path="/Complaints" element={<Complaints>}>
+                        <Route path="/Complaints/:pageOne" elements={<PageOne/>}>
+                        <Route path="/Complaints/:pageOne/:pageTwo" elements={<PageTwo/>}>                           
+                </Route>
+ 
+                 {/* (4) This Route can be used for error handling*/}
+                 Route path="*" element={<NoPage />}/>                          {/* <Route path="*">  will only be rendered if the page requested does not exist*/}
+            </Routes>
+        </BrowserRouter>
+    )
+}
+
+
+
+
+function NavigationBar() {
+    return(
+        <>
+            <Link to="/" className="example"> Home</Link> <br/>               {/*you can style the links with className attribute*/}
+            <Link to="/AboutUs" className="example"> About Us</Link><br/>
+            <Link to="/ContactUs" className="example"> Contact Us</Link><br/>
+            <Link to="/DonateUs" className="example"> Donate Us</Link> <br/>   
+            <Link to="/thisCanBeAnything" className="example">Cancel Us </Link>   {/*this Link will target the route with path="/:repoName" */}
+        </>
+    )
+}
+
+//--------------------------------------------------------- (1) ------------------------------------------------------------------------------------------- 
+//nested Routes that will display and replace the <Outlet />
+function NestedNavigationBar() {
+    return(
+        <>
+            <Link to="/ContactUs/email" className="example">Email us</Link>  
+            <Link to="/ContactUs/call" className="example"> Call us</Link>
+            <Outlet />                                                          //this outlet will be replaced by one of the routers
+        </>
+    )
+}
+                           
+                           
+//------------------------------------------------------------ (2) ---------------------------------------------------------------------------- 
+//Routes can pass URL parameters to other routes 
+function DonateUs() {
+    const navigate = useNavigate();            //this hook is used to navigate to a different page, its useful if its used inside even handlers          
+    navigate("/DonateUs/cash");                //when this function hook is called, it will have the same effect as <Link>;
+        
+    return(
+        <div>
+            <Link to="/DonateUs/cash" className="example"> Cash </Link><br/>        {/* 'cash' will be passed to the useParams() in the <ThankYou /> component*/}
+            <Link to="/DonateUs/credit" className="example"> Credit </Link><br/>    {/* 'credit' will be passed to the useParams() in the <ThankYou /> component*/}
+        </div>
+    )
+}
+
+function ThankYou() {                                       //repoName = "cash"  
+    const {repoName} = useParams();                         //repoName is the URL parameter that was passed 'down' from <Route path="/DonateUs">                                                         
+    const navigate = useNavigate();
+    navigate("/DonateUs/" + repoName + "whatever")          //"whatever" is another URL parameter that will be passed 'down' to the whatever component
+}
+
+function Whatever() {
+     const {repoName, otherRepoName} = useParams();                //repoName = "cash"    otherRepoName = "whatever"     
+     const navigate = useNavigate();
+     navigate("/DonateUs/" + repoName + otherRepoName + "somethingElse");   
      
-        <Popup trigger={
-                <Box className={styles.button}>                                           //this button is what will be initially be displayed to the user
-                    <Button variant="contained">Update Info</Button>                      //once the user clicks on the button, the popup will appear        
-                </Box>} 
-                modal>
-                                                                                                 
-                {close => (                                         //close is a callback can be used to close the popup
-                    <div className={styles.overlay}>                //to display a darkened background behind the popup, use an overlay that covers the entire videwport
-                        <div className={styles.content}>
-                            <h1> Title </h1>
-                            <p> This is a popup</p>
-                            <button onClick={close}>Close Popup</Button>
-                        </div>   
-                    </div> 
-                 )}
-        </Popup>
+}
+//--------------------------------------------------------------- (3) ---------------------------------------------------------------------------------------
+
+function Complaints() {
+       const navigate = useNavigate(); 
+       navigate("/Complaints/page-one");                        
+        return(                                                 
+            <>
+               <Link to="/Complaints/page-one"> 
+                <Outlet/>                                               //this will be replaced by the nested routes                 
+            </> 
+        )
+}
+
+function PageOne(){
+     const {pageOne} = useParams();
+     const navigate = useNavigate();
+        
+     navigate("/Complaints" + pageOne + "page-two")      
+}
+
+function PageTwo(){
+     const {pageOne, pageTwo} = useParams();
+     const navigate = useNavigate();
+        
+     navigate("/Complaints" + pageOne + Page)
+        
+}
 
 
 
 
+//---------------------------------------------------------------- (4) ---------------------------------------------------------------------------------------
+//default page that appears when the user accesses a page that doesnt exist
+
+function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}
 
 
 

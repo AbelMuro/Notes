@@ -44,39 +44,6 @@ export const db = getFirestore(app);
 
 
 
-
-
-
-
-
-
-
-//======================================================== everything below should be in a separate module ===================================================
-
-//-------------------------------------------------------------- REACT HOOKS -----------------------------------------------------------------------------------
-//react hooks follow the same logic as using plain firebase with no hooks, you still have to import the modules for firestore, realtime database, auth, etc...
-//and use those modules on the hooks. These hooks were designed just to display data
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //--------------------------------------------------------------- REALTIME DATABASE ----------------------------------------------------------------------------------
 import {ref, set, onValue, push} from 'firebase/database';
 import {db} from './firebase-config';
@@ -137,6 +104,9 @@ function createNewNode(newData){
 
 
 //------------------------------------------------------------- AUTHENTICATION ------------------------------------------------------------------
+//keep in mind that it is possible for a user's account to use both email/password and the google identity provider.
+//but its ALWAYS a good idea for the user to verify their email first before linking their email/password with another identity provider
+
 import { createUserWithEmailAndPassword, updateProfile, signOut, sendEmailVerification, sendSignInLinkToEmail} from 'firebase/auth';
 import { GoogleAuthProvider, OAuthProvider, FacebookAuthProvider, signInWithPopup} from 'firebase/auth'
 import {auth} from './firebase-config';
@@ -398,8 +368,8 @@ import {storage} from './firebase-config';
 
 function Download(props) {
     const ref = refSB(storage, "/DavidsImages/" + props.fileName);
-    const [downloadUrl, loading, error] = useDownloadURL(ref);
-    
+    const [downloadUrl, loading, error] = useDownloadURL(ref);                      //you dont have to pass the ref during the initialization of the hook
+                                                                                    //you can pass ref later with downloadURL(ref)
     if(loading)
         return(<>still loading</>)
     

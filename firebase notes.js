@@ -368,8 +368,8 @@ import {storage} from './firebase-config';
 
 function Download(props) {
     const ref = refSB(storage, "/DavidsImages/" + props.fileName);
-    const [downloadUrl, loading, error] = useDownloadURL(ref);                      //you dont have to pass the ref during the initialization of the hook
-                                                                                    //you can pass ref later with downloadURL(ref)
+    const [downloadUrl, loading, error] = useDownloadURL(ref);                      
+                                                                                    
     if(loading)
         return(<>still loading</>)
     

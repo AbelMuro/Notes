@@ -486,7 +486,9 @@ async function getAllDocumentsFromCollection() {
         const collectionRef = collection(db, "cities");
         let query = await getDocs(collectionRef);                           //getDocs() will return an iterable object that you can use to iterate through a collection
         query.map((document) => {
-            console.log(document);
+            document.id;    
+            document.data();
+            doc(db, "cities", document.id);                                 //if you want to update every document in the collection, you must use doc()
         })
     }
 

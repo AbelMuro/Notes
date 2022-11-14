@@ -431,6 +431,22 @@ const nestedDocumentRef = doc(db, "users", "richard/info/data")   //richard is a
 const nestedCollectionRef = collection(db, "users/richard/info") //users is a collection, richard is a document, info is a nested collection within richard
 
 
+//different ways of using doc()
+const docRef = doc(collectionRef, "Abel");                       //passing a collection ref as the first argument and passing the name of the document as the second argument
+const nestedDocumentRef = doc(db, "users", "richard/info/data"); //first argument receives the firestore object, second argument takes the name of collection, and the third is the name of the document
+const anotherDocRef = doc(db, "users/abel");                     //users is the collection, abel is the document
+
+
+//different ways of using collection()
+const collectionRef = collection(db, "users");            //selects a collection
+const nestedCollectionRef = collection(db, "users/richard/info") //selects a nested collection
+
+
+//accessing data from a doc()
+const docRef = doc(collectionRef, "Abel");
+docRef.data();                                                   //this should return an object with all the properties of the document
+docRef.id;                                                       //self-explanatory, returns the id of the document
+
 
 //addDoc() should only be used with collection()
 async function addNewDocument () {

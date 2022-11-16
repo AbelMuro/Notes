@@ -129,14 +129,16 @@ let name = "abel"
 `You can add variables to strings like this ${name}`;                  //string interpolation
 "this is a string";
 let x = "hello" + "world" + 67;                                        //strings can be concantenated, 67 will be converted into a string
-x[0]                                                                   // characters in strings can be accessed as if it was an array                
+x[0]                                                                   //characters in strings can be accessed as if it was an array                
 let y = "2" + 2;                                                       //this will return a string '22'
 let z = "4" - 3;                                                       //this will return a number 1 because - will convert the string into a number;
 
-'A' <= 'B'                                
-
-
-
+'a' < 'b';                                                             // We are comparing the hexadecimal value of the letters in the string                                                                         
+'!' < 'x';                                                             // the hexadecimal value of '!' is 0021, and the hexadecimal value of 'x' is 0078
+                                                                       // '!' is lower in the hexadecimal chart than 'x' so this will return TRUE
+'string' >= 'strong';                                                //keep in mind that EVERY letter in the string will be compared until a comparison returns false
+                                                                       // 's', 't', 'r' are the same, so at this point, everything is true
+                                                                       // but 'i' is less than 'o' in the hexadecimal chart, so the whole comparison return false
 
 
 

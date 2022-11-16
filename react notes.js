@@ -826,8 +826,11 @@ function AnotherExampleWithCustomHooks() {
 
 //======================================================================== REACT ROUTER ===========================================================================================================================
 
-//keep in mind that you want to use useNavigate() inside the useEffect() hook or in an event handler
+//const navigate = useNavigate();                   
+//navigate("/aboutUs", {state: {data: "whatever"}});     //  will navigate to the '/aboutUs' component and pass data to another component
 
+//const {state} = useLocation();                         // '/aboutUs' component can use useLocation() to access the data being passed from navigate()
+    
 function RouterStuff() {
     return(
             
@@ -906,8 +909,8 @@ function NestedNavigationBar() {
 //------------------------------------------------------------ (2) ---------------------------------------------------------------------------- 
 //Routes can pass URL parameters to other routes 
 function DonateUs() {
-    const navigate = useNavigate();            //this hook is used to navigate to a different page, its useful if its used inside even handlers          
-    navigate("/DonateUs/cash");                //when this function hook is called, it will have the same effect as <Link>;
+    const navigate = useNavigate();                                //this hook is used to navigate to a different page, its useful if its used inside even handlers          
+    navigate("/DonateUs/cash");                                    //this will have the same effect as <Link>
         
     return(
         <div>

@@ -435,7 +435,7 @@ const nestedCollectionRef = collection(db, "users/richard/info") //users is a co
 const docRef = doc(collectionRef, "Abel");                       //passing a collection ref as the first argument and passing the name of the document as the second argument
 const nestedDocumentRef = doc(db, "users", "richard/info/data"); //first argument receives the firestore object, second argument takes the name of collection, and the third is the name of the document
 const anotherDocRef = doc(db, "users/abel");                     //users is the collection, abel is the document
-
+anotherDocRef.exists();                                          //self explainatory
 
 //different ways of using collection()
 const collectionRef = collection(db, "users");            //selects a collection
@@ -502,7 +502,7 @@ async function getAllDocumentsFromCollection() {
         const collectionRef = collection(db, "cities");
         let query = await getDocs(collectionRef);                           //getDocs() will return an iterable object that you can use to iterate through a collection
         query.map((document) => {
-            document.id;    
+            document.id;                                                    //gets the name/identifier of the document
             document.data();
             doc(db, "cities", document.id);                                 //if you want to update every document in the collection, you must use doc()
         })

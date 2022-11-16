@@ -133,7 +133,7 @@ x[0]                                                                   // charac
 let y = "2" + 2;                                                       //this will return a string '22'
 let z = "4" - 3;                                                       //this will return a number 1 because - will convert the string into a number;
 
-
+'A' <= 'B'                                
 
 
 

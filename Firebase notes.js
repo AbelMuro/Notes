@@ -444,9 +444,10 @@ const nestedCollectionRef = collection(db, "users/richard/info") //selects a nes
 
 //accessing data from a doc()
 const docRef = doc(collectionRef, "Abel");
-docRef.data();                                                   //this should return an object with all the properties of the document
-docRef.id;                                                       //self-explanatory, returns the id of the document
-
+const docData = await getDoc(docRef);
+docData.data();                                                   //this should return an object with all the properties of the document
+docData.id;                                                       //self-explanatory, returns the id of the document
+docData.exists();
 
 //addDoc() should only be used with collection()
 async function addNewDocument () {

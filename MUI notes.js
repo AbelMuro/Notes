@@ -27,7 +27,7 @@ import SwitchUnstyled, {switchUnstyledClasses} from '@mui/base/SwitchUnstyled';
 //========================================================= MUI MATERIAL ============================================================================
 
 
-//----------------------------------------------------------- BUTTONS ------------------------------------------------------------------------------
+//----------------------------------------------------------- COMPONENTS ------------------------------------------------------------------------------
 import Button from '@mui/material/Button';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {styled} from '@mui/system'
@@ -76,5 +76,15 @@ function MUI() {
       )          
 }
 
+//-------------------------------------------------------------- MUI ICONS ---------------------------------------------------------------------------------
 
+import MenuIcon from '@mui/icons-material/Menu';
+
+function MUI() {
+   return(
+         <MenuIcon fontSize={"large"}>
+            
+   )         
+            
+}
 

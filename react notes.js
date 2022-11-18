@@ -973,10 +973,31 @@ function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}
 
 
 
+//--------------------------------------------- REACT-RESPONSIVE---------------------------------------------------
+import {useMediaQuery} from 'react-responsive';
+import MediaQuery from 'react-responsive';
+
+function MediaQueries() {
+      const mobile = useMediaQuery({query: "(max-width: 600px)"});
+      
+      return({mobile ? <>'you are on mobile' <> 
+                      : <>'you are NOT on mobile'</>;
+      )
+}
 
 
+function MediaQueriesWithComponents{
+        
+        return(
+                <MediaQuery maxWidth={1224}>
+                        <> 'You are on desktop'</>
+                </MediaQuery>
+                <MediaQuery minWidth={800}>
+                        <> 'You are on mobile'</>        
+                </MediaQuery>
+                )
 
-
+}
 
 
 

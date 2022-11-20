@@ -1002,6 +1002,27 @@ function MediaQueriesWithComponents{
 
 
 
+//------------------------------------------------ JS-COOKIES---------------------------------------------------------------------------------------------------
+//npm install js-cookies                this package lets you use cookies but with set and get methods
+import Cookies from 'js-cookies';
+
+function MyCookies () {
+        
+        Cookies.set("name", "jason");                   //same syntax for vanilla cookies
+        Cookies.set("age", "23", {expires: 7});         //expires in 7 days
+        Cookies.set("gender", "male", {path: ''});      //cookie is visible to the current page
+        Cookies.set("mood", "happy", {domain: 'myWebsite.com'}; //cookie will be visible to this domain and all the sub-domains
+        Cookies.set("searchResult", "funny video", {sameSite: strict}); //allowing to control whether the browser is sending a cookie along with cross-site requests.
+        Cookies.set("birthplace", "san francisco", {expires: 5, path: '' }); //you can use multiple attributes for the third argument
+
+        Cookies.get("name");                            //returns jason
+        Cookies.get();                                  //returns all visible cookies
+
+        //keep in mind that the only attributes that you have to include to remove a cookie, is path and domain
+        Cookies.remove("name");                         //removes the name cookie
+        Cookies.remove("gender", {path: ''})            //to remove the gender cookie, you will have to include the path used to create the cookie
+}
+
 
 
 

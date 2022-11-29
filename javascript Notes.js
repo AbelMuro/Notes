@@ -1086,16 +1086,28 @@ switch(some_variable_of_any_type){                                          //sw
 //Do not use "for in" over an Array if the index order is important.
 //It is better to use a "for loop", a "for of loop", or Array.forEach() when the order is important.
 
+      
+//ITERATING THROUGH ARRAYS
 let my_array = ["hello", "world", "how", "are", "you"];
-for (let x of my_array){                                              // "for of" will iterate over the values of an array (can also iterate through the letters of a string)
-        my_array[x];                                                  // x is declared and will contain the first element of the array.. and x will iterate through the array until the last element       
+      
+for(let x of my_array){                                    
+      console.log(x);                                                  //x will be the values of the array ("hello", "world", "how", etc...)      
+};      
+for(let x in my_array){
+      console.log(x);                                                  //x will be the indices of the array (0, 1, 2, etc...)
+      console.log(my_array[x]);                                        //my_array[x] will be the values of the array ("hello", "world", "how", etc...)
+}
+      
+      
+//ITERATING THROUGH OBJECTS (you can't use 'for of' with objects because they are not iterable)
+let my_object = {name: "abel", age: 28};                           
+for(let y in my_object){                                              
+       console.log(y);                                                //y will be the properties of the object (name, age, etc...)
+       console.log(my_object[y]);                                     //my_object[y] will be the values of the object ("abel", 28)
 };
 
-let my_object = {name: "abel", age:"28"};                           
-for(let y in my_object){                                              //"for in" will iterate over the PROPERTY KEYS of an object
-        my_object[y];                                                 //this will access the values of the object
-};
-
+      
+      
 //you can use break statements to break out of a loop
 //you can use continue statements to "skip" the full iteration of one loop
 for (let i = 0; i < my_array.length(); i++){                         //you can declare more than one variable next to i = 0, these variables can be used outside the loop

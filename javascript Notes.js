@@ -809,7 +809,22 @@ fetch('/somePath', {                                                    //this w
 
 
 
+//making a POST request with FORMS
 
+fetch('/', {
+      method: "POST",
+      headers: {
+            "Content-Type" : "application/x-www-form-urlencoded"        // an example of x-www-form-urlencoded is...  form-name=contact&name=Carlos&email=abelmuro93%40gmail.com&message=I%20like%20your%20website!
+      }
+      body : encode({"form-name" : "contant", name: name, email: email, message: message});
+})
+
+
+function encode(data) {
+      return Object.keys(data)                                                            //returns an array with all the property names but NOT the values
+            .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))    //encodeURIComponent will replace certain characters like '&' with escape characters.
+            .join("&");   //we convert the array into a string separated by &                    //sometimes a user will input an '&' in the form's input, the '&' has special meaning that identifies the start of a new field,
+}                                                                                                // so we want to make sure that we replace the characters that have special meaning with escape characters, so it wont jepordize the data
 
 
 

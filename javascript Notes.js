@@ -141,6 +141,40 @@ let z = "4" - 3;                                                       //this wi
                                                                        // but 'i' is less than 'o' in the hexadecimal chart, so the whole comparison return false
 
 
+//the following function enables adding two extremely large numbers without BigInt(not all versions of node.js and browsers can support BigInt)
+function addNumbers(first, second){
+    let sum = "";
+
+    let firstLength = first.length;
+    let secondLength = second.length;
+
+    if(secondLength > firstLength){
+        let temp = first;
+        second = first;
+        first = temp;
+    }
+
+    let carry = 0;
+    let a;
+    let b;
+    let temp;
+    let digitSum;
+    for (let i = 0; i < first.length; i++) {
+        a = parseInt(first.charAt(first.length - 1 - i));
+        b = parseInt(second.charAt(second.length - 1 - i));
+        b = b ? b : 0;
+        temp = (carry + a + b).toString();
+        digitSum = temp.charAt(temp.length - 1);
+        carry = parseInt(temp.substr(0, temp.length - 1));
+        carry = carry ? carry : 0;
+
+        sum = (i === first.length - 1) ? temp + sum : digitSum + sum;
+    }
+
+    return sum;
+}
+
+
 
 
 

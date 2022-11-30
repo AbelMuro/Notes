@@ -142,38 +142,54 @@ let z = "4" - 3;                                                       //this wi
 
 
 //the following function enables adding two extremely large numbers without BigInt(not all versions of node.js and browsers can support BigInt)
-function addNumbers(first, second){
-    let sum = "";
+//the logic of the following functions goes like this..
 
-    let firstLength = first.length;
-    let secondLength = second.length;
+//elementary style adding...
 
-    if(secondLength > firstLength){
-        let temp = first;
-        second = first;
-        first = temp;
-    }
+//         111                //all the carries
+//   345675366745             //we must iterate through the largest number, if both numbers are the same length, then no difference will be made
+//         453323
+//----------------
+//   345675820068
 
-    let carry = 0;
-    let a;
-    let b;
-    let temp;
-    let digitSum;
-    for (let i = 0; i < first.length; i++) {
-        a = parseInt(first.charAt(first.length - 1 - i));
-        b = parseInt(second.charAt(second.length - 1 - i));
-        b = b ? b : 0;
-        temp = (carry + a + b).toString();
-        digitSum = temp.charAt(temp.length - 1);
-        carry = parseInt(temp.substr(0, temp.length - 1));
-        carry = carry ? carry : 0;
-
-        sum = (i === first.length - 1) ? temp + sum : digitSum + sum;
-    }
-
-    return sum;
-}
-
+function addNumbers(first = "9999523423423423435", second = "2762342342342342345") {
+      let longestString;
+      let shortestString;
+    	if(first.length < second.length){                                 //you want to figure out if one string is bigger than the other
+        	shortestString = first;
+            longestString = second;
+        }
+        else{
+        	shortestString = second;
+            longestString = first;
+        }
+        	
+        let carry = 0;
+        let totalSum = "";
+             
+        for(let x = 0; x < longestString.length; x++){                           
+        	let a = parseInt(longestString.charAt(first.length - 1 - x));
+            let b = parseInt(shortestString.charAt(second.length - 1 - x));
+            b = b ? b : 0;									
+            let currentSum = a + b + carry;
+            if(currentSum >= 10){
+            	currentSum = currentSum.toString();
+                carry = 1;
+                totalSum += (currentSum.charAt(1).toString())
+            }
+            else{
+                carry = 0;
+                totalSum += (currentSum.toString());
+            }  
+        }   
+        if(carry){
+        	totalSum += carry;
+        }
+        totalSum = Array.from(totalSum).reverse();
+        totalSum = totalSum.toString().replaceAll(",", "")
+        console.log(totalSum);
+            
+    } 
 
 
 

@@ -12,7 +12,7 @@ String;                             // a string
 Symbol;                             // gives a unique value to a variable with an optional description, let x = Symbol("description");   x will always have a unique value
 
 
-//non-primitive types
+//reference types
 Object;                             // a collection of properties and values that are used to organize data
 Array;                              
 Set;

@@ -277,8 +277,8 @@ array.unshift("new element");                                               //ad
 array.pop();                                                                //deletes the last element of an array, also returns the element that was deleted
 array.shift();                                                              //deletes the FIRST element of an array, also returns the element that was deleted
 array.sort();                                                               //will sort the array based on the first letter of the strings in the elements, keep in mind that JS will convert any number to string if there is no callback function                                        
-array.sort((a,b) => {return a < b});                                        // sorting the array in ascending order
-array.sort((a,b) => {return a > b});                                         // same as above, but this sorts numbers in descending order           
+array.sort((a,b) => {return a - b});                                        // sorting the array in ascending order
+array.sort((a,b) => {return b - a});                                         //sorts numbers in descending order           
 Array.from();                                                               //create an array from a string or from a list of DOM elements
 
 

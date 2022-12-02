@@ -243,7 +243,11 @@ myString.match( / \.js$ /g);                      //the '$' is used to select th
 
 
 
-
+//using variables to define patterns with regexp
+const str = "how are you today";
+const p = "a";
+const pattern  = RegExp(p, "g");
+str.match(pattern);
 
 
 

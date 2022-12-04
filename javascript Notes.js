@@ -19,7 +19,8 @@ Set;
 Map;
 Date;                               //object that returns the current date
 Function;                           //functions are objects in javascript
-
+RegExp;
+Math;
 
 //keep in mind that the non-primitive types (except function) above are actually constructors(functions) 
 let x = new Object({name: "abel"});                               //these two lines have the same effect                          
@@ -325,6 +326,7 @@ my_set.has(1);                                                             // re
 
 //-------------------------------------------------------------- MAPS -------------------------------------------------------------------------------------------
 //MAPS are similar to objects, but the differences are that the properties can be any value type, and the maps remembers the original insertion of each element
+//MAPS are basically linked lists, so that makes them iterable, so you can use a 'for of' to iterate through the map 
 let my_map = new Map([["name", "abel"],
                     ["age", 28],
                     ["city", "san francisco"]]);
@@ -336,11 +338,20 @@ my_map.forEach(function(value,key) {                                       //for
     //code goes here
 });
 
+//REMEMEBER, you should NOT use the following lines of code
+my_map["propety"] = 2;                                                     //you wont be able to use the get() methods to retrieve this value from the map
 
 
+//although u can use arrays and objects as keys in a map, you must make sure that you use the reference to the objects in your get() and set() methods
+let arr = [1,2,3];                                                         //creating a reference
 
+//OK!
+my_map.set(arr, "value")                                                   //you must save the reference for later use
+my_map.get(arr)   // returns "value"                                      
 
-
+//NOT OK!
+my_map.set([1,2,3], "value");                                              //this will work
+my_map.get([1,2,3]);                                                       //this will not work because both [1,2,3] are pointing to a different spot in memory
 
 
 

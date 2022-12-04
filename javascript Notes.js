@@ -327,6 +327,7 @@ my_set.has(1);                                                             // re
 //-------------------------------------------------------------- MAPS -------------------------------------------------------------------------------------------
 //MAPS are similar to objects, but the differences are that the properties can be any value type, and the maps remembers the original insertion of each element
 //MAPS are basically linked lists, so that makes them iterable, so you can use a 'for of' to iterate through the map 
+//MAPS does not support duplicate keys, similar to sets
 let my_map = new Map([["name", "abel"],
                     ["age", 28],
                     ["city", "san francisco"]]);

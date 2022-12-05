@@ -318,7 +318,10 @@ let my_set = new Set([1 ,2 ,3 ,4 ,5 ,"whatever"]);                         //you
 my_set.add("new element");                                                 // adds an element to the end of the Set
 my_set.delete("whatever");                                                 // deletes the specified element
 my_set.has(1);                                                             // returns true if the value exists in the 
-
+my_set.clear();                                                            // removes all elements in the set
+my_set.values();                                                           // returns an iterator that can be used to iterate through the values in the array
+my_set.keys();                                                             // returns an iterator that can be used to iterate through the keys in the array
+my_set.entries();                                                          // returns an iterator that iterates with [key, value] pairs from a set
 
 
 
@@ -335,6 +338,8 @@ my_map.get("age");                                                         //thi
 my_map.set("new element", 56);                                             //adding a new element to the map, u can also use this method to change an existing element's value
 my_map.delete("city");                                                     //deleting the element "city" from the map
 my_map.has("name");                                                        // returns true or false if the map contains the specified element
+my_map.values();                                                           // returns an iterator with all the values of the map
+my_map.keys();                                                              // returns an iterator with all the keys of the map
 my_map.forEach(function(value,key) {                                       //forEach() will call a function for EACH element in the map
     //code goes here
 });

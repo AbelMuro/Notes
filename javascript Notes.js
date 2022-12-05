@@ -340,6 +340,7 @@ my_map.delete("city");                                                     //del
 my_map.has("name");                                                        // returns true or false if the map contains the specified element
 my_map.values();                                                           // returns an iterator with all the values of the map
 my_map.keys();                                                              // returns an iterator with all the keys of the map
+my_map.entries();
 my_map.forEach(function(value,key) {                                       //forEach() will call a function for EACH element in the map
     //code goes here
 });

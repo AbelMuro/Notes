@@ -208,6 +208,8 @@ function addNumbers(first = "9999523423423423435", second = "2762342342342342345
 //assertions            ^
 //   
 
+//BECAREFULL WITH THE SPACES IN BETWEEN THE EXPRESSION BELOW
+
 / [a-zA-Z] /         //Find a letter character
 / [^a-zA-Z] /        //Find a character that is NOT a letter
 / \w /	      //Find an alphanumeric character (letter and number)

@@ -225,6 +225,7 @@ function addNumbers(first = "9999523423423423435", second = "2762342342342342345
 / \v /	      //Find a vertical tab character
 / \n+ /           //Find a string that contains at least one n
 / \^n /           //Find a string that contains n at the beginning of it
+/ [^n] /         //find any character that is NOT n
 / \n$ /           //Find a string with n at the end of it
 
 

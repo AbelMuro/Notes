@@ -1,0 +1,25 @@
+LINEAR SEARCH: is a searching algorithm that goes through each element in the array, one by one. The time complexity 
+              for this algorithm is O(n)
+
+BINARY SEARCH: is a searching algorithm used in a sorted array by repeatedly dividing the search interval in half. 
+               The idea of binary search is to use the information that the array is sorted and reduce the time 
+               complexity to O(Log n). 
+               
+               EX:
+               
+                var search = function(nums, target) {
+                    let middle;
+                    let end =  nums.length - 1;
+                    let start = 0;
+
+                    while(start <= end){
+                        middle = Math.floor((start + end) / 2);         //make sure to round down the result here 
+                        if(nums[middle] > target)                       //we 
+                            end = middle - 1;
+                        else if(nums[middle] < target)
+                            start = middle + 1;
+                        else
+                            return middle;
+                    }
+                    return -1;
+                };

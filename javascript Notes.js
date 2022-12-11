@@ -282,6 +282,7 @@ array[0] = "reasigned";                                                     //th
 var j = array;                                                              //you can assign the entire array onto a variable and it will be concantenated   
 array.push("new Element");                                                  //adds a new element to the array at the end of the array, also returns the length of the array
 array.unshift("new element");                                               //adds a new element to the array at the beginning of the array, also returns the length of the array
+array.splice(1, 1);                                                         //removes the element at index 1 and will remove 1 element after that index   
 array.pop();                                                                //deletes the last element of an array, also returns the element that was deleted
 array.shift();                                                              //deletes the FIRST element of an array, also returns the element that was deleted
 array.sort();                                                               //will sort the array based on the first letter of the strings in the elements, keep in mind that JS will convert any number to string if there is no callback function                                        

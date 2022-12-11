@@ -23,3 +23,24 @@ BINARY SEARCH: is a searching algorithm used in a sorted array by repeatedly div
                     }
                     return -1;
                 };
+
+
+TWO POINTER MANIPULATION: Two pointers is really an easy and effective technique that is typically used for searching pairs in a sorted array.
+Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
+
+            EX:
+              
+              let A = [1,2,3,4,5,6,7,8,9,10];
+              let X = 10;
+              
+              for(let i = 0, j = A.length - 1; i < j; ){
+                  if(A[i] + A[j] > X)
+                      j++
+                  
+                  else if(A[i] + A[j] < X)
+                      i++;
+                    
+                  else if(A[i] + A[j] == X)
+                      return 1;
+              
+              }

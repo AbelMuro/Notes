@@ -1,5 +1,8 @@
 //==================================================================== TYPES =================================================================================
 //javascript is a loosely typed language, meaning that the variables in JS are not bound to any particular type and can be assigned any type at any given time
+//javascript has garbage collectors, meaning that javascript will automatically free up space when a variable or object is not used anymore
+//javascript uses the stack and the heap to store data, the stack is used to store primitive values and references to objects, 
+      // and the heap is used to store the actual objects and data structures
 //also keep in mind, that in javascript, you dont need to put a semi-colon at the end of each line of code, javascript will do that for you
 
 //primitive types

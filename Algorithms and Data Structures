@@ -25,7 +25,7 @@ BINARY SEARCH: is a searching algorithm used in a sorted array by repeatedly div
                 };
 
 
-TWO POINTER MANIPULATION: Two pointers is really an easy and effective technique that is typically used for searching pairs in a sorted array.
+TWO POINTER MANIPULATION: Two pointers is an easy and effective technique that is typically used for searching pairs in a sorted array.
 Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
 
             EX:
@@ -44,3 +44,37 @@ Given a sorted array A (sorted in ascending order), having N integers, find if t
                       return 1;
               
               }
+    
+    
+    
+SLIDING WINDOW ALGORITHM: This algorithm is designed to go through an array or data structure by iterating once and collecting all the elements that have been
+iterated into another object/array.
+
+
+         EX:  Given an array of integers of size ‘n’, Our aim is to calculate the maximum sum of ‘k’ consecutive elements in the array.
+         
+              arr = [100, 200, 300, 400]          k = 2
+              output = 700
+        
+              function maxSum(arr, k) {
+                  let max = 0;
+                  let sum = 0;
+                  
+                  for (let i = 0; i < k; i++) {                  // find initial sum of first k elements
+                      sum += arr[i];
+                      max = sum;
+                  }
+              
+                  for (let i = k; i < arr.length; i++) {         // iterate the array once and increment the right edge 
+                      sum += arr[i] - arr[i - k];
+                      if (sum > max) {
+                          max = sum;
+                      }
+                  }
+                  return max;
+              }
+
+
+
+
+

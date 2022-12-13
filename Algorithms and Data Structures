@@ -47,12 +47,11 @@ Given a sorted array A (sorted in ascending order), having N integers, find if t
     
     
     
-SLIDING WINDOW ALGORITHM: This algorithm is designed to go through an array or data structure by iterating once and collecting all the elements that have been
-iterated into another object/array.
+SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation
 
 
          EX:  Given an array of integers of size ‘n’, Our aim is to calculate the maximum sum of ‘k’ consecutive elements in the array.
-         
+                             
               arr = [100, 200, 300, 400]          k = 2
               output = 700
         
@@ -62,13 +61,13 @@ iterated into another object/array.
                   
                   for (let i = 0; i < k; i++) {                  // find initial sum of first k elements
                       sum += arr[i];
-                      max = sum;
+                      max = sum;                                 // initially, sum = 300
                   }
-              
-                  for (let i = k; i < arr.length; i++) {         // iterate the array once and increment the right edge 
-                      sum += arr[i] - arr[i - k];
-                      if (sum > max) {
-                          max = sum;
+                                                            // remember that i = k, so 'i' will point to the third element in the first iteration
+                  for (let i = k; i < arr.length; i++) {    // first iteration: 
+                      sum += arr[i] - arr[i - k];                 // sum = 300, so what we do here is add 300 and subtract 100 from sum
+                      if (sum > max) {                            // so now the sum = 500, this is the sum of the second and third elements of the array 
+                          max = sum;                              // this if statement is for unsorted arrays 
                       }
                   }
                   return max;

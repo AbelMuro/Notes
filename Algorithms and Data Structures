@@ -27,7 +27,7 @@ BINARY SEARCH: is a searching algorithm used in a sorted array by repeatedly div
 
 TWO POINTER MANIPULATION: Two pointers is an easy and effective technique that is typically used for searching pairs in a sorted array.
 Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
-
+The time complexity for this algorithm is O(n)
             EX:
               
               let A = [1,2,3,4,5,6,7,8,9,10];
@@ -47,7 +47,7 @@ Given a sorted array A (sorted in ascending order), having N integers, find if t
     
     
     
-SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation
+SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, the time complexity for this algorithm is O(n)
 
 
          EX:  Given an array of integers of size ‘n’, Our aim is to calculate the maximum sum of ‘k’ consecutive elements in the array.

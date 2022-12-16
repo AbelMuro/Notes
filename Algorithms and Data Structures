@@ -48,8 +48,13 @@ The time complexity for this algorithm is O(n)
     
     
 SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, the time complexity for this algorithm is O(n)
-
-
+                     __    __    __
+        VISUAL:     |  |  |  |  |  |
+                [1, 2, 3, 4, 5, 6, 7, 8]
+                 |  |  |  |  |  |
+                 ----  ----  ----
+                 
+                 
          EX:  Given an array of integers of size ‘n’, Our aim is to calculate the maximum sum of ‘k’ consecutive elements in the array.
                              
               arr = [100, 200, 300, 400]          k = 2

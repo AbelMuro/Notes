@@ -1,7 +1,7 @@
-LINEAR SEARCH: is a searching algorithm that goes through each element in the array, one by one. The time complexity 
+LINEAR SEARCH ALGORITHM: is a searching algorithm that goes through each element in the array, one by one. The time complexity 
               for this algorithm is O(n)
 
-BINARY SEARCH: is a searching algorithm used in a sorted array by repeatedly dividing the search interval in half. 
+BINARY SEARCH ALGORITHM: is a searching algorithm used in a sorted array by repeatedly dividing the search interval in half. 
                The idea of binary search is to use the information that the array is sorted and reduce the time 
                complexity to O(Log n). 
                
@@ -25,7 +25,7 @@ BINARY SEARCH: is a searching algorithm used in a sorted array by repeatedly div
                 };
 
 
-TWO POINTER MANIPULATION: Two pointers is an easy and effective technique that is typically used for searching pairs in a sorted array.
+TWO POINTER MANIPULATION ALGORITHM: Two pointers is an easy and effective technique that is typically used for searching pairs in a sorted array.
 Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
 The time complexity for this algorithm is O(n)
             EX:
@@ -78,6 +78,56 @@ SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, t
                   return max;
               }
 
+
+
+BUBBLE SORT ALGORITHM: designed to sort an array in ascending order with time complexity of 0(n2)
+                
+                let arr = [1, 4, 3, 1, 5]
+              
+              
+              
+                           i = 0;
+                  
+                           j j+1
+                          [1, 4, 3, 1, 5]
+                          
+                              j j+1
+                          [1, 4, 3, 1, 5]                   //we swap 4 and 3 because arr[j] > arr[j + 1];
+                          
+                                 j j+1                       
+                          [1, 3, 4, 1, 5]                   //we swap 4 and 1
+                          
+                                    j j+1
+                          [1, 3, 1, 4, 5]                   //we end the first iteration of the array
+                          
+                          
+                          
+                           i = 1;
+                          
+                           j j+1 
+                          [1, 3, 1, 4, 5]
+                          
+                              j j+1
+                          [1, 3, 1, 4, 5]                   //we swap 3 and 1
+                          
+                                 j j+1
+                          [1, 1, 3, 4, 5]                   //we end the second iteration here, remember that  j < arr.lenght - 1 - i;  so we dont iterate to the end of the array at this point
+                          
+                          
+                          
+                           i = 2;
+                          
+                           j j+1
+                          [1, 1, 3, 4, 5]                   //this is the last iteration
+                          
+
+                for (let i = 0; i < arr.length - 1; i++) {
+                    for (let j = 0; j < arr.length - i - 1; j++) {
+                        if (arr[j] > arr[j+1]) {
+                          swap(arr[j], arr[i]);                 //pseudo code
+                        }
+                    }
+                }
 
 
 

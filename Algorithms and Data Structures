@@ -132,3 +132,83 @@ BUBBLE SORT ALGORITHM: designed to sort an array in ascending order with time co
 
 
 
+
+RECURSION: its the ability of a function to call it self many times. The whole point of recursion is to break a problem into smaller parts, thereby reducing the
+complexity of the problem at hand. Typically, all recursive functions have a base case that will terminate the recursive calls once the case is true
+
+  
+                function recursion(n){
+                      if(n == 0)
+                        return;
+                      
+                      recursion(n - 1);
+                }
+
+                recursion(5);
+
+
+
+
+
+
+
+
+
+
+
+STACK DATA STRUCTURE: 
+
+
+                LIFO: last in first out.... one good example of this is when you click on a link and then press the back button
+                      
+                        push()
+                    ____________________
+                   |                    | 
+                  link4                 v
+                                  |            |
+                                  |   link3    |
+                                  |   link2    |
+                                  |   link1    |
+                                   -------------                                                           
+                                   
+                                                      pop()
+                                         _________________________________
+                                        |                                 |
+                                  |            |                          v
+                                  |   link3    |                        link 4
+                                  |   link2    |
+                                  |   link1    |
+                                   -------------
+
+
+
+                FIFO: first in first out... 
+                
+                          push()
+                 ________________________
+                |                        |
+               link 4              |     v    |
+                                   |  link3   |
+                                   |  link2   |
+                                   |  link1   |
+                                    ----------
+                
+                
+
+                                   |          |                 
+                                   |  link4   |               
+                                   |  link3   |
+                                   |  link2   |
+                                    ----------
+                                        |                       
+                                        ----------------------- > link1
+                                                  pop()
+                
+                
+                
+                
+                
+
+
+
+

@@ -345,7 +345,7 @@ my_map.get("age");                                                         //thi
 my_map.set("new element", 56);                                             //adding a new element to the map, u can also use this method to change an existing element's value
 my_map.delete("city");                                                     //deleting the element "city" from the map
 my_map.has("name");                                                        // returns true or false if the map contains the specified element
-my_map.values();                                                           // returns an iterator with all the values of the map
+my_map.values();                                                           // returns an iterator with all the values of the map (you can use this in a `for of` loop)
 my_map.keys();                                                              // returns an iterator with all the keys of the map
 my_map.entries();
 my_map.forEach(function(value,key) {                                       //forEach() will call a function for EACH element in the map
@@ -1166,7 +1166,7 @@ switch(some_variable_of_any_type){                                          //sw
 //It is better to use a "for loop", a "for of loop", or Array.forEach() when the order is important.
 
       
-//ITERATING THROUGH ARRAYS
+//ITERATING THROUGH ARRAYS AND ITERATORS
 let my_array = ["hello", "world", "how", "are", "you"];
       
 for(let x of my_array){                                    

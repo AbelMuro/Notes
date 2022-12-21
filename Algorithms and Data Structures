@@ -1,3 +1,6 @@
+----------------------------------------------------------- ALGORITHMS --------------------------------------------------------------------
+
+
 LINEAR SEARCH ALGORITHM: is a searching algorithm that goes through each element in the array, one by one. The time complexity 
               for this algorithm is O(n)
 
@@ -149,10 +152,56 @@ complexity of the problem at hand. Typically, all recursive functions have a bas
 
 
 
+        EX: factorial
+            
+                function factorial(n){
+                    if(n == 0) 
+                        return 1;
+                    
+                    else
+                        return n * factorial(n - 1);
+                }
 
-
-
-
+        VISUAL:
+              
+               factorial(5)                 //first call to the recursive function
+               5 * factorial(4)
+               4 * factorial(3)
+               3 * factorial(2)
+               2 * factorial(1)
+               factorial = 1;               //base case returns true
+               2 * 1                        //this is the backtracking phase
+               3 * 2
+               4 * 6 
+               5 * 24
+               factorial(5) = 120
+               
+               
+               
+               
+         EX: Fibonacci series
+         
+         function fib(n) {
+              if(n <= 1)
+                return n;
+              
+              return fib(n - 1) + fib(n - 2)
+         }
+         
+         
+         
+         VISUAL: 
+                                                  fib(5)                                                      //first call to the recursive function
+                            fib(4)                   +                   fib(3)
+                   fib(3)      +     fib(2)          +          fib(2)     +     fib(1)
+              fib(2) + fib(1)  +   fib(1) + fib(0)   +    fib(1) + fib(0)
+         fib(1) + fib(0)
+         
+        fib(1) = 1    fib(0) = 0                         //at this point, the base case returns true, so now just replace all fib(1) with 1 and fib(0) with 0
+                                                         //fib(2) becomes 1 + 0, fibt(3) becomes 1 + 1, and so on.
+                                                         //this is the backtracking phase 
+      
+------------------------------------------------------- DATA STRUCTURE ----------------------------------------------------------
 
 
 
@@ -206,7 +255,30 @@ STACK DATA STRUCTURE:
                 
                 
                 
-                
+   
+   
+   BINARY TREE: a data structure that has a root node, each node has three parts; data, left pointer and right pointer.
+   
+                                              root node
+                                                 __
+                                                |__|
+                                        left   /    \     right
+                                              /      \
+                                             /        \
+                                            __          __
+                                           |__|        |__|
+                                                      /    \
+                                                     /      \
+                                                    __       __
+                                                   |__|     |__|
+    
+   
+   
+   
+   
+   
+   
+   
                 
 
 

@@ -275,6 +275,19 @@ STACK DATA STRUCTURE:
    
    
    
+   DEPTH-FIRST-SEARCH: this is a way of traversing through a binary tree or any other data structure, this method will traverse through an entire branch 
+   before back-tracking to the next branch
+   
+                TRAVERSE WITH RECURSION:
+                
+                          var mergeTrees = function(nextNode) {
+                                if(!nextNode)
+                                    return null;                          //we stop the traversing in this specific instance of the recursive function
+
+                                console.log(nextNode.val);                //accessing the value in the node
+                                mergeTrees(nextNode.left)                 //creating an instance where the function obtains the next node's value
+                                mergeTrees(nextNode.right)                //creating another instance where the function obtains the next node's value
+                            };
    
    
    

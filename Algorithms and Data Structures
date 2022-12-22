@@ -291,9 +291,42 @@ STACK DATA STRUCTURE:
    
    
    
+   BREADTH-FIRST SEARCH: this method will traverse through an entire line of nodes before moving on to the next node. The only problem with this approach
+   is that you will need to find the height of the largest branch in the binary tree, so you will need to implement a DFS function that traverses through each 
+   branch. Once you find the height of the biggest branch, you will use the height to traverse each level in the binary tree .
    
+    
+   
+                1) find height of the biggest branch in the binary tree
+                
+                             function findHeight(nextNode) {
+                                    if(!nextNode)
+                                        return 0;
+                                    else{
+                                        let lheight = findHeight(nextNode.left);
+                                        let rheight = findHeight(nextNode.right);
+
+                                        return lheight > rheight ? lheight + 1 : rheight + 1;
+                                    }
+                              }
+                              let height = findHeight(root);
                 
 
+                  2) recurse through each level in the binary tree
+                  
+                               function currentLevel(nextNode, level) {           //recursive function that iterates each node on the current level
+                                      if(!nextNode)
+                                          return;
+                                      if(level == 1)
+                                          console.log(nextNode.val)
+                                      else if(level > 1){
+                                          currentLevel(nextNode.left, level - 1);
+                                          currentLevel(nextNode.right, level - 1);            
+                                      }
+                                 }  
+                                 
+                                  for(let i = 1; i <= height; i++)                //we use the height to calculate how many levels to iterate in binary tree
+                                      currentLevel(root, i);
 
 
 

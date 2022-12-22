@@ -280,13 +280,13 @@ STACK DATA STRUCTURE:
    
                 TRAVERSE WITH RECURSION:
                 
-                          var mergeTrees = function(nextNode) {
+                          var traverse = function(nextNode) {
                                 if(!nextNode)
                                     return null;                          //we stop the traversing in this specific instance of the recursive function
 
                                 console.log(nextNode.val);                //accessing the value in the node
-                                mergeTrees(nextNode.left)                 //creating an instance where the function obtains the next node's value
-                                mergeTrees(nextNode.right)                //creating another instance where the function obtains the next node's value
+                                traverse(nextNode.left)                 //creating an instance where the function obtains the next node's value
+                                traverse(nextNode.right)                //creating another instance where the function obtains the next node's value
                             };
    
    
@@ -301,12 +301,12 @@ STACK DATA STRUCTURE:
                 
                              function findHeight(nextNode) {
                                     if(!nextNode)
-                                        return 0;
+                                        return 0;                                                 //the moment that this return statement is returned, we start to backtrack
                                     else{
                                         let lheight = findHeight(nextNode.left);
                                         let rheight = findHeight(nextNode.right);
 
-                                        return lheight > rheight ? lheight + 1 : rheight + 1;
+                                        return lheight > rheight ? lheight + 1 : rheight + 1;     //when we backtrack, we will continue adding 1 to the previous height everytime 
                                     }
                               }
                               let height = findHeight(root);

@@ -232,6 +232,8 @@ function addNumbers(first = "9999523423423423435", second = "2762342342342342345
 / \^n /           //Find a string that contains n at the beginning of it
 / [^n] /         //find any character that is NOT n
 / \n$ /           //Find a string with n at the end of it
+/ \a* /           //find zero or more of `a`
+
 
 
 //its a good idea to use String.match() to use a reg exp to check if the pattern exists in the string

@@ -1,406 +1,112 @@
 <!DOCTYPE html>
-<!-- Please remember that there is a tag hierarchy, <html> <body> and then <p> and the other tags within <body>-->
-    <!-- if you make changes to <body style="whatever"> it will be overwritten if you make changes to a nested <p style="whatever"> inside <body>-->
-<html lang="en-US"> 
+<html lang="en-US">                                                            <!--the lang attribute defines the language used in the document, this attribute is important for search engine optimization-->
 
     <head>
-        <meta charset="UTF-8"/>                                                 <!-- the default character set is UTF-8 -->
-        <title> my first website</title>
-
-        <link rel="icon" href="images/faviconThingie.png"/>                      <!-- this will add an icon(favicon) to the window tab-->
-        <link rel="stylesheet" href="CSS mess.css"/>                               <!-- this will include a css file to this html file-->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia"> <!-- you can use more than 500 google fonts-->
-
-        <script src="https://kit.fontawesome.com/29995223a0.js" crossorigin="anonymous"></script> <!-- crossorigin decides whether or not to send user credentials to the server-->
-
+                                             <!-- META tags -->    
+            <!-- meta tags describe data about the document, they are used by the browser-->
+            <!-- meta tags also help with search engine optimization-->
+        <meta charset="UTF-8"/>                                                  <!-- the default character set is UTF-8 -->
         <meta name="keywords" content ="Abel, website, html"/>                   <!-- this defines keywords for search engines-->
         <meta name="author" content="Abel Muro"/>                                <!-- defines the author of the webpage-->
-        <meta http-equiv="refresh" content="600"/>                                <!-- determines the refresh rate in seconds-->
+        <meta http-equiv="refresh" content="60"/>                                <!-- determines the refresh rate in seconds-->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'"> <!-- using content-security-policy for the website, this will help prevent cross-site attacks and data-injection attacks, this will give full controls to the-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  <!-- this will make the webpage look the same across all devices-->
-            <!--width=device-width sets the current width of webpage to the width of the device-->
-                <!-- initial-scale sets the zoom level of the webpage, 1.0 means that it wont zoom, 10 means that it will zoom at max-->
+                                                        <!-- width=device-width sets the current width of webpage to the width of the device-->
+                                                        <!-- initial-scale sets the zoom level of the webpage, 1.0 means that it wont zoom, 10 means that it will zoom at max-->        
+                                            <!-- TITLE tag -->
+        <title> my first website</title>                                            <!-- title tag defines the title used in the window tab--!>
+
+                                            <!-- LINK tags-->
+        <link rel="icon" href="images/faviconThingie.png"/>                         <!-- this will add an icon(favicon) to the window tab-->
+        <link rel="stylesheet" href="CSS mess.css"/>                                <!-- this will include a css file to this html file-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia"><!-- (CDN) you can use a link tag to include a css framework into your website-->
+
+                                            <!-- SCRIPT tags-->
+            <!-- script tags are used to include javascript code into the document-->
+        <script src="https://kit.fontawesome.com/29995223a0.js" crossorigin="anonymous"></script>   <!-- script tags can also be used to include the CDN of frameworks (bootstrap, jquery, materialize, etc...) -->             
+        <script type="module">                                                      <!-- type="module" defines a script that has its own scope -->                                                          
+                import {someFunction} from './scripts.js';                          <!-- this is useful for importing functions or variables from a JS file-->
+                window.someFunction = someFunction;
+        </script>
+        <script defer>                                                              <!-- its always a good idea to use the defer attribute to make sure the scripts are loaded AFTER the document is loaded-->
+            let sum = 0;
+            sum++;
+            console.log(sum);
+            document.querySelector(".someClass").innerHTML = sum;
+        </script>
+        
     </head>
 
 
     <body>
+        
+        <p class="myClass otherClass" title="paragraph"> my paragraph </p>    <!-- using the class attribute to specify a class for the element, title can be used to create a small popup that gives a description of the element-->
+        
+        <img src="./images/space.gif" alt="space"/>                           <!-- loading an image onto the document with the src attribute, alt is used when the image doesnt load, and is usefull for screen readers-->
+        
+        <a href="https//www.google.com" target="_self"> Home </a>             <!-- creating a link in the document, target="_self" will open the link on the same window -->
+        
+        <a href="https://sf.gov/" target="_blank">  San Francisco </a>        <!-- target="_blank" will open the link on a new window-->
+        
+        <a href="mailto:abelmuro93@gmail.com"> Email Me </a>                  <!-- opens up outlook, then the user will be able to email the author of the website-->
+        
+        <div style="margin-top: 200px; color: red"> </div>                    <!-- using inline styles on this div element-->
+        
+        <style>                                                               /* creating an inline stylesheet */
+              .someClass{
+                    margin: auto;
+                    width: 780px;
+                }
+        </style>
+        
+        
+            <!-- This is how you embed a youtube video onto your webpage, if you right click any youtube video and select "COPY EMBEDED CODE", it will give you the following <iframe>  -->
+        <iframe width="971" height="546" src="https://www.youtube.com/embed/kD3BeJ0QOtc" frameborder="0px" allow="picture-in-picture" allowfullscreen>                <!-- accelerometer and gyroscope lets the user rotate the video if they are using a mobile device to watch a virtual reality or 360 degree video-->
+        </iframe>                                                                                                                                                     <!-- picture-in-picture allows the user to watch the video while using other apps on your mobile device-->
+                                                                                                                                                                      <!-- clipboard-write allows the user to copy the content to their clipboard-->
+                                                                                                                                                                      <!-- add ?autoplay=1&mute=1 at the end of the URL link to make the video auto play and stay muted-->
+                                                                                                                                                                      <!-- add ?loop=1 at the end of the URL to let the video play forever-->
+            <!--This image will have small clickable areas with links-->                                                                                                         <!-- add ?controls=1 at the end of the URL to show the controls in the video player-->
+        <img src="images/multiple chairs.png" alt="image not showing" usemap="#myMap" style="height:500px; width:700px">            
+        <map style="display:block" name="myMap">
+            <area shape="rect" coords="23,39,186,234" href="https://www.thechairstore.com/">                              <!-- use PAINT app to find coords of specific parts in the image-->
+            <area shape ="circle" coords="564,366,100" href="https://www.thechairstore.com/" onclick="myFunction()">   
+        </map>                                                                                                                                                            
+                                                                                                                                                                      
+                                                                                                                                                                
+            <!-- this is how you link a webpage within another webpage-->
+         <iframe src="images/second part of website.html" name="link" style="height:200px; width:700px"> </iframe> 
+         <a href="my first website.html" target="link">                                <!-- this will open a link to the iframe that it targets-->
+               Link to my webpage   
+         </a>
 
-        <img src="images/space.gif" width="100%" height="100px">
+                                                                                                                                                      
+         <video style="width:300px; height:250px" controls autoplay muted>                                <!--controls attribute adds play, pause and volume-->
+            <source src="./randomvideo.mp4" type="video/mp4" size=/>
+            Your browser doesn't support the video tag
+         </video>
 
+        <audio controls>                                                                                <!--audio can use the same attributes as <video>-->
+            <source src="music.mp3" type="audio/ogg">                                                   <!-- adding more <source> means more music for the music player-->
+            This will only be displayed if the browser does not support the video tag
+        </audio><br>                                                                                                                                                       
+                                                                                                                                                                 
+        
+        
+        
+        
+        
+        
         <header id="jumpHere">
             <h1 id="HeaderOne" style="background-image :url('images/nice background.jpg')" title="Abel's website" >Abel's Website</h1>
         </header>
-
-        <nav>
-            <ul>
-                <li>    
-                    <a class="currentPage"href="my first website.html" target="_self"> Home</a>    <!-- the target is set to self because the link will open in the same window it was clicked--> 
-                </li>
-                <li>
-                    <a href="https://www.cnn.com/" target="_blank"> News</a>                        <!-- the target is set to blank because the link will open a new window or tab-->
-                </li>
-                <li>
-                    <a href="https://www.instagram.com" target="_blank"> Instagram </a>             <!-- where is says Instagram, u can add an image as a link <img> -->
-                </li>
-                <li>
-                    <a href="https://www.facebook.com" target="_blank"> Facebook</a>
-                </li>
-                <li class="dropdownbutton">                          
-                    <a href="javascript:void(0)"> Dropdown </a>        <!-- this <a> element is defined as a block level element-->                 
-                    <div class="dropdown-content">
-                        <a href="https://www.google.com"> Link 1 </a>
-                        <a href="https://www.google.com"> Link 2 </a>
-                        <a href="https://www.google.com"> Link 3 </a>
-                    </div>
-                </li>
-
-                <li>
-                    <a href="second part of website.html" target="_self"> Another part of website </a>
-                </li>   
-             </ul>
-        </nav>
-
-        <hr>
-
-        <section style="margin-right: 30px">
-            <ul>
-                <li>
-                    <a href="https://sf.gov/" target="_blank">  San Francisco</a>
-                </li>
-                <li>
-                    <a href="https://www.berkeley.edu/" target="_blank"> UC Berkeley</a>
-                </li>
-                <li>
-                    <a href="https://www.berkeley.edu/" target="_blank"> Whatever</a>
-                </li>
-                <li>
-                    <a href="https://www.berkeley.edu/" target="_blank"> Its the same</a>
-                </li>
-                <li>
-                    <a href="https://www.berkeley.edu/" target="_blank"> carp everytime</a>
-                </li>
-                <li>
-                    <a href="https://www.berkeley.edu/" target="_blank"> UC Berkeley</a>
-                </li>
-            </ul>
-        </section>  
-        
-        <aside>
-            <b> 
-                About The Author
-            </b>
-            <p>
-                The author is blah blah blah <br>
-                Does anyone even ready this? <br>
-                Does anyone even ready this? <br>
-                Does anyone even ready this? <br>
-                Does anyone even ready this? <br>
-                Does anyone even ready this? <br>
-                Does anyone even ready this? <br>
-                Does anyone even ready this? <br>
-                Does anyone even ready this? <br>
-                Does anyone even ready this? <br>
-            </p>
-        </aside>
-
-        <style>
-            article{
-                margin:auto;
-                width:780px;
-            }
-
-            article img{
-                width:500px; 
-                height:300px;
-                float:right;
-            }
-
-            article p{
-                text-indent:50px;
-            }
-
-            @media screen and (max-width: 1300px){
-                aside{
-                    clear:left;
-                    float:left;
-                    width:200px;
-                    margin-top: 5px;
-                    border-radius:0px;
-                    margin-right:15px;
-                }
-
-                article img{
-                    float:none;
-                    display:block;
-                    margin:auto;
-                }
-            }
-
-
-            @media screen and (max-width: 750px){
-                article{
-                    clear:left;
-                    width:600px;
-                }
-
-                aside{
-                    clear:none;
-                    float:left;
-                    margin-top:0px;
-                    margin-right:0px;
-                    width: 50%;
-                    padding-bottom:32px;
-                }
-
-                article img{
-                    width:450px; 
-                    height:250px;
-                }
-
-
-            }
-
-            @media screen and (max-width: 600px){
-                article{
-                    width:400px;
-                }
-
-                article img{
-                    width:400px; 
-                    height:200px;
-                }
-
-            }
-
-
-            @media screen and (max-width:550px){
-                aside{
-                    overflow:scroll;
-                    padding-bottom:0px;
-                    height:300px;
-                }
-
-            }
-
-        </style>
-
-
-        <article>
-            <img src="images/another random painting.jpg" alt="Cool painting">
-            <p>
-                In publishing and graphic design, 
-                Lorem ipsum is a placeholder text commonly used to demonstrate 
-                the visual form of a document or a typeface without relying on 
-                meaningful content. Lorem ipsum may be used as a placeholder before 
-                the final copy is available. It is also used to temporarily replace 
-                text in a process called greeking, which allows designers to consider 
-                the form of a webpage or publication, without the meaning of the text 
-                influencing the design. Not doing something will always be faster than 
-                doing it. 
-            </p>                
-            <p>
-                This statement reminds me of the old 
-                computer programming saying, “Remember that there is no code faster 
-                than no code.”The same philosophy applies in other areas of life. 
-                For example, there is no meeting that goes faster than not having 
-                a meeting at all.This is not to say you should never attend another 
-                meeting, but the truth is that we say yes to many things we don't 
-                actually want to do. There are many meetings held that don't need 
-                to be held. There is a lot of code written that could be deleted. 
-                How often do people ask you to do something and you just reply, “Sure thing.” 
-                Three days later, you're overwhelmed by how much is on your to-do list. 
-                We become frustrated by our obligations even though we were the ones 
-                who said yes to them in the first place. It's worth asking if things 
-                are necessary. Many of them are not, and a simple “no” will be more 
-                productive than whatever work the most efficient person can muster. But 
-                if the benefits of saying no are so obvious, then why do we say yes so often?
-            </p>
-
-            <table style="width:100%">
-                <caption style="color:black"> <b>Random Table</b></caption>
-                <tr>                                          <!-- first row-->
-                    <th style ="width:30%">                   <!-- first column of first row-->
-                        whatever man 
-                    </th> 
-                    <th style ="width:30%">                   <!-- second column of first row-->
-                        yeah 
-                    </th> 
-                    <th style ="width:30%">
-                        um
-                    </th>
-                </tr>
-                <tr>                        <!--second row-->
-                    <td>                    <!-- first column of second row-->
-                        1
-                    </td>
-                    <td>                    <!--second column of second row-->
-                        2
-                    </td>            
-                    <td>
-                        3
-                    </td>
-                </tr> 
     
-            </table>
-        </article>
-
-        
-        <footer style="clear:left">
-            Footer<br>
-            Abel Muro<br>
-            <a href="mailto:abelmuro93@gmail.com"> Email Me</a>
-        </footer>
 
 <!----------------------------------------------------------------BELOW IS JUST RANDOM CODE FOR EXPERIMENTING------------------------------------------------------------------------------------------------------------------>        
 
-        <i class="fa-solid fa-align-justify">
-            Menu 
-        </i> <br>
-
-    
- <!--This image will have small clickable areas with links-->        
-        <img src="images/multiple chairs.png" alt="image not showing" usemap="#myMap" style="height:500px; width:700px">            
-        <map style="display:block" name="myMap">
-            <area shape="rect" coords="23,39,186,234" href="https://www.thechairstore.com/">                              <!-- use PAINT app to find coords-->
-            <area shape ="circle" coords="564,366,100" href="https://www.thechairstore.com/" onclick="myFunction()">   <!-- u can also use shape="poly" to have MANY coordinates-->
-        </map>
 
 
-        <div style="position:relative; background-color:blue; top:100px; width:100px; height:100px"> </div>
 
-
-<!-- this is how you POSITION an element inside another element-->
-<!-- just remember that the position will always start on the far left of the container for most elements-->
-        <div style="position:relative">
-            <img src="images/westridge banner.jpg" style="width:100%">   
-            <p style="position:absolute; bottom:0px"> 
-                the picture of my aparmtnet, you better like it
-            </p>
-        </div>
-
-<!-- fixed will stay in place even if you scroll down, absolute will stay in place but wont follow you when you scroll down page-->
-        <p style="position:fixed; bottom:100px; z-index:1">
-
-        </p>
-        
-
-        <iframe src="images/second part of website.html" name="link" style="height:200px;width:700px"> </iframe> <!-- this is how you link a webpage within a webpage-->
-        <p>
-            <a href="my first website.html" target="link">                                <!-- this will open a link to the iframe that it targets-->
-               Link to my webpage   
-            </a>
-        </p>
-
-<!-- THIS IS HOW YOU EMBED A YOUTUBE VIDEO INTO YOUR WEBPAGE, MAKE SURE TO RIGHT CLICK THE YOUTUBE VIDEO AND CLICK ON "COPY EMBEDED CODE <>"" -->
-<!-- accelerometer and gyroscope lets the user rotate the video if they are using a mobile device to watch a virtual reality or 360 degree video-->
-<!-- picture-in-picture allows the user to watch the video while using other apps on your mobile device-->
-<!-- clipboard-write allows the user to copy the content to their clipboard-->
-<!-- add ?autoplay=1&mute=1 at the end of the URL link to make the video auto play and stay muted-->
- <!-- add ?loop=1 at the end of the URL to let the video play forever-->
-<!-- add ?controls=1 at the end of the URL to show the controls in the video player-->
-<!-- chromium browsers does not allow autoplay, but muted autoplay is always allowed-->
-        <iframe width="971" height="546" src="https://www.youtube.com/embed/kD3BeJ0QOtc" frameborder="0px" allow="picture-in-picture" allowfullscreen>      
-        </iframe>
-
-        <p style="font-size:10vw"> this text will get bigger and smaller when you resize browser </p>
-
-        <p> to write a less than sign, use &lt, if you just write out the less than sign, html will confuse it with </p>
-
-        <p style="border: 5px solid red"> 
-            If you write 10 spaces in your text, the browser will remove 9 of them <br> 
-            blah &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; blah <br>
-            you use this entity to create more than one space between text<br>
-            also, please remember to check out HTML entities for more useful symbols<br>
-            such as copyright, dollar sign, trademark, etc
-        </p>
-
-        <style>
-            form[id="logininfo"] fieldset{
-                background-color:rgb(206, 206, 206);
-                width:50%;
-                margin:auto;
-                padding:20px;
-                border-radius:10px;
-            }
-
-            form[id="logininfo"] input[type="text"], 
-            form[id="logininfo"] input[type="password"]{
-                width:80%;
-                padding: 20px;           
-                margin-bottom: 20px;
-                border: 1px solid grey;
-                border-radius:10px;
-                -webkit-transition: 0.5s;                    /* used for safari only*/
-                transition: 0.5s;                            /* used in conjunction with the :pseudo classes, in this case, it will take 0.5 seconds for the changes in :focus to complete*/
-                outline:none;                               /* removing the default outline for input*/
-            }
-
-            form[id="logininfo"] input[type="text"]:focus, 
-            form[id="logininfo"] input[type="password"]:focus{
-                border: 3px solid black;
-            }        
-           
-            form[id="logininfo"] input[type="submit"]{
-                width:30%;
-                background-color:darkgrey;
-                color:black;
-                padding:10px;
-            }
-
-            form[id="searchbox"] input[type="search"]{
-                background-image: url(images/search\ icon.png);
-                background-position: 3px 5px;
-                background-repeat: no-repeat;    
-                padding:5px;
-                padding-left:30px;
-                width: 20%;
-                margin:20px;
-                margin-left:0px;
-                -webkit-transition: 0.5s;
-                transition: 2.0s;
-            }  
-
-            form[id="searchbox"] input[type="search"]:focus{
-                width:60%;
-
-            }
-
-            form[id="select"] select[id="language"]{
-                width: 50%;
-                padding:5px 10px; 
-                border-radius: 10px;
-            }
-
-            form[id="questionaire"]{
-                background-color:lightblue;
-                padding: 20px;
-                border-radius: 10px;
-                border: 1px solid darkblue;
-                margin: 10px;
-                width: 70%;
-            }
-
-            form[id="questionaire"] div[id="favcolor"],
-            form[id="questionaire"] div[id="favcolor2"],
-            form[id="questionaire"] div[id="dateselect"]{
-                display:block;
-                margin: 15px 0px;
-
-            }
-
-            @media screen and (max-width:850px){
-                form[id="questionaire"] div[id="favcolor1"] b:after,
-                form[id="questionaire"] div[id="favcolor1"] label[for="blue"]:after,
-                form[id="questionaire"] div[id="favcolor1"] label[for="green"]:after,
-                form[id="questionaire"] div[id="favcolor1"] label[for="pink"]:after,
-                form[id="questionaire"] div[id="favcolor2"] label[for="favcolor"]:after,
-                form[id="questionaire"] div[id="dateselect"] label[for="birthday"]:after{
-                    content: "\A";                               /* adding a line break*/
-                    white-space: pre;                           /* text/content will wrap only on line breaks*/
-                }
-
-            }
-
-        </style>
 
 
 
@@ -593,17 +299,6 @@
 
 
 
-
-
-        <video style="width:300px;height:250px" controls autoplay muted>                                <!--controls attribute adds play, pause and volume-->
-            <source src="randomvideo.mp4" type="video/mp4">
-            This will only be displayed if the browser does not support the video tag
-        </video><br>
-
-        <audio controls>                                                                                <!--audio can use the same attributes as <video>-->
-            <source src="music.mp3" type="audio/ogg">                                                   <!-- adding more <source> means more music for the music player-->
-             This will only be displayed if the browser does not support the video tag
-        </audio><br>
 
 
 <!-- <object> was designed to include plug ins(pdf readers, maps) in web browsers-->

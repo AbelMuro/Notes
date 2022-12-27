@@ -1631,6 +1631,8 @@ p[class^="top"]
 
 
 /*--------------------------------------------------------------------------PSEUDO CLASSES--------------------------------------------------------------------------*/
+/* The pseudo-class is added to a selector when you want to control the styling when an element is in a particular state */
+
 
 /* this selector will change the background color when the user clicks/focuses on the input element*/
 input:focus{
@@ -1639,15 +1641,24 @@ input:focus{
 
 /* a:hover MUST come after a:link and a:visited in order to be effective! a:active MUST come after a:hover in order to be effective!.*/
 a:link{
-    color:none;
+    color: blue;
+}
+
+a:visited{
+    color: orange;
 }
 
 a:hover{                                        /* :hover can be used by other elements*/             
     color:blue;
 }
 
-a:hover:not(.currentPage) {                     /* all <a> will change their text to blue when you hover over the element EXCEPT the <a> has class=".currentPage" */
+a:active{
+    color:red
+}
 
+
+ /* this will select all a tags that do NOT have .currentPage*/
+a:not(.currentPage) {                    
     color:blue
 }
 
@@ -1655,24 +1666,6 @@ a:hover:not(.currentPage) {                     /* all <a> will change their tex
 p:first-child{
     color:none;
     content:"";
-}
-
-/* this will select all the first <i> child elements that are nested within <p> elements*/
-p i:first-child{
-    color:none;
-    content:"";
-}
-
-/* this will select all the <p> elements that are nested inside the first <i> elements that are nested inside <body> or other elements*/
-i:first-child p{
-    color:none;
-    content:"";
-}
-
-/* this will select all the even elements from a list of <i> elements, it will also affect nested <i> elements */
-i:nth-child(even) {         
-    color:none;
-
 }
 
 /* selects the first <i> element from a list of <i> elements*/
@@ -1696,6 +1689,8 @@ i:nth-of-type(n) {
 
 
 /*---------------------------------------------------------PSEUDO ELEMENTS----------------------------------------------------------------------------------------------------------------*/
+/* A pseudo-element is added to a selector when you want to style a specific part of the selected element */
+
 /* you can also combine the pseudo elements, in this case, order doesnt matter*/
 /* this selector will choose the first line inside every <p> element */
 p:first-line{       
@@ -1712,8 +1707,7 @@ article p::first-letter{
 
 /* adding content before each <header> element*/
 header::before{
-    /*content: url("images/faviconThingie.png"); */
-    color:none;
+    content: url("images/faviconThingie.png");
 }
 
 /* adding content AFTER each <p> element*/
@@ -1722,13 +1716,13 @@ p::after{
 }
 
 /* will change the content for every marker in all lists*/
-::marker{
+ul::marker{
     color:none;
 }
 
 /* ::selection will change how highlighting text is displayed*/
-article p::selection{
-    color:purple;
+p::selection{
+    color: purple;
     background-color:red;
 }
 

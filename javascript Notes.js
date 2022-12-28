@@ -1283,7 +1283,11 @@ let myObject = new myConstructor("abel", 29, "San Francisco");
 //---------------------------------different ways of accepting arguments in function-----------------
 function destructuring({valueOne, valueTwo})                                  //you can pass an object that has two properties to this function
 function defaultValues(a = 1, b , c = "string")
-
+function manyArguments(...nums){                                              //you can use the spread operator to accept an infinite number of arguments
+      nums.forEach((num) => {                                                 //nums is an array at this point                                               
+            console.log(num);
+      })
+}
 
 
 //---------------------------------IIFE: immediately invoked function expression------------------------

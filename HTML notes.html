@@ -40,16 +40,18 @@
 
     <body>
         
+            <!-- PARAGRAPH tags-->
         <p class="myClass otherClass" title="paragraph"> my paragraph </p>    <!-- using the class attribute to specify a class for the element, title can be used to create a small popup that gives a description of the element-->
         
+            <!-- IMAGE tag-->
         <img src="./images/space.gif" alt="space"/>                           <!-- loading an image onto the document with the src attribute, alt is used when the image doesnt load, and is usefull for screen readers-->
         
-        <a href="https//www.google.com" target="_self"> Home </a>             <!-- creating a link in the document, target="_self" will open the link on the same window -->
-        
-        <a href="https://sf.gov/" target="_blank">  San Francisco </a>        <!-- target="_blank" will open the link on a new window-->
-        
+            <!-- ANCHOR tags (hyperlinks)-->
+        <a href="https//www.google.com" target="_self"> Home </a>             <!-- creating a link in the document, target="_self" will open the link on the same window -->        
+        <a href="https://sf.gov/" target="_blank">  San Francisco </a>        <!-- target="_blank" will open the link on a new window-->      
         <a href="mailto:abelmuro93@gmail.com"> Email Me </a>                  <!-- opens up outlook, then the user will be able to email the author of the website-->
         
+            <!-- DIVISION tags-->
         <div style="margin-top: 200px; color: red"> </div>                    <!-- using inline styles on this div element-->
         
         <style>                                                               /* creating an inline stylesheet */
@@ -59,8 +61,12 @@
                 }
         </style>
         
-        
-            <!-- This is how you embed a youtube video onto your webpage, if you right click any youtube video and select "COPY EMBEDED CODE", it will give you the following <iframe>  -->
+            <!-- iFRAME tags: this is how you link a webpage within another webpage-->
+         <iframe src="images/second part of website.html" name="link" style="height:200px; width:700px"> </iframe> 
+         <a href="my first website.html" target="link">                                                 <!-- this will open a link to the iframe that it targets-->
+               Link to my webpage   
+         </a>        
+                <!-- This is how you embed a youtube video onto your webpage, if you right click any youtube video and select "COPY EMBEDED CODE", it will give you the following <iframe>  -->
         <iframe width="971" height="546" src="https://www.youtube.com/embed/kD3BeJ0QOtc" frameborder="0px" allow="picture-in-picture" allowfullscreen>                <!-- accelerometer and gyroscope lets the user rotate the video if they are using a mobile device to watch a virtual reality or 360 degree video-->
         </iframe>                                                                                                                                                     <!-- picture-in-picture allows the user to watch the video while using other apps on your mobile device-->
                                                                                                                                                                       <!-- clipboard-write allows the user to copy the content to their clipboard-->
@@ -73,14 +79,9 @@
             <area shape ="circle" coords="564,366,100" href="https://www.thechairstore.com/" onclick="myFunction()">   
         </map>                                                                                                                                                            
                                                                                                                                                                       
-                                                                                                                                                                
-            <!-- this is how you link a webpage within another webpage-->
-         <iframe src="images/second part of website.html" name="link" style="height:200px; width:700px"> </iframe> 
-         <a href="my first website.html" target="link">                                <!-- this will open a link to the iframe that it targets-->
-               Link to my webpage   
-         </a>
-
-                                                                                                                                                      
+                                                                                                                                                               
+                                   
+            <!--VIDEO tags -->
          <video style="width:300px; height:250px" controls autoplay muted>                                <!-- controls attribute adds play, pause and volume-->
             <source src="./randomvideo.mp4" type="video/mp4" size=1080/>                                  <!-- the size attribute can be used to define the quality options for the video-->
             <source src="./randomvideo.mp4" type="video/mp4" size=720/>
@@ -89,27 +90,29 @@
             Your browser doesn't support the video tag
          </video>
 
+            <!-- AUDIO tags-->
         <audio controls>                                                                                <!--audio can use the same attributes as <video>-->
             <source src="music.mp3" type="audio/ogg">                                                   <!-- adding more <source> means more music for the music player-->
             Your browser doesn't support the audio tag
         </audio><br>                                                                                                                                                       
                                                                                                                                                                  
         
+            <!-- OBJECT tag was designed to include plug ins (pdf readers, maps) in web browsers-->
+        <object width="0px" height="0px" data=""></object>
         
         
-        
-        
-        
-        <header id="jumpHere">
-            <h1 id="HeaderOne" style="background-image :url('images/nice background.jpg')" title="Abel's website" >Abel's Website</h1>
-        </header>
+            <!-- this is known as bookmarking, use the ID of an element to jump to another part of the same page-->
+        <div id="jumpHere"> </div>
+        <a href="#jumpHere"> this is how you jump to another part of the webpage </a>
+       
     
+            <!-- CANVAS tag: used to draw graphics (squares, lines, triangles, images, etc...) onto a website with javascript -->
+         <canvas width="300" height="300"> </canvas>
 
-<!----------------------------------------------------------------BELOW IS JUST RANDOM CODE FOR EXPERIMENTING------------------------------------------------------------------------------------------------------------------>        
-
-
-
-
+            <!-- SVG tags: used to create 2D vectors for x and y graphs or pie charts-->
+         <svg width="100" height="100">    
+            <circle cx="50" cy="50" r="40" stroke="yellow" stroke-width="4" fill="red" />    
+          </svg>   
 
 
 
@@ -121,175 +124,6 @@
 
 
 
-<!-- method="get" is for requesting data from a server, while method="post" is for sending data to a server to create/update a resource-->
-<!-- for <input> validation.. use "required" attribute to prevent user from entering nothing-->
-<!-- method attribute defines how the data will be sent to the server, with method="post", it will be send as URL variables-->
-<!--AUTOFOCUS attribute can be usefull if a certain input box does not appear while a page loads-->
-<!--VALIDATION ATTRIBUTES and CSS SELECTORS-->
-<!--
-    attributes:
-        max:    the maximum value that a user can input
-        min:    the minimum value that a user can input
-        pattern:    specifies the exact pattern that a user MUST match with their input
-        required:   forces the user to input something to the input box, it cannot be empty
-
-    CSS SELECTORS FOR VALIDATION
-        :invalid        selects input elements that have invalid values
-        :optional       selects input elements that have no "required" attribute
-        :required       selects input elements that have the "required" attribute
-        :valid          selects input elements that have valid values 
-
--->
-
-
-    <!-- LOGIN WITH USER NAME AND PASSWORD (INPUT BOXES)-->
-        <form id="logininfo" action="/server.php" target="_blank" method="get" autocomplete="on">  <!-- action attribute defines the action to be performed when the form is submitted-->        
-            <fieldset>   
-                <!--<legend style="text-align:center"> </legend>-->                     <!-- this is used in conjunction with fieldset-->
-                <label for="username">                                                  <!-- creating a label for the element with ID username-->
-                    Username: 
-                </label> 
-                <br>                                                              
-                <input type="text" id="usetextrname" name="username" value="Username" required><br>   <!-- the name attribute must be specified so that the data submitted by user is sent to server-->
-                
-                <label for="pwrd"> 
-                    Password: 
-                </label>
-                <br>                                                                         <!--type="password" is also a text box but will hide the text will ****-->  
-                <input type="password" id="pwrd" name="password" value="Password"><br>       <!-- value in this case defines the text displayed in the text box-->          
-                
-                <input type="submit" value="Login">                                       <!-- creating a button that the user can click to send data to server-->
-                <!-- <input type="submit" formaction="anotherserver.php" value="submit as admin"> -->
-                <!-- <input type="reset"> --> 
-            </fieldset>
-        </form>
-
-
-
-        <!-- SEARCH FIELDS-->
-        <form id="searchbox" action="server.php" target="_blank" method="get">
-            <label for="gsearch"> 
-                Search box: 
-            </label>
-            <input type="search" id="gsearch" name="gsearch">
-            <input type="submit">
-        </form>
-
-
-
-        <!-- TEXT AREA-->
-        <form id="textarea" action="server.php" target="_blank" method="get">
-            <p> Enter the description of blah blah blah </p>
-            <textarea style="resize:none; width: 400px; height: 400px"> Type here... </textarea>             <!--resize:none doesnt let the user resize the text box-->
-        </form>
-
-
-
-        <!--SELECT BOX WITH DROP DOWN MENU-->
-        <form id="select" action="/server.php" target="_blank" method="post">
-            <label for="language"> Select a language</label>
-            <select id="language" name="language" value="choose">
-                <option value="java">
-                    Java
-                </option>
-                <option value="c++">
-                    C++
-                </option>
-                <option value="html">
-                    HTML
-                </option>
-                <br>
-                <input type="submit">
-            </select> 
-        </form>
-
-
-
-        <!-- this form has multiple input fields-->
-        <form id="questionaire" action="/server.php" target="_blank" method="post" autocomplete="on">  <!-- autocomplete will automatically fill out a form with what the user has inputed before-->
-            
-            <!--RADIO BUTTONS LETS USER CHOOSE BETWEEN A LIST OF ITEMS-->
-            <div id="favcolor1">
-                <b style="font-size:20px">Choose your favorite color</b>
-                <input type="radio" id="blue" name="favColor" value="blue">             <!-- value in this case defines the data inputed by the user-->
-                <label for="blue"> 
-                    Blue
-                </label>
-
-                <input type="radio" id="green" name="favColor" value="green">
-                <label for="green"> 
-                    Green
-                </label>
-
-                <input type="radio" id="pink" name="favColor" value="pink">
-                <label for="pink"> 
-                    Pink
-                </label>
-            </div>
-
-            <!--COLOR SELECTION-->
-            <div id="favcolor2">
-                <label for="favcolor"> 
-                    Select your favorite color 
-                </label>
-                <input type="color" id="favcolor" name="favcolor" value="#ff0000">
-            </div>
-       
-            <!--DATE SELECTION-->
-            <div id="dateselect">
-                <label for="birthday"> 
-                    Enter your birthday 
-                </label>                                                          
-                <input type="date" id="birthday" name="BIRTHDAY" value="birthday">          <!-- you can use the max and min attributes to create a certain timeframe-->
-                                                                                                <!-- that the user HAS to select , example; 1993-07-22 through 1996-05-23-->                  
-            </div>
-            <input type="submit">                                                       <!-- this will send the data to a "form handler", which is a file on the server for processing data-->   
-        </form>
-
-
-
-        <!--FILE SELECTION-->
-        <form action="server.php" target="_blank" method="post">
-            <label for="myfile">
-                Select a file:
-            </label>    
-            <input type="file" id="myfile" name="myfile" multiple><br>                  <!-- you can select multiple files with the multiple attribute-->
-            <p> To select multiple files, hold down CTRL key while selecting </p>
-            <input type="hidden" id="updateDatabase" name="updateDatabase" value="666"> <!-- type="hidden" can be used to update data on the database-->
-            <input type="submit" formenctype="multipart/form-data">                     <!-- formenctype defines how the input will be encoded when it is sent to the server-->
-        </form>                                                                             <!-- default encoding is application/x-www-form-urlencoded (spaces are converted to "+" symbols, and special characters are converted to ASCII HEX values)-->
-                                                                                            <!-- multipart/form-data is necessary if user will upload a file through the form-->
-
-        <!-- NUMBER SELECTION WITH VALIDATION-->
-        <form action="server.php" target="_blank" method="post">
-            <label for="quantity">
-                Pick a number between 1 and 20:
-            </label>
-            <input type="number" id="quantity" name="userchoice" min="1" max="20">      <!-- user cannot input a number bigger than 20 and less than 1-->
-            <input type="submit">
-        </form>
-
-
-        <!--TELEPHONE NUMBER SELECTION WITH VALIDATION-->
-        <form action="server.php" target="_blank" method="post">
-            <label for="phone"> 
-                Enter your phone number:
-            </label>                                    <!--placeholder attribute defines a hint on how to fill out an input box-->
-            <input type="tel" id="phone" name="phone" placeholder="123-456-789" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" size="9" maxlength="9">  <!--pattern has the syntax [any symbol]{digit}-->
-            <input type="submit">
-        </form>
-
-
-
-        <!--IMAGE SELECTION-->
-        <label for="imageChoice"> 
-            Please choose one of the images below that corresponds to blah blah
-        </label>
-        <form action="server.php" id="imageChoice" target="_blank" method="post">       
-            <input type="image" src="images/blue checkered.png" alt="Submit" style="width:300px;height:300px">
-            <input type="image" src="images/rainbow checkered.png" alt="submit" style="width:300px;height:300px">
-        </form>
-<!--=================================================================================================================================================================================================================-->
 
 
 
@@ -301,11 +135,6 @@
 
 
 
-
-
-
-<!-- <object> was designed to include plug ins(pdf readers, maps) in web browsers-->
-        <object width="0px" height="0px" data=""></object>
 
 <!-- <emded> was designed to embed an object in html-->
         <embed src="" style="width:0px;height:0px">
@@ -313,7 +142,7 @@
         <label style="display:block" for="boxModel"> width and height increases the content area</label>
         <img id="boxModel" src="images/box-model.gif" style="width:600px; height:400px"><br>    
 
-        <a href="#jumpHere"> this is how you jump to another part of the webpage </a> <!-- this is known as bookmarking, use the ID of an element to jump to another part of the same page-->
+       
 
 
 <!-- ::after is called after the element that uses .clearfix as its class is read by the browser-->

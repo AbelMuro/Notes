@@ -81,14 +81,17 @@
          </a>
 
                                                                                                                                                       
-         <video style="width:300px; height:250px" controls autoplay muted>                                <!--controls attribute adds play, pause and volume-->
-            <source src="./randomvideo.mp4" type="video/mp4" size=/>
+         <video style="width:300px; height:250px" controls autoplay muted>                                <!-- controls attribute adds play, pause and volume-->
+            <source src="./randomvideo.mp4" type="video/mp4" size=1080/>                                  <!-- the size attribute can be used to define the quality options for the video-->
+            <source src="./randomvideo.mp4" type="video/mp4" size=720/>
+            <source src="./randomvideo.mp4" type="video/mp4" size=520/>
+            <source src="./randomvideo.mp4" type="video/mp4" size=480/>
             Your browser doesn't support the video tag
          </video>
 
         <audio controls>                                                                                <!--audio can use the same attributes as <video>-->
             <source src="music.mp3" type="audio/ogg">                                                   <!-- adding more <source> means more music for the music player-->
-            This will only be displayed if the browser does not support the video tag
+            Your browser doesn't support the audio tag
         </audio><br>                                                                                                                                                       
                                                                                                                                                                  
         

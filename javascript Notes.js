@@ -1288,6 +1288,17 @@ function manyArguments(...nums){                                              //
             console.log(num);
       })
 }
+      
+      
+//--------------------------------- CALL(), APPLY(), BIND()------------------------------------------------------------
+ function someFunc(nums){
+      console.log(nums);
+ }
+
+someFunc.call(5, 6, ...);                                                     //will call a function by passing a certain number of arguments   
+someFunc.apply([1,2,3], 4, ...)                                               //will call a function by passing arguments that can also be arrays
+let anotherFunc = someFunc.bind(2);                                           //will create a new function that already has its parameters set to the arguments that you send it
+anotherFunc();                                                                //this function will be called with default paramete nums set to 2
 
 
 //---------------------------------IIFE: immediately invoked function expression------------------------

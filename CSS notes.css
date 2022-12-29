@@ -288,6 +288,8 @@
 .TwoDimensionalTransformProperties {
 
     /*------------------------------------- 2D TRANSFORMS--------------------------------------------------------------------*/
+    
+        /* keep in mind that if you use % instead of px, it will use the size of the element to move a specific amount */
     transform: translate(50px, -50px);             /* we move the element 50px to the right and up 50px;
 
         translate(x-axis, y-axis);      

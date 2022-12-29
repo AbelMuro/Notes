@@ -1314,32 +1314,37 @@ e => e + 1;                                                                     
 
 //---------------------------------------------------------------- CLOSURES -------------------------------------------
 //Closures is a combination of a function and the lexical scope around that function
-//in other words, a function will always have access to the variables defined and declared OUTSIDE of that function
-//but the variables defined and declared INSIDE that function cannot be accessed outside that function
+//in other words, a function A that is returned from B will have access to the scope of function A and its parameters 
+// even though function A has already been executed
 
-var x = 3
-function closure() {                      //this function has a closure with the enviroment outside of it
-      console.log(x);                     //this will console log 3
-      let y = 4;
-}
-console.log(y);                           //this will log a reference error
-
-
-
-
-//a more complicated example with nested functions is below
 
 function outerFunction(x) {
-     return function innerFunction(y) {                                    //innerFunction has access to x because of its closure
-         return x + y                                                      //even though x was never defined in innerFunction
-      }                                            
+     x += 5;
+     x += 6;
+     x -= 10;
+     function innerFunction() {                                            //innerFunction has access to x because of its closure
+         return x + 5                                                      // even though x was never defined in innerFunction
+      }      
+     return innerFunction();
 }
 
-let newFunc = makeFunc();                                         //will return a reference to displayName() that retained 'name = Mozilla' from makeFunc()
-newFunc();                                                        //will console.log("Mozilla");
+console.log(outerFunction(3))                                             // will console log 9
 
 
+// ----------------another example of closure------------------------------------
+      
+function outerFunction(x) {
+      return function innerFunction(y) {                                  //keep in mind that makeAdder will return a reference to another function
+            return x + y;                                                 // but it will NOT call the inner function
+      };
+}
 
+const add5 = outerFunction(5);                                            // calling outerFunction will make innerFunction "remember" that x is 5                            
+const add10 = outerFunction(10);                                          // calling outerFunction will make innerFunction "remember" that x is 10
+
+console.log(add5(2));                                                     // will console log 7 because innerFunction remembers that x is 5
+console.log(add10(2));                                                    // will console log 12 because innerFunction remembers that x is 10
+     
 
 
 

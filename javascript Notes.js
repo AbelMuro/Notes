@@ -1876,7 +1876,8 @@ document.getElementById("id").addEventListener("click", (e) => {
     e.target.id                         //targeting the element that triggered the event and getting the value in their ID attribute
     e.target.classList                  //targetting the element that triggered the event and getting the classlist of the element
     e.target.src                        //targetting the element that triggered the event and getting the src attribute
-    e.target.style.width = "300px"      //targgeting the element that triggered the event and assigning 300px to its width property
+    e.target.style.width = "300px"      //targeting the element that triggered the event and assigning 300px to its width property (setting inline styles)
+    e.target.matches(".someClass");     //this is useful for trying to target an element only if it matches the requested selector (will return true or false)
 })
 
 

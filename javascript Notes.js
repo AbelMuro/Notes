@@ -588,48 +588,8 @@ document.cookie = "usename=HotStuff69";
 document.cookie = "password=cobra69";                                               //console.log() will display 'username=usename=HotStuff69 password=cobra69'
    
 
-
-//because there are no built in functions for cookies, you 
-//have to hard code a function that searches for a certain cookie
-//sets a cookie and gets a cookie
-
-function checkCookie(){
-      let user = getCookie("username");
-      if(user != ""){
-            alert("Welcome back " + user);
-      }
-      else{
-            user = prompt("What is your name?");                                    //prompt is similar to alert() but shows an input box and will return what the user inputed
-            if(user != "" && user != null)
-                  setCookie("username", user, 5);   
-      }
-}
-
-//one way to set a cookie with an expiration date
-//setTime() will set the new date for the object
-//getTime() will get the current time and convert it to the number of milliseconds from jan 1, 1970
-//The logic below will always return a date that is 5 days away from the current date
-function setCookie(username, user, expirationDays){
-      let d = new Date();
-      let expirationDate = d.setTime(d.getTime() + (5 * 24 * 60 * 60 * 1000));      //5 is the number of days... (24 * 60 * 60* 1000) is the number of milliseconds in a day
-      expirationDate = expirationDate.toUCTString(); 
-      document.cookie = username + "=" + user + '; expires=' + expirationDate + "path='/'";
-}
-
-//one way to get a cookie
-function getCookie(user) {
-      let allCookies = document.cookie.split(";");
-      
-      for(let i = 0; i < allCookies.length; i++){
-            if(allCookies[i].includes(user)){
-                  let value = allCookies[i].split("=")
-                  return value[1];
-            }
-      }
-      return "";
-}
-
-
+//it is strongly recommended that you use npm install js-cookies for the set and get methods for cookies, 
+//cookies doesn't have any pre-build set and get methods, but there is an npm package that implements these methods
 
 
 
@@ -1640,8 +1600,41 @@ e => e + 1;                                                                     
 
 
 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
-//---------------------------------------------------------------- CLOSURES -------------------------------------------
+//---------------------------------------------------------------- CLOSURES --------------------------------------------------------
 //Closures is a combination of a function and the lexical scope around that function
 //in other words, a function A that is returned from B will have access to the scope of function A and its parameters 
 // even though function A has already been executed
@@ -1674,6 +1667,33 @@ const add10 = outerFunction(10);                                          // cal
 console.log(add5(2));                                                     // will console log 7 because innerFunction remembers that x is 5
 console.log(add10(2));                                                    // will console log 12 because innerFunction remembers that x is 10
      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 //------------------------------------------------------CALL STACK----------------------------------------------------------------------------
 //Everytime we call a function in JS, we place the function call on the STACK
       
@@ -1742,6 +1762,14 @@ printSquared(4);
 
 
 
+             
+             
+             
+             
+             
+             
+             
+             
 
 
 

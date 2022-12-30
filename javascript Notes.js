@@ -50,6 +50,22 @@ let x = [1,2,3];
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ====================================================================== SCOPES ====================================================================== 
 // note, any variable defined outside a function or {} will have global scope, 
 // any variables defined inside a function or {} will have local scope
@@ -118,6 +134,20 @@ function Hoisting() {                                     // this is how hoistin
       let y = 4;                                          // this will be hoisted to the top of the top of this function
       const z = 5;                                        // this will be hoisted to the top of the top of this function
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -199,6 +229,24 @@ function addNumbers(first = "9999523423423423435", second = "2762342342342342345
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //=========================================================== REG EXP ============================================================================
 //REGEXP are used to create a pattern that can be used to select certain parts of a string
 
@@ -257,6 +305,23 @@ const str = "how are you today";
 const p = "a";
 const pattern  = RegExp(p, "g");
 str.match(pattern);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -388,6 +453,20 @@ my_map.get([1,2,3]);                                                       //thi
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //============================================================== THIS ============================================================== 
 //THIS is a keyword that refers to an object in javascript
 
@@ -472,6 +551,25 @@ function example() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //============================================================ COOKIES ==========================================================
 // cookies have a capacity of 4kb
 // cookies live on the client side, typically, cookies should be used to store data that is NOT sensitive, such as user's preferences
@@ -537,6 +635,33 @@ function getCookie(user) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //============================================================== SESSION ==============================================================================
 //session is another way of storing data, similar to local storage and cookies
 //sessions have a capacity of 5mb
@@ -557,6 +682,34 @@ sessionStorage.removeItem("data");
 sessionStorage.clear();
 
 sessionStorage.clickcount = 1;                             //a property that you can use to keep track of the number of clicks of the user
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -652,6 +805,26 @@ let my_variable = new class_one.class_two();
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //============================================================== OBJECTS ============================================================== 
 
 let objectOne = {name: "abel"};
@@ -676,23 +849,6 @@ test_scores.my_method();                                                    // t
 test_scores.prototype.english = "45";                                       // all objects have this property called prototype that lets you add properties and methods 
 
 
-//----------------------------------------------------------Constructors-----------------------------------------------------------------
-//constructors are functions that construct mulitple instances of an object
-function myConstructor(name, age) {
-      this.name = name;
-      this.age = age;
-      this.method = function(){
-            return this.name + this.age;
-      }
-}
-
-let myObject = new myConstructor("abel", "29");                               //same syntax as an object literal
-myObject.name;
-myObject["age"];
-myObject.method();
-myObject.prototype.birthday = "july 22, 1993";                                // all objects have this property called prototype that lets you add properties and methods 
-
-
 //---------------------------------------------------------SPREAD OPERATOR with objects-----------------------------
 //keep in mind that the spread operator will return a SHALLOW copy of the original object, 
 //meaning that changes made to the new object will affect the original object
@@ -710,8 +866,6 @@ let result = exampleOne + exampleTwo;
 
 
 
-
-
 //-------------------------------------------------- CLONING objects------------------------------------------------------
 //to make a DEEP clone of an object, do the following steps below...
 
@@ -720,6 +874,29 @@ let data = {name: "alice", age: "26"};
 const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of data
 
 const deepCopyTwo = structuredClone(data);                           //creates a deep copy of data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -817,6 +994,26 @@ object.birthplace;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //============================================================== ERROR CATCHING ============================================================== 
 
 //this will try a block of code, if there is any error within this block, then the catch(err) block will execute
@@ -836,6 +1033,19 @@ finally{
 SyntaxError;                                //example: "this is a string         
 ReferenceError;                             //using a variable that has not been declared
 TypeError;                                  //using the wrong type, for example, number.toString()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -918,6 +1128,25 @@ function encode(data) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 //============================================================== SYNCHRONOUS ============================================================== 
 
@@ -967,6 +1196,26 @@ console.log("c");
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //==============================================================  PROMISES ============================================================== 
 //Promise objects were designed to handle async events (calls to a server), and it will be resolved when the event is successful
 //Promises are also useful for chaining callbacks together, which in turn prevent callback hell
@@ -995,6 +1244,13 @@ myPromise.then((results) => {                       //then() is a function that 
 })
 
 doSomethingElse();                                  //this function will be called immediately after the Promise constructor is called 
+
+
+
+
+
+
+
 
 
 
@@ -1104,6 +1360,28 @@ let name = (password == "Darkness33") ? "correct pwd": "incorrect pwd";      //i
 
 
 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
 
 
@@ -1156,6 +1434,19 @@ switch(some_variable_of_any_type){                                          //sw
 
 
 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
 
 
@@ -1215,6 +1506,15 @@ while(false);
 
 
 
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
 
 
@@ -1244,6 +1544,24 @@ some_label:{                                                        //you can cr
 
 
 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
 
 
@@ -1356,16 +1674,70 @@ const add10 = outerFunction(10);                                          // cal
 console.log(add5(2));                                                     // will console log 7 because innerFunction remembers that x is 5
 console.log(add10(2));                                                    // will console log 12 because innerFunction remembers that x is 10
      
+//------------------------------------------------------CALL STACK----------------------------------------------------------------------------
+//Everytime we call a function in JS, we place the function call on the STACK
+      
+function multiply(a, b) {                                   
+      return a * b;
+}                                   //this is the order in which the functions will be called (we will use FIFO stack technique)
+                                                                                             ______________________
+function square(n) {                            |                |                          |                      |
+      return multiply(n, n)                     |                |                  |       |         |            v
+}                                               |                |                  |       |         |         multiply() 
+                                                |                |                  |       |         |    
+                                                | multiply()     |                  |       ^         |
+function printSquare(n){                        | squared()      |                  | squared()       |
+      let squared = square(n);                  | printSquared() |                  | printSquared()  |
+      console.log(squared);                     |________________|                  |_________________|
+}
+      
+printSquared(4);
 
 
+//using asynchronous operations with the call stack, keep in mind that when JS encounters an asynchronous line of code, 
+// it is removed from the stack and placed in the webAPI thread, even though JS is single threaded, we can still call concurrent
+// code because the browsers have these API's that are essentially another thread.
+                        
+ console.log("Hi");                    
+                        
+ setTimeout(() => {
+       console.log("there")
+ }, 5000);
+                                                //EVENT LOOP
+  console.log("ho");
+                        
+            //stack                                                                    //webAPI's
+                                                                    
+       |                   |                                                        |               |
+       | console.log("ho") |  //setTimeout() will be removed from the stack         |               |     //once setTimeout() finishes its delay, 
+       | setTimeout()      |              -------------------------->               |  setTimeout() |     // it will be placed in the task queue    
+       | console.log("hi") |  //and will be placed in the WebAPI 'stack'            |               | 
+       |___________________|                                                        |_______________|
 
+                     ^                                                                     |
+                     |                                                                     |
+                     |                                                                     |
+                     |                                                                     |
+                     |   //task queue                                                      |
+            |                           |  <______________________________________________ |      
+            |                           |
+            |                           | 
+            |    setTimeout()           |
+            |___________________________|
+            //keep in mind that the setTimeout() will only be placed in the stack ONCE THE STACK IS EMPTY
 
-
-
-
-
-
-
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
 
 

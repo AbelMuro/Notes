@@ -413,8 +413,8 @@ let arr3 = [...arr1, ...arr2]    //[1,2,3,4,5,6]
 
 //DESTRUCTURING ARRAYS
 let someArray = [1, 2];
-const [first, second] = someArray;                                          // first and second now reference specific elements in the array 
-let someValue = first + second;                                             // and they can be used as variables
+const [first, second] = someArray;                                    // first and second now reference specific elements in the array 
+let someValue = first + second;                                       // and they can be used as variables
 
 
 //CLONING arrays
@@ -425,6 +425,34 @@ const deepCopyTwo = structuredClone(data);                           //creates a
 
 
 
+
+//Usefull prototype methods for arrays.
+
+
+let myArray = [1,2,3,4,5];
+
+
+myArray.filter((val, index) => {                      //removes certain elements from the array and returns an updated version of the array
+        if(element > 1)                               // however, it will not affect the original array
+             return true;                             //element will be included in the new array
+        else
+             return false;                            //element will be excluded from the new array
+})
+
+myArray.map((val, index) => {                           //similar to forEach(), but returns an updated array and
+        return element + 1;                             // doesnt affect the original array
+})
+
+
+myArray.forEach((val, i) => {                            //will call a function for each element in the array, the whole point of this method is to access the elements
+      console.log(val, i);                               //forEach() will not return an updated version of the array or affect the original array
+})
+
+                                                              
+let accumulatedValues = myArray.reduce((accumulator, currentVal) => { // reduce() is a method to accumulate the values in an array, the array can also be strings and other primitives
+      return accumulator + currentVal;                  // The first time that the callback is run, there will be no "return value of the previous calculation". So we can supply a second argument
+}, initialValue);                                       // If supplied, the initial value may be used in its place. Otherwise the array element at index 0 is used as     
+                                                        // the initial value and iteration starts from the next element    
 
 
 //------------------------------------------------------------- SETS --------------------------------------------------------------------------------------------

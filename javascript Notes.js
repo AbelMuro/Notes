@@ -334,6 +334,49 @@ str.match(pattern);
 
 
 
+//============================================================= WEB WORKERS API ===========================================================================
+//in the case where you want to load more than one script files. you can use web workers api to handle one script while the main thread handles the other.
+//Generally, javascript is single threaded, but with web workers, they make it possible to run different processes on a different thread.
+
+//--------------------------index.js or index.html------------------------------------
+
+       if(window.Worker){
+            let worker = new Worker("./scriptOne.js");                              //creating a Worker object
+
+            worker.onmessage = function(e){                                         //passing a function that will handle all incoming responses from the worker
+                console.log(e.data)             
+            }            
+            let button = document.querySelector("#selectButton");                   //clicking on this button will trigger a postMessage() that will send data to the worker
+            button.addEventListener("click", () => {
+                worker.postMessage("my first worker");
+            })
+       }
+
+
+
+
+//---------------------- Worker.js ------------------------------------------------
+
+      this.onmessage = function(e){
+            let temp = e.data + "yes";                                              //e.data is the data that was sent by worker.postMessage in previous file
+            this.postMessage(temp);                                                 //this postMessage will send a reply back to the main thread
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //====================================================================== DATA STRUCTURES =============================================================================

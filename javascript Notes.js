@@ -1108,9 +1108,17 @@ TypeError;                                  //using the wrong type, for example,
 
 //============================================================== FETCH API ============================================================== 
 // the fetch API can be used to make requests to servers or used to fetch a resource
-//to display the data of a JSON file, you must use response.json() which will return a promise 
-//to display the data of a text file, you must use response.text() which will return a promise
-//by default, fetch will do a 'GET' request
+// by default, fetch will do a 'GET' request
+
+// Keep in mind that when you make a 'same-origin' request to a server, the browser will always allow it.
+// However, when you make a 'cross-origin' request to a third-party server, the browser will only allow it..
+// ..IF the third-party server sends a response with the header 'access-allow-control-origin' that is set 
+// your origin
+
+// one such example of this is when you make a request to the Printfull API, 
+// you must first have registered an access token with printfull that has a specific URL/origin to your app.
+// printfull will then add your URL/origin to the 'access-allow-control-origin' and any request made from your
+// URL/origin will be allowed
 
 
 fetch('/somePath', {                                                    //this will will return a promise..... 
@@ -1121,8 +1129,8 @@ fetch('/somePath', {                                                    //this w
       },      
       body: JSON.stringify({data : "data"}),                            //this is the actual data that we are sending with the post request(it must be in JSON)
 })
-.then(response => { return response.text();                              // response is an object that contains the response from the server
-                           response.json();                              // text() will parse the data into text, json() will be parse the json data into javascript
+.then(response => { return response.text();                             // response is an object that contains the response from the server
+                           response.json();                             // text() will parse the data into text, json() will be parse the json data into javascript
                  });                                                    // text() and json() will return a promise       
 .then(data => {                                                         //using the parsed data
       //do something with the data                                      //can manipulate the DOM to display data

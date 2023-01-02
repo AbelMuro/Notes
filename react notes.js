@@ -100,6 +100,24 @@ import './react.css'
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //=========================================== IMPORT STATEMENTS =========================================== 
 
 
@@ -138,6 +156,28 @@ import {number as myNumber} from './HomePage.js'            //this will work
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //-----------------------------------------REACT DOM -----------------------------------------------------------------------------------------
 //When React first renders all components, it creates a VIRTUAL DOM with react.createElement and all the elements will be initially placed in the real dom
 //when React notices that a component has been updated (state was updated, which causes a re-render), it will generate another VIRTUAL DOM
@@ -159,6 +199,24 @@ root.render(<App /> )                                       //using render() met
 
 
 
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
 
 
@@ -228,6 +286,31 @@ let variable = true
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //============================================================================= REACT CLASSES ======================================================================================================================
 //classes are to be replaced with hooks****
 
@@ -284,6 +367,25 @@ class ClassComponent extends React.Component {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //============================================================================== REACT HOOKS ===========================================================================================================================
 //import React, { useEffect, useState, createContext } from 'react';
 //hooks are functions that let you 'hook into' React features from function components
@@ -324,16 +426,6 @@ function HooksTwo() {
         </>
     )
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -389,9 +481,6 @@ function Example() {
 
 
 
-
-
-
 //------------------------------------------------------------ USE CONTEXT HOOK --------------------------------------------
 // you can pass state object and setState() to child components by using createContext() and useContext()
 //its a good idea to export const StateObject = createContext() if you are modularizing your code
@@ -432,20 +521,6 @@ function ComponentFour() {
         </h2>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -564,17 +639,6 @@ const ChildComponent = forwardRef((props, ref) => {
 
 
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 //---------------------------------------------------- USE REDUCER HOOK ------------------------------------------------------------------
@@ -709,6 +773,32 @@ function expensiveCalculation() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //=========================================================== MEMO ===========================================================================================
 // memo() is used to force a function to only re-render when its props have changed, this can improve performance.
 
@@ -813,6 +903,18 @@ function AnotherExampleWithCustomHooks() {
 
 
 
+    
+    
+    
+    
+  
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -1001,6 +1103,26 @@ function MediaQueriesWithComponents{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //------------------------------------------------ JS-COOKIES---------------------------------------------------------------------------------------------------
 //npm install js-cookies                this package lets you use cookies but with set and get methods
 import Cookies from 'js-cookies';
@@ -1021,6 +1143,27 @@ function MyCookies () {
         Cookies.remove("name");                         //removes the name cookie
         Cookies.remove("gender", {path: ''})            //to remove the gender cookie, you will have to include the path used to create the cookie
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1078,6 +1221,17 @@ function MyCookies () {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 //----------------------------------------------------------------KEYS and UUID----------------------------------------------------------------------------------
 
 // keys help React identify which list items have changed
@@ -1104,6 +1258,41 @@ function MakeList(props) {
 const numbers = [1, 2, 3, 4, 5, 6];
 
 root.render(<MakeList array={numbers}/>);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1212,6 +1401,20 @@ function Login() {
 
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

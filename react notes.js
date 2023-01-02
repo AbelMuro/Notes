@@ -1,6 +1,5 @@
 import React, { useEffect, useState, createContext , useContext, useRef, useReducer, useMemo, useCallback, } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNavigate } from 'react-router-dom';
-import './react.css'
 
 
 /* 
@@ -93,7 +92,16 @@ import './react.css'
 */
 
 
+/* 
 
+                                                                VIRTUAL DOM
+                    The virtual DOM is an exact copy of the REAL DOM, but it is used by React developers to 'mutate' the real DOM 
+                    in the most efficient way possible. Everytime we update the virtual DOM, what happens is that React will generate
+                    ANOTHER virtual DOM with the changes that we made, and will compare the new virtual DOM with the old virtual DOM,
+                    and calculate the most minimal way to update the real DOM. This in turn will increase performance of the application
+
+
+*/
 
 
 
@@ -526,8 +534,9 @@ function ComponentFour() {
 
 //----------------------------------------------------------- USE REF HOOK -----------------------------------------------------
 // useRef() is a hook that can create a constant reference to an element or can be used to reference a value
+// keep in mind that useRef() is a way to bypass the virtual DOM and directly access the underlying element in the real DOM
 // this hook does not cause a re-render everytime it gets updated
-// useRef() has the same effect as querySelector()
+// useRef() is very similar in concept to querySelector()
 
 function App() {
     const inputElement = useRef();

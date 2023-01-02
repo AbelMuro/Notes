@@ -1363,7 +1363,6 @@ function EvenHandlers() {
 // Components that handle the data of the input/select/forms with its state are called controlled components
 // you have better control of what is being inputed by the user
 // KEEP IN MIND, that the value attribute is ONLY for controlled components
-// if you want to use input/select/forms in UNCONTROLLED components, then you should use defaultValue attribute
 
 
 //everytime the user inputs something, the entire component gets re-rendered
@@ -1402,7 +1401,29 @@ function Login() {
     )
 }
 
+//--------------------------------------------------------- Uncontrolled Components --------------------------------------------------------------------
+//Components that handle data WITHOUT its state binded to the inputs are called uncontrolled components
+//You can use defaultValue attribute on uncontrolled inputs
 
+function Uncontrolled() {
+        const input = useRef("");
+        
+        const handleInput = () => {
+                console.log(input.current.value);               //you can access the value of the input using Ref
+        }
+        
+          
+        return(        
+            <form>
+                <input ref={input}>
+                <button onClick={handleInput}>
+                       "Click here"        
+                </button>
+            </form>
+        )
+        
+
+}
 
 
 

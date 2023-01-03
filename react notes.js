@@ -1245,9 +1245,9 @@ function MyCookies () {
 
 // keys help React identify which list items have changed
 // the 'key' property has a special meaning in React, 
-//when you create an array of JSX elements, each element
-//must have a unique key that identifies it.
-//you can use any string as a key. but its best to use the 
+// when you create an array of JSX elements, each element
+// must have a unique key that identifies it.
+// you can use any string as a key. but its best to use the 
 // uuid api to create universally unique ID's 
         
 import {v4 as uuid} from 'uuid';
@@ -1258,10 +1258,10 @@ function ListItem(props) {
 
 function MakeList(props) {
     const numbers = props.array;
-        //using map function to create a <li> for each element in the array
-    return numbers.map((number) =>
-        <ListItem key={uuid()} value={number} />  //uuid() will always create a unique ID for each key in the array
-    )
+        
+    return (numbers.map((number) =>
+        <ListItem key={uuid()} value={number} />  
+    ));
 }
 
 const numbers = [1, 2, 3, 4, 5, 6];
@@ -1272,6 +1272,53 @@ root.render(<MakeList array={numbers}/>);
 
 
 
+//KEEP IN MIND that you should not use the index of a list item as a key.. take the example below
+
+function Keys () {
+     const [list, setList] = useState(["foo", "bar", "baz"]);
+        
+     const deleteItem = (e) => {
+           const indexToDelete = e.target.key;  
+           const newList = list.filter((item, index) => { 
+                   if(index !== indexToDelete)
+                       return false;
+                   else
+                        return true;
+           })
+           setList(newList);
+     }        
+       
+      return(
+             <ul>
+                {list.map((item, i) => {
+                     return(<li key={i} onClick={deleteItem}> {item[i]} </li>)
+                })}       
+             </ul>
+      )  
+}
+
+
+//VISUAL presentation
+
+/* 
+        <ul>
+                <li key=0 > 0 </li>        <---       //lets say we delete this item from the list
+                <li key=1 > 1 </li>
+                <li key=2 > 2 </li>
+                <li key=3 > 3 </li>
+        </ul>
+
+
+        //deleting an item will cause a re-render, so we will have to iterate through the list again
+
+        <ul>
+                <li key=0 > 1 </li>                    // <li> 1 </li> used to have a key that was set to 1, but now it is 0
+                <li key=1 > 2 </li>                    // all the list items have had their keys changed as well
+                <li key=2 > 3 </li>                    // now React will look at this and will re-render all the items because their keys have changed
+        </ul>
+
+
+*/
 
 
 

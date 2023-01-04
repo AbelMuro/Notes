@@ -1606,6 +1606,68 @@ class Mouse extends React.Component {
 
 
 
+//----------------------------------------------------------------- HIGHER ORDER COMPONENTS (HoC) ------------------------------------------------
+//High order components are components that take in another component as an argument/props and return another component.
+//The whole point of these HoC is to re-use component behavior such as re-using event handlers and lifecycle methods
+
+
+function FirstInput(props){
+      return (
+            <div>
+                 <button onClick={props.handleClick}> "Click me" </button>   
+                 <input type="text" onChange={props.handleChange} value={props.state}/>
+           </div>
+      )  
+
+}
+
+
+function SecondInput(props) {
+            <div>
+                 <button onClick={props.handleClick}> "Click me" </button>   
+                 <input type="text" onChange={props.handleChange} value={props.state}/>
+           </div>
+}
+
+
+function HoC(Wrapper) {
+        
+        return function Inputs() {
+                const [state, setState] = useState("");                                        //now we can re-use this state variable
+
+                const handleChange = () => {                                                    //now we can re-use this event handler
+                      setState("new data")
+                }
+
+                const handleClick = () => {                                                     //now we can re-use this event handler
+                      fetch("/", {method: "POST"});
+                }
+
+                useEffect(() => {                                                               //now we can re-use this useEffect()
+                       console.log(state);
+                },[])
+
+                return(
+                      <Wrapper state={state} handleChange={handleChange} handleClick={handleClick} >
+                )          
+        }
+}
+
+
+function App(){
+        const InputOne = HoC(FirstInput);                       //now we have two controlled components where we implement the state, 
+        const InputTwo = HoC(SecondInput);                      //event handlers and useEffect all in one component
+        
+     return(
+        <>
+             <InputOne>                                         
+             <InputTwo>
+        </>
+     
+     )
+       
+}
+
 
 
 

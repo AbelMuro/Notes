@@ -5,6 +5,18 @@
       // and the heap is used to store the actual objects and data structures
 //also keep in mind, that in javascript, you dont need to put a semi-colon at the end of each line of code, javascript will do that for you
 
+//Expressions: are lines of code that produces a value
+"hello";                            //produces "hello"
+2 == 2;                             //produces true
+4 < 1;                              //produces false
+
+
+
+//Statement: are lines of code that DON'T produce a value
+let hi = 6;
+
+
+
 //primitive types
 null;                               // a placeholder that is used to assign a variable when we dont need it or when we are debugging
 undefined;                          // a placeholder that is automatically assigned to a variable that is not assign a value

@@ -1536,6 +1536,7 @@ function Dialog() {
 
 
 
+//======================================================= ADVANCED CONCEPTS IN REACT ===============================================
 
 
 
@@ -1548,12 +1549,28 @@ function Dialog() {
 
 
 
+//----------------------------------------------------------- PURE COMPONENTS---------------------------------------------------------
+//Pure Components are class components that extends Pure.Component
+//These components do NOT rely on variables/objects defined outside of its scope
+//These components will automatically re-render IF the previous state/props 
+// is different that the new state/props. If its not different, then the component will not re-render
 
 
+//this component will only be re-render if props is different from the previous props
+class PercentageStat extends React.PureComponent {
 
+  render() {
+        const { label, score = 0, total = Math.max(1, score) } = this.props;
 
+        return (
+             <div>
+                 <h6>{ label }</h6>
+                 <span>{ Math.round(score / total * 100) }%</span>
+            </div>
+    )
+  }
 
-
+}
 
 
 

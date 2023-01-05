@@ -1365,13 +1365,14 @@ function Keys () {
 
 
 //------------------------------------------------- SYNTHETIC EVENTS and EVENT HANDLERS-------------------------------------------------------------------------------------------------------------------
-//keep in mind that React uses Synthetic events, 
-//React uses a cross-browser object that is usually named 'e' (synthetic event)
-//keep in mind that browsers have different interactions for 
-//different events such as preventDefault() and stopPropagation()
-//what react does is pool together these events under a single API
-//and that API will have only one type of interaction with those events
-//in other words, e.preventDefault() will do the same thing across all browsers
+//Keep in mind that React uses Synthetic events... 
+// ...and all browsers have their own set of native events (onClick, onSubmit, onChange, etc...) 
+// (although browsers all use the same name for the native events, some of them have different effects that are not consistent across all browsers)
+
+//React uses a cross-browser wrapper object that is usually named 'e' (synthetic event)
+//that pools together all the native events together and makes sure that the event works the same across all browsers
+//The whole point of this is to improve compatibility between all browsers and react
+//there may be cases where a native event may have a different
 
 
 

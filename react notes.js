@@ -778,6 +778,7 @@ function MyComponent() {
 
 //-------------------------------------------------- USE CALLBACK HOOK ----------------------------------------------------
 //useCallback() can be used to force a function to only be recreated when a certain variable changes
+//useCallback() was designed to be used with a memoized component(component that gets exported with memo())
 //keep in mind that everytime a component get re-rendered, the functions get recreated, which can potentially affect performance
 //this hook is similar to useMemo(), but the main difference is that... 
 //useCallback() returns a function
@@ -910,7 +911,7 @@ function MyApp() {
     },[])
 
     return(   //we only want <DisplayList /> to re-render when its props have changed
-              //even though there will be a re-render everytime we click on the button below
+              // even though the parent component will be re-rendered everytime we click on the button below
               // DisplayList will not re-render because its props havent changed
         <>
             <DisplayList onclick={handleClick}/>                  
@@ -941,7 +942,6 @@ function MyApp() {
 
 //------------------------------------------------------ CUSTOM HOOKS --------------------------------------------------
 // you can create your own custom hooks that encapsulates stateful behavior (calculating something) and makes code reusable
-// remember that every hook has their isolated state variable
 
 //in the example below, we are reusing a function that can 'fetch' data from an external server
 function useCustomHook(URL) {
@@ -1002,7 +1002,7 @@ function AnotherExampleWithCustomHooks() {
 //======================================================================== REACT ROUTER ===========================================================================================================================
 
 //const navigate = useNavigate();                   
-//navigate("/aboutUs", {state: {data: "whatever"}});     //  will navigate to the '/aboutUs' component and pass data to another component
+//navigate("/aboutUs", {state: {data: "whatever"}});     //  will navigate to the '/aboutUs' component and pass {data: "whatever"} to another component
 
 //const {state} = useLocation();                         // '/aboutUs' component can use useLocation() to access the data being passed from navigate()
     
@@ -1693,36 +1693,22 @@ class App extends React.Component {
 //The whole point of these HoC is to re-use component behavior such as re-using event handlers and lifecycle methods
 
 
-function FirstInput(props){
+//this component will be passed to the HoC, then it will be returned with new event handlers and lifecycle methods
+function MyInput(){
       return (
-            <div>
-                 <button onClick={props.handleClick}> "Click me" </button>   
-                 <input type="text" onChange={props.handleChange} value={props.state}/>
-           </div>
+        <input type="text" />
       )  
-
 }
 
 
-function SecondInput(props) {
-            <div>
-                 <button onClick={props.handleClick}> "Click me" </button>   
-                 <input type="text" onChange={props.handleChange} value={props.state}/>
-           </div>
-}
-
-
-function HoC(Wrapper) {
+//this component will have its component behavior re-used over and over
+function HoC(Input) {
         
-        return function Inputs() {
+        return function CreateNewInput() {
                 const [state, setState] = useState("");                                        //now we can re-use this state variable
 
-                const handleChange = () => {                                                    //now we can re-use this event handler
-                      setState("new data")
-                }
-
-                const handleClick = () => {                                                     //now we can re-use this event handler
-                      fetch("/", {method: "POST"});
+                const handleChange = (e) => {                                                    //now we can re-use this event handler
+                      setState(e.target.value)
                 }
 
                 useEffect(() => {                                                               //now we can re-use this useEffect()
@@ -1730,20 +1716,29 @@ function HoC(Wrapper) {
                 },[])
 
                 return(
-                      <Wrapper state={state} handleChange={handleChange} handleClick={handleClick} >
+                      <Input value={state} handleChange={handleChange} >
                 )          
         }
 }
 
 
 function App(){
-        const InputOne = HoC(FirstInput);                       //now we have two controlled components where we implement the state, 
-        const InputTwo = HoC(SecondInput);                      //event handlers and useEffect all in one component
+        const InputOne = HoC(MyInput);                                //instead of having six onChange handlers and 6 state objects        
+        const InputTwo = HoC(MyInput);                                //each of these inputs will have their event handlers defined by the HoC                          
+        const InputThree = HoC(MyInput);
+        const InputFour = HoC(MyInput);
+        const InputFive = HoC(MyInput);
+        const InputSix = HoC(MyInput);
+        
         
      return(
         <>
-             <InputOne>                                         
-             <InputTwo>
+             <InputOne/>                                         
+             <InputTwo/>
+             <InputThree/>
+             <InputFour/>
+             <InputFive/>
+             <InputSix/>
         </>
      
      )

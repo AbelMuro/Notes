@@ -275,14 +275,55 @@ const element = React.createElement(
 )
 
 
-// rememeber that you can use logical operators inside {} in JSX
-// 'true && expression' will always return the expression
 
-let variable = true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//----------------------------------------------------- && and Ternary operators--------------------------------------------------------------------
+// You can use logical operators inside {} in JSX
+// {true && expression} will always return the expression
+// {false && expression} will not return anything
+
 {true && <MyComponent />}                   //MyComponent will render
-{null && <MyComponent />}                               //MyComponent will not render
+{false && <MyComponent />}                   //MyComponent will not render
 
+//there may be some bugs with using && operators in React
+//take a look at the example below...
+//lets assume that the array has numbers and null values
+//what we want to do is iterate through the values and only display the numbers
+//but the problem here is that the code below will not display 0 because it is considered a falsey value
 
+array.map((val, i) => {
+        return {val && <div> {val} </div> }             //the bug here is that we will not display 0, even though it is a number
+})
+      
+ 
+//It is considered good practice to use Ternary operators instead of &&
+ {true ? <div> "true" </div> : <div> "false" </div> }
 
 
 
@@ -369,8 +410,7 @@ class ClassComponent extends React.Component {
         )
     }
 }
-
-
+ 
 
 //----------------------------------------------------------- PURE COMPONENTS---------------------------------------------------------
 //Pure Components are class components that extends Pure.Component
@@ -1563,61 +1603,85 @@ function Dialog() {
 
 //======================================================= ADVANCED CONCEPTS IN REACT ===============================================
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //---------------------------------------------------------------- RENDER PROPS ---------------------------------------------------------
 //the idea behind render props is to reuse stateful behavior with other components
 //the example below is how we use render props to make code more reusable
-//keep in mind that MouseTracker should be at the bottom..
+//Keep in mind that the example below will force 3 images to follow the mouse on the screen
+//each of the three images will be in different components while the mouse component will
+//use its state behavior to keep track of the mouse movements on the screen
+//we essentially pass the 3 image components to the mouse component to position the images
 
 
-class MouseTracker extends React.Component {
+//this component is now reusable!
+class Mouse extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {x: 0, y: 0};                                //this is basically what we are sharing with the other components
+      this.handleMouseMove = this.handleMouseMove.bind(this);
+    }
+        
+    handleMouseMove(e){                                         //this is basically what we are sharing with the other components
+        this.setState({                                        
+              x : e.clientX,
+              y : e.clientY
+        })
+    }
+    render() {
+      return (      
+        <div onMouseMove={this.handleMouseMove}> //render is a function that passes the state from this component to another component
+             {this.props.render(this.state)}    //this is the same as.... <Cat mouse={this.state}/>    <Dog mouse={this.state}/>      <Bird mouse={mouse}/>                          
+        </div>                                             
+      );
+    }
+}
 
+
+//this component is receiving the state from another component (mouse is the state)
+class Cat extends React.Component {
+      render() {
+        const mouse = this.props.mouse;        
+        return (
+              <img src="./cat.png" style={{position: "absolute", left: mouse.x, top: mouse.y }}>
+        )
+      } 
+}
+
+
+//this component is receiving the state from another component (mouse is the state)
+class Dog extends React.Component {
+      render() {
+        const mouse = this.props.mouse;        
+        return (
+              <img src="./dog.png" style={{position: "absolute", left: mouse.x, top: mouse.y }}>
+        )
+      } 
+}
+
+
+//this component is receiving the state from another component (mouse is the state)
+class Bird extends React.Component {
+      render() {
+        const mouse = this.props.mouse;        
+        return (
+              <img src="./bird.png" style={{position: "absolute", left: mouse.x, top: mouse.y }}>
+        )
+      } 
+}
+
+//<Mouse> is the component that we want to re-use for its stateful behaviour 
+//<Cat> , <Dog>, <Bird> components will use the state behavior in <Mouse>
+//mouse is the state variable that is passed from <Mouse> to <Cat>, <Dog> and <Bird>
+class App extends React.Component {
     render() {
       return (        
         <>
-          <Mouse render={mouse => (<Cat mouse={mouse}/>)} />        //with render props, the whole point is to pass another component
-          <Mouse render={mouse => (<Dog mouse={mouse}/>)} />        
-          <Mouse render={mouse => (<Bird mouse={mouse}/>)} />
-          <Mouse render={mouse => (<Chicken mouse={mouse}/>)} />
+          <Mouse render={mouse => (<Cat mouse={mouse}/>)} />       
+          <Mouse render={mouse => (<Dog mouse={mouse}/>)} />           
+          <Mouse render={mouse => (<Bird mouse={mouse}/>)} />        
        </>
       );
     }
 }
-
-
-//this component is now reusable
-class Mouse extends React.Component {
-    constructor(props) {
-      super(props);
-    }
-
-    render() {
-      return (      
-        <div>                                   //THIS IS THE WHOLE POINT OF RENDER PROPS, 'this.props.render(this.state)' is a placeholder and can be any component
-             {this.props.render(this.state)}    //this is the same as.... <Cat mouse={this.state}/>    <Dog mouse={this.state}/>      <Bird mouse={mouse}/>                          
-        </div>                                              
-      );
-    }
-}
-
-
-
 
 
 

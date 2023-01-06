@@ -540,8 +540,7 @@ function HooksThree() {
             <button className="someButton"> click me </button>
         </>                         
     )                               
-}                                   
-
+}           
 
 
 //------------------------------------------------------------USE LAYOUT EFFECT HOOK----------------------------------------------------------------
@@ -862,16 +861,37 @@ function expensiveCalculation() {
 
 
 
+//------------------------------------------------ MAPPING LIFECYCLE METHODS WITH REACT HOOKS----------------------------------------------------------------
+
+// Mounting Phase
+
+useEffect(() => {          //getDerivedStateFromProps()
+},[props.value]);
+
+useEffect(() => {          //componentDidMount()
+},[]);
 
 
 
+//updating phase
+
+useEffect(() => {          //getDerivedStateFromProps()
+},[props.value]);
+
+memo();                    //shouldComponentUpdate()
+
+useEffect(() => {          //componentDidUpdate()
+});
+
+useCustomHook(() => {      // getSnapshotBeforeUpdate()                  
+})                         // you would have to implement your own custom hook to replicate this lifecycle method
 
 
+//unmounting phase
 
-
-
-
-
+useEffect(() => {
+    return () => {};       //componentWillUnmount
+})
 
 
 

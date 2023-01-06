@@ -373,15 +373,32 @@ class ClassComponent extends React.Component {
         this.handleClick = this.handleClick.bind(this);      //you should always bind(this) with event handlers because 'this' gets lost in the event handlers
         this.handleChange = this.handleChange.bind(this);
     }
-
-    componentDidMount() {                                   //lifecycle method that will be called after the component has been first rendered to the DOM
+ 
+    static getDerivedStateFromProps(props, state){        //lifecycle method that is called before the first render and after every render, and is used when the state is dependent on props
+        if(props.value !== state.value)
+              return {value : props.value};                             //this will be the new state
+        else
+             return null;                                               //no changes are made to state
+    }
+        
+X   componentDidMount() {                                   //lifecycle method that is called ONLY after the first render
+    }
+      
+    shouldComponentUpdate(nextProps, nextState){           //lifecycle method that determines if the component will update or not
+            if(this.props.val == nextProps.val && this.state.value == nextState.value)
+                  return false;                                         //will NOT update
+            else
+                 return true                                            //will update
+    }    
+        
+    getSnapShotBeforeUpdate(){                             //lifecycle method that is called before every render (but not before the first render)
+    }                                                                                     //anything that is returned from this function will be passed to compondentDidUpdate as an argument
+        
+        
+X   componentDidUpdate(prevProps, prevState, snapshot) {                                  //lifecycle method that gets called after every render, except the first render
     }
 
-    componentDidUpdate() {                                  //lifecycle method that gets called after every render, except the first render
-
-    }
-
-    componentWillUnmount() {                                //lifecycle method that will be called after the component has been removed from the DOM
+X   componentWillUnmount() {                                //lifecycle method that will be called after the component has been removed from the DOM
     }
 
     handleState(item) {                                     //event handler

@@ -413,6 +413,14 @@ array.shift();                                                              //de
 array.sort();                                                               //will sort the array based on the first letter of the strings in the elements, keep in mind that JS will convert any number to string if there is no callback function                                        
 array.sort((a,b) => {return a - b});                                        // sorting the array in ascending order
 array.sort((a,b) => {return b - a});                                         //sorts numbers in descending order           
+array.sort((a,b) => {                                                       //you can also sort an array of objects
+      if(a.property < b.property)                                           //this particular function will sort an array of objects (in ascending order) 
+             return -1;                                                     //based on the property that is being compared
+      else if(a.property > b.property)                                  //property must be either a string or number
+            return 1;
+      else
+            return 0;
+})
 Array.from();                                                               //create an array from a string or from a list of DOM elements
 
 

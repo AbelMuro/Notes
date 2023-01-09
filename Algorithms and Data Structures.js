@@ -1,12 +1,25 @@
 ----------------------------------------------------------- ALGORITHMS --------------------------------------------------------------------
 
 
-LINEAR SEARCH ALGORITHM: is a searching algorithm that goes through each element in the array, one by one. The time complexity 
-              for this algorithm is O(n)
+//LINEAR SEARCH ALGORITHM: is a searching algorithm that goes through each element in the array, one by one. The time complexity 
+              //for this algorithm is O(n)
 
-BINARY SEARCH ALGORITHM: is a searching algorithm used in a sorted array by repeatedly dividing the search interval in half. 
-               The idea of binary search is to use the information that the array is sorted and reduce the time 
-               complexity to O(Log n). 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//BINARY SEARCH ALGORITHM: is a searching algorithm used in a sorted array by repeatedly dividing the search interval in half. 
+               //The idea of binary search is to use the information that the array is sorted and reduce the time 
+               //complexity to O(Log n). 
                
                EX:
                
@@ -28,9 +41,25 @@ BINARY SEARCH ALGORITHM: is a searching algorithm used in a sorted array by repe
                 };
 
 
-TWO POINTER MANIPULATION ALGORITHM: Two pointers is an easy and effective technique that is typically used for searching pairs in a sorted array.
-Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
-The time complexity for this algorithm is O(n)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TWO POINTER MANIPULATION ALGORITHM: Two pointers is an easy and effective technique that is typically used for searching pairs in a sorted array.
+//Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
+//The time complexity for this algorithm is O(n)
             EX:
               
               let A = [1,2,3,4,5,6,7,8,9,10];
@@ -48,9 +77,27 @@ The time complexity for this algorithm is O(n)
               
               }
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
-SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, the time complexity for this algorithm is O(n)
+//SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, the time complexity for this algorithm is O(n)
                      __    __    __
         VISUAL:     |  |  |  |  |  |
                 [1, 2, 3, 4, 5, 6, 7, 8]
@@ -58,7 +105,7 @@ SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, t
                  ----  ----  ----
                  
                  
-         EX:  Given an array of integers of size ‘n’, Our aim is to calculate the maximum sum of ‘k’ consecutive elements in the array.
+         //EX:  Given an array of integers of size ‘n’, Our aim is to calculate the maximum sum of ‘k’ consecutive elements in the array.
                              
               arr = [100, 200, 300, 400]          k = 2
               output = 700
@@ -83,7 +130,23 @@ SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, t
 
 
 
-BUBBLE SORT ALGORITHM: designed to sort an array in ascending order with time complexity of 0(n2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//BUBBLE SORT ALGORITHM: designed to sort an array in ascending order with time complexity of 0(n2)
                 
                 let arr = [1, 4, 3, 1, 5]
               
@@ -136,8 +199,22 @@ BUBBLE SORT ALGORITHM: designed to sort an array in ascending order with time co
 
 
 
-RECURSION: its the ability of a function to call it self many times. The whole point of recursion is to break a problem into smaller parts, thereby reducing the
-complexity of the problem at hand. Typically, all recursive functions have a base case that will terminate the recursive calls once the case is true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//RECURSION: its the ability of a function to call it self many times. The whole point of recursion is to break a problem into smaller parts, thereby reducing the
+//complexity of the problem at hand. Typically, all recursive functions have a base case that will terminate the recursive calls once the case is true
 
   
                 function recursion(n){
@@ -200,6 +277,123 @@ complexity of the problem at hand. Typically, all recursive functions have a bas
         fib(1) = 1    fib(0) = 0                         //at this point, the base case returns true, so now just replace all fib(1) with 1 and fib(0) with 0
                                                          //fib(2) becomes 1 + 0, fibt(3) becomes 1 + 1, and so on.
                                                          //this is the backtracking phase 
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+//INFIX to POSTFIX: IF you want to convert a string that has an mathematical expression into valid js. You will need to convert the string from infix to postfix
+//infix: Human readable format for expressions (5 + 3) * 4 - 3 but this format is terrible for computer algorithms
+//postfix: It is NOT a human readable format expressions 53+ 4* 3- but this format is perfect for computer algorithms
+      
+
+    //this function determines the precedence in the order of operations
+    const precedence = (c) => {
+        if(c == '^')
+            return 3;
+        else if(c == '/' || c=='*')
+            return 2;
+        else if(c == '+' || c == '-')
+            return 1;
+        else
+            return -1;
+    }
+
+    const inFixToPostFix = (s) => {
+        let stack = []; 
+        let result = "";
+ 
+        for(let i = 0; i < s.length; i++) {
+            let c = s[i];
+ 
+            // If the scanned character is a operand, add it to output string.
+            if(c >= '0' && c <= '9')
+                result += c;
+ 
+            // If the scanned character is an ‘(‘, push it to the stack.
+            else if(c == '(')
+                stack.push('(');
+ 
+            // If the scanned character is an ‘)’, pop and to output string from the stack, until an ‘(‘ is encountered.
+            else if(c == ')') {
+                while(stack[stack.length - 1] != '('){              //we continue popping the top character from the stack until we find a "("
+                    result += stack[stack.length - 1];
+                    stack.pop();
+                }
+                stack.pop();
+            }
+ 
+            //If an operator is scanned
+            else {
+                while(stack.length > 0 && precedence(c) <= precedence(stack[stack.length - 1])) {       
+                    result += stack[stack.length - 1];              //we continue popping from the stack as long as the current operator has less precedence
+                    stack.pop();                                    //than the operator that's on top of the stack
+                }
+                stack.push(c);
+            }
+        }
+ 
+        // Pop all the remaining elements from the stack
+        while(stack.length != 0) {
+            result += stack[stack.length - 1];
+            stack.pop();
+        }
+ 
+        return result;
+    
+    }
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
 ------------------------------------------------------- DATA STRUCTURE ----------------------------------------------------------
 

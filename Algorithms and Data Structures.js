@@ -346,12 +346,16 @@
  
             //If an operator is scanned
             else {
+                result += " ";                                      //we add a space here to group together whole numbers that have more that a single digit
                 while(stack.length > 0 && precedence(c) <= precedence(stack[stack.length - 1])) {       
                     result += stack[stack.length - 1];              //we continue popping from the stack as long as the current operator has less precedence
                     stack.pop();                                    //than the operator that's on top of the stack
                 }
                 stack.push(c);
             }
+          
+          if(i == s.length - 1)
+              result += " ";                                      //we add a space here to group together the last whole number
         }
  
         // Pop all the remaining elements from the stack

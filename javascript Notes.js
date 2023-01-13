@@ -150,6 +150,8 @@ function Hoisting() {                                     // this is how hoistin
 
 
 
+//-------------------------------------------------------------- SCOPE CHAIN -------------------------------------------------------------------------
+
 
 
 
@@ -1733,7 +1735,7 @@ e => e + 1;                                                                     
       
       
 
-//---------------------------------------------------------------- CLOSURES --------------------------------------------------------
+//================================================================ CLOSURES ===========================================================
 //Closures is a combination of a function and the lexical scope around that function
 //in other words, a function A that is returned from B will have access to the scope of function A and its parameters 
 // even though function A has already been executed

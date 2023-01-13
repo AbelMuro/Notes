@@ -779,19 +779,28 @@ sessionStorage.clickcount = 1;                             //a property that you
 //syntax for creating a class                  
 class my_class{
     constructor(grade) {                                              //every class MUST have a constructor
-        this.grade = grade;                                           //you declare the members of the object like this
-
+        this.grade = grade;                                           //you declare the properties of the object like this
     }
-    my_method() { 
-        return this.grade;
+    get getGrade() {                                                 //get keyword is used for a method that 'gets' the properties for the class
+      return this.grade;
     }
+      
+    set setGrade(newGrade) {                                          //set keyword is used for a method that 'sets' the properties for the class
+      this.grade = newGrade;
+    }
+      
     static my_second_method() {                                        //static methods are not part of any object, they can be called my_class.my_other_method()
         return "omg";
+    }     
+      
+    calculateGrade() {                                                //you can still define a method without any of the above keywords
+        this.grade += "whatever";
     }
+
 }
 let abels_object = new my_class("F");                                   //declaring an object of my_class by calling the constructor
-abels_object.my_second_method();                                        //calling method inside object
-object.new_variable = "t";                                              //you can create new members for a class like this: 
+abels_object.setGrade("B");                                             //calling method inside object
+object.new_variable = "t";                                              //you can create new properties for a class like this: 
 
 
 

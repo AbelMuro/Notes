@@ -1505,23 +1505,23 @@
 }
 
 
-/* this will sellect ALL elements in the document */
+/* UNIVERSAL SELECTOR, this will sellect ALL elements in the document */
 *{                                              
     color: none;                          
  
 }
 
-/* this will select all <div> elements */
+/* TAG SELECTOR, this will select all <div> elements */
 div {       
     color:none
 }
 
-/* this will select all the <p> elements that are nested inside every <div> elements*/
+/* NESTED SELECTOR, this will select all the <p> elements that are nested inside every <div> elements*/
 div p {
     color:none;
 }
 
-/* you can select multiple elements like below*/
+/* MULTIPLE SELECTOR, you can select multiple elements like below*/
 div, p, i, b {
     color:none;
 }

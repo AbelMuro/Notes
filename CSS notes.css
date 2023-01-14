@@ -1,3 +1,26 @@
+/* Accessibility */
+/* 
+    Always use semantic HTML elements for your website, but don't use CSS in such a way that 
+    will completely change the look or behavior of the semantic tag (changing the font size of <h1> to make it look smaller than <p>)
+        
+    Use font-sizes, line-height, and text-justify(can control spacing between words) that make text more readable for the user
+
+    Use readable font-family that is easy to read
+
+    Make sure your <h1> stands out from other <p> or <h2> elements
+
+    Make sure the color of the text and color of the background has enough contrast
+
+    Use alt attribute for your <img> tags
+
+    Make sure that there is enough space between your elements on the website
+
+*/
+
+
+
+
+
 /* importing some fonts from google fonts*/
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Pacifico&family=Roboto&family=Shadows+Into+Light&display=swap');
 

@@ -1542,15 +1542,6 @@
 
 /*-----------------------------------------------------------SELECTORS------------------------------------------------------------------------------------------------------*/
 
-:root {                                          /* global CSS variables*/
-    --main-color: hotpink;
-    --secondary-color: purple;
-}
-
-.usingGlobalVariables {                                      
-    background-color: var(--main-color);        /* using var() to assign a global variable to a property*/
-}
-
 
 /* UNIVERSAL SELECTOR, this will sellect ALL elements in the document */
 *{                                              
@@ -1563,28 +1554,27 @@ div {
     color:none
 }
 
-/* NESTED SELECTOR, this will select all the <p> elements that are nested inside every <div> elements*/
-div p {
-    color:none;
-}
-
-/* MULTIPLE SELECTOR, you can select multiple elements like below*/
+/* MULTIPLE SELECTORS, you can select multiple elements like below*/
 div, p, i, b {
     color:none;
 }
 
-/* the selector below is similar to div p {}*/
-/* it will not select a <p> element that is nested within another element who is nested within <div>*/
+/* DESCENDANT SELECTOR, this will select ALL the <p> elements that are nested inside <div> elements, including ALL the grandchildren*/
+div p {
+    color:none;
+}
+
+/* CHILD SELECTOR: it will select all <p> elements that are nested within <div>.. but will NOT select the grandchildren */
 div > p{
     color:none;
 }
 
-/* this selector will select the first <p> element that comes after <div>*/
+/* ADJACENT SELECTOR: it will select the first neighboring <p> element that comes directly after all <div>*/
 div + p{
     color:none;
 }
 
-/* this selector will select all <p> elements that are preceded by <div> */
+/* GENERAL SIBLING SELECTOR: this will select ALL <p> elements that come directly after <div>*/
 div ~ p
 {
     color:none;
@@ -1632,7 +1622,7 @@ p[name]{
 
 /* same as above but will only select elements with attribute name="whatever"*/
 p[name="whatever"]{                            
-    color:blanchedalmond;
+    color:red;
 }
 
 /* this will select all <p> elements that have the title attribute containing a space separated list of words, one of which MUST be flower*/

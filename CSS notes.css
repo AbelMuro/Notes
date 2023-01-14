@@ -1,6 +1,30 @@
 /* importing some fonts from google fonts*/
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Pacifico&family=Roboto&family=Shadows+Into+Light&display=swap');
 
+
+
+
+
+/* CSS variables*/
+
+:root {
+    --variableOne: 100px;
+    --variableTwo: 50vh;
+    --variableThree: #1e90ff;
+    --variableFour: red;
+}
+
+.usingVariables{
+    width: var(--variableOne);
+    height: var(--variableTwo);
+    color: var(--variableThree);
+    background-color: var(--variableFour);
+}
+
+
+
+
+
 /* CSS properties*/
 .BoxModel {
 

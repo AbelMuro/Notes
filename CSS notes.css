@@ -173,6 +173,8 @@
     background-clip: padding-box, border-box, content-box;      /* padding-box: image will extend to cover the padding and content, 
         border-box: image will extend to cover the border, padding and content, 
         content-box: image will extend to cover the only the content
+        
+        KEEP IN MIND: background-clip also applies to background-color, not just image
     */
     background-origin: padding-box, border-box, content-box;    /* padding-box: image will be positioned from upperleft corner of padding, 
         border-box: image will be positioned from upperleft corner of border, 

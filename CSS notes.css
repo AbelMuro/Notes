@@ -429,6 +429,10 @@
         |           |
          -----------
         
+        KEEP IN MIND: if you use numerical values for transform origin, 
+        the first number will be the distance from the left border of the element.
+        the second number will be the distance from the top border of the element
+        
         all the transforms will be based on this origin and transform accordingly.
 
         FOR EXAMPLE: 

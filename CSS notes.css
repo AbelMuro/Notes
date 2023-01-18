@@ -1702,24 +1702,49 @@ a:active{
 }
 
 
- /* this will select all a tags that do NOT have .currentPage*/
-a:not(.currentPage) {                    
-    color:blue
-}
-
-/* this will select all the first <p> child elements that are nested within other elements  */
+/* FIRST CHILD PSEUDO CLASS: this will select all the first <p> child elements of all parents */
 p:first-child{
     color:none;
     content:"";
 }
 
-/* selects the first <i> element from a list of <i> elements, keep in mind that if the <i> elements have other non <i> elements, all its siblings will be counted*/
-i:nth-of-type(1) {              
+ /* NOT PSEUDO CLASS:  this will select all anchor tags that do NOT have .currentPage*/
+a:not(.currentPage) {                    
+    color:blue
+}
+
+/* NTH TYPE PSEUDO CLASS: will select a <p> element IF its the 'second paragraph element' of a parent*/
+p:nth-of-type(2) {              
     color:none
 }
 
+/* 
+    <div>
+        <span></span>
+        <p></p> 
+        <p></p>             // this will be selected
+    </div>
+*/
+
+
+/* NTH CHILD PESUDO CLASS: will select a <p> element IF its a paragragh element AND it is the second child of a parent*/
+p:nth-child(2) {
+    color: none;
+}
+
+/* 
+    <div>
+        <span></span>
+        <p></p>             // this will be selected
+        <p></p>             
+    </div>
+    
+
+*/
+
+
 /* you can add an expression in the parameter below, n will increment one by one and based on the current number, it will select that specific <i>*/
-i:nth-of-type(n) {
+i:nth-of-type(2n + 3 * 2) {
     color:none;
 }
 

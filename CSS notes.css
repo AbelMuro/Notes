@@ -1713,7 +1713,7 @@ p:first-child{
     content:"";
 }
 
-/* selects the first <i> element from a list of <i> elements*/
+/* selects the first <i> element from a list of <i> elements, keep in mind that if the <i> elements have other non <i> elements, all its siblings will be counted*/
 i:nth-of-type(1) {              
     color:none
 }

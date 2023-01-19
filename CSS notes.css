@@ -1679,33 +1679,40 @@ p[class^="top"]
 /* The pseudo-class is added to a selector when you want to control the styling when an element is in a particular state */
 
 
-/* this selector will change the background color when the user clicks/focuses on the input element*/
+/* FOCUS PSEUDO CLASS: this class will change the background color when the user clicks/focuses on the input element (reserved for input tags)*/
 input:focus{
     background-color:none;
 }
-
-/* a:hover MUST come after a:link and a:visited in order to be effective! a:active MUST come after a:hover in order to be effective!.*/
+                                        /* a:hover MUST come after a:link and a:visited in order to be effective! a:active MUST come after a:hover in order to be effective!.*/
+/* LINK PSEUDO CLASSES: this class will alter the color of the link (reserved for anchor tags)*/
 a:link{
     color: blue;
 }
 
+/* VISITED PSEUDO CLASSES: this class will alter the color of the link once the user has already clicked on it (reserved for anchor tags)*/
 a:visited{
     color: orange;
 }
 
-a:hover{                                        /* :hover can be used by other elements*/             
+/* HOVER PSEUDO CLASS: this class will change the state of an element once the user hovers over the element with their mouse cursor*/
+div:hover{                                        /* :hover can be used by other elements*/             
     color:blue;
 }
 
+/* ACTIVE PSEUDO CLASS: this class will style the element in the MOMENT that the user clicks on the link, this will be visible for a very short time (reserved for anchor tags)*/
 a:active{
     color:red
 }
 
-
-/* FIRST CHILD PSEUDO CLASS: this will select all the first <p> child elements of all parents */
+/* FIRST CHILD PSEUDO CLASS: this will style all the first <p> child elements of all parents */
 p:first-child{
     color:none;
     content:"";
+}
+
+/* LAST CHILD PSEUDO CLASS: this class will style all <p> elements that are the last child for a parent*/
+p:last-child{
+    color: none;
 }
 
  /* NOT PSEUDO CLASS:  this will select all anchor tags that do NOT have .currentPage*/
@@ -1717,7 +1724,6 @@ a:not(.currentPage) {
 p:nth-of-type(2) {              
     color:none
 }
-
 /* 
     <div>
         <span></span>
@@ -1731,7 +1737,6 @@ p:nth-of-type(2) {
 p:nth-child(2) {
     color: none;
 }
-
 /* 
     <div>
         <span></span>
@@ -1741,10 +1746,8 @@ p:nth-child(2) {
     
 
 */
-
-
 /* you can add an expression in the parameter below, n will increment one by one and based on the current number, it will select that specific <i>*/
-i:nth-of-type(2n + 3 * 2) {
+i:nth-of-type(2n + 3), i:nth-child(2n + 1) {
     color:none;
 }
 

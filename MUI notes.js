@@ -6,6 +6,9 @@
 //   2) npm install @mui/icons-material
 //      this package lets you use all the icons that MUI has to offer
 //
+//   3) npm install @mui/x-data-grid
+//      this package lets you use the grid components in MUI, this is for organizing data in a table and styling it (also good for pagination)
+//
 //   3) npm install @emotion/react  @emotion/styled
 //      this package contains the core functionalities for MUI
 //
@@ -171,37 +174,34 @@ function DialogBoxes(){
     
     
  //----------------------------------------------------------- PAGINATION ---------------------------------------------------------------------
-import {DataGrid} from '@mui/material';
-import {useDemoData} from '@mui/x-data-grid-generator';                 //generates fake data
+import {DataGrid} from '@mui/x-data-grid';                                //this package requires @mui/icons-material
+import {useDemoData} from '@mui/x-data-grid-generator';                   //generates fake data (make sure to npm install this too)
 
-
-function Pagination() {
+export default function App() {
      const [pageSize, setPageSize] = useState(5);
             
-     const handleSizeChange(newSize) => {                               //this component will automatically pass the new size to this event handler
-            setPageSize(newSize);
-     }       
+     const handleSizeChange = (newSize) => {                              //we create a re-render everytime the user decides to switch the number of items 
+        setPageSize(newSize)
+     };       
      
-     const {data} - useDemoData({                                       //this will generate a table with random data
+     const {data} = useDemoData({                                         //generating fake data for the grid                 
           dataSet: "Commodity",
           rowLength: 100,
           maxColumns: 6
-     })
+     });
 
      return(
+       <div style={{height: 400, width: "100%"}}>                                   
           <DataGrid
-             pageSize={pageSize}                                        
-             onPageSizeChange={handleSizeChange}
-             rowsPerPageOptions={[5, 10, 20]}
-             pagination
-             {data}                                                       //this will display a table of data, but its also possible to display other types of data (images)
+             pageSize={pageSize}                                         //the current page size (number of rows) in the grid
+             onPageSizeChange={handleSizeChange}                        //event handler that will handle the change in page size
+             rowsPerPageOptions={[5, 10, 20]}                           //the different number of rows that the user can choose between
+             pagination                                                 //keyword pagination is required
+             {...data}                                                  //actual data                             
            />
-     
-     )       
-
-
+        </div>
+     );       
 }
-
 
 
 

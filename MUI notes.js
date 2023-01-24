@@ -20,19 +20,6 @@
 //     the root 'slot' is the parent html tag and the inner 'slot' is the actual MUI component
 //     for example: the badge component has root slot of <span class="BaseBadge-root"> and the inner slot is another <span class="BaseBadge-badge">
             
-import ButtonUnstyled, {ButtonUnstyledClasses} from '@mui/base/ButtonUnstyled';         //you will have to import every component individually like this
-import BadgeUnstyled, {BadgeUnstyledClasses} from "@mui/base/BadgeUnstyled";            //each component has an object that contains all their classes
-import SwitchUnstyled, {switchUnstyledClasses} from '@mui/base/SwitchUnstyled';     
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -117,7 +104,6 @@ function MUI() {
 //---------------------------------------------------------- USE MEDIA QUERIES-------------------------------------------------------------------------------
 import {useMediaQuery} from '@mui/material';
 
-
 function MediaQueries() {
           const mobile = useMediaQuery("(max-width: 400px)");
             
@@ -171,7 +157,7 @@ function DialogBoxes(){
     
     
     
- //----------------------------------------------------------- PAGINATION WITH GRID---------------------------------------------------------------------
+ //----------------------------------------------------------- PAGINATION WITH GRID (TABLES)---------------------------------------------------------------------
 //keep in mind that GRID was designed to handle very primitive data values, like strings and numbers.
 
 import {DataGrid} from '@mui/x-data-grid';                                //this package requires @mui/icons-material
@@ -262,7 +248,13 @@ export default function BasicPagination() {
      return(
            <>
                <div className="allData">  
-                      {currentPosts ? currentPosts.map(() => {}) : ""} //clicking on one of the buttons will display a different segment of the data
+                      {currentPosts ? currentPosts.map((post) => {
+                               return(
+                                    <div> 
+                                       "you can style the data here"    
+                                     </div>
+                               )
+                       }) : ""} //clicking on one of the buttons will display a different segment of the data
                 <div>
                <Pagination 
                  page={currentPage}                         //current page

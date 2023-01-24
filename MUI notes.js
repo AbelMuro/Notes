@@ -171,7 +171,7 @@ function DialogBoxes(){
     
     
     
- //----------------------------------------------------------- GRID WITH PAGINATION ---------------------------------------------------------------------
+ //----------------------------------------------------------- PAGINATION WITH GRID---------------------------------------------------------------------
 //keep in mind that GRID was designed to handle very primitive data values, like strings and numbers.
 
 import {DataGrid} from '@mui/x-data-grid';                                //this package requires @mui/icons-material
@@ -231,7 +231,7 @@ export default function App() {
 
 
 
-//-----------------------------------------------------------PAGINATION WITHOUT GRIDS ----------------------------------------------------------------------------
+//-----------------------------------------------------------PAGINATION WITHOUT GRID----------------------------------------------------------------------------
 import {Pagination} from '@mui/material';
 
 export default function BasicPagination() {
@@ -277,6 +277,44 @@ export default function BasicPagination() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//----------------------------------------------------------------- ACCORDION ----------------------------------------------------------------------------
+import {Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material';
+
+function MyAccordion(){
+      return(
+            <Accordion>
+                  <AccordionSummary 
+                        expandIcon={<ExpandMoreIcon />}                             //this is the arrow that loads in the accordion (you can use any icon)
+                   >
+                        <Typography> "Title"</Typography>
+                   </AccordionSummary>
+                   <AccordionDetails> 
+                           "Anything can go here, a list of links, anything"    
+                    </AccordionDetails>
+            </Accordion>
+      
+      )
+      
+}
 
 
 

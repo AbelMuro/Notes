@@ -222,18 +222,37 @@ export default function App() {
 import {Pagination} from '@mui/material';
 
 export default function BasicPagination() {
-     const [currentPage, setCurrentPage] = useState(1);               
+     const [currentPage, setCurrentPage] = useState(1);      
+     const [data, setData] = useState([]);
+     const postsPerPage = useRef(8);
             
      const handlePageChange = (event, newPage) => {
            setCurrentPage(newPage)
      }
-
+     
+     useEffect(() => {
+        fetch("someurl.com")                                       //fetching data from some API
+             .then((response) => {
+                  return response.json();
+             })
+             .then((results) => {
+                  setData(results.data)  
+             })
+     }, [])
+                                                                        //currentPage = 2      postsPerPage = 8
+    const lastPostIndex = currentPage * postsPerPage.current;           // lastPostIndex = 16
+    const firstPostIndex = lastPostIndex - postsPerPage.current;        // firstPostIndex = 8
+    const currentPosts = coinData.slice(firstPostIndex, lastPostIndex);  //slicing the array from 8 to 16
+     
      return(
            <>
+               <div className="allData">  
+                      {currentPosts ? currentPosts.map(() => {}) : ""} //now clicking on one of the buttons will display a different segment of the data
+                <div>
                <Pagination 
                  page={currentPage}                         //current page
                  onChange={handlePageChange}                //handler that will handle the page change
-                 count={10}                                 //number of pages
+                 count={10}                                 //totlanumber of pages
                  color="secondary"                          //color of the selected page (in this case, the color will be purple)
                  size="large"                               //size of all the text
                />

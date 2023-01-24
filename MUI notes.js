@@ -115,11 +115,11 @@ function MUI() {
 
 
 //---------------------------------------------------------- USE MEDIA QUERIES-------------------------------------------------------------------------------
-import {useMediaQueries} from '@mui/material';
+import {useMediaQuery} from '@mui/material';
 
 
 function MediaQueries() {
-          const mobile = useMediaQueries("(max-width: 400px)");
+          const mobile = useMediaQuery("(max-width: 400px)");
             
           return(
                  mobile ? <div> "in mobile" </div> : <div> "NOT in mobile" </div>      

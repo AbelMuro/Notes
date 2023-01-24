@@ -19,19 +19,103 @@
 //     you can think of slots as just html tags that are nested within each other
 //     the root 'slot' is the parent html tag and the inner 'slot' is the actual MUI component
 //     for example: the badge component has root slot of <span class="BaseBadge-root"> and the inner slot is another <span class="BaseBadge-badge">
-            
+//     you will need to keep this in mind if you want to style a MUI component, you will need to select the right component            
+
+
+
+
+//--------------------------------------------------------- MUI PROPERTIES ---------------------------------------------------------
+import {Button} from '@mui/material;
+
+
+function Properties() {
+       return(
+            <Button 
+                   sx={{width: "100%", backgroundColor: "blue"}}           //sx is similar to styled(), but it lets you apply the css properties as inline styles
+                                                                                        //keep in mind, that you can still access the default theme with sx
+                   color={"red"}                                           //keep in mind that you can use most css properties
+                   backgroundColor={"blue"}                                // like this, but it must be in camelCase
+                   display={"block"}    
+                   width={"100px"}
+                   ...
+              >
+              "Click here"     
+            </Button>
+       )
+}
 
 
 
 
 
 
-//----------------------------------------------------------- COMPONENTS ------------------------------------------------------------------------------
-import Button from '@mui/material/Button';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+
+
+
+
+
+//----------------------------------------------------------- STYLING COMPONENTS ------------------------------------------------------------------------------
+import {Button} from '@mui/material';
 import {styled} from '@mui/system'
+          
 
-//you can create your own custom colors like this
+       //This will apply css properties directly to the component, you can also include some build-in classes in MUI and style them
+const StyledButton = styled(Button)`                      //styled is a function that lets us use css properties to style MUI components
+    color: white;                                         
+    background-color: blue;                      
+    
+    & :hover {                                             //this is similar to button:hover
+        background-color: yellow;
+    }
+    & :active{                                             //this is similar to button:active
+        background-color: red;
+    }                                                       
+`
+
+        //You can access the default theme of the component this way
+const otherStyledButton = styled(Button)(                   // you can also style MUI components this way,
+       ({theme}) => `                                       
+            color: ${theme.palette.text.secondary};
+       `
+);
+
+
+
+function MUI() {
+            
+       const handleClick() {
+            alert("you clicked this button")
+       }
+
+      return(                                                           
+            <StyledButton>                                                             {<!-- You can create your own custom MUI components like this-->}
+                   "Click here"
+             </StyledButton>
+      )          
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------ CREATING THEMES -------------------------------------------------------
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+                                                                   //you can create your own custom colors like this
 const theme = createTheme({
       palette: {
             customColor: {
@@ -41,39 +125,29 @@ const theme = createTheme({
       }        
 })
 
-//this is the best way to style MUI components
-const StyledButton = styled(Button)`                      //styled is a function that lets us use css properties to style MUI components
-    color: white;                                         
-    background-color: ${blue[500]};                       //you can also include any js variable and interpolate it like this
-
-    &:hover {                                             //& operator points to the Button component, this is similar to .Button:hover
-        background-color: ${blue[600]};
-    }
-
-    &:active{                                             //& operator points to the Button component, this is similar to .Button:active
-        background-color: red;
-    }
-`
-
-function MUI() {
-            
-       const handleClick() {
-        alert("you clicked this button")
-       }
-
+function MyTheme() {
       return(
-            <ThemeProvider theme={theme}>                                                                
-                <Button variant="contained"> Click me! </Button>                           {<!-- variant prop gives you different types of button -->}
-                <Button sx={{width: 400, backgroundColor: 'red'}}> Click here! </Button>   {<!-- sx property is similar to inline styles -->}
-                <Button color="customColor"> Click me!</Button>                            {<!-- you can add your own custom colors like this -->}
-                <Button onClick={handleClick}> Click me!</Button>                          {<!-- you can add event handlers like this -->}               
-                <Button href={"http://www.google.com"}> Click Me! </Button>                {<!-- you can use any built in attributes for these MUI components-->}
-                <StyledButton>                                                             {<!-- You can create your own custom MUI components like this-->}
-                        "Click here"
-                <StyledButton/>
-            </ThemeProvider>  
-      )          
+            <ThemeProvider theme={theme}>      
+                   <Button color="customColor"> "Click me!" </Button>
+             </ThemeProvider> 
+      )       
 }
+
+
+
+
+//----------------------------------------------------------- STACK ------------------------------------------------------------------
+import {Stack} from '@mui/material';
+
+function UsingStack() {
+     return(
+            <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
+                 
+            </Stack>
+     )
+            
+}
+
 
 
 
@@ -289,7 +363,7 @@ export default function BasicPagination() {
 
 //----------------------------------------------------------------- ACCORDION ----------------------------------------------------------------------------
 import {Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function MyAccordion(){
       return(

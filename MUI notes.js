@@ -19,24 +19,36 @@
 //     you can think of slots as just html tags that are nested within each other
 //     the root 'slot' is the parent html tag and the inner 'slot' is the actual MUI component
 //     for example: the badge component has root slot of <span class="BaseBadge-root"> and the inner slot is another <span class="BaseBadge-badge">
-//     you will need to keep this in mind if you want to style a MUI component, you will need to select the right component            
+//     you will need to keep this in mind if you want to style a MUI component, because MUI components have a bunch of nested components         
 
 
 
 
-//--------------------------------------------------------- MUI PROPERTIES ---------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------- MUI PROPERTIES AND SX ---------------------------------------------------------
+//Each component has documentation that will tell you which css properties can be used as props for that particular component
+//keep in mind that not all MUI components will be able to use all css properties as props
+//for example: <Dialog> component can use maxWidth prop but <Button> component can't
+//but all components can use SX as props
+
 import {Button} from '@mui/material;
-
 
 function Properties() {
        return(
             <Button 
-                   sx={{width: "100%", backgroundColor: "blue"}}           //sx is similar to styled(), but it lets you apply the css properties as inline styles
-                                                                                        //keep in mind, that you can still access the default theme with sx
-                   color={"red"}                                           //keep in mind that you can use most css properties
-                   backgroundColor={"blue"}                                // like this, but it must be in camelCase
-                   display={"block"}    
-                   width={"100px"}
+                   sx={{width: "100%", backgroundColor: "blue"}}     //sx is similar to styled(), but it lets you apply the css properties as inline styles, keep in mind, that you can still access the default theme with sx                                                                                   
+                   variant={"text" | "contained" | "outlined"}       //some components have unique props that can style the component with its default styles
+                   href="https://www.google.com/"                    //and you can also apply reserved attributes into the MUI component
                    ...
               >
               "Click here"     
@@ -54,10 +66,9 @@ function Properties() {
 
 
 
-//----------------------------------------------------------- STYLING COMPONENTS ------------------------------------------------------------------------------
+//----------------------------------------------------------- STYLED() ------------------------------------------------------------------------------
 import {Button} from '@mui/material';
-import {styled} from '@mui/system'
-          
+import {styled} from '@mui/system'       
 
        //This will apply css properties directly to the component, you can also include some build-in classes in MUI and style them
 const StyledButton = styled(Button)`                      //styled is a function that lets us use css properties to style MUI components
@@ -71,7 +82,6 @@ const StyledButton = styled(Button)`                      //styled is a function
         background-color: red;
     }                                                       
 `
-
         //You can access the default theme of the component this way
 const otherStyledButton = styled(Button)(                   // you can also style MUI components this way,
        ({theme}) => `                                       
@@ -79,14 +89,10 @@ const otherStyledButton = styled(Button)(                   // you can also styl
        `
 );
 
-
-
-function MUI() {
-            
+function MUI() {         
        const handleClick() {
             alert("you clicked this button")
        }
-
       return(                                                           
             <StyledButton>                                                             {<!-- You can create your own custom MUI components like this-->}
                    "Click here"
@@ -136,17 +142,17 @@ function MyTheme() {
 
 
 
-//----------------------------------------------------------- STACK ------------------------------------------------------------------
-import {Stack} from '@mui/material';
 
-function UsingStack() {
-     return(
-            <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
-                 
-            </Stack>
-     )
-            
-}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -364,6 +370,7 @@ export default function BasicPagination() {
 //----------------------------------------------------------------- ACCORDION ----------------------------------------------------------------------------
 import {Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
 function MyAccordion(){
       return(
@@ -381,6 +388,47 @@ function MyAccordion(){
       )
       
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//----------------------------------------------------------- TEXT FIELDS -----------------------------------------------------------
+import TextField from '@mui/material/TextField';
+
+
+function BasicTextFields(){
+       return(
+             <TextField 
+                     id="outlined-basic" 
+                     label="title" 
+                     variant={"outlined" | "filled" | "standard"}
+                    
+              >
+       )
+
+}
+
+
+
+
+
+
+
 
 
 

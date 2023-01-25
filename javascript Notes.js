@@ -1158,6 +1158,33 @@ TypeError;                                  //using the wrong type, for example,
 // URL/origin will be allowed
 
 
+
+
+
+//second parameter documentation for fetch api
+fetch("/somePath", {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+})
+
+
+
+
+
+
+
+
+
+
 fetch('/somePath', {                                                    //this will will return a promise..... 
       method: "POST",                                                   //POST, GET, PUT, DELETE
       credentials: "include",                                           //used for including credentials such as cookies
@@ -1176,8 +1203,14 @@ fetch('/somePath', {                                                    //this w
 
 
 
-//making a POST request with FORMS
 
+
+
+
+
+
+
+//making a POST request with FORMS
 fetch('/', {
       method: "POST",
       headers: {

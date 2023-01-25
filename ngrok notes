@@ -3,9 +3,10 @@
 
 //step 1: go to ngrok.com and install the ngrok terminal
 
-//step 2: run ngrok config add-authtoken 2GsG4xYbupQXSCtjwXKPV9RdgC3_3CBD8bQ4JJVdLfcvZ2scZ
+//step 2: run ngrok authtoken 2GsG4xYbupQXSCtjwXKPV9RdgC3_3CBD8bQ4JJVdLfcvZ2scZ
 //        this will sign you in with your authentication token
 
-//step 3: ngrok http --host-header=rewrite 8080 (for webpack dev servers)
+//step 3: ngrok http --host-header=rewrite 3000 (for webpack dev servers)
+//        ngrok http 3000                        (for everything else)
 
-//step 4: if you are using firebase auth with ngrok, you must put the url that ngrok gives you into the authorized domain list
+//step 4: use one of the https urls that ngrok gives you

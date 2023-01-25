@@ -15,6 +15,7 @@
         max:        the maximum value that a user can input
         min:        the minimum value that a user can input
         autofocus:  can be usefull if a certain input box does not appear while a page loads
+        autocomplete: helps the user auto complete a text field if its assign a reserved value such as: "username", "current-password", "cc-number", "street address"
 
     CSS SELECTORS FOR VALIDATION
         :invalid        selects input elements that have invalid values
@@ -28,7 +29,7 @@
 
     </head>
     <body>
-        <!--a form should only have one <input type='submit'/> -->
+            <!--a form should only have one <input type='submit'/> -->
         <form action="sendInput" method="post" autocomplete="on">                                    <!-- action attribute will send the 'sendInput' as a URL parameter to the server-->          
             
             <!-- USER LOGGING WITH INPUT BOXES-->                        
@@ -47,6 +48,8 @@
                 <input type="reset">                                                                 <!-- resets all input values to their default-->
             </fieldset>
 
+            
+            
             <!--SEARCH BOXES-->
             <fieldset>
                 <label for="search">
@@ -56,6 +59,8 @@
                 <input type="submit">                                                               
             </fieldset>
 
+            
+            
             <!-- TEXT AREA -->
             <fieldset>
                 <textarea style="resize: none; width: 400px; height: 400px" name="textarea" required> </textarea>
@@ -63,6 +68,8 @@
             <fieldset>
 
 
+                
+                
             <!-- SELECT OPTIONS-->
             <fieldset>
                 <select name="selectedOption">
@@ -80,6 +87,7 @@
             </fieldset>
 
 
+                
             <!--RADIO BUTTONS -->
             <fieldset>  
                 <div id="favcolor1">  
@@ -100,6 +108,11 @@
                 </div>
             </fieldset>
 
+                
+                
+                
+                
+                
             <!--COLOR SELECTION-->
             <fieldset>
                 <div id="favcolor2">
@@ -110,6 +123,11 @@
                 </div>        
             </fieldset>
 
+                
+                
+                
+                
+                
 
             <!--DATE SELECTION-->
             <fieldset>
@@ -122,6 +140,10 @@
                 <input type="submit"> 
             </fieldset>
 
+                
+                
+                
+                
             <!--UPLOADING FILES-->
             <fieldset>
                 <label for="myfile">
@@ -133,6 +155,10 @@
                 <input type="submit" enctype="multipart/form-data">  
             </fieldset>
                 
+                
+                
+                
+                
             <!-- NUMBER SELECTION WITH VALIDATION-->
             <fieldset>
                 <label for="quantity">
@@ -142,6 +168,10 @@
                 <input type="submit">
             </fieldset>
 
+                
+                
+                
+                
             
             <!--TELEPHONE NUMBER SELECTION WITH VALIDATION-->
             <fieldset>
@@ -152,6 +182,14 @@
                 <input type="submit">
             </fieldset>
 
+                
+                
+                
+                
+                
+                
+                
+                
             <!-- SELECTING IMAGES-->
             <fieldset>
                 <label for="imageChoice"> 

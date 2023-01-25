@@ -46,7 +46,10 @@ import {Button} from '@mui/material;
 function Properties() {
        return(
             <Button 
-                   sx={{width: "100%", backgroundColor: "blue"}}     //sx is similar to styled(), but it lets you apply the css properties as inline styles, keep in mind, that you can still access the default theme with sx                                                                                   
+                   sx={{width: "100%",                                 //sx is similar to styled(), but it lets you apply the css properties as inline styles, keep in mind, that you can still access the default theme with sx
+                        backgroundColor: "blue", 
+                        "& :hover" : {color: "red"}}                  //you can apply pseudo elements and classes with sx
+                      }                                                                                                          
                    variant={"text" | "contained" | "outlined"}       //some components have unique props that can style the component with its default styles
                    href="https://www.google.com/"                    //and you can also apply reserved attributes into the MUI component
                    ...
@@ -328,13 +331,13 @@ export default function BasicPagination() {
      return(
            <>
                <div className="allData">  
-                      {currentPosts ? currentPosts.map((post) => {
+                      {currentPosts ? currentPosts.map((post) => {           //clicking on one of the buttons will display a different segment of the data
                                return(
                                     <div> 
                                        "you can style the data here"    
                                      </div>
                                )
-                       }) : ""} //clicking on one of the buttons will display a different segment of the data
+                       }) : ""} 
                 <div>
                <Pagination 
                  page={currentPage}                         //current page
@@ -370,7 +373,6 @@ export default function BasicPagination() {
 //----------------------------------------------------------------- ACCORDION ----------------------------------------------------------------------------
 import {Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
 function MyAccordion(){
       return(
@@ -378,15 +380,14 @@ function MyAccordion(){
                   <AccordionSummary 
                         expandIcon={<ExpandMoreIcon />}                             //this is the arrow that loads in the accordion (you can use any icon)
                    >
-                        <Typography> "Title"</Typography>
+                        <Typography> "Title"</Typography>                           //remember that you can add any icons, text or images here, but you should use <Stack> to help you align everything
                    </AccordionSummary>
+
                    <AccordionDetails> 
                            "Anything can go here, a list of links, anything"    
                     </AccordionDetails>
             </Accordion>
-      
-      )
-      
+      )    
 }
 
 
@@ -412,17 +413,74 @@ import TextField from '@mui/material/TextField';
 
 
 function BasicTextFields(){
+       const [input, setInput] = useState("");
+       
+       const handleChange = (e) => {
+            setInput(e.target.value)
+       }
+       
        return(
              <TextField 
-                     id="outlined-basic" 
-                     label="title" 
+                     value={input}
+                     onChange={handleChange}
+                     id="passwordInput" 
+                     label="Enter Password"                                  //this is what will tell the user what the input is about
                      variant={"outlined" | "filled" | "standard"}
-                    
+                     inputProps={{fontFamily: "sans-serif", color: "red"}}                 //attributes that are applied to the <input> element                        
+                     type="password"
+                     name="password"
               >
        )
 
 }
 
+
+
+//----------------------------------------------------------MENU LINKS ----------------------------------------------------------------------------------
+//The component below uses aria attributes, these attributes are designed to have one element control another element
+
+import {Button, Menu, MenuItem} from '@mui/material';
+
+function MenuLinks() {
+      const [anchorEl, setAnchorEl] = useState(null);
+      const open = Boolean(anchorEl);                              //if its a truthy value, then it will return true, if not, then it will return false
+      
+      const handleOpen = (e) => {                                  //the <Button/> component will trigger this event and pass an instance of the component
+          setAnchorEl(e.currentTarget);
+      }
+
+      const handleClose = () => {
+          setAnchorEl(null);
+      }
+          
+       return(
+               <div>
+                      <Button
+                         id="basic-button"
+                         aria-controls={open ? 'basic-menu' : undefined}            //this <Button> will control the <Menu> element
+                         aria-haspopup="true"                                       //determines that the controlled element will be a popup
+                         aria-expanded={open ? 'true' : undefined}                  //determins if the controlled element is displayed or hidden
+                         onClick={handleOpen}                                       //when the user clicks on this button, the state variable will have an instance of this button
+                       >
+                          "Dashboard"
+                      </Button>
+
+                      <Menu
+                          id="basic-menu"
+                          anchorEl={anchorEl}                                       //anchorEl is the state that will have the instance of the <Button>
+                          open={open}                                               //open has a copy of the state variable, but first it is converted into true/false
+                          onClose={handleClose}
+                          MenuListProps={{
+                               'aria-labelledby': 'basic-button',                   //indicates that this element will be controlled by <Button id="basic-button">
+                          }}
+                       >
+                            <MenuItem> Profile</MenuItem>
+                            <MenuItem> My account</MenuItem>
+                            <MenuItem> Logout</MenuItem>
+                      </Menu>
+            </div>
+       )
+}
 
 
 

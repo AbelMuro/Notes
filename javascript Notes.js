@@ -1149,15 +1149,16 @@ TypeError;                                  //using the wrong type, for example,
 
 // Keep in mind that when you make a 'same-origin' request to a server, the browser will always allow it.
 // However, when you make a 'cross-origin' request to a third-party server, the browser will only allow it..
-// ..IF the third-party server sends a response with the header 'access-allow-control-origin' that is set 
-// your origin
+// ..IF the third-party server sends a pre-flight response with the header 'access-allow-control-origin' that has
+// your origin/url as one of the values
 
 // one such example of this is when you make a request to the Printfull API, 
 // you must first have registered an access token with printfull that has a specific URL/origin to your app.
 // printfull will then add your URL/origin to the 'access-allow-control-origin' and any request made from your
 // URL/origin will be allowed
 
-
+// cURL is a way of making requests and response in the command line. Some API documentation will use cURL, 
+//but you can convert cURL into fetch
 
 
 

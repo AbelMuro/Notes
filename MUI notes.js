@@ -443,9 +443,9 @@ import {Button, Menu, MenuItem} from '@mui/material';
 
 function MenuLinks() {
       const [anchorEl, setAnchorEl] = useState(null);
-      const open = Boolean(anchorEl);                              //if its a truthy value, then it will return true, if not, then it will return false
-      
-      const handleOpen = (e) => {                                  //the <Button/> component will trigger this event and pass an instance of the component
+      const open = Boolean(anchorEl);                              //converting the state variable into boolean
+       
+      const handleOpen = (e) => {                                  //the <Button/> component will trigger this event and pass an instance of the <Button/> component
           setAnchorEl(e.currentTarget);
       }
 
@@ -457,22 +457,15 @@ function MenuLinks() {
                <div>
                       <Button
                          id="basic-button"
-                         aria-controls={open ? 'basic-menu' : undefined}            //this <Button> will control the <Menu> element
-                         aria-haspopup="true"                                       //determines that the controlled element will be a popup
-                         aria-expanded={open ? 'true' : undefined}                  //determins if the controlled element is displayed or hidden
                          onClick={handleOpen}                                       //when the user clicks on this button, the state variable will have an instance of this button
                        >
                           "Dashboard"
                       </Button>
-
                       <Menu
                           id="basic-menu"
-                          anchorEl={anchorEl}                                       //anchorEl is the state that will have the instance of the <Button>
-                          open={open}                                               //open has a copy of the state variable, but first it is converted into true/false
+                          anchorEl={anchorEl}                                       //This is crucial, you must pass an instance of the <Button> for this to work
+                          open={open}                                               //if open has the instance of <Button>, then the popup will appear, 
                           onClose={handleClose}
-                          MenuListProps={{
-                               'aria-labelledby': 'basic-button',                   //indicates that this element will be controlled by <Button id="basic-button">
-                          }}
                        >
                             <MenuItem> Profile</MenuItem>
                             <MenuItem> My account</MenuItem>

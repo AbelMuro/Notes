@@ -37,11 +37,9 @@
 
 //--------------------------------------------------------- MUI PROPERTIES AND SX ---------------------------------------------------------
 //Each component has documentation that will tell you which css properties can be used as props for that particular component
-//keep in mind that not all MUI components will be able to use all css properties as props
-//for example: <Dialog> component can use maxWidth prop but <Button> component can't
-//but all components can use SX as props
+//also, each component has unique props that can be used by that component, such as 'variant' or 'inputProps'
 
-import {Button} from '@mui/material;
+import {Button, Stack} from '@mui/material;
 
 function Properties() {
        return(
@@ -56,13 +54,20 @@ function Properties() {
               >
               "Click here"     
             </Button>
+
+            <Stack>
        )
 }
 
 
+// SX : system properties...
+//     you can apply these css properties as props directly to MUI components ONLY if they support that specific css property
 
-
-
+// <Stack backgroundColor="red"  width="150px"  height="150px"  justifyContent="center"  alignItems="center"></Stack>
+//                          
+//                          the above has the same effect as below
+//
+// <Stack sx={{backgroundColor: "red", width: "150px", height:"150px", justifyContent:"center", alignItems:"center"}}>
 
 
 

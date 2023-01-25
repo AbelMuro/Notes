@@ -1138,7 +1138,13 @@ TypeError;                                  //using the wrong type, for example,
 
 
 //============================================================== FETCH API ============================================================== 
-// the fetch API can be used to make requests to servers or used to fetch a resource
+// API : application programming interface, its a very broad term...
+// Alot of the times, you will fetch data from a RESTFULL API... 
+// REST APIs follow a pattern that specifies how the information will be transmitted from one computer to another. 
+// The computer asking for the data is called the client, and the computer sending the data back is known as a server. 
+// This dance is called the request-response cycle.
+
+// The fetch API can be used to make requests to servers or used to fetch a resource
 // by default, fetch will do a 'GET' request
 
 // Keep in mind that when you make a 'same-origin' request to a server, the browser will always allow it.

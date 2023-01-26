@@ -1148,8 +1148,10 @@ TypeError;                                  //using the wrong type, for example,
 //  No 'Access-Control-Allow-Origin' header is present on the requested resource. 
 //  If an opaque response serves your needs, set the request's mode to 'no-cors' to 
 //  fetch the resource with CORS disabled.
-//  then it usually means that the server doesn't want client side programs to access the API
-//  the api expects you to use the cURL command line
+//then it usually means that the server doesn't want client side programs to access the API
+//the api is a backend api.
+//You can tell if an api is a backend api if it authenticates with a 'secret key'
+//A frontend api authenticates with the current users session
 
 
 // The fetch API can be used to make requests to servers or used to fetch a resource

@@ -1144,6 +1144,14 @@ TypeError;                                  //using the wrong type, for example,
 // The computer asking for the data is called the client, and the computer sending the data back is known as a server. 
 // This dance is called the request-response cycle.
 
+//If you ever get the following error when making an API request with Fetch
+//  No 'Access-Control-Allow-Origin' header is present on the requested resource. 
+//  If an opaque response serves your needs, set the request's mode to 'no-cors' to 
+//  fetch the resource with CORS disabled.
+//  then it usually means that the server doesn't want client side programs to access the API
+//  the api expects you to use the cURL command line
+
+
 // The fetch API can be used to make requests to servers or used to fetch a resource
 // by default, fetch will do a 'GET' request
 
@@ -1157,8 +1165,6 @@ TypeError;                                  //using the wrong type, for example,
 // printfull will then add your URL/origin to the 'access-allow-control-origin' and any request made from your
 // URL/origin will be allowed
 
-// cURL is a way of making requests and response in the command line. Some API documentation will use cURL, 
-//but you can convert cURL into fetch
 
 
 

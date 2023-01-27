@@ -49,7 +49,7 @@ function MyGoogleMap() {
     //useLoadScript will load the <script src="https://maps.googleapis.com....."> </script> in the html file
     const [libraries] = useState(["places"])                                //this library is used with the Autocomplete component
     const {isLoaded} = useLoadScript({  
-        googleMapsApiKey: "AIzaSyDKBV38tvGIVBnogf0gP9YWwe-PHQXwh7w",
+        googleMapsApiKey: "API_KEY",
         libraries
     });
 

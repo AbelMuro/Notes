@@ -1037,7 +1037,9 @@ function AnotherExampleWithCustomHooks() {
     
 
 //======================================================================== REACT ROUTER ===========================================================================================================================
-
+//npm install react-router-dom
+    
+    
 //const navigate = useNavigate();                   
 //navigate("/aboutUs", {state: {data: "whatever"}});     //  will navigate to the '/aboutUs' component and pass {data: "whatever"} to another component
 

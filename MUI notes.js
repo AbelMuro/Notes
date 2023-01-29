@@ -39,7 +39,7 @@
 //Each component has documentation that will tell you which css properties can be used as props for that particular component
 //also, each component has unique props that can be used by that component, such as 'variant' or 'inputProps'
 
-import {Button, Stack} from '@mui/material;
+import {Button, Stack} from '@mui/material';
 
 function Properties() {
        return(

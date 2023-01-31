@@ -39,6 +39,8 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
 
 
+
+
 //                  STEPS TO INTEGRATE REDUX INTO YOUR REACT APPLICATION
 //      1) create a folder called './store' with the file store.js
 //
@@ -59,16 +61,28 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 //      
             export default function Reducer(state = {conditionColor: "white"}, action){
                     switch(action.type){
-                    case "set":
-                        return {conditionColor: action.color};
-                    case "get":
-                        return state;
-                    default: 
-                        return state;
+                       case "set":
+                            return {conditionColor: action.color};
+                       case "get":
+                            return state;
+                       default: 
+                            return state;
                 }
             }
-
-
+//
+//       5) Go to your app.js and import the following
+//
+            import {Provider} from 'react-redux';
+            import store from './store';
+            
+            function App() {
+                 return(
+                       <Provider store={store}>
+                             
+                        </Provider>
+                 )
+                        
+            }
 
 
 

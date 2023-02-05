@@ -4,12 +4,12 @@
         name:       most important attribute, the server relies on this attribute to identify data sent by the <input/>
         action:     sends the value specified to the server as a URL parameter... EXAMPLE: action="random".... "random" is sent to the server
         method:     method="post" sends the data as URL variables.... method="get" is for requesting data from a server
-        enctype:    defines how the data is encoded before being sent to the server... "multipart/form-data" is for uploading files... "application/x-www-form-urlencoded" is the default
+        enctype:    defines how the data is encoded before being sent to the server... "multipart/form-data" is for uploading files... "application/x-www-form-urlencoded" is for text
         multiple:   specifically designed for uploading files, you can upload multiple files with this attribute
-        value:      depends on the input tag, but usually its the text that is initially displayed to the user
+        value:      contains the actual text that is written by the user
         required:   forces the user to input something to the input box, it cannot be empty
         disabled:   attribute for forms that accepts true or false, if its true, then the input will be disabled
-        placeholder:attribute displays something on the text box just like value, but it was design to be used with 'pattern' attribute
+        placeholder: displays default text to the user that will dissapear once the user focuses on the text field
         pattern:    specifies the exact pattern that a user MUST match with their input. Pattern has the syntax [any symbol]{digit}
         target:     determines if a new page will be displayed after the form has been submitted, target="_blank" means a new page will be displayed, target="_self" means that another page will not pop up (default)
         max:        the maximum value that a user can input
@@ -18,10 +18,17 @@
         autocomplete: helps the user auto complete a text field if its assign a reserved value such as: "username", "current-password", "cc-number", "street address"
 
     CSS SELECTORS FOR VALIDATION
+        :valid          selects input elements that have valid values 
         :invalid        selects input elements that have invalid values
         :optional       selects input elements that have no "required" attribute
         :required       selects input elements that have the "required" attribute
-        :valid          selects input elements that have valid values 
+        :focus          selects input elements that have been clicked on by the user (if you want to change the border of a focused element, you must use 'outline' css property )
+        ::placeholder   styles the placeholder text of an input element
+
+    Using JS to mark an input as invalid
+        const text_field = document.querySelector(".textField");
+        text_field.setCustomValidity("error");                  //setCustomValidity() can automatically set a text field as invalid
+        text_field.setCustomValidity("");                       //passing an empty string will remove the invalid state of the text field
 
 -->
 <html>

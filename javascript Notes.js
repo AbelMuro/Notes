@@ -1064,6 +1064,52 @@ object.birthplace;
 
 
 
+//============================================================= AUDIO OBJECT ==============================================================================
+//you can use the audio constructor to load mp3 or wav files.
+
+
+
+
+//using HTML audio tag to load audio files
+<audio src={"https://www.computerhope.com/jargon/m/example.mp3"} controls id="#audio" controlsList="nodownload" autoPlay loop></audio>
+//  or
+<audio controls id="audio" controlsList="nodownload" autoPlay loop>
+      <source src="https://www.computerhope.com/jargon/m/example.mp3" />
+</audio>
+
+
+
+
+
+//using JS to load audio files
+const audio = new Audio("https://www.computerhope.com/jargon/m/example.mp3");
+audio.type = "audio/mp3";
+audio.addEventListener("play", (e) => {
+         //this event will trigger when the user plays the audio
+})
+
+try{
+    await audio.play();                   //you always want to wait until the client receives the response from the server
+    audio.volume = 4;                     //you can increase or decrease the volume with this property
+}
+catch(err){
+      console.log("could not play audio");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

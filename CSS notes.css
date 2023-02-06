@@ -1138,6 +1138,15 @@
 
 
 
+.SVG_properties{
+    fill: red;                          /* this is used to color the background of a <circle/>, <rect/>, <path/>, or <g/>*/
+    fill-rule: "evenodd", "nonzero";    /* */
+    stroke: black;                      /* this is used to color the border of a <circle/>, <rect/>, <path/>, or <g/>*/
+
+}
+
+
+
 
 
 

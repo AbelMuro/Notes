@@ -1016,12 +1016,49 @@ function AnotherExampleWithCustomHooks() {
 
     
     
+//============================================================ CHANGING THEMES ========================================================================
+//you can use css variables to change the styling of elements from one theme to another
     
-    
+ // styles.css
+ 
+ :root{
+     --loading-light: grey;
+     --loading-dark: purple;
+ }
+ 
+        
+        
+ 
+ // changeTheme.js
+        
+ const lightTheme = [
+    "--bg-color: white",
+    "--text-color: black",
+    "--box-shadow: red",
+    "--loading-theme: var(--loading-light)"                             //you can also use var() to assign other variables 
+  ];
+  
+ const darkTheme = [
+    "--bg-color: black",
+    "--text-color: white",
+    "--box-shadow: purple",
+    "--loading-theme: var(--loading-dark)"
+];
   
     
     
-    
+function ChangeTheme(turnSwitch) {
+    const root = document.getElementsByTagName("html")[0];
+    let theme;
+
+    if(turnSwitch)
+        theme = darkTheme
+    else
+        theme = lightTheme;
+
+    root.style.cssText += theme.join(";");                              //cssText lets you re-assign the values of css variables
+        
+}
     
     
     

@@ -1548,6 +1548,68 @@
 
 
 
+/*------------------------------------------------------ @PREFERS-COLOR-SCHEME --------------------------------------------------------------*/
+
+// By default, most users have a 'theme' set on their computer; light theme or dark theme.
+// users can change their theme at any time. So sometimes you want your website/application to reflect
+// the theme that the user has set on their computer... and thats where prefers-color-scheme comes in
+// this media query will apply any css properties defined based 
+
+
+
+//will detect and apply the css selectors ONLY if the user has a dark theme set on their computer
+@media (prefers-color-scheme: dark){
+    body{
+        background-color: black;
+    }
+
+    p, h1, h2, h3, {
+       color: white;
+    }
+    
+    div{
+        box-shadow: 5px 5px 5px purple;
+    }
+}
+
+
+
+
+//will detect and apply the css selectors ONLY if the user has a light theme set on their computer
+@media (prefers-color-scheme: light){
+    body{
+        background-color: white;
+    }
+
+    p, h1, h2, h3, {
+       color: black;
+    }
+    
+    div{
+        box-shadow: 5px 5px 5px red;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

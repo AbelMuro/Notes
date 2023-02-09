@@ -456,9 +456,17 @@ const myMiddleware = store => next => action => {
 // once it finishes, then it will dispatch the action to the reducer
 function usingThunk(URL) {
     return dispatch => {
+          dispatch({type: "isLoading", isLoading: true})                            //you can dispatch this action to a different reducer to simulate a loading screen
           fetch(URL)
                 .then(response => response.json())
-                .then(json => dispatch(addName("add", json.title)))     
+                .then((results) => {
+                      dispatch(addName("add", results.title));
+                      dispatch({type: "isLoading", isLoading: false})              //loading stops here
+                 }) 
+                .catch((err) => {
+                      console.log("error")
+                      dispatch({type: "isLoading", isLoading: false})
+                })
         
     }
 }    

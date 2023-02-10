@@ -24,6 +24,7 @@
         :required       selects input elements that have the "required" attribute
         :focus          selects input elements that have been clicked on by the user (if you want to change the border of a focused element, you must use 'outline' css property )
         ::placeholder   styles the placeholder text of an input element
+        :checked        styles a checkbox when it has been clicked, rememeber to use 'accent-color' css property to change the background color
 
     Using JS to mark an input as invalid
         const text_field = document.querySelector(".textField");
@@ -31,8 +32,11 @@
         text_field.setCustomValidity("");                       //passing an empty string will remove the invalid state of the text field
         text_field.setCustomValidity(" ");                      //passing a space like this can remove the default popup window for invalid text fields
 
-    Event handlers for Form
+    Event handlers for <form/>
         onInvalid                                               //event that will be triggered when an input text field is invalid
+
+    
+
                                                         
 -->
 <html>
@@ -66,7 +70,7 @@
                 <label for="search">
                     Search Box:
                 </label>
-                <input type="search" id="search" name="search" required>                              <!-- type="search" will create a search box-->
+                <input type="search" id="search" name="search" value={} onChange={}>                              <!-- type="search" will create a search box-->
                 <input type="submit">                                                               
             </fieldset>
 
@@ -83,7 +87,7 @@
                 
             <!-- SELECT OPTIONS-->
             <fieldset>
-                <select name="selectedOption">
+                <select name="selectedOption" onChange={handleSelect}>
                     <option value="Java">
                         Java
                     </option>
@@ -121,17 +125,17 @@
 
                 
                 
-           <!-- CHECK BOXES-->
+           <!-- CHECK BOXES-->                  //e.target.checked    
             <fieldset> 
-                <input type="checkbox" id="vehicle1" value="Bike">
+                <input type="checkbox" id="vehicle1" value="Bike" onChange={handleCheck}>               
                 <label for="vehicle1"> 
                     I have a bike
                 </label>
-                <input type="checkbox" id="vehicle2" value="Car">
+                <input type="checkbox" id="vehicle2" value="Car" onChange={handleCheck}>
                 <label for="vehicle2"> 
                     I have a car
                 </label>
-                <input type="checkbox" id="vehicle3" value="Boat">
+                <input type="checkbox" id="vehicle3" value="Boat" onChange={handleCheck}>
                 <label for="vehicle3"> 
                     I have a boat
                 </label>                 

@@ -30,6 +30,9 @@
         text_field.setCustomValidity("error");                  //setCustomValidity() can automatically set a text field as invalid
         text_field.setCustomValidity("");                       //passing an empty string will remove the invalid state of the text field
         text_field.setCustomValidity(" ");                      //passing a space like this can remove the default popup window for invalid text fields
+
+    Event handlers for Form
+        onInvalid                                               //event that will be triggered when an input text field is invalid
                                                         
 -->
 <html>
@@ -181,12 +184,12 @@
                 
                 
             
-            <!--TELEPHONE NUMBER SELECTION WITH VALIDATION-->
+            <!--TELEPHONE NUMBER SELECTION WITH VALIDATION, keep in mind that the pattern attribute accepts any RegExp-->
             <fieldset>
                 <label for="phone"> 
                     Enter your phone number:
                 </label>                                   
-                <input type="tel" id="phone" name="phone" placeholder="123-456-789" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" maxlength="12">
+                <input type="tel" id="phone" name="phone" placeholder="123-456-789" pattern="([0-9]{3}-[0-9]{3}-[0-9]{4}) | ([0-9]{3}[0-9]{3}[0-9]{4})" maxlength="12">
                 <input type="submit">
             </fieldset>
 

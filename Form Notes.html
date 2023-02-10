@@ -32,11 +32,12 @@
         text_field.setCustomValidity("");                       //passing an empty string will remove the invalid state of the text field
         text_field.setCustomValidity(" ");                      //passing a space like this can remove the default popup window for invalid text fields
 
-    Event handlers for <form/>
+    Event handlers for <input/>
         onInvalid                                               //event that will be triggered when an input text field is invalid
         onChange                                                //event that will be triggered every time the user changes something about the <input/>
-        
-    DOM properties from <input>
+        onSubmit                                                //event that will be triggered when the user clicks on an <input type="submit"/>, this event should be in a <form/>       
+
+    DOM properties from <input/>
         e.target.value;                                         //returns the value of an <input/>
         e.target.checked;                                       //used for checkboxes, returns true or false
                                                         

@@ -29,7 +29,8 @@
         const text_field = document.querySelector(".textField");
         text_field.setCustomValidity("error");                  //setCustomValidity() can automatically set a text field as invalid
         text_field.setCustomValidity("");                       //passing an empty string will remove the invalid state of the text field
-
+        text_field.setCustomValidity(" ");                      //passing a space like this can remove the default popup window for invalid text fields
+                                                        
 -->
 <html>
     <head>

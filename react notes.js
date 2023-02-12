@@ -685,6 +685,7 @@ const ChildComponent = forwardRef((props, ref) => {
 
 //------------------------------------------------------USE IMPERATIVE HANDLE HOOK-----------------------------------------------------------------
 //useImperativeHandle() was designed to be used together with forwardRef(), it enables the parent component to access MULTIPLE refs from the child component
+//also keep in mind that the parent component can access ANYTHING from the child component, including state
 
 
 function ParentComponent() {

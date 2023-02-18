@@ -213,6 +213,19 @@ function MediaQueries() {
 //------------------------------------------------------------ DIALOG POP UP BOXES ----------------------------------------------------------------
 //keep in mind that if you want to style a dialog, you should always style the DialogContent first
 import {Dialog, DialogContent, DialogTitle, DialogActions} from '@mui/material';
+import {styled} from '@mui/system';
+
+const StyledDialog = styled(Dialog)`
+
+    & .MuiPaper-root {                                         // you can overwrite some of the css properties to re-position the dialog
+        position: relative;  
+        top: -160px;        
+        right: -350px;          
+    } 
+`
+
+
+
 
 function DialogBoxes(){
     const [openDialog, setOpenDialog] = useState(false);
@@ -240,14 +253,14 @@ function DialogBoxes(){
            "Open Dialog" 
        </Button>
                
-       <Dialog open={open}>                                                                    //this is the actual dialog box
+       <StyledDialog open={open}>                                                                    //this is the actual dialog box
             <DialogTitle> "My Dialog" </DialogTitle>
             <DialogContent> "This is where the content of the dialog is" </DialogContent>
             <DialogActions> 
                    <Button onClick={handleDialog}> "Cancel" </Button>
                    <Button onClick={handleDialog}> "OK" </Button>   
             </DialogActions>
-       </Dialog>
+       </StyledDialog>
    )              
 }
 

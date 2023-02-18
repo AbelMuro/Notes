@@ -221,6 +221,18 @@ function DialogBoxes(){
                return !prevState;
         })
     }
+    
+    useEffect(() => {                                                 // you can use this useEffect to automatically close the dialog when the 
+        const clickHandler = (e) => {                                 // user clicks on the background of the dialog
+            if(e.target.matches('.MuiDialog-container'))              //.MuiDialog-container represents the background of the dialog, but NOT the dialog itself
+                handleDialog();
+        }
+        document.addEventListener('click', clickHandler);
+        return () => {
+            document.removeEventListener('click', clickHandler);
+        }
+    }, [])
+    
            
    return (
        <Button onClick={handleDialog} variant="outlined">                                       //clicking this button will trigger the dialog box

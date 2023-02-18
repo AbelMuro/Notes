@@ -1,4 +1,4 @@
-//how to set up MUI base in your application
+//how to set up MUI in your application
 //
 //   1) npm install @mui/system  
 //      this package enables you to use styled(), which enables you to style MUI components
@@ -9,10 +9,14 @@
 //   3) npm install @mui/x-data-grid
 //      this package lets you use the grid components in MUI, this is for organizing data in a table and styling it (also good for pagination)
 //
-//   3) npm install @emotion/react  @emotion/styled
+//   4) npm install @mui/styles
+//      this package lets you use makeStyles(), which enables you to apply certain css properties directly to the MUI component, 
+//      like using 'position: relative' on Dialog components
+//
+//   4) npm install @emotion/react  @emotion/styled
 //      this package contains the core functionalities for MUI
 //
-//   4) npm install @mui/material
+//   5) npm install @mui/material
 //      the package above contains all the components in the MUI framework
 //  
 //     keep in mind that all MUI components are organized into 'slots'

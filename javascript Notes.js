@@ -188,6 +188,9 @@ let z = "4" - 3;                                                       //this wi
                                                                        // 's', 't', 'r' are the same, so at this point, everything is true
                                                                        // but 'i' is less than 'o' in the hexadecimal chart, so the whole comparison return false
 
+let num = 123123                                                        //.toLocaleString() will add commas to a number, but keep in mind that the number will be converted into a string
+console.log(num.toLocaleString());                                      //will display '123,123'
+
 
 //the following function enables adding two extremely large numbers without BigInt(not all versions of node.js and browsers can support BigInt)
 //the logic of the following functions goes like this..

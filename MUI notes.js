@@ -210,6 +210,7 @@ function MediaQueries() {
 
 
 //------------------------------------------------------------ DIALOG POP UP BOXES ----------------------------------------------------------------
+//keep in mind that if you want to style a dialog, you should always style the DialogContent first
 import {Dialog, DialogContent, DialogTitle, DialogActions} from '@mui/material';
 
 function DialogBoxes(){

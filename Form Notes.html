@@ -32,14 +32,17 @@
         text_field.setCustomValidity("");                       //passing an empty string will remove the invalid state of the text field
         text_field.setCustomValidity(" ");                      //passing a space like this can remove the default popup window for invalid text fields
 
-    Event handlers for <input/>
+    Event handlers for <input/> in REACT
         onInvalid                                               //event that will be triggered when an input text field is invalid
         onChange                                                //event that will be triggered every time the user changes something about the <input/>
         onSubmit                                                //event that will be triggered when the user clicks on an <input type="submit"/>, this event should be in a <form/>       
+        onFocus                                                 //event that will be triggered when the user clicks on an input
+        onBlur                                                  //event that will be triggered when the user clicks on something that is NOT the input
 
     DOM properties from <input/>
         e.target.value;                                         //returns the value of an <input/>
         e.target.checked;                                       //used for checkboxes, returns true or false
+        e.target.checkValidity();                               //returns true or false, indicating if the input is valid
                                                         
 -->
 <html>
@@ -106,7 +109,7 @@
 
 
                 
-            <!--RADIO BUTTONS -->
+            <!--RADIO BUTTONS -->                                            //accent-color: blue      
             <fieldset>  
                 <div id="favcolor1">  
                     <input type="radio" id="blue" name="favColor" value="blue">             <!-- value in this case defines the data inputed by the user-->
@@ -128,7 +131,7 @@
 
                 
                 
-           <!-- CHECK BOXES-->                  //e.target.checked    
+           <!-- CHECK BOXES-->                  //e.target.checked          //accent-color: blue        
             <fieldset> 
                 <input type="checkbox" id="vehicle1" value="Bike" onChange={handleCheck}>               
                 <label for="vehicle1"> 

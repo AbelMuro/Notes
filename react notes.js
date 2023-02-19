@@ -1570,11 +1570,9 @@ function Login() {
     const [password, setPassword] = useState(""); 
     const [email, setEmail] = useState("");
     const input = useRef();
-    let pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";                    //you can use this reg exp to validate any email in an input
-        
-     //this is a useful way of making sure a password meets certain constraints
-     let disable = password.length < 6 || password.match(/[a-zA-Z]/g) == null ||password.match(/\d/g) == null || password.match(/\W/g) == null;
-     //password must has at least one leter, one digit, and must have a non alphanumeric character and must be greater than 6 characters   
+    const pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";                    //you can use this reg exp to validate any email in an input   
+    let disable = password.length < 6 || password.match(/[a-zA-Z]/g) == null || password.match(/\d/g) == null || password.match(/\W/g) == null;   //password must has at least one leter, one digit, and must have a non alphanumeric character and must be greater than 6 characters  
+     
         
         
     const handleFocus = () => {                                         //onFocus event is triggered when the user clicks on an input
@@ -1593,7 +1591,7 @@ function Login() {
         }
     } 
     
-    const handleInvalid = (e) => {                                      //onInvalid event is triggered the moment that the input is invalid
+    const handleInvalid = (e) => {                                      //onInvalid event is triggered when the user unfocuses from the input and its invalid or when the user click on submit and the input is invalid
         e.target.setCustomValidity(' ')                                 //this may remove the default message box that appears for invalid inputs
     }                                                                   //but make sure to pass an empty string to setCustomValidity('') when the user starts typing again
         
@@ -1602,9 +1600,9 @@ function Login() {
     return(
         <>
             <form action="login" method="POST">
-                <input onFocus={handleFocus} onBlur={handleBlur} onInvalid={handleInvalid} type="text" name="username" value={userName} onChange={(e) => {setUserName(e.target.value)}}/>
-                <input type="email" name="email" pattern={pattern} value={email} onChange={(e) => {setEmail(e.target.value)}}>
-                <input type="password" name="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
+                <input onFocus={handleFocus} onBlur={handleBlur} onInvalid={handleInvalid} type="text" value={userName} onChange={(e) => {setUserName(e.target.value)}}/>
+                <input type="email" pattern={pattern} value={email} onChange={(e) => {setEmail(e.target.value)}}>
+                <input type="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
                 <input disabled={disabled} type="submit" value="Login"/>      
             </form> 
         </>

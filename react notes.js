@@ -1569,31 +1569,39 @@ function Login() {
     const [userName, setUserName] = useState("");                      
     const [password, setPassword] = useState(""); 
     const [email, setEmail] = useState("");
+    const input = useRef();
     let pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";                    //you can use this reg exp to validate any email in an input
         
      //this is a useful way of making sure a password meets certain constraints
      let disable = password.length < 6 || password.match(/[a-zA-Z]/g) == null ||password.match(/\d/g) == null || password.match(/\W/g) == null;
      //password must has at least one leter, one digit, and must have a non alphanumeric character and must be greater than 6 characters   
         
+        
+    const handleFocus = () => {                                         //onFocus event is triggered when the user clicks on an input
+        input.current.style.outline = '1px solid #D87D4A';
+        input.current.style.border = 'none';
+    }
+
+    const handleBlur = () => {                                          //onBlur event is triggered when the user clicks on something else that is not the input
+        if(inputElement.current.checkValidity()){                       //you can use checkValidity() to check if an input is valid or invalid
+            input.current.style.outline = '';
+            input.current.style.border = '';             
+        }
+        else{
+            input.current.style.outline = '1px solid #CD2C2C';
+            input.current.style.border = '1px solid #CD2C2C';  
+        }
+    }    
+        
+        
+        
     return(
         <>
             <form action="login" method="POST">
-                <label htmlFor="username">
-                    Username: 
-                </label>
-                <input type="text" id="username" name="username" value={userName} onChange={(e) => {setUserName(e.target.value)}}/>
-
-                <label htmlFor="email">
-                    Email:
-                </label>
-                <input type="email" id="email" name="email" pattern={pattern} value={email} onChange={(e) => {setEmail(e.target.value)}}>
-
-                <label htmlFor="password">
-                    Password: 
-                </label>
-                <input type="password" id="password" name="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
-
-                <input disabled = {disabled} type="submit" value="Login"/>      
+                <input onFocus={handleFocus} onBlur={handleBlur} type="text" name="username" value={userName} onChange={(e) => {setUserName(e.target.value)}}/>
+                <input type="email" name="email" pattern={pattern} value={email} onChange={(e) => {setEmail(e.target.value)}}>
+                <input type="password" name="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
+                <input disabled={disabled} type="submit" value="Login"/>      
             </form> 
         </>
 

@@ -1564,51 +1564,95 @@ function EvenHandlers() {
 // KEEP IN MIND, that the value attribute is ONLY for controlled components
 
 
-//everytime the user inputs something, the entire component gets re-rendered
-function Login() {
-    const [userName, setUserName] = useState("");                      
+
+// CONTROLLED TEXT FIELDS COMPONENTS
+function Login() {                  
     const [password, setPassword] = useState(""); 
-    const [email, setEmail] = useState("");
     const input = useRef();
-    const pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";                    //you can use this reg exp to validate any email in an input   
     let disable = password.length < 6 || password.match(/[a-zA-Z]/g) == null || password.match(/\d/g) == null || password.match(/\W/g) == null;   //password must has at least one leter, one digit, and must have a non alphanumeric character and must be greater than 6 characters  
-     
-        
-        
+             
     const handleFocus = () => {                                         //onFocus event is triggered when the user clicks on an input
-        input.current.style.outline = '1px solid #D87D4A';
-        input.current.style.border = 'none';
+       //you can do some styling here to indicate the input is focused on
     }
 
     const handleBlur = () => {                                          //onBlur event is triggered when the user clicks on something else that is not the input
         if(inputElement.current.checkValidity()){                       //you can use checkValidity() to check if an input is valid or invalid
-            input.current.style.outline = '';
-            input.current.style.border = '';             
+            //you can do some styling here to indicate the input is valid           
         }
         else{
-            input.current.style.outline = '1px solid #CD2C2C';
-            input.current.style.border = '1px solid #CD2C2C';  
+            //you can do some styling here to indicate the input is invalid
         }
     } 
-    
+
+    const handleChange = (e) => {                                       //onChange event is triggered everytime the user types in something in the input
+          setPassword(e.target.value);
+    }
+   
     const handleInvalid = (e) => {                                      //onInvalid event is triggered when the user unfocuses from the input and its invalid or when the user click on submit and the input is invalid
         e.target.setCustomValidity(' ')                                 //this may remove the default message box that appears for invalid inputs
     }                                                                   //but make sure to pass an empty string to setCustomValidity('') when the user starts typing again
-        
-        
-        
+          
     return(
         <>
-            <form action="login" method="POST">
-                <input onFocus={handleFocus} onBlur={handleBlur} onInvalid={handleInvalid} type="text" value={userName} onChange={(e) => {setUserName(e.target.value)}}/>
-                <input type="email" pattern={pattern} value={email} onChange={(e) => {setEmail(e.target.value)}}>
-                <input type="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
+            <form>
+                <input 
+                     type="password" 
+                     onFocus={handleFocus} 
+                     onBlur={handleBlur} 
+                     onInvalid={handleInvalid} 
+                     value={password} 
+                     onChange={handleChange}
+                />
                 <input disabled={disabled} type="submit" value="Login"/>      
             </form> 
         </>
 
     )
 }
+
+
+
+
+
+// CONTROLLED RADIO BUTTON COMPONENTS
+
+function PaymentDetails() {
+    const [payment, setPayment] = useState('eMoney')
+
+    const handleChange = (e) => {
+        setPayment(e.target.value);
+    }
+
+    useEffect(() => {
+        if(payment === 'eMoney'){
+            //you can do some styling here
+        }
+
+        else if(payment === 'cash on delivery'){
+            //you can do some styling here
+        }
+    }, [payment])
+
+
+    return(
+        <form>
+             <input 
+                  type='radio' 
+                  value='eMoney'
+                  checked={payment === 'eMoney'}
+                  onChange={handleChange}
+                  name='paymentMethod'/>
+                          
+             <input 
+                  type='radio'
+                  value='cash on delivery'
+                  checked={payment === 'cash on delivery'}
+                  onChange={handleChange}                        
+                  name='paymentMethod'/>
+        </form>
+    )
+}
+
 
 //--------------------------------------------------------- Uncontrolled Components --------------------------------------------------------------------
 //Components that handle data WITHOUT its state binded to the inputs are called uncontrolled components

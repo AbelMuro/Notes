@@ -1654,6 +1654,72 @@ function PaymentDetails() {
 }
 
 
+
+
+
+
+//CONTROLLED CHECKBOX COMPONENTS
+
+function CheckBoxes() {
+     const [blue, setBlue] = useState(false);
+     const [red, setRed] = useState(false);
+     const [yellow, setYellow] = useState(false);
+        
+     const handleBlue = () => {
+        setBlue(!blue);
+     }   
+        
+     const handleRed = () => {
+        setRed(!red);
+     }
+     
+     const handleYellow = () => {
+        setYellow(!yellow);
+     }
+     
+     useEffect(() => {
+        if(blue)
+             //you can do some styling here
+     
+     }, [blue])
+     
+     useEffect(() => {
+        if(red)
+             //you can do some styling here
+     
+     }, [red])
+
+     useEffect(() => {
+        if(yellow)
+             //you can do some styling here
+     
+     }, [yellow])
+     
+     return(
+            <form>
+                   <input 
+                       type="checkbox" 
+                       onChange={handleBlue} 
+                       checked={blue} 
+                     />
+                     <input 
+                       type="checkbox" 
+                       onChange={handleRed} 
+                       checked={red} 
+                     />
+                     <input 
+                       type="checkbox" 
+                       onChange={handleYellow} 
+                       checked={yellow} 
+                     />
+            </form>
+     
+     )
+     
+}
+
+
+
 //--------------------------------------------------------- Uncontrolled Components --------------------------------------------------------------------
 //Components that handle data WITHOUT its state binded to the inputs are called uncontrolled components
 //You can use defaultValue attribute on uncontrolled inputs

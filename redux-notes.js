@@ -512,11 +512,11 @@ import RootReducer from './Reducers';
 import {                
     persistStore,                                                                   //this function is used to make the global store persist the state
     persistReducer,                                                                 //this function is used to make the ROOT reducer persist the state
-    FLUSH,                                                                          //these are all default actions types that are used by redux-persist
-    REHYDRATE,                                                                      //these actions may need to be ignored to prevent errors in the console
-    PAUSE,                                                                          //keep in mind that these are actually just strings that were designed to 
-    PERSIST,                                                                        //be used as TYPES for the actions
-    PURGE,                                                                          //these are all non-serializable actions dispatched by redux
+    FLUSH,                                                                          //these are all default actions that are used by redux-persist in the background 
+    REHYDRATE,                                                                      // to persist the state in the local storage
+    PAUSE,                                                                          // Keep in mind that these actions are non-serializable
+    PERSIST,                                                                        // so you have to make sure that redux doesnt use serializableCheck on these actions
+    PURGE,                                                                          // in the configureStore()
     REGISTER} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';                                    //using the local storage to store the state
 import storageSession from 'reduxjs-toolkit-persist/lib/storage/session'            //using the session storage to store the state
@@ -525,7 +525,7 @@ import storageSession from 'reduxjs-toolkit-persist/lib/storage/session'        
 const persistedReducer = persistReducer({key: 'root', storage}, RootReducer);       //creating a persisted reducer and specifying the local storage to be used to persist the state
 
 export const store = configureStore({                      
-    reducer: persistedReducer,                                                     //the ignoredActions below will help prevent the error 'non-serializable value was detected in the state'
+    reducer: persistedReducer,                                                     // {serializableCheck} will make sure that redux doesn't check to see if redux-persist actions are serializable
     middleware : getDefaultMiddleware => getDefaultMiddleware({serializableCheck: {ignoredActions: [PERSIST, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]}})
 })
 export const persistedStore = persistStore(store);                                  //this function will make the global store persist and rehydrate the store

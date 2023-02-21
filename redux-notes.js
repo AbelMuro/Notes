@@ -39,6 +39,12 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
 
 
+//       KEEP IN MIND that the global store should ONLY have serializable values
+//          serializable values means you can use JSON.parse(JSON.stringify()) WITHOUT losing data (arrays, object)
+//          non-serializable values means that you will lose some data if you use JSON.parse(JSON.stringify())
+
+
+
 
 
 //                  STEPS TO INTEGRATE REDUX INTO YOUR REACT APPLICATION
@@ -485,6 +491,71 @@ function ExampleWithThunk() {
     dispatch(usingThunk("https://jsonplaceholder.typicode.com/todos/1"));
     
 }
+
+
+
+
+
+
+
+
+
+//==================================================== REDUX PERSIST ====================================================
+// redux persist is a library that you can use to 'persist' the state in a redux application. The library lets you use either
+// local storage or session storage to store the state
+// npm install redux-persist
+
+
+// store.js 
+import {configureStore} from '@reduxjs/toolkit';
+import RootReducer from './Reducers';
+import {
+    persistStore,                                                                   //this function is used to make the global store persist the state
+    persistReducer,                                                                 //this function is used to make the ROOT reducer persist the state
+    FLUSH,                                                                          //these are all default actions that are used by redux-persist
+    REHYDRATE,                                                                      //these actions may need to be ignored to prevent errors in the console
+    PAUSE,
+    PERSIST,
+    PURGE,
+    REGISTER} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';                                    //using the local storage to store the state
+import storageSession from 'reduxjs-toolkit-persist/lib/storage/session'            //using the session storage to store the state
+
+                               
+const persistedReducer = persistReducer({key: 'root', storage}, RootReducer);       //creating a persisted reducer and specifying the local storage to be used to persist the state
+
+export const store = configureStore({                      
+    reducer: persistedReducer,                                                     //the ignoredActions below will help prevent the error 'non-serializable value was detected in the state'
+    middleware : getDefaultMiddleware => getDefaultMiddleware({serializableCheck: {ignoredActions: [PERSIST, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]}})
+})
+export const persistedStore = persistStore(store);
+
+
+
+
+// app.js
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {store, peristedStore} from './'
+
+function App() {
+
+        return(
+                <Provider store={store}>
+                    <PersistGate 
+                            loading={null}                              //you can put a loading screen here
+                            persistor={persistedStore}>                 //the persistedStore instance                                                                              
+                                      
+                                //App component goes here
+                                                                             
+                    </PersistGate>
+                </Provider>
+         )
+
+
+}
+
+
 
 
 

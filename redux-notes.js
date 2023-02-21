@@ -1,7 +1,5 @@
 import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
-
-
 //                   TO INSTALL REDUX IN YOUR APPLICATION
 //
 //      1) npm install redux                        //install the core files for redux
@@ -179,7 +177,7 @@ export default rootReducer;
 
 
 
-//-------------------------------------------------- CREATE SLICE --------------------------------------
+//=============================================== CREATE SLICE() ===============================================================
 //createSlice() does multiple things for you at once, it creates a reducer, and generates action creators that 
 //correspond to the 'case' or 'types 'in your reducers
 //the whole point of this function is to reduce boilerplate code.
@@ -216,7 +214,7 @@ export default counterSlice.reducer                                             
 
 
 
-//------------------------------------------------------- CREATE REDUCER ------------------------
+//======================================================= CREATE REDUCER =========================================================
 //another way of creating a reducer, although you have to use createActions() from redux tool kit with createReducer()
 
 import { createAction, createReducer } from '@reduxjs/toolkit'
@@ -276,7 +274,7 @@ function ChildComponent() {
 
 
 
-//======================================= USE SELECTOR HOOK ===================================================================
+//=========================================================== USE SELECTOR HOOK ===================================================================
 // you can use useSelector() hook to access the state object
 // keep in mind that every component that has useSelector() 
 // will be re-rendered when the state object changes
@@ -320,22 +318,24 @@ function SomeComponent() {
 
 
 //================================================================= STORE ===================================================================
-//creating a store
+//The global store is a file that contains the state of our application. 
+//Any component in the application can access the state from the global store
 
-// ./store.js
+// store.js
 import {rootReducer} from './reducer/index.js';
 import {configureStore} from '@reduxjs/toolkit';
 
 const store = configureStore({              //creating a 'store' that will contain our state data
     reducer: rootReducer,                   //our custom reducer
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(myMiddleware) //this property accepts a callback that is used to include a middleware
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(myMiddleware)                     //adding a new middleware to our store
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({})
 }); 
 
 export default store;
 
 
 
-//  ./index.js
+//  index.js
 import {Provider} from 'react-redux';
 import store from './store.js';
 
@@ -401,15 +401,8 @@ function createAction(addOrRemove, item){           //you can define a function 
 //================================================= MIDDLEWARE ==============================================
 //middleware can be used to interact with a action object BEFORE it dispatches to the reducer
 //redux provides pre built middlewares such as redux-thunk and redux-promise
-//you can think of middleware as promises.
 
-import {applyMiddleware} from 'redux';
-const myStore = createStore(rootReducer, applyMiddleware(thunk));
-
-
-
-//----------------------you can create your own custom middleware------------------
-//middlewares are basically 3 functions that are nested within each other
+//custom middlewares are basically 3 functions that are nested within each other
 //the 'action' function manipulates action somehow... when it finishes doing that... 
 //then 'next' function is called and that same function passes the updated action to the reducer
 //the 'store' function is just there to help us access the state before and after the action is dispatched
@@ -433,6 +426,12 @@ const myMiddleware = store => next => action => {
     }
  }
 
+
+ //adding a new middleware to our store
+const store = configureStore({              
+    reducer: rootReducer,                   
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(myMiddleware)                    
+}); 
 
 
 
@@ -546,7 +545,7 @@ function App() {
                             loading={null}                              //you can put a loading screen here
                             persistor={persistedStore}>                 //the persistedStore instance                                                                              
                                       
-                                //App component goes here
+                                //The rest of the App goes here
                                                                              
                     </PersistGate>
                 </Provider>

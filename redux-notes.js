@@ -509,14 +509,14 @@ function ExampleWithThunk() {
 // store.js 
 import {configureStore} from '@reduxjs/toolkit';
 import RootReducer from './Reducers';
-import {
+import {                
     persistStore,                                                                   //this function is used to make the global store persist the state
     persistReducer,                                                                 //this function is used to make the ROOT reducer persist the state
     FLUSH,                                                                          //these are all default actions types that are used by redux-persist
     REHYDRATE,                                                                      //these actions may need to be ignored to prevent errors in the console
     PAUSE,                                                                          //keep in mind that these are actually just strings that were designed to 
     PERSIST,                                                                        //be used as TYPES for the actions
-    PURGE,
+    PURGE,                                                                          //these are all non-serializable actions dispatched by redux
     REGISTER} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';                                    //using the local storage to store the state
 import storageSession from 'reduxjs-toolkit-persist/lib/storage/session'            //using the session storage to store the state

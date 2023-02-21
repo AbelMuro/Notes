@@ -824,6 +824,18 @@
 
     */
     
+    /* KEEP IN MIND, max-height and min-height will NOT work with flex items in a flex box. However.... look at the example below
+    
+            <div class='flex'>                  
+                <div class='itemOne'>                   //min-height doesnt work 
+                       <div></div>                      //min-height WILL work with this element
+                </div>
+                <div class='itemTwo'>
+                     <div></div>
+                </div>    
+            </div>
+    */
+    
     /* Flex Container*/
     display: flex, inline-flex;  /* flex will make the element behave like a block element,
         inline-flex will make the element behave like an inline element. 

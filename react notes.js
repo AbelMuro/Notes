@@ -657,6 +657,33 @@ function Ref() {
 }
 
 
+//you can also use useRef() dynamically like this..
+
+function RefDynamically({product}) {                                    //product is an array of objects, each object has an img
+
+     const myRef = useRef([]);
+     
+        
+     return(
+        <>
+             {
+               {product.map((item, i) => {
+                   return(
+                        <div className={styles.product} key={i}>           
+                            <img src={item.image} ref={(ref) => {allImages.current[i] = ref}}/>          //check out the ref attribute in this line      
+                        </div>
+                   ) 
+            })}
+             }             
+            
+        </>
+     
+     )
+
+}
+
+
+
 //--------------------------------------------------------FORWARD REF()---------------------------------------------------------------------------
 //you can use useRef and forwardRef together to make a parent component have control over an element in a child component
 //keep in mind that forwardRef() on a component has the same functionality as a regular React component,

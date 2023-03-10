@@ -44,6 +44,10 @@
         e.target.checked;                                       //used for checkboxes, returns true or false
         e.target.checkValidity();                               //returns true or false, indicating if the input is valid
         e.preventDefault();                                     //prevents the default behavior of a form when it is submitted (stops auto refresh, stops the form from being submitted to server)                                                                      
+        e.target.validity.typeMismatch;                         //returns true if the user doesn't type @ in an input of type='email' (this is just an example)
+        e.target.validity.valueMissing;                         //returns true if the input is empty
+        e.target.validity.patternMismatch:                      //returns true if the users input doesn't match the pattern attribute of the input element
+        e.target.validity.customError;                          //returns true if the programmer has programmatically set the error with setCustomValidity()
 -->
 <html>
     <head>
@@ -215,7 +219,7 @@
                 <label for="phone"> 
                     Enter your phone number:
                 </label>                                   
-                <input type="tel" id="phone" name="phone" placeholder="123-456-789" pattern="([0-9]{3}-[0-9]{3}-[0-9]{4}) | ([0-9]{3}[0-9]{3}[0-9]{4})" maxlength="12">
+                <input type="tel" id="phone" name="phone" placeholder="123-456-789" pattern="(\+[0-9]{1} [0-9]{3} [0-9]{3} [0-9]{4})|(\+[0-9]{1}[0-9]{3}[0-9]{3}[0-9]{4})|([0-9]{1} [0-9]{3} [0-9]{3} [0-9]{4})|([0-9]{1}[0-9]{3}[0-9]{3}[0-9]{4})|([0-9]{3}[0-9]{3}[0-9]{4})|([0-9]{3} [0-9]{3} [0-9]{4})" maxlength="12">
                 <input type="submit">
             </fieldset>
 

@@ -666,19 +666,37 @@ function RefDynamically({product}) {                                    //produc
         
      return(
         <>
-             {
-               {product.map((item, i) => {
+             
+            {product.map((item, i) => {
                    return(
                         <div className={styles.product} key={i}>           
                             <img src={item.image} ref={(ref) => {allImages.current[i] = ref}}/>          //check out the ref attribute in this line      
                         </div>
                    ) 
             })}
-             }             
-            
+             }                     
         </>
-     
      )
+}
+
+
+//if you are planning on setting the styles of an element with useRef after the first render, its better to use useCallback to do this
+
+function Ref() {
+     const elementRef = useCallback((ref) => {
+             if(!ref) return;
+             
+             else
+                 //you can style the element here after the first render, DO NOT USE A USEEFFECT FOR THIS
+     }, [])
+     
+                
+     return(
+             <>
+                <div ref={elementRef}> 
+                                    
+                </div>
+            </>)
 
 }
 

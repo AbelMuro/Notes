@@ -1613,7 +1613,7 @@ function EvenHandlers() {
 // CONTROLLED TEXT FIELDS COMPONENTS
 function Login() {                  
     const [password, setPassword] = useState(""); 
-    const input = useRef();
+    const inputElement = useRef();
     let disable = password.length < 6 || password.match(/[a-zA-Z]/g) == null || password.match(/\d/g) == null || password.match(/\W/g) == null;   //password must has at least one leter, one digit, and must have a non alphanumeric character and must be greater than 6 characters  
              
     const handleFocus = () => {                                         //onFocus event is triggered when the user clicks on an input
@@ -1621,22 +1621,27 @@ function Login() {
     }
 
     const handleBlur = () => {                                          //onBlur event is triggered when the user clicks on something else that is not the input
-        if(inputElement.current.checkValidity()){                       //you can use checkValidity() to check if an input is valid or invalid
+        if(inputElement.current.checkValidity()){               
             //you can do some styling here to indicate the input is valid           
         }
         else{
             //you can do some styling here to indicate the input is invalid
         }
     } 
+    
+    const handleInvalid = (e) => {                                      //onInvalid event is triggered when the user click on submit and the input is invalid
+        e.target.setCustomValidity(' ')                                 //this may remove the default message box that appears for invalid inputs
+    }                                                                   //but make sure to pass an empty string to setCustomValidity('') when the user starts typing again
+            
 
     const handleChange = (e) => {                                       //onChange event is triggered everytime the user types in something in the input
           setPassword(e.target.value);
     }
    
-    const handleInvalid = (e) => {                                      //onInvalid event is triggered when the user unfocuses from the input and its invalid or when the user click on submit and the input is invalid
-        e.target.setCustomValidity(' ')                                 //this may remove the default message box that appears for invalid inputs
-    }                                                                   //but make sure to pass an empty string to setCustomValidity('') when the user starts typing again
-          
+    useEffect(() => {
+         inputElement.current.setCustomValidity('');                    //its a good idea to remove the invalid state of the input once the user starts typing again 
+    }, [password])
+  
     return(
         <>
             <form>
@@ -1647,6 +1652,7 @@ function Login() {
                      onInvalid={handleInvalid} 
                      value={password} 
                      onChange={handleChange}
+                     ref={inputElement}
                 />
                 <input disabled={disabled} type="submit" value="Login"/>      
             </form> 

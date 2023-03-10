@@ -25,6 +25,13 @@
         :focus          selects input elements that have been clicked on by the user (if you want to change the border of a focused element, you must use 'outline' css property )
         ::placeholder   styles the placeholder text of an input element
         :checked        styles a checkbox when it has been clicked, rememeber to use 'accent-color' css property to change the background color
+        :-webkit-autofill                                       styles an input after they have used autofill, this is important since the browser decides how an input will be displayed once autofil is triggered
+        -webkit-box-shadow:0 0 0 50px #E7816B inset;            css property used to 'hide' the default background color(that the browser uses for autofil on inputs) with a custom color
+        -webkit-text-fill-color: white;                         css property used to 'hide' the default text color(that the browser uses for autofil on inputs) with a custom color
+
+
+
+
 
     Using JS to mark an input as invalid
         const text_field = document.querySelector(".textField");

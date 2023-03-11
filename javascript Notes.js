@@ -2071,7 +2071,7 @@ document.getElementById("div").childNodes[0].nodeValue;                         
 document.getElementById("div").firstElementChild;                               //references the first child element nested within
 document.getElementById("div").lastElementChild;                                //references the last child element nested within
 document.getElementById("div").closest(".className")                            //will choose the closest parent/grandparent element that has the specified selector
-
+document.querySelector("div").scrollIntoView({behavior: 'smooth'});             //you can automatically scroll to a specific element by using scrollIntoView()
 
 //event handlers, remember that these handlers can also be called inline as attributes
 //also remember that these even handlers can be used on the "window" object

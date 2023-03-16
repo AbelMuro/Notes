@@ -1,3 +1,5 @@
+//npm install firebase
+
 import { initializeApp } from "firebase/app";               //you need this for your app to use firebase
 import { getDatabase} from 'firebase/database';             //accessing one of the getter functions for the database module
 import { getAuth} from 'firebase/auth';

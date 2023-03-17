@@ -422,6 +422,9 @@ function Upload() {
 import {collection, addDoc, setDoc, doc} from 'firebase/firestore'
 
 //in Firestore, data is organized in documents, which are then organized into collections
+//keep in mind that doc() and collection() can also create nested collections or doc
+const docRef = doc(db, 'richard/info/data/time/person/whatever')        //even though time doesnt exist, it will be created with all the nested doc
+
 
 //this is also legal
 const collectionRef = collection(db, "users");            //selects a collection

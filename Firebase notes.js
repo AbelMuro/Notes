@@ -454,6 +454,12 @@ docData.data();                                                   //this should 
 docData.id;                                                       //self-explanatory, returns the id of the document
 docData.exists();
 
+
+
+
+
+
+
 //addDoc() should only be used with collection()
 async function addNewDocument () {
         try{

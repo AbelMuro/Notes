@@ -457,6 +457,13 @@ docData.id;                                                       //self-explana
 docData.exists();
 
 
+//you can use query(), orderBy() and where() to organize a collection
+const q = query(collectionRef, orderBy('datePosted', 'desc'));
+const [comments, loading] = useCollectionData(q);
+
+const q = query(collectionRef, where('population', '!=', 1000))
+const [country, loading] = useCollectionData(q);
+
 
 
 

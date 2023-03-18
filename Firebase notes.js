@@ -108,6 +108,8 @@ function createNewNode(newData){
 //------------------------------------------------------------- AUTHENTICATION ------------------------------------------------------------------
 //keep in mind that it is possible for a user's account to use both email/password and the google identity provider.
 //but its ALWAYS a good idea for the user to verify their email first before linking their email/password with another identity provider
+//also keep in mind that when you are trying to load an image photo from google or microsoft, its always a good idea to use referrerPolicy="no-referrer" on your image tags
+
 
 import { createUserWithEmailAndPassword, updateProfile, signOut, sendEmailVerification, sendSignInLinkToEmail} from 'firebase/auth';
 import { GoogleAuthProvider, OAuthProvider, FacebookAuthProvider, signInWithPopup} from 'firebase/auth'

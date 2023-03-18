@@ -421,7 +421,7 @@ function Upload() {
 
 
 //-------------------------------------------------------- FIRESTORE --------------------------------------------------------------------------------
-import {collection, addDoc, setDoc, doc} from 'firebase/firestore'
+import {collection, addDoc, setDoc, doc, updateDoc, increment, decrement} from 'firebase/firestore'
 
 //in Firestore, data is organized in documents, which are then organized into collections
 //keep in mind that doc() and collection() can also create nested collections or doc
@@ -506,7 +506,8 @@ async function updateDocument() {
     try{
         const documentRef = doc(db, 'posts/post');
         await updateDoc(documentRef, {                                      //updateDoc will automatically update the fields specified in the second argument
-            title: 'new title'                                              //if the field doesnt exist in the document, then it will be created
+            title: 'new title',                                              //if the field doesnt exist in the document, then it will be created
+            age: increment(1),                                              //if the field is a number, you can increment the original number with increment or decrement
         })
     }
     catch(error){

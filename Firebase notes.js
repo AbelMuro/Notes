@@ -502,6 +502,21 @@ async function setNewOrReplaceDocument() {
     }
 }
 
+async function updateDocument() {
+    try{
+        const documentRef = doc(db, 'posts/post');
+        await updateDoc(documentRef, {                                      //updateDoc will automatically update the fields specified in the second argument
+            title: 'new title'                                              //if the field doesnt exist in the document, then it will be created
+        })
+    }
+    catch(error){
+        console.log(error);
+    }
+        
+    
+}
+
+
 
 async function getDocument() {
      try{

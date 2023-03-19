@@ -10,14 +10,14 @@ import { getFirestore} from 'firebase/firestore';
 //keep in mind that every project has their own configuration object
 //and every project can have multiple apps accessing the same project
 const firebaseConfig = {                                    
-    apiKey: "AIzaSyBxvSMl1zmBK4DeqgACqrPAD8tEGjh3b0U",                      //the 'key' that your app needs to access the firebase console
-    authDomain: "employee-management-app-ee938.firebaseapp.com",            //the domain for the authentication that your app can use for signing in and logging out
-    databaseURL: "https://employee-management-app-ee938-default-rtdb.firebaseio.com", //the url of the database for this project
-    projectId: "employee-management-app-ee938",                             //identifies the project that this app will be using
-    storageBucket: "employee-management-app-ee938.appspot.com",
-    messagingSenderId: "807475484166",                                      //the ID that is used for enabling messaging in your app
-    appId: "1:807475484166:web:8f1f6620482b52ecf99587",                     //the ID that is used for identifying the app in the project. Projects can have multiple apps             
-    measurementId: "G-Y2VBPMPYRZ",
+    apiKey: "",                      //the 'key' that your app needs to access the firebase console
+    authDomain: "",                 //the domain for the authentication that your app can use for signing in and logging out
+    databaseURL: "",                 //the url of the database for this project
+    projectId: "",                   //identifies the project that this app will be using
+    storageBucket: "",
+    messagingSenderId: "",          //the ID that is used for enabling messaging in your app
+    appId: "",                     //the ID that is used for identifying the app in the project. Projects can have multiple apps             
+    measurementId: "",
 };
 
 
@@ -421,7 +421,7 @@ function Upload() {
 
 
 //-------------------------------------------------------- FIRESTORE --------------------------------------------------------------------------------
-import {collection, addDoc, setDoc, doc, updateDoc, increment, decrement} from 'firebase/firestore'
+import {collection, addDoc, setDoc, doc, updateDoc, increment, decrement, arrayUnion} from 'firebase/firestore'
 
 //in Firestore, data is organized in documents, which are then organized into collections
 //keep in mind that doc() and collection() can also create nested collections or doc
@@ -508,13 +508,13 @@ async function updateDocument() {
         await updateDoc(documentRef, {                                      //updateDoc will automatically update the fields specified in the second argument
             title: 'new title',                                              //if the field doesnt exist in the document, then it will be created
             age: increment(1),                                              //if the field is a number, you can increment the original number with increment or decrement
+            friends: arrayUnion('john'),                                    //arrayUnion allows you to add elements to an array in the document
         })
     }
     catch(error){
         console.log(error);
     }
         
-    
 }
 
 

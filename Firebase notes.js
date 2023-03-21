@@ -421,7 +421,7 @@ function Upload() {
 
 
 //-------------------------------------------------------- FIRESTORE --------------------------------------------------------------------------------
-import {collection, addDoc, setDoc, doc, updateDoc, increment, decrement, arrayUnion} from 'firebase/firestore'
+import {collection, addDoc, setDoc, doc, updateDoc, increment, decrement, arrayUnion, deleteDoc} from 'firebase/firestore'
 
 //in Firestore, data is organized in documents, which are then organized into collections
 //keep in mind that doc() and collection() can also create nested collections or doc
@@ -515,6 +515,17 @@ async function updateDocument() {
         console.log(error);
     }
         
+}
+
+async function deleteDocument() {
+    try{
+        const docRef = doc(db, 'posts/post');
+        await deleteDoc(docRef);                                                //as the name implies, the document will be deleted from the collection
+    }
+    catch(error){
+          console.log(error);
+    }
+
 }
 
 

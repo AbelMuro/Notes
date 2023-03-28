@@ -503,13 +503,11 @@ function ExampleWithThunk() {
 // redux persist is a library that you can use to 'persist' the state in a redux application. The library lets you use either
 // local storage or session storage to store the state
 // npm install redux-persist
-// KEEP IN MIND, that everytime you use useSelector to get the state from redux-persist, it will return an object that has two properties
-// {state: 0, _persist: {}}
 
 
 // store.js 
 import {configureStore} from '@reduxjs/toolkit';
-import RootReducer from './Reducers';
+import RootReducer from './Reducers';                                               //KEEP IN MIND, that RootReducer must be an instance of CombineReducers({})
 import {                
     persistStore,                                                                   //this function is used to make the global store persist the state
     persistReducer,                                                                 //this function is used to make the ROOT reducer persist the state

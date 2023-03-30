@@ -1351,8 +1351,25 @@ function MyCookies () {
 
 
 
+//================================================== USING JSON DATA IN REACT ======================================================
+
+// ./data.json
+
+{
+     "name" : "abel",
+     "birthday" : "july 22, 1993",
+     "age" : "29",
+}
+
+// ./index.js
+
+const data = require('./data.json');                            //this will automatically parse the json into js for you
+export default data;
 
 
+// ./someComponent.js
+
+import data from './data';
 
 
 

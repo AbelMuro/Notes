@@ -946,6 +946,15 @@ useEffect(() => {
 
 
 
+//======================================================= LAZY LOADING ======================================================================================
+//lazy loading is the technique of making certain parts of a website have a delay in loading, instead of having the entire website load in one go.
+//this can greatly improve loading time for a website
+
+import {lazy} from 'react';
+
+const ProjectSection = lazy(() => import('./ProjectSection'));          //you pass a callback and you wrap arround the directory of the folder with import()
+
+
 
 
 

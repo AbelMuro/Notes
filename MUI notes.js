@@ -252,8 +252,8 @@ function DialogBoxes(){
        <Button onClick={handleDialog} variant="outlined">                                       //clicking this button will trigger the dialog box
            "Open Dialog" 
        </Button>
-               
-       <StyledDialog open={open}>                                                                    //this is the actual dialog box
+                                                                                            
+       <StyledDialog open={open} PaperProps={{ sx: { overflowY: 'initial'} }}>                 //paperProps is an attribute that you use to style the dialog box itself
             <DialogTitle> "My Dialog" </DialogTitle>
             <DialogContent> "This is where the content of the dialog is" </DialogContent>
             <DialogActions> 

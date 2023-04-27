@@ -2119,9 +2119,17 @@ document.getElementById("id").addEventListener("click", (e) => {
 
 
 
-
-
-
+//========================================================= REDEFINING NODE methods =============================================
+                        
+//the whole poing of redefining the function below is to define a conditional statement that must return false before we call the original removeChild()                
+ 
+        const originalRemoveChild = Node.prototype.removeChild;               //saving a reference to original removeChild()
+        Node.prototype.removeChild = (child) => {                             //redefining the removeChild() function
+            if (child.parentNode !== this) {                                  // 'this' represents the childNode we are trying to remove
+                return child;
+            }
+            return originalRemoveChild.apply(this, arguments);                //apply() will call the original removeChild()
+        }
 
 
 

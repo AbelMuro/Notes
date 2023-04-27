@@ -2125,7 +2125,7 @@ document.getElementById("id").addEventListener("click", (e) => {
  
         const originalRemoveChild = Node.prototype.removeChild;               //saving a reference to original removeChild()
         Node.prototype.removeChild = (child) => {                             //redefining the removeChild() function
-            if (child.parentNode !== this) {                                  // 'this' represents the childNode we are trying to remove
+            if (child.parentNode !== this) {                                  // 'this' represents the parentNode that called removeChild()
                 return child;
             }
             return originalRemoveChild.apply(this, arguments);                //apply() will call the original removeChild()

@@ -1,0 +1,12 @@
+Amazon Web Services S3 is an 'object' storage service that can be used to store data
+S3 is basically a NoSQL database
+
+S3 uses Buckets and Objects. Buckets are containers for objects, and objects are files or any metadata that describes the file.
+
+
+--Buckets consists of objects that are each identified by a key and a version ID (if S3 versioning is enabled on the bucket)
+
+--Objects consist of object data and metadata
+
+    metadata: a set of name and value pairs that describes the object, some of these pairs are default sets such as 'date last modified', and standard HTTP metadata (Content-Type)
+            

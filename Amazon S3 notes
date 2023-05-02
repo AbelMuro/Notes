@@ -1,6 +1,9 @@
-Amazon Web Services S3 is an 'object' storage service that can be used to store data
-S3 is basically a NoSQL database
+Amazon Web Services S3 is an 'object' storage service that can be used to store data such as any type of files (text, image, video, etc...) and folders
 
+S3 also has a REST API that can be used to make requests and receive responses from an app or website
+S3 is mostly used for backup and storage. Useful for saving distinct copies of you data
+S3 can also be used to 'host' a static website
+S3 is basically a NoSQL database
 S3 uses Buckets and Objects. Buckets are containers for objects, and objects are files or any metadata that describes the file.
 
 

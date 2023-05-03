@@ -17,7 +17,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     
     
     
-HOW TO DEPLOY/HOST A WEBSITE WITH S3
+==================================================HOW TO DEPLOY/HOST A WEBSITE WITH S3================================================================
 
 1) Create a bucket in S3 console
 
@@ -43,3 +43,27 @@ HOW TO DEPLOY/HOST A WEBSITE WITH S3
 9) Then on the policy json text, change the Principal value to "*"
 
 10) Now all you have to do is import all the files in the /dist folder to the bucket (not the folder itself)
+
+you can use the command line.. aws s3 sync ./dist s3://{name-of-bucket}
+
+11) once everything is working properly, go back to properties and scroll all the way down and click on the link in static website hosting
+
+
+
+===============================================HOW TO SETUP AWS CLI====================================================================
+
+1) Go to the IAM management console (not the identity center)
+
+2) Select Users from the Access Management drop down on the left
+
+3) Click on a user and make sure they have 'administrator access' permission, if they dont, then click on Add Permission button
+
+4) Then Click on Security Credentials and scroll down until you see Access Key, then click on the Access Key button.
+
+5) Save the Access Key ID and the secret access Key
+
+6) then open up any terminal and type in 'aws configure', 
+it will then ask you for the Access key ID, the secret key and the region, the output format doesnt matter right now
+
+7) to test that everything is working, type in aws iam list-users
+

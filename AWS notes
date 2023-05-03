@@ -1,0 +1,45 @@
+Amazon Web Services S3 is an 'object' storage service that can be used to store data such as any type of files (text, image, video, etc...) and folders
+
+S3 also has a REST API that is used by the back-end to make requests and receive responses from a bucket
+S3 is mostly used for backup and storage. Useful for saving distinct copies of you data
+S3 can also be used to host/deploy a static website
+S3 is basically a NoSQL database
+
+S3 uses Buckets and Objects. Buckets are containers for objects, and objects are files or any metadata that describes the file.
+
+--Buckets consists of objects that are each identified by a key and a version ID (if S3 versioning is enabled on the bucket)
+
+--Objects consist of object data and metadata
+
+    metadata: a set of name and value pairs that describes the object, some of these pairs are default sets such as 'date last modified', and standard HTTP metadata (Content-Type)
+            
+    object data: can be any type of file; text, js, css, image, video, literally any file
+    
+    
+    
+HOW TO DEPLOY/HOST A WEBSITE WITH S3
+
+1) Create a bucket in S3 console
+
+2) set the following options for the bucket
+    --ACL's disabled
+    --unblock all public access
+    
+3) open the bucket and then click on properties
+
+4) then scroll all the way down and click on the edit button in STATIC WEBSITE HOSTING
+
+5) set the following options
+    --enable
+    --Host a static website
+    --set the landing page for the website (index.html)
+
+6) then click on permission for the bucket
+
+7) click on add actions and then type in S3, then search for GetObject
+
+8) Then click on Add a Resource, select object for the resource and type in the bucket name and replace {ObjectName} with *
+
+9) Then on the policy json text, change the Principal value to "*"
+
+10) Now all you have to do is import all the files in the /dist folder to the bucket (not the folder itself)

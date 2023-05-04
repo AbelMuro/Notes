@@ -198,7 +198,8 @@ you can use the command line instead.. aws s3 sync ./dist s3://{name-of-bucket}
     IDENTITY POOLS: identity pools provide temporary credentials to unauthorized users to access AWS resources.
         when an identity pool is created, two IAM roles are created in IAM management console and IAM identity provider.
         One role is for authorized users, and the other is for unauthorized users.
-        You can assign a policy to each of these roles.
+        You can assign a policy to each of these roles. Keep in mind that if you dont assign
+        a policy for these roles, then even the authenticated users wont be able to acces any AWS resources
 */
 
 //-------------------------------------------------- How to create an identity pool ---------------------------------------------------------

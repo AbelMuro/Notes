@@ -1,3 +1,14 @@
+//====================================================== CLOUD COMPUTING ===========================================================================
+/* 
+    Cloud computing is the on-demand delivery of IT resources via the internet. Instead of owning expensive hardware that manages servers and databases, 
+    you can access technology services (storage, databases, computing power) on an as-needed basis from a cloud provider (AWS)
+
+*/
+
+
+
+
+
 //========================================================== AMAZON S3 =================================================================================
 /*
 Amazon Web Services S3 is an 'object' storage service that can be used to store data such as any type of files (text, image, video, etc...) and folders
@@ -62,9 +73,40 @@ you can use the command line instead.. aws s3 sync ./dist s3://{name-of-bucket}
 //=============================================== AMAZON EC2 INSTANCE ==============================================================
 /* 
     Amazon EC2 instance is a service that launches/deploys virtual servers in the cloud. An instance is an individual server
-    in the cloud
+    in the cloud.
 
 */
+
+
+//--------------------------------------------- HOW TO CREATE AN EC2 INSTANCE -------------------------------------------------------
+
+/* 
+    1) Go to the EC2 console
+    
+    2) in the Launch Instance section, click on Launch Instance button
+
+    3) on the next page, choose a name for your instance
+    
+    4) then choose the Amazon Machine Image (AMI), this is selecting the operating system for your instance
+    
+    5) then select the instance type, this will describe the storage capacity, speed, number of cpu cores, and network performance of your instance
+    
+    6) create a key pair name, this will be used to connect to your instance
+    
+    7) configure the network settings
+    
+    8) configure the storage capacity
+    
+    9) Click on Launch Instance button
+    
+    10) what this does is create a server on the cloud, you may need to wait a few minutes for the server to be online
+    
+    11) Once the server is online, you can connect to it. The server will take the form of a terminal
+
+*/
+
+
+
 
 
 
@@ -101,24 +143,28 @@ you can use the command line instead.. aws s3 sync ./dist s3://{name-of-bucket}
 //Roles are a set of permissions that enable IAM users to access AWS resources
 
 
-/* 0.5) If you have already created a Role, the you can simply just click on 'Add Permissions' button 
-     and add the services that will be used by this role
+/* 
 
-1) If you haven't created a role yet, you must do that first. 
-   Go to the IAM management console
+    0.5) If you have already created a Role, the you can simply just click on 'Add Permissions' button 
+         and add the services that will be used by this role
 
-2) Then click on Roles on the left side
+    1) If you haven't created a role yet, you must do that first. 
+       Go to the IAM management console
 
-3) Click on 'Create Role' button
+    2) Then click on Roles on the left side
 
-4) On the 'Trusted Entity Type' section, select the entity type, (AWS account is the most popular one here)
-   then click next
-   
-5) Then select the AWS resources that will be permitted in this role, then click next
+    3) Click on 'Create Role' button
 
-6) Choose a name and description for the role
+    4) On the 'Trusted Entity Type' section, select the entity type, (AWS account is the most popular one here)
+       then click next
 
-7) then click Create Role */
+    5) Then select the AWS resources that will be permitted in this role, then click next
+
+    6) Choose a name and description for the role
+
+    7) then click Create Role 
+
+*/
 
 
 

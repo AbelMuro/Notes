@@ -45,7 +45,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
 10) Now all you have to do is import all the files in the /dist folder to the bucket (not the folder itself)
 
-you can use the command line.. aws s3 sync ./dist s3://{name-of-bucket}
+you can use the command line instead.. aws s3 sync ./dist s3://{name-of-bucket}
 
 11) once everything is working properly, go back to properties and scroll all the way down and click on the link in static website hosting
 
@@ -56,6 +56,15 @@ you can use the command line.. aws s3 sync ./dist s3://{name-of-bucket}
 
 
 
+
+
+
+//=============================================== AMAZON EC2 INSTANCE ==============================================================
+/* 
+    Amazon EC2 instance is a service that launches/deploys virtual servers in the cloud. An instance is an individual server
+    in the cloud
+
+*/
 
 
 

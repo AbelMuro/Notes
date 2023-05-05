@@ -130,6 +130,7 @@ function CONST_variables() {
 //-------------------------------------------------------HOISTING----------------------------------------------------
 //hoisting is a process where javascript hoists all variable declarations to the top of its scope, however, their values/definitions do not get hoisted
 //keep in mind that functions get hoisted up with their definitions
+//VAR variables get hoisted up, but not LET or CONST variables
 
 Hoisting();                                               // this is still legal, but if you use a function expression, then it wont work
 function Hoisting() {                                     // this is how hoisting really looks like    
@@ -1857,8 +1858,10 @@ e => e + 1;                                                                     
       
 
 //================================================================ CLOSURES ===========================================================
-//Closure is a basically a list of variables or objects that a function has access too. The function will keep a reference to
-//these variables/objects for the life-time of the function
+//Closures are functions that have access to the variables/objects that are defined outside of its local scope
+//Keep in mind that in other programming languages, a function does not have access to variables defined outside of its scope
+// but its possible in Javascript because of closures
+// Remember that a closure is stored in the heap memory and NOT the call stack
 //If you console log the name of a function, it will give you the definition of a function and a property called closure
 //this 'property' will have a list of all the variables and objects that the function can use in its lifetime
 

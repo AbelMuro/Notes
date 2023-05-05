@@ -125,8 +125,6 @@ function CONST_variables() {
        x = 11;                                                          // you CANNOT reassign a value to a const variable          
 }
 
-
-
 //-------------------------------------------------------HOISTING----------------------------------------------------
 //hoisting is a process where javascript hoists all variable declarations to the top of its scope, however, their values/definitions do not get hoisted
 //keep in mind that functions get hoisted up with their definitions
@@ -146,8 +144,6 @@ function Hoisting() {                                     // this is how hoistin
       let y = 4;                                          // this will be hoisted to the top of the top of this function
       const z = 5;                                        // this will be hoisted to the top of the top of this function
 }
-
-
 
 
 //-------------------------------------------------------------- SCOPE CHAIN RESOLUTION-------------------------------------------------------------------------
@@ -177,6 +173,149 @@ function outer() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//================================================================ CLOSURES ===========================================================
+//Closures are functions that have a REFERENCE to the variables/objects that are defined outside of its local scope
+// Keep in mind that in other programming languages, a function does not have access to variables defined outside of its scope
+// but its possible in Javascript because of closures
+// Remember that a closure is stored in the heap memory and NOT the call stack
+//If you console log the name of a function, it will give you the definition of a function and a property called closure
+//this 'property' will have a list of all the variables and objects that the function can use in its lifetime
+
+      
+let y = 2;
+
+function inner(){
+      let x = 3;
+      return x + y; 
+}
+      
+console.log(inner)                        //this will log the function body and property called closure
+                                          //closure will have y = 2; and this is the reason inner() can access y from the outer scope
+
+// ----------------another example of closure------------------------------------
+//in the example below, we call outerFunction() in two different instances,
+//one instance has the closure with the variables x = 5, y = 2
+//the other instance has the closure with the variables x = 10, y = 2
+      
+      
+function outerFunction(x) {
+      return function innerFunction(y) {                                  //keep in mind that makeAdder will return a reference to another function
+            return x + y;                                                 // but it will NOT call the inner function
+      };
+}
+
+const add5 = outerFunction(5);                                            // calling outerFunction will make innerFunction "remember" that x is 5                            
+const add10 = outerFunction(10);                                          // calling outerFunction will make innerFunction "remember" that x is 10
+
+console.log(add5(2));                                                     // will console log 7 because innerFunction remembers that x is 5
+console.log(add10(2));                                                    // will console log 12 because innerFunction remembers that x is 10
+     
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+//------------------------------------------------------CALL STACK----------------------------------------------------------------------------
+//Everytime we call a function in JS, we place the function call on the STACK
+      
+function multiply(a, b) {                                   
+      return a * b;
+}                                   //this is the order in which the functions will be called (we will use FIFO stack technique)
+                                                                                             ______________________
+function square(n) {                            |                |                          |                      |
+      return multiply(n, n)                     |                |                  |       |         |            v
+}                                               |                |                  |       |         |         multiply() 
+                                                |                |                  |       |         |    
+                                                | multiply()     |                  |       ^         |
+function printSquare(n){                        | squared()      |                  | squared()       |
+      let squared = square(n);                  | printSquared() |                  | printSquared()  |
+      console.log(squared);                     |________________|                  |_________________|
+}
+      
+printSquared(4);
+
+
+//using asynchronous operations with the call stack, keep in mind that when JS encounters an asynchronous line of code, 
+// it is removed from the stack and placed in the webAPI thread, even though JS is single threaded, we can still call concurrent
+// code because the browsers have these API's that are essentially another thread.
+                        
+ console.log("Hi");                    
+                        
+ setTimeout(() => {
+       console.log("there")
+ }, 5000);
+                                                //EVENT LOOP
+  console.log("ho");
+                        
+            //stack                                                                    //webAPI's
+                                                                    
+       |                   |                                                        |               |
+       | console.log("ho") |  //setTimeout() will be removed from the stack         |               |     //once setTimeout() finishes its delay, 
+       | setTimeout()      |              -------------------------->               |  setTimeout() |     // it will be placed in the task queue    
+       | console.log("hi") |  //and will be placed in the WebAPI 'stack'            |               | 
+       |___________________|                                                        |_______________|
+
+                     ^                                                                     |
+                     |                                                                     |
+                     |                                                                     |
+                     |                                                                     |
+                     |   //task queue                                                      |
+            |                           |  <______________________________________________ |      
+            |                           |
+            |                           | 
+            |    setTimeout()           |
+            |___________________________|
+            //keep in mind that the setTimeout() will only be placed in the stack ONCE THE STACK IS EMPTY
+
+      
+      
+      
+      
+      
+      
+      
+      
 
 
 
@@ -598,8 +737,8 @@ let myObject = {
       name: "abel",
       age: 29,
       myMethod: function() {                  //since we assigned this function to one of the properties of myObject, this function belongs to myObject 
-            function inner(){}              //this inner function is not owned by myObject, it is owned by Window global object
-            return this.name + this.age;   //THIS refers to myObject
+            function inner(){}                //this inner function is not owned by myObject, it is owned by Window global object
+            return this.name + this.age;      //THIS refers to myObject
       }
 }
 
@@ -663,11 +802,26 @@ function example() {
 
 
 
+//==================================================== DATA HIDING/ DATA ENCAPSULATION ============================================================
+//Data encapsulation is the idea of making variables private for a function. In other words, the variables can only be accessed by the function
+                       
+                        
 
-
-
-
-
+function increment(){
+      let counter = 0;
+      
+      return add(){
+         counter++;
+      }
+}
+                        
+ var incrementCounter = increment();
+                        
+incrementCounter();                             //counter = 1
+incrementCounter();                             //counter = 2
+incrementCounter();                             //counter = 3
+incrementCounter();                             //counter = 4
+incrementCounter();                             //counter = 5
 
 
 
@@ -1830,162 +1984,7 @@ e => e + 1;                                                                     
       
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-//================================================================ CLOSURES ===========================================================
-//Closures are functions that have a REFERENCE to the variables/objects that are defined outside of its local scope
-// Keep in mind that in other programming languages, a function does not have access to variables defined outside of its scope
-// but its possible in Javascript because of closures
-// Remember that a closure is stored in the heap memory and NOT the call stack
-//If you console log the name of a function, it will give you the definition of a function and a property called closure
-//this 'property' will have a list of all the variables and objects that the function can use in its lifetime
-
-      
-let y = 2;
-
-function inner(){
-      let x = 3;
-      return x + y; 
-}
-      
-console.log(inner)                        //this will log the function body and property called closure
-                                          //closure will have y = 2; and this is the reason inner() can access y from the outer scope
-
-// ----------------another example of closure------------------------------------
-//in the example below, we call outerFunction() in two different instances,
-//one instance has the closure with the variables x = 5, y = 2
-//the other instance has the closure with the variables x = 10, y = 2
-      
-      
-function outerFunction(x) {
-      return function innerFunction(y) {                                  //keep in mind that makeAdder will return a reference to another function
-            return x + y;                                                 // but it will NOT call the inner function
-      };
-}
-
-const add5 = outerFunction(5);                                            // calling outerFunction will make innerFunction "remember" that x is 5                            
-const add10 = outerFunction(10);                                          // calling outerFunction will make innerFunction "remember" that x is 10
-
-console.log(add5(2));                                                     // will console log 7 because innerFunction remembers that x is 5
-console.log(add10(2));                                                    // will console log 12 because innerFunction remembers that x is 10
      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-//------------------------------------------------------CALL STACK----------------------------------------------------------------------------
-//Everytime we call a function in JS, we place the function call on the STACK
-      
-function multiply(a, b) {                                   
-      return a * b;
-}                                   //this is the order in which the functions will be called (we will use FIFO stack technique)
-                                                                                             ______________________
-function square(n) {                            |                |                          |                      |
-      return multiply(n, n)                     |                |                  |       |         |            v
-}                                               |                |                  |       |         |         multiply() 
-                                                |                |                  |       |         |    
-                                                | multiply()     |                  |       ^         |
-function printSquare(n){                        | squared()      |                  | squared()       |
-      let squared = square(n);                  | printSquared() |                  | printSquared()  |
-      console.log(squared);                     |________________|                  |_________________|
-}
-      
-printSquared(4);
-
-
-//using asynchronous operations with the call stack, keep in mind that when JS encounters an asynchronous line of code, 
-// it is removed from the stack and placed in the webAPI thread, even though JS is single threaded, we can still call concurrent
-// code because the browsers have these API's that are essentially another thread.
-                        
- console.log("Hi");                    
-                        
- setTimeout(() => {
-       console.log("there")
- }, 5000);
-                                                //EVENT LOOP
-  console.log("ho");
-                        
-            //stack                                                                    //webAPI's
-                                                                    
-       |                   |                                                        |               |
-       | console.log("ho") |  //setTimeout() will be removed from the stack         |               |     //once setTimeout() finishes its delay, 
-       | setTimeout()      |              -------------------------->               |  setTimeout() |     // it will be placed in the task queue    
-       | console.log("hi") |  //and will be placed in the WebAPI 'stack'            |               | 
-       |___________________|                                                        |_______________|
-
-                     ^                                                                     |
-                     |                                                                     |
-                     |                                                                     |
-                     |                                                                     |
-                     |   //task queue                                                      |
-            |                           |  <______________________________________________ |      
-            |                           |
-            |                           | 
-            |    setTimeout()           |
-            |___________________________|
-            //keep in mind that the setTimeout() will only be placed in the stack ONCE THE STACK IS EMPTY
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
 
 
 

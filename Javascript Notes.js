@@ -1858,8 +1858,8 @@ e => e + 1;                                                                     
       
 
 //================================================================ CLOSURES ===========================================================
-//Closures are functions that have access to the variables/objects that are defined outside of its local scope
-//Keep in mind that in other programming languages, a function does not have access to variables defined outside of its scope
+//Closures are functions that have a REFERENCE to the variables/objects that are defined outside of its local scope
+// Keep in mind that in other programming languages, a function does not have access to variables defined outside of its scope
 // but its possible in Javascript because of closures
 // Remember that a closure is stored in the heap memory and NOT the call stack
 //If you console log the name of a function, it will give you the definition of a function and a property called closure

@@ -78,7 +78,8 @@ let x = [1,2,3];
 
 
 
-// ====================================================================== SCOPES ====================================================================== 
+// ====================================================================== LEXICAL SCOPE ====================================================================== 
+// Scope is the area around a variable that can be used.
 // note, any variable defined outside a function or {} will have global scope, 
 // any variables defined inside a function or {} will have local scope
 
@@ -121,14 +122,12 @@ function VAR_variables() {
 // const variables can be used ANYWHERE inside the {}, where it is declared
 function CONST_variables() {
        const x = 10;                                                    // const variables have block scope
-       x = 11;                                                          // you CANNOT reassign a value to a const variable
-            
-       //const variables behave like let variables             
+       x = 11;                                                          // you CANNOT reassign a value to a const variable          
 }
 
 
 
-//-------------------------------------------------------VAR, LET, CONST and FUNCTION can be hoisted ----------------------------------------------------
+//-------------------------------------------------------HOISTING----------------------------------------------------
 //hoisting is a process where javascript hoists all variable declarations to the top of its scope, however, their values/definitions do not get hoisted
 //keep in mind that functions get hoisted up with their definitions
 
@@ -150,10 +149,25 @@ function Hoisting() {                                     // this is how hoistin
 
 
 
-//-------------------------------------------------------------- SCOPE CHAIN -------------------------------------------------------------------------
+//-------------------------------------------------------------- SCOPE CHAIN RESOLUTION-------------------------------------------------------------------------
+/* 
+      Scope Chain Resolution is the process of functions that look for a declaration/definiton of a variable starting from the local scope,
+      and work their way outward towards the global scope
 
 
+      Take a look at the example below
+*/
 
+
+function outer() {
+      var x = 4;
+      
+      function inner(){
+            console.log(x);               // this will console log undefined because the function will not look at the global scope for 'x' 
+            var x = 10;                   // because 'x' is already declared and defined in the local scope of this function
+      }
+      console.log(x);                     //this will console log 4
+}
 
 
 
@@ -574,7 +588,7 @@ this;                                       //if you use THIS in the global scop
 
 
 //------------------------------THIS in regular functions------------------------------
-//THIS in functions refers to the object that 'owns' the function
+//THIS in functions refers to the object that calls/invokes the function
 //remember, for an function to be owned by an object you made, 
 //you must assign the function to one of the properties inside the object
 
@@ -593,6 +607,7 @@ function myFunction(){
     return this;                            //this will also return the global window object;
 }
 
+window.myFunction();                       //all functions are part of the window object
 
 //-------------------------------THIS in arrow functions------------------------------------
 //THIS in arrow functions refers to the parent object of the object that owns the arrow function
@@ -1842,25 +1857,27 @@ e => e + 1;                                                                     
       
 
 //================================================================ CLOSURES ===========================================================
-//Closures is a combination of a function and the lexical scope around that function
-//in other words, a function A that is returned from B will have access to the scope of function A and its parameters 
-// even though function A has already been executed
+//Closure is a basically a list of variables or objects that a function has access too. The function will keep a reference to
+//these variables/objects for the life-time of the function
+//If you console log the name of a function, it will give you the definition of a function and a property called closure
+//this 'property' will have a list of all the variables and objects that the function can use in its lifetime
 
+      
+let y = 2;
 
-function outerFunction(x) {
-     x += 5;
-     x += 6;
-     x -= 10;
-     function innerFunction() {                                            //innerFunction has access to x because of its closure
-         return x + 5                                                      // even though x was never defined in innerFunction
-      }      
-     return innerFunction();
+function inner(){
+      let x = 3;
+      return x + y; 
 }
-
-console.log(outerFunction(3))                                             // will console log 9
-
+      
+console.log(inner)                        //this will log the function body and property called closure
+                                          //closure will have y = 2; and this is the reason inner() can access y from the outer scope
 
 // ----------------another example of closure------------------------------------
+//in the example below, we call outerFunction() in two different instances,
+//one instance has the closure with the variables x = 5, y = 2
+//the other instance has the closure with the variables x = 10, y = 2
+      
       
 function outerFunction(x) {
       return function innerFunction(y) {                                  //keep in mind that makeAdder will return a reference to another function

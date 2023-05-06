@@ -83,7 +83,7 @@ let x = [1,2,3];
 // note, any variable defined outside a function or {} will have global scope, 
 // any variables defined inside a function or {} will have local scope
 
-// let variables can be used ANYWHERE inside the {}, where it is declared
+// let variables can be used ANYWHERE inside the {}, where it is declared (BLOCK SCOPE)
 function LET_variables() {
       let x = 10;                                                       // let variables are block scope     
       let x = 11;                                                       // you CAN'T redeclare a let variable
@@ -91,14 +91,13 @@ function LET_variables() {
       if(true) {
            let y = 10                                                   // 'y' can ONLY be used here
            x;                                                           // 'x' can be used here
-      }     
-          
+      }             
       x;                                                                // 'x' can be used here  
       y;                                                                // 'y' CANT be used here
 }
 
 
-//  var variables can be used ANYWHERE inside the function, where it is declared
+//  var variables can be used ANYWHERE inside the function, where it is declared (FUNCTION SCOPE)
 function VAR_variables() {
        var x = 10;                                                      // var variables have function scope
        var x = 11;                                                      // you can redeclare a var variable
@@ -126,15 +125,16 @@ function CONST_variables() {
 }
 
 //-------------------------------------------------------HOISTING----------------------------------------------------
-//hoisting is a process where javascript hoists all variable declarations to the top of its scope, however, their values/definitions do not get hoisted
-//keep in mind that functions get hoisted up with their definitions
-//VAR variables get hoisted up, but not LET or CONST variables
+//hoisting is a process where javascript hoists all variable declarations to the top of its scope, however, their values do not get hoisted
+//keep in mind that functions also get hoisted up with their definitions
+//all var, let and const variables get hoisted to the top of the functions scope and assigned the value of undefined
+//but let and const cannot be accessed before its declaration because everything before the declaration is the temporal dead zone
 
 Hoisting();                                               // this is still legal, but if you use a function expression, then it wont work
 function Hoisting() {                                     // this is how hoisting really looks like    
      //var x = undefined;                                 // var variables get assigned the value of undefined
-     //let y;                                             // let variables do not get assigned a value of undefined                                    
-     //const z;                                           // const variables do not get assigned a value of undefined
+     //let y;                                             // this will throw a reference error                                
+     //const z;                                           // this will throw a reference error
        
       console.log(x);                                     // x will be undefined    
       console.log(y);                                     // will return a reference error
@@ -145,6 +145,19 @@ function Hoisting() {                                     // this is how hoistin
       const z = 5;                                        // this will be hoisted to the top of the top of this function
 }
 
+
+//-------------------------------------------------------------- TEMPORAL DEAD ZONE ------------------------------------------------
+//Temporal dead zone is the term used to describe the state of a variable that is within the scope but has not yet been declared
+//This usually applies to let and const variables
+
+{
+ 	// This is the temporal dead zone for the age variable!
+	// This is the temporal dead zone for the age variable!
+	// This is the temporal dead zone for the age variable!
+ 	// This is the temporal dead zone for the age variable!
+	let age = 25; // Whew, we got there! No more TDZ
+	console.log(age);
+}
 
 //-------------------------------------------------------------- SCOPE CHAIN RESOLUTION-------------------------------------------------------------------------
 /* 
@@ -158,14 +171,24 @@ function Hoisting() {                                     // this is how hoistin
 
 function outer() {
       var x = 4;
-      
       function inner(){
-            console.log(x);               // this will console log undefined because the function will not look at the global scope for 'x' 
-            var x = 10;                   // because 'x' is already declared and defined in the local scope of this function
+            console.log(x);               // this will console log undefined because the function will not look at the parent function scope for 'x' 
+            var x = 10;                   // because 'x' is already declared in the local scope of this function
       }
       console.log(x);                     //this will console log 4
 }
 
+
+function outerMost() {                       //outerMost has a declaration for x, so it uses x for the closure in innerMost()
+      var x = 3;
+      function outer(){                      //outer() doesnt have a declaration for x, so it searches for x in the grandparent scope
+            function inner() {
+                  function innerMost() {     //innerMost() doesnt have a declaration for x, so it searches for x in the parent scope
+                        console.log(x);      //this will console log 3
+                  }
+            }
+      }
+}
 
 
 
@@ -196,20 +219,20 @@ function outer() {
 //Closures are functions that have a REFERENCE to the variables/objects that are defined outside of its local scope
 // Keep in mind that in other programming languages, a function does not have access to variables defined outside of its scope
 // but its possible in Javascript because of closures
-// Remember that a closure is stored in the heap memory and NOT the call stack
+// Remember that a closure is stored in the heap memory and NOT the call stack, this can consume alot of memory if the closure contains alot of variables
+// Variables inside of a closure cannot be garbage collected because the variables will be needed for the closure
+
 //If you console log the name of a function, it will give you the definition of a function and a property called closure
 //this 'property' will have a list of all the variables and objects that the function can use in its lifetime
 
       
 let y = 2;
 
-function inner(){
+function inner(){            //inner() formed a closure with is surrounding scope, the closure consists of just the global variable y = 2;
       let x = 3;
       return x + y; 
 }
-      
-console.log(inner)                        //this will log the function body and property called closure
-                                          //closure will have y = 2; and this is the reason inner() can access y from the outer scope
+   
 
 // ----------------another example of closure------------------------------------
 //in the example below, we call outerFunction() in two different instances,
@@ -238,6 +261,7 @@ console.log(add10(2));                                                    // wil
       
       
       
+ //================================================ JAVASCRIPT EXECUTION CONTEXT ==========================================================
       
       
       
@@ -255,8 +279,7 @@ console.log(add10(2));                                                    // wil
       
       
       
-      
-//------------------------------------------------------CALL STACK----------------------------------------------------------------------------
+// ========================================================== CALL STACK  ==========================================================
 //Everytime we call a function in JS, we place the function call on the STACK
       
 function multiply(a, b) {                                   

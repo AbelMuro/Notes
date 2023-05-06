@@ -1,4 +1,4 @@
-//==================================================================== TYPES =================================================================================
+//====================================================================DATA TYPES =================================================================================
 //javascript is a loosely typed language, meaning that the variables in JS are not bound to any particular type and can be assigned any type at any given time
 //javascript has garbage collectors, meaning that javascript will automatically free up space when a variable or object is not used anymore
 //javascript uses the stack and the heap to store data, the stack is used to store primitive values and references to objects, 
@@ -215,8 +215,148 @@ function outerMost() {                       //outerMost has a declaration for x
 
 
 
+
+
+
+
+
+
+
+
+
+
+//====================================================================== PROTOTYPE ===================================================================
+// All objects in javascript have a default property called prototype that lets you add methods and properties to that object.
+// All objects in javascript also have a hidden property called [[Prototype]] that points to the global object methods and properties
+
+let myObject = new Object();
+let myObject = {whatever: 3};                                //remember that this is the same as 'new Object' (Object is a constructor function that has its own methods)
+myObject.toString();                                              //these methods belong to the Object constructor
+myObject.hasOwnProperty();                                        //these methods belong to the Object constructor
+myObject.valueOf();                                               //these methods belong to the Object constructor
+
+// even though myObject does not have the methods .toString(), hasOwnProperty(), valueOf() defined inside the {}. it can still use the methods
+// because it has a built in property called prototype which points to those methods.
+
+
+//-------------------------------------------------------------------prototype inheritance---------------------------------------------
+// If we take for example Arrays, since Arrays are also objects in javascript. They also share the prototype property that points to the methods
+// in the Object constructor while also maintaining its own set of methods
+
+let myArray = new Array();
+let myArray = [1,2,3];                                       //remember that this is the same as 'new Array()' (Array is a constructor that has its own methods)
+myArray.push(5);                                                  //these methods belong to the Array constructor
+myArray.pop();                                                    //these methods belong to the Array constructor
+myArray.forEach(() => {})                                         //these methods belong to the Array constructor
+myArray.toString();                                               //these methods belong to the Object constructor
+myArray.hasOwnProperty();                                         //these methods belong to the Object constructor
+myArray.valueOf();                                                //these methods belong to the Object constructor
+
+
+
+//------------------------------------------------------------------- PROTOTYPE CHAIN ------------------------------------------------------------------
+// visual example... (myArray is an object that has the property Prototype)
+
+// let myArray = new Array([1,2,3])                               
+//       |
+//       |   
+//       -> myArray -> [[prototype]]: Array  -> pop() 
+//                                           -> forEach()
+//                                           -> push()
+//                                           -> ...
+//                                           -> [[prototype]]: Object --------------------> toString()
+//                                                                                        -> hasOwnProperty()
+//                                                                                        -> valueOf()
+//                                                                                        -> ...
+
+
+//you can also use prototype to add new methods or properties to constructors
+
+function constructor(){
+      this.name = "abel";
+      this.last = "muro";
+      this.age = 678;
+}
+
+constructor.prototype.birthplace = "san francisco";
+constructor.prototype = {                                  //you can also add new methods to constructors like this
+      getName() {
+          return this.name
+      }
+} 
+
+let myObject = new constructor();                           //everytime you use constructor, the object will also have the new property birthplace
+object.birthplace;                 
+
+
+//----------------------------------------------------- setPrototypeOf() and getPrototypeOf()--------------------------------------------------------
+//The two methods setPrototypeOf() and getPrototypeOf() enable you to manually inherit methods and properties from one object to another
+
+
+var objOne = {
+    x: 1
+}
+
+var objTwo = {
+    getX() {
+  	return x;
+    }
+}	            
+
+Object.setPrototypeOf(objOne, objTwo);	//objOne will inherit the methods and properties from objTwo
+console.log(objOne);		
+/* 				
+       var objOne = {			//this is what will be displayed in the console
+  	   getX: getX() {
+    		return x;
+  	   },
+  	   x: 1
+	}
+*/
+
+const currentProto = Object.getPrototypeOf(objOne);	//this function will display all the methods and properties that have been inherited to objOne
+console.log(currentProto)
+/* 
+	var objOne = {			//this is what will be displayed in the console
+  	   getX: getX() {		//getX has been inherited from objTwo
+    		return x;
+  	   }
+	}
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //================================================================ CLOSURES ===========================================================
-//Closures are functions that have a REFERENCE to the variables/objects that are defined outside of its local scope
+// Closures are functions that have a REFERENCE to the variables/objects that are defined outside of its local scope
 // Keep in mind that in other programming languages, a function does not have access to variables defined outside of its scope
 // but its possible in Javascript because of closures
 // Remember that a closure is stored in the heap memory and NOT the call stack, this can consume alot of memory if the closure contains alot of variables
@@ -271,6 +411,19 @@ console.log(add10(2));                                                    // wil
       
       
       
+
+
+
+
+
+
+
+
+
+
+
+
+
       
       
       
@@ -336,12 +489,136 @@ printSquared(4);
       
       
       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
       
       
+//============================================================== THIS ============================================================== 
+//THIS is a keyword that refers to an object in javascript
+
+//-----------------------------THIS in the global scope----------------------------
+
+
+this;                                       //if you use THIS in the global scope, then it refers to the global object Window
+
+
+
+//------------------------------THIS in regular functions------------------------------
+//THIS in functions refers to the object that calls/invokes the function
+//remember, for an function to be owned by an object you made, 
+//you must assign the function to one of the properties inside the object
+
+//myObject 'owns' the function 'myMethod'
+let myObject = {
+      name: "abel",
+      age: 29,
+      myMethod: function() {                  //since we assigned this function to one of the properties of myObject, this function belongs to myObject 
+            function inner(){}                //this inner function is not owned by myObject, it is owned by Window global object
+            return this.name + this.age;      //THIS refers to myObject
+      }
+}
+
+//Window 'owns' this function
+function myFunction(){
+    return this;                            //this will also return the global window object;
+}
+
+window.myFunction();                       //all functions are part of the window object
+
+//-------------------------------THIS in arrow functions------------------------------------
+//THIS in arrow functions refers to the parent object of the object that owns the arrow function
+//remember, that functions in javascript are also objects
+
+
+//arrowFunction doesnt have a parent object, so THIS will just point to the window object
+window.arrowFunction();
+let arrowFunction = () => {
+      console.log(this);                              //this will return the global object
+}
+
+//Parent Object of myObject is the window object
+window.myObject.myMethod();                           //THIS in myMethod will point to the window object because its the parent object
+let myObject = {
+      name: "john",
+      age: "24",
+      myMethod: () => {
+          console.log(this);                          //even though this arrow function is 'owned' by myObject
+      }                                               //THIS will refer to the parent object of myObject, which 
+}
+
+//innerFunction is still owned by the window object
+window.innerFunction();
+function outerFunction() {
+      let innerFunction = () => {console.log(this)}                       //this arrow functions doesnt belong to myFunction()
+}
+
+
+//
+window.myObject.myMethod()
+let myObject = {
+      name: "john",
+      age: "24",
+      myMethod: function() {
+           () => {console.log(this)}                  //the scope of the arrow function is myObject, so this will console.log 'myObject'                                                          
+      }       
+}
+
+function example() {
+      let x = () => {console.log(this)}               //THIS will refer to the global object because THIS will refer to the scope of the object that owns it
+      x();
+}
+
+
+
+
       
 
 
 
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
 
 
@@ -736,95 +1013,6 @@ my_map.get([1,2,3]);                                                       //thi
 
 
 
-
-
-
-
-//============================================================== THIS ============================================================== 
-//THIS is a keyword that refers to an object in javascript
-
-//-----------------------------THIS in the global scope----------------------------
-
-
-this;                                       //if you use THIS in the global scope, then it refers to the global object Window
-
-
-
-//------------------------------THIS in regular functions------------------------------
-//THIS in functions refers to the object that calls/invokes the function
-//remember, for an function to be owned by an object you made, 
-//you must assign the function to one of the properties inside the object
-
-//myObject 'owns' the function 'myMethod'
-let myObject = {
-      name: "abel",
-      age: 29,
-      myMethod: function() {                  //since we assigned this function to one of the properties of myObject, this function belongs to myObject 
-            function inner(){}                //this inner function is not owned by myObject, it is owned by Window global object
-            return this.name + this.age;      //THIS refers to myObject
-      }
-}
-
-//Window 'owns' this function
-function myFunction(){
-    return this;                            //this will also return the global window object;
-}
-
-window.myFunction();                       //all functions are part of the window object
-
-//-------------------------------THIS in arrow functions------------------------------------
-//THIS in arrow functions refers to the parent object of the object that owns the arrow function
-//remember, that functions in javascript are also objects
-
-
-//arrowFunction doesnt have a parent object, so THIS will just point to the window object
-window.arrowFunction();
-let arrowFunction = () => {
-      console.log(this);                              //this will return the global object
-}
-
-//Parent Object of myObject is the window object
-window.myObject.myMethod();                           //THIS in myMethod will point to the window object because its the parent object
-let myObject = {
-      name: "john",
-      age: "24",
-      myMethod: () => {
-          console.log(this);                          //even though this arrow function is 'owned' by myObject
-      }                                               //THIS will refer to the parent object of myObject, which 
-}
-
-//innerFunction is still owned by the window object
-window.innerFunction();
-function outerFunction() {
-      let innerFunction = () => {console.log(this)}                       //this arrow functions doesnt belong to myFunction()
-}
-
-
-//
-window.myObject.myMethod()
-let myObject = {
-      name: "john",
-      age: "24",
-      myMethod: function() {
-           () => {console.log(this)}                  //the scope of the arrow function is myObject, so this will console.log 'myObject'                                                          
-      }       
-}
-
-function example() {
-      let x = () => {console.log(this)}               //THIS will refer to the global object because THIS will refer to the scope of the object that owns it
-      x();
-}
-
-
-
-
-
-
-
-
-
-
-
 //==================================================== DATA HIDING/ DATA ENCAPSULATION ============================================================
 //Data encapsulation is the idea of making variables private for a function. In other words, the variables can only be accessed by the function
                        
@@ -1137,101 +1325,12 @@ const deepCopyTwo = structuredClone(data);                           //creates a
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//====================================================================== PROTOTYPE ===================================================================
-// All objects in javascript have a default property called prototype that lets you add methods and properties to that object.
-// All objects in javascript also have a hidden property called [[Prototype]] that points to the object constuctor's methods and properties
-
-let myObject = new Object();
-let myObject = {whatever: 3};                                //remember that this is the same as 'new Object' (Object is a constructor function that has its own methods)
-myObject.toString();                                              //these methods belong to the Object constructor
-myObject.hasOwnProperty();                                        //these methods belong to the Object constructor
-myObject.valueOf();                                               //these methods belong to the Object constructor
-
-// even though myObject does not have the methods .toString(), hasOwnProperty(), valueOf() defined inside the {}. it can still use the methods
-// because it has a built in property called prototype which points to those methods.
-
-
-//-------------------------------------------------------------------prototype inheritance---------------------------------------------
-// If we take for example Arrays, since Arrays are also objects in javascript. They also share the prototype property that points to the methods
-// in the Object constructor while also maintaining its own set of methods
-
-let myArray = new Array();
-let myArray = [1,2,3];                                       //remember that this is the same as 'new Array()' (Array is a constructor that has its own methods)
-myArray.push(5);                                                  //these methods belong to the Array constructor
-myArray.pop();                                                    //these methods belong to the Array constructor
-myArray.forEach(() => {})                                         //these methods belong to the Array constructor
-myArray.toString();                                               //these methods belong to the Object constructor
-myArray.hasOwnProperty();                                         //these methods belong to the Object constructor
-myArray.valueOf();                                                //these methods belong to the Object constructor
-
-
-
-//------------------------------------------------------------------- PROTOTYPE CHAIN ------------------------------------------------------------------
-// visual example... (myArray is an object that has the property Prototype)
-
-// let myArray = new Array([1,2,3])                               
-//       |
-//       |   
-//       -> myArray -> [[prototype]]: Array  -> pop() 
-//                                           -> forEach()
-//                                           -> push()
-//                                           -> ...
-//                                           -> [[prototype]]: Object --------------------> toString()
-//                                                                                        -> hasOwnProperty()
-//                                                                                        -> valueOf()
-//                                                                                        -> ...
-
-
-//you can also use prototype to add new methods or properties to constructors
-
-function constructor(){
-      this.name = "abel";
-      this.last = "muro";
-      this.age = 678;
-}
-
-constructor.prototype.birthplace = "san francisco";
-constructor.prototype = {                                  //you can also add new methods to constructors like this
-      getName() {
-          return this.name
-      }
-} 
-
-let myObject = new constructor();                           //everytime you use constructor, the object will also have the new property birthplace
-object.birthplace;                              
+			
+			
+			
+			
+			
+			
 
 
 

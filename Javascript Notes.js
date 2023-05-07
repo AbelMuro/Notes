@@ -543,6 +543,38 @@ printSquared(4);
 	       
 	       
 	       
+//================================================================== API's =====================================================================    
+	       
+//API means Application Programming Interface, it is an interface that is used between two programs to communicate with each other. 
+// The two programs are called the Client and the Server. Typically, the Client will send a request to the server to either request 
+// data or to update the database somehow. The server will receive the request and then will send a response back to the client. The response
+// is either a message telling the client that the request is succefull/rejected, or the actual data that the client requested
+
+// Alot of the times, the API may have alot of resources/data that a user can request. One way to 'organize' this data is by using API endpoint	
+// API endpoints represent a digital location where the API receives requests about a specific resource 
+// With API endpoints, you can request a specific resource from an API that has alot of resources.
+// One good example would be the Twitter API, this API has endpoints for fetching posts, messages, followers, etc.. 
+// Basically, you can use the API endpoint for fetching posts, another API endpoint for fetching messages, etc..	       
+	       
+	       
+	       
+// We can use URL's to specify an endpoint of an API
+fetch('https://horoscopes-ai.p.rapidapi.com/get_horoscope/aries/today/general/en');    
+fetch('https://horoscopes-ai.p.rapidapi.com/get_horoscope/libra/tomorrow/general/en');
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
 	       
 	       
 	       

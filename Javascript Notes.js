@@ -162,9 +162,15 @@ function b() {
 function c() {
 	console.log('c')
 }
-
 a();
 
+//--------------variables without let, const and var---------------
+// By omitting let, const and var, you are creating a property in the window object
+// keep in mind that these variables do NOT get hoisted up
+
+foo = 5;			//window.foo
+console.log(foo)
+			
 
 
 //-------------------------------------------------------------- TEMPORAL DEAD ZONE ------------------------------------------------

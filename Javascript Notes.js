@@ -145,6 +145,27 @@ function Hoisting() {                                     // this is how hoistin
       const z = 5;                                        // this will be hoisted to the top of the top of this function
 }
 
+//-------------the reason we have hoisting in js ----------------
+//in the functions below, we have functions that are calling other functions BEFORE they are being declared and defined.
+//This is possible because JS hoists the definitions and declarations of the functions to the top of the current scope
+//If hoisting wasn't possible in JS, then the developer would have to refactor the code to make sure the function calls
+// happen after the declaration and definitions of the functions
+
+function a() {
+	b();
+  	console.log('a')
+}
+function b() {
+  	c();
+	console.log('b')
+}
+function c() {
+	console.log('c')
+}
+
+a();
+
+
 
 //-------------------------------------------------------------- TEMPORAL DEAD ZONE ------------------------------------------------
 //Temporal dead zone is the term used to describe the state of a variable that is within the scope but has not yet been declared
@@ -163,7 +184,6 @@ function Hoisting() {                                     // this is how hoistin
 /* 
       Scope Chain Resolution is the process of functions that look for a declaration/definiton of a variable starting from the local scope,
       and work their way outward towards the global scope
-
 
       Take a look at the example below
 */
@@ -322,11 +342,24 @@ console.log(currentProto)
     		return x;
   	   }
 	}
-
 */
 
+//------------------------------------------------ USING PROTOTYPE PROPERTY -------------------------------------------------------------------------
+//With the prototype property, you can add new methods and properties to an object that has already been declared
 
 
+//adding methods and properties to function constructors
+function Person(name) {
+    this.name = name;
+}
+
+Person.prototype.sayHello = function () {		//adding a new method for the Person constructor
+	console.log('hello world')
+}
+
+const person = new Person('David');
+
+person.sayHello();
 
 
 
@@ -356,7 +389,7 @@ console.log(currentProto)
 
 
 //================================================================ CLOSURES ===========================================================
-// Closures are functions that have a REFERENCE to the variables/objects that are defined outside of its local scope
+// Closures are functions that maintain a REFERENCE to the variables/objects that are defined outside of its local scope
 // Keep in mind that in other programming languages, a function does not have access to variables defined outside of its scope
 // but its possible in Javascript because of closures
 // Remember that a closure is stored in the heap memory and NOT the call stack, this can consume alot of memory if the closure contains alot of variables
@@ -432,7 +465,7 @@ console.log(add10(2));                                                    // wil
       
       
       
-// ========================================================== CALL STACK  ==========================================================
+// ========================================================== CALL STACK & QUEUE ==========================================================
 //Everytime we call a function in JS, we place the function call on the STACK
       
 function multiply(a, b) {                                   

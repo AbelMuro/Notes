@@ -522,6 +522,95 @@ printSquared(4);
       
       
       
+	
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+//======================================================= HTTP ===========================================================================     
+// HTTP stands for hyper text transfer protocol, it's a protocol that describes how a web browser and a web server communicates with each other.
+// The web browser will send a request to the web server and will wait for a response from the web server.
+/* HTTP VERBS: are methods that we use to interact with the web server and database
+	      GET method
+	      POST method
+	      DELETE method
+	      PUT method
+	             
+	       
+// CORS (Cross Origin Resource Sharing)	is a 'HTTP-header based mechanism' that allows a server to specify which domains/scheme/port are ALLOWED 
+// to get resources from the server. CORS relies on another mechanism called Pre-flight requests, in these preflight request, it will contain the 
+// http method (put, delete, post), the domain of the client, etc.., of the original request that is being made. The server will then check the 
+// pre-flight request and send a pre-flight response back to the client. In this Pre-flight response, it will contain the http methods that 
+// the server will permit the client to make.	
+	       
+// This allows web developers to control how their site reacts to cross-site requests 
+// https://domain-name.com/....	     
+	       
+/* 
+	Pre-flight request that is sent by the web browser to the web server			
+		OPTIONS /resource/foo
+		Access-Control-Request-Method: DELETE					<-------------
+		Access-Control-Request-Headers: origin, x-requested-with
+		Origin: https://foo.bar.org
+
+	Pre-flight response that is sent by the web server back to the web browser
+		HTTP/1.1 204 No Content
+		Connection: keep-alive
+		Access-Control-Allow-Origin: https://foo.bar.org
+		Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE		<-------------
+		Access-Control-Max-Age: 86400
+		
+	Since the pre-flight response contains the delete method in one of the headers,
+	then that means the client can send delete requests to the server
+
+*/
+
+	       
+
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	 
+	       
+	       
+	       
+	       
+	       
+	       
 	       
 	       
 	       
@@ -545,7 +634,7 @@ printSquared(4);
 	       
 //================================================================== API's =====================================================================    
 	       
-//API means Application Programming Interface, it is an interface that is used between two programs to communicate with each other. 
+// API means Application Programming Interface, it is an interface that is used between two programs to communicate with each other. 
 // The two programs are called the Client and the Server. Typically, the Client will send a request to the server to either request 
 // data or to update the database somehow. The server will receive the request and then will send a response back to the client. The response
 // is either a message telling the client that the request is succefull/rejected, or the actual data that the client requested
@@ -563,9 +652,31 @@ fetch('https://horoscopes-ai.p.rapidapi.com/get_horoscope/aries/today/general/en
 fetch('https://horoscopes-ai.p.rapidapi.com/get_horoscope/libra/tomorrow/general/en');
 	       
 	       
+//------------------------------------------------------------ RESTful API's -----------------------------------------------------------------
+// REST stands for REpresentation State Transfer. REST is the way that HTTP should be used. For an API to be restful, 
+// it needs to use the following conventions(keep in mind that there are much more convetions that were not listed below)			
+			
 	       
-	       
-	       
+/* 
+	1) Separate client and server: any changes made to the code in the client should NOT affect the server in any way, and vice versa
+           different clients can send requests to the same server and they all receive the same response with the same data
+	   
+	2) Stateless: Each request must contain all of the info necessary to be understood by the server WITHOUT being dependent on the
+   	   server remembering prior requests. The server cannot store any session data from the client.
+	 
+	3) Communication between client and server: the server basically uses the HTTP methods to communicate with the client
+
+
+	4) Response Codes: The server must send responses that contain one of the status codes below...
+	
+	200 (OK)			This is the standard response for successful HTTP requests.
+	201 (CREATED)			This is the standard response for an HTTP request that resulted in an item being successfully created.
+	204 (NO CONTENT)		This is the standard response for successful HTTP requests, where nothing is being returned in the response body.
+	400 (BAD REQUEST)		The request cannot be processed because of bad request syntax, excessive size, or another client error.
+	403 (FORBIDDEN)			The client does not have permission to access this resource.
+	404 (NOT FOUND)			The resource could not be found at this time. It is possible it was deleted, or does not exist yet.
+	500 (INTERNAL SERVER ERROR)	The generic answer for an unexpected failure if there is no more specific information available.
+*/	       
 	       
 	       
 	       

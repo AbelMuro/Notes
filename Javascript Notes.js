@@ -2214,20 +2214,17 @@ some_label:{                                                        //you can cr
 //keep in mind that the return statement should be on the same line as the output being returned from the function                
 
 
-//-----------------pure function; this function does not mutate the arguments passed to it------------------------------------
-function myFunction(a, b){                                      //a and b are called arguments   
+//------------------------------------------------------pure function----------------------------------------------------------------
+//The function does not rely on external variables in a closure
+//The function produces the same result if the same arguments are passed to the function
+//The function doesn't make any HTTP calls to a server
+//The function doesn't mutate the arguments passed to it
+	
+function myFunction(a, b){                                      	     //a and b are called arguments   
     let c = a + b;
     return c;                                                                 //function will return a string
 }
 function_with_parameters(1, 2);                                               // this is how you call a function
-
-//----------------inpure function; this function mutates the arguments passed to it--------------------------
-function myOtherFunction(a, b){
-      a = 1;
-      b = 2;
-      return a + b
-}
-myOtherFunction(5, 6)
 
 
 //-------------------constructor function; this function lets you create objects---------------------------------
@@ -2235,13 +2232,16 @@ function myConstructor(name, age, city){                                     //T
     this.name = name;
     this.age = age;
     this.city = city;
+    this.method = function () {
+    	return this.name + this.age + this.city;	
+    }
 }
 let myObject = new myConstructor("abel", 29, "San Francisco");
 
 
 //---------------------------------different ways of accepting arguments in function-----------------
 function destructuring({valueOne, valueTwo})                                  //you can pass an object that has two properties to this function
-function defaultValues(a = 1, b , c = "string")
+function defaultValues(a, b, c = "string")				      //you can initialize a parameter if the function call doesnt have enough arguments
 function manyArguments(...nums){                                              //you can use the spread operator to accept an infinite number of arguments
       nums.forEach((num) => {                                                 //nums is an array at this point                                               
             console.log(num);

@@ -1079,8 +1079,6 @@ let someValue = first + second;                                       // and the
 
 
 //CLONING arrays
-
-
 const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of data
 const deepCopyTwo = structuredClone(data);                           //creates a deep copy of data
 
@@ -1088,28 +1086,40 @@ const deepCopyTwo = structuredClone(data);                           //creates a
 
 
 //Usefull prototype methods for arrays.
-
-
 let myArray = [1,2,3,4,5];
 
 
-myArray.filter((val, index) => {                      //removes certain elements from the array and returns an updated version of the array
+myArray.filter((val, i, origArray) => {               //removes certain elements from the array and returns an updated version of the array
         if(element > 1)                               // however, it will not affect the original array
              return true;                             //element will be included in the new array
         else
              return false;                            //element will be excluded from the new array
 })
 
-myArray.map((val, index) => {                           //similar to forEach(), but returns an updated array and
+myArray.map((val, i, origArray) => {                     //similar to forEach(), but returns an updated array and
         return element + 1;                             // doesnt affect the original array
 })
 
 
-myArray.forEach((val, i) => {                            //will call a function for each element in the array, the whole point of this method is to access the elements
+myArray.forEach((val, i, origArrat) => {                 //will call a function for each element in the array, the whole point of this method is to access the elements
       console.log(val, i);                               //forEach() will not return an updated version of the array or affect the original array
 })
 
-                                                              
+			
+myArray.every((val, i, origArray) => {			// this function will continue iterating through an array until the callback returns false
+	if(true)					//this function returns true or false
+	   return true;					//passes the test			
+	else
+	   return false;				//doesnt pass the test
+})
+           
+			
+myArray.some(() => {
+
+})
+			
+			
+			
 let accumulatedValues = myArray.reduce((accumulator, currentVal) => { // reduce() is a method to accumulate the values in an array, the array can also be strings and other primitives
       return accumulator + currentVal;                  // The first time that the callback is run, there will be no "return value of the previous calculation". So we can supply a second argument
 }, initialValue);                                       // If supplied, the initial value may be used in its place. Otherwise the array element at index 0 is used as     

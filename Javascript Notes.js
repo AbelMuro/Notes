@@ -64,6 +64,25 @@ let x = [1,2,3];
 
 
 
+//=================================================== WINDOW OBJECT ========================================================
+// The window object represents the browsers window or the tab that displays the app or website. It is the parent of all objects
+// that are created in JS. All objects, variables, functions and classes are automatically members of the window object
+// Some useful properties in the window object are the following...
+
+/* 
+	window.navigator; 		//this will return an object that contains data relative to the operating system of the user (read-only)
+
+*/
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1072,7 +1072,7 @@ let arr2 = [4,5,6];
 let arr3 = [...arr1, ...arr2]    //[1,2,3,4,5,6]
 
 
-//DESTRUCTURING ARRAYS
+//DECONSTRUCTURING ARRAYS
 let someArray = [1, 2];
 const [first, second] = someArray;                                    // first and second now reference specific elements in the array 
 let someValue = first + second;                                       // and they can be used as variables
@@ -1088,7 +1088,6 @@ const deepCopyTwo = structuredClone(data);                           //creates a
 //Usefull prototype methods for arrays.
 let myArray = [1,2,3,4,5];
 
-
 myArray.filter((val, i, origArray) => {               //removes certain elements from the array and returns an updated version of the array
         if(element > 1)                               // however, it will not affect the original array
              return true;                             //element will be included in the new array
@@ -1100,11 +1099,9 @@ myArray.map((val, i, origArray) => {                     //similar to forEach(),
         return element + 1;                             // doesnt affect the original array
 })
 
-
 myArray.forEach((val, i, origArrat) => {                 //will call a function for each element in the array, the whole point of this method is to access the elements
       console.log(val, i);                               //forEach() will not return an updated version of the array or affect the original array
 })
-
 			
 myArray.every((val, i, origArray) => {			// this function will continue iterating through an array UNTIL the callback returns false
 	if(true)					//this function returns true or false
@@ -1112,16 +1109,20 @@ myArray.every((val, i, origArray) => {			// this function will continue iteratin
 	else
 	   return false;				//doesnt pass the test and will exit the loop
 })
-           
-			
+           			
 myArray.some((val) => {					//this function will iterate through the array UNTIL it finds a specific element
-	if(val === 5)					//the function will return true or false				
+	if(val == 5)					//the function will return true or false				
 	  return true;					//once we return true, we exit the loop
 })
 
 myArray.find((val) => {				        //this function will iterate through the array UNTIL it finds a specific element
 	if(val == 5)					//the function will return the element of the array
 	  return true					//once we return true, we exit the loop
+})
+			
+myArray.findIndex((val) => {				//this function will iterate through the array UNTIL it finds a specific element
+	if(val == 5)					//the function will return the index of the element
+	   return true					//once we return true, we exit the loop
 })
 			
 			

@@ -1083,8 +1083,6 @@ const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a
 const deepCopyTwo = structuredClone(data);                           //creates a deep copy of data
 
 
-
-
 //Usefull prototype methods for arrays.
 let myArray = [1,2,3,4,5];
 
@@ -1130,7 +1128,8 @@ let accumulatedValues = myArray.reduce((accumulator, currentVal) => { // reduce(
       return accumulator + currentVal;                  // The first time that the callback is run, there will be no "return value of the previous calculation". So we can supply a second argument
 }, initialValue);                                       // If supplied, the initial value may be used in its place. Otherwise the array element at index 0 is used as     
                                                         // the initial value and iteration starts from the next element    
-
+							// the initialValue can be any primitive type or even a reference type
+							// keep in mind that something needs to be returns after EVERY iteration
 
 //------------------------------------------------------------- SETS --------------------------------------------------------------------------------------------
 

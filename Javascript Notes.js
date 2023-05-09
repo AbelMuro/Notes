@@ -1106,18 +1106,23 @@ myArray.forEach((val, i, origArrat) => {                 //will call a function 
 })
 
 			
-myArray.every((val, i, origArray) => {			// this function will continue iterating through an array until the callback returns false
+myArray.every((val, i, origArray) => {			// this function will continue iterating through an array UNTIL the callback returns false
 	if(true)					//this function returns true or false
-	   return true;					//passes the test			
+	   return true;					//passes the test and will continue the iteration			
 	else
-	   return false;				//doesnt pass the test
+	   return false;				//doesnt pass the test and will exit the loop
 })
            
 			
-myArray.some(() => {
-
+myArray.some((val) => {					//this function will iterate through the array UNTIL it finds a specific element
+	if(val === 5)					//the function will return true or false				
+	  return true;					//once we return true, we exit the loop
 })
-			
+
+myArray.find((val) => {				        //this function will iterate through the array UNTIL it finds a specific element
+	if(val == 5)					//the function will return the element of the array
+	  return true					//once we return true, we exit the loop
+})
 			
 			
 let accumulatedValues = myArray.reduce((accumulator, currentVal) => { // reduce() is a method to accumulate the values in an array, the array can also be strings and other primitives
@@ -1211,7 +1216,7 @@ my_map.get([1,2,3]);                                                       //thi
                         
 
 function increment(){
-      let counter = 0;
+      let counter = 0;			//this variable becomes a private variable
       
       return add(){
          counter++;

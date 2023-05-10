@@ -1963,7 +1963,7 @@ class App extends React.Component {
 
 
 //----------------------------------------------------------------- HIGHER ORDER COMPONENTS (HoC) ------------------------------------------------
-//High order components are components that take in another component as an argument/props and return another component.
+//High order components are components that take in another component as an argument/props, enhance it somehow, and then return the same component
 //The whole point of these HoC is to re-use component behavior such as re-using event handlers and lifecycle methods
 
 

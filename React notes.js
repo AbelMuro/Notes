@@ -1962,57 +1962,58 @@ class App extends React.Component {
 
 
 
-//----------------------------------------------------------------- HIGHER ORDER COMPONENTS (HoC) ------------------------------------------------
+//----------------------------------------------------------------- HIGH ORDER COMPONENTS (HoC) ------------------------------------------------
 //High order components are components that take in another component as an argument/props, enhance it somehow, and then return the same component
 //The whole point of these HoC is to re-use component behavior such as re-using event handlers and lifecycle methods
 
 
-//this component will be passed to the HoC, then it will be returned with new event handlers and lifecycle methods
-function MyInput(){
-      return (
-        <input type="text" />
-      )  
-}
-
-
-//this component will have its component behavior re-used over and over
+//------this component will have its component behavior re-used over and over
 function HoC(Input) {
-        
-        return function CreateNewInput() {
-                const [state, setState] = useState("");                                        //now we can re-use this state variable
+        return function CreateNewInput(props) {                                         //Remember that this WHOLE function gets returned!                          
+                const [state, setState] = useState("");                                 //now we can re-use this state variable
 
-                const handleChange = (e) => {                                                    //now we can re-use this event handler
+                const handleChange = (e) => {                                           //now we can re-use this event handler
                       setState(e.target.value)
                 }
 
-                useEffect(() => {                                                               //now we can re-use this useEffect()
+                useEffect(() => {                                                       //now we can re-use this useEffect()
                        console.log(state);
                 },[])
 
                 return(
-                      <Input value={state} handleChange={handleChange} >
+                      <Input value={state} handleChange={handleChange} {...props}>      //these props are being passed to MyInput()
                 )          
         }
 }
 
 
+
+//-----this component will be passed to the HoC, then it will be returned with new event handlers and lifecycle methods
+function MyInput(props){
+      return (
+        <input type="text" {...props}/>         
+      )                                     // if you are adding event handlers or state to this component with HoC() 
+}                                           // it is essential that you add the props inline to the component's jsx
+
+
+
 function App(){
-        const InputOne = HoC(MyInput);                                //instead of having six onChange handlers and 6 state objects        
-        const InputTwo = HoC(MyInput);                                //each of these inputs will have their event handlers defined by the HoC                          
-        const InputThree = HoC(MyInput);
-        const InputFour = HoC(MyInput);
+        const InputOne = HoC(MyInput);                          // instead of having six onChange handlers and 6 state objects        
+        const InputTwo = HoC(MyInput);                          // each of these inputs will have their event handlers defined by the HoC                          
+        const InputThree = HoC(MyInput);                        // keep in mind that these functions that are returned are the same
+        const InputFour = HoC(MyInput);                         // as CreateNewInput() in the Hoc()
         const InputFive = HoC(MyInput);
         const InputSix = HoC(MyInput);
         
         
      return(
         <>
-             <InputOne/>                                         
-             <InputTwo/>
-             <InputThree/>
-             <InputFour/>
-             <InputFive/>
-             <InputSix/>
+             <InputOne style={{backgroundColor: 'red'}}/>           //the style prop is being passed to the function that is returned from the HoC                              
+             <InputTwo style={{backgroundColor: 'blue'}}/>
+             <InputThree style={{backgroundColor: 'green'}}/>
+             <InputFour style={{backgroundColor: 'red'}}/>
+             <InputFive style={{backgroundColor: 'purple'}}/>
+             <InputSix style={{backgroundColor: 'red'}}/>
         </>
      
      )

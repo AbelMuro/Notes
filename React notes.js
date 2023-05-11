@@ -101,6 +101,8 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                     and calculate the most minimal way to update the real DOM. This in turn will increase performance of the application
 
 
+
+                                                             
 */
 
 
@@ -1279,6 +1281,18 @@ function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 //--------------------------------------------- REACT-RESPONSIVE---------------------------------------------------
 import {useMediaQuery} from 'react-responsive';
 import MediaQuery from 'react-responsive';
@@ -1630,7 +1644,8 @@ function EvenHandlers() {
 
 //--------------------------------------------------------------------CONTROLLED COMPONENTS---------------------------------------------------------------------------
 
-// Components that handle the data of the input/select/forms with its state are called controlled components
+// Controlled components are components that bind its state to its input, select, textfields, etc...
+// Uncontrolled components are components that dont bind its state to its input, select, textfields
 // you have better control of what is being inputed by the user
 // KEEP IN MIND, that the value attribute is ONLY for controlled components
 
@@ -1877,6 +1892,15 @@ function Dialog() {
 
 //======================================================= ADVANCED CONCEPTS IN REACT ===============================================
 
+
+
+
+
+
+
+
+
+
 //---------------------------------------------------------------- RENDER PROPS ---------------------------------------------------------
 //the idea behind render props is to reuse stateful behavior with other components
 //the example below is how we use render props to make code more reusable
@@ -1886,76 +1910,83 @@ function Dialog() {
 //we essentially pass the 3 image components to the mouse component to position the images
 
 
-//this component is now reusable!
-class Mouse extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {x: 0, y: 0};                                //this is basically what we are sharing with the other components
-      this.handleMouseMove = this.handleMouseMove.bind(this);
-    }
+//the state behavior of this component is now re-usable.
+function Mouse(props) {
+    const [mouseX, setMouseX] = useState(0);
+    const [mouseY, setMouseY] = useState(0);
         
-    handleMouseMove(e){                                         //this is basically what we are sharing with the other components
-        this.setState({                                        
-              x : e.clientX,
-              y : e.clientY
-        })
+    const handleMouseMove = (e) => {                  //this is basically what we are sharing with the other components
+        setMouseX(e.clientX);
+        setMouseY(e.clientY);
     }
-    render() {
-      return (      
-        <div onMouseMove={this.handleMouseMove}> //render is a function that passes the state from this component to another component
-             {this.props.render(this.state)}    //this is the same as.... <Cat mouse={this.state}/>    <Dog mouse={this.state}/>      <Bird mouse={mouse}/>                          
+    
+    useEffect(() => {                                 
+        console.log(mouseX, MouseY);
+    })
+    
+     return (      
+        <div onMouseMove={handleMouseMove}>             //render is a function that passes the state from this component to another component
+             {props.render({x: mouseX, y: mouseY})}    //this is the same as.... <Cat mouse={this.state}/>    <Dog mouse={this.state}/>      <Bird mouse={mouse}/>                          
         </div>                                             
       );
-    }
 }
 
 
-//this component is receiving the state from another component (mouse is the state)
-class Cat extends React.Component {
-      render() {
-        const mouse = this.props.mouse;        
-        return (
-              <img src="./cat.png" style={{position: "absolute", left: mouse.x, top: mouse.y }}>
-        )
-      } 
+//this component is receiving the state as props from another component (mouse is the state)
+function Cat(props) {
+     const mouse = props.mouse;        
+     return (
+           <img src="./cat.png" style={{position: "absolute", left: mouse.x, top: mouse.y }}>
+     ) 
 }
 
 
-//this component is receiving the state from another component (mouse is the state)
-class Dog extends React.Component {
-      render() {
-        const mouse = this.props.mouse;        
-        return (
-              <img src="./dog.png" style={{position: "absolute", left: mouse.x, top: mouse.y }}>
-        )
-      } 
+//this component is receiving the state as props from another component (mouse is the state)
+function Dog(props) {
+     const mouse = props.mouse;        
+     return (
+           <img src="./dog.png" style={{position: "absolute", left: mouse.x, top: mouse.y }}>
+     )
 }
 
 
-//this component is receiving the state from another component (mouse is the state)
-class Bird extends React.Component {
-      render() {
-        const mouse = this.props.mouse;        
-        return (
-              <img src="./bird.png" style={{position: "absolute", left: mouse.x, top: mouse.y }}>
-        )
-      } 
+//this component is receiving the state as props from another component (mouse is the state)
+function Bird(props) {
+    const mouse = props.mouse;        
+    return (
+         <img src="./bird.png" style={{position: "absolute", left: mouse.x, top: mouse.y }}>
+    )
+     
 }
 
 //<Mouse> is the component that we want to re-use for its stateful behaviour 
 //<Cat> , <Dog>, <Bird> components will use the state behavior in <Mouse>
 //mouse is the state variable that is passed from <Mouse> to <Cat>, <Dog> and <Bird>
-class App extends React.Component {
-    render() {
-      return (        
-        <>
-          <Mouse render={mouse => (<Cat mouse={mouse}/>)} />       
-          <Mouse render={mouse => (<Dog mouse={mouse}/>)} />           
-          <Mouse render={mouse => (<Bird mouse={mouse}/>)} />        
-       </>
-      );
-    }
+function App{
+    return (        
+     <>
+        <Mouse render={mouse => (<Cat mouse={mouse}/>)} />       
+        <Mouse render={mouse => (<Dog mouse={mouse}/>)} />           
+        <Mouse render={mouse => (<Bird mouse={mouse}/>)} />  
+
+        <Mouse render={Bird}/>  //this has the same effect as above, calling the render prop in Mouse will still behave like a function that accepts the state
+      </>                                                       
+    );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1967,7 +1998,7 @@ class App extends React.Component {
 //The whole point of these HoC is to re-use component behavior such as re-using event handlers and lifecycle methods
 
 
-//------this component will have its component behavior re-used over and over
+// 1) ------- this component will have its component behavior re-used over and over
 function HoC(Input) {
         return function CreateNewInput(props) {                                         //Remember that this WHOLE function gets returned!                          
                 const [state, setState] = useState("");                                 //now we can re-use this state variable
@@ -1987,8 +2018,7 @@ function HoC(Input) {
 }
 
 
-
-//-----this component will be passed to the HoC, then it will be returned with new event handlers and lifecycle methods
+// 2) ------- this component will be passed to the HoC, then it will be returned with new event handlers and lifecycle methods
 function MyInput(props){
       return (
         <input type="text" {...props}/>         
@@ -1996,29 +2026,113 @@ function MyInput(props){
 }                                           // it is essential that you add the props inline to the component's jsx
 
 
-
+//3) ------- using HoC
 function App(){
-        const InputOne = HoC(MyInput);                          // instead of having six onChange handlers and 6 state objects        
-        const InputTwo = HoC(MyInput);                          // each of these inputs will have their event handlers defined by the HoC                          
-        const InputThree = HoC(MyInput);                        // keep in mind that these functions that are returned are the same
-        const InputFour = HoC(MyInput);                         // as CreateNewInput() in the Hoc()
-        const InputFive = HoC(MyInput);
-        const InputSix = HoC(MyInput);
+     const InputOne = HoC(MyInput);                          // instead of having six onChange handlers and 6 state objects        
+     const InputTwo = HoC(MyInput);                          // each of these inputs will have their event handlers defined by the HoC                          
+     const InputThree = HoC(MyInput);                        // keep in mind that these functions that are returned are the same
+     const InputFour = HoC(MyInput);                         // as CreateNewInput() in the Hoc()
+     const InputFive = HoC(MyInput);
+     const InputSix = HoC(MyInput);
         
-        
-     return(
+     return(                                                   //the style prop is being passed to CreateNewInput()   
         <>
-             <InputOne style={{backgroundColor: 'red'}}/>           //the style prop is being passed to the function that is returned from the HoC                              
+             <InputOne style={{backgroundColor: 'red'}}/>                                  
              <InputTwo style={{backgroundColor: 'blue'}}/>
              <InputThree style={{backgroundColor: 'green'}}/>
              <InputFour style={{backgroundColor: 'red'}}/>
              <InputFive style={{backgroundColor: 'purple'}}/>
              <InputSix style={{backgroundColor: 'red'}}/>
         </>
-     
-     )
-       
+     )   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------ LIFTING STATE UP ------------------------------------------------------
+// Lifting state up is the idea that when two components rely on the same data in state, you can make those two components
+// into siblings in a parent component, and then you can 'lift' the state up to the parent component instead of having 
+// the state in both siblings
+
+
+// 1) -------- take the example below....
+//We have two functions that have the same state but its being used for different reasons
+function DisplayList() {
+        const [list, setList] = useState([1,2,3,4,5]); 
+        return(
+             props.map((value) => {
+                   return(<div> {value} </div>)
+             })   
+        )
+}
+
+function DisplayListLength(props) {
+        const [list, setList] = useState([1,2,3,4,5]); 
+        return(
+              <div> {props.length}</div> 
+        )
+}
+
+
+
+//2) ---------- the example below is lifting state up to a common parent component.
+// and is making the two components into siblings so they can share the state
+
+function List() {
+        const [list, setList] = useState([1,2,3,4,5]);  //this is considered lifting state up, now the 
+        
+        return(                                         
+             <DisplayList list={list}>                         
+             <DisplayListLength length={list.length}>
+        )
+
+}
+
+function DisplayList(props) {
+        return(
+             props.map((value) => {
+                   return(<div> {value} </div>)
+             })   
+        )
+}
+
+function DisplayListLength(props) {
+        return(
+              <div> {props.length}</div> 
+        )
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1917,8 +1917,10 @@ function Dialog() {
 
 
 //---------------------------------------------------------------- RENDER PROPS ---------------------------------------------------------
-//the idea behind render props is to reuse stateful behavior with other components
-//the example below is how we use render props to make code more reusable
+//the idea with Render Props is to sharing code between react components by using props whose value is a function/component
+// the whole point of render props is to re-use stateful behavior and pass the state down to the child components
+// after it finishes manipulating the state
+
 //Keep in mind that the example below will force 3 images to follow the mouse on the screen
 //each of the three images will be in different components while the mouse component will
 //use its state behavior to keep track of the mouse movements on the screen
@@ -1940,8 +1942,8 @@ function Mouse(props) {
     })
     
      return (      
-        <div onMouseMove={handleMouseMove}>             //render is a function that passes the state from this component to another component
-             {props.render({x: mouseX, y: mouseY})}    //this is the same as.... <Cat mouse={this.state}/>    <Dog mouse={this.state}/>      <Bird mouse={mouse}/>                          
+        <div onMouseMove={handleMouseMove}>             // we are making {props.render()} dynamic, we can call ANY component like this
+             {props.render({x: mouseX, y: mouseY})}    // <Cat mouse={this.state}/>    <Dog mouse={this.state}/>      <Bird mouse={mouse}/>                          
         </div>                                             
       );
 }
@@ -2009,7 +2011,8 @@ function App{
 
 
 //----------------------------------------------------------------- HIGH ORDER COMPONENTS (HoC) ------------------------------------------------
-//High order components are components that take in another component as an argument/props, enhance it somehow, and then return the same component
+//High order components are components that take in another component as an argument, 
+// enhance it somehow, and then return the same component
 //The whole point of these HoC is to re-use component behavior such as re-using event handlers and lifecycle methods
 
 
@@ -2085,7 +2088,7 @@ function App(){
 
 
 
-//------------------------------------------------ LIFTING STATE UP ------------------------------------------------------
+//------------------------------------------------------ LIFTING STATE UP ------------------------------------------------------
 // Lifting state up is the idea that when two components rely on the same data in state, you can make those two components
 // into siblings in a parent component, and then you can 'lift' the state up to the parent component instead of having 
 // the state in both siblings

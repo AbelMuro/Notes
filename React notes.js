@@ -616,7 +616,7 @@ function ComponentFour() {
 
 
 //----------------------------------------------------------- USE REF HOOK -----------------------------------------------------
-// useRef() is a hook that can create a constant reference to an element or can be used to reference a value
+// useRef() is a hook that can creates a constant reference to an element or can be used to store a value
 // keep in mind that useRef() is a way to bypass the virtual DOM and directly access the underlying element in the real DOM
 // this hook does not cause a re-render everytime it gets updated
 // useRef() is very similar in concept to querySelector()

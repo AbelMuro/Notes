@@ -575,36 +575,51 @@ function Example() {
 //------------------------------------------------------------ USE CONTEXT HOOK --------------------------------------------
 // you can pass state object and setState() to child components by using createContext() and useContext()
 //its a good idea to export const StateObject = createContext() if you are modularizing your code
+// Rememeber that its a good idea to use high order components to augment the App component with Context
 
 
-const StateObject = createContext();
 
-function ComponentOne() {
-    const [state, setState] = useState("pass this down");
+// 1) ----- This component is similar to a redux reducer, it has event handlers that can update the state and any component can call these functions
 
-    return(                                     //all the child components called inside <StateObject.Provider /> can use the state object
-    <>
-        <StateObject.Provider value={{state, setState}}>    
-            <ComponentTwo />                        
-        </StateObject.Provider>    
-    </>
-
+//      /app.js
+export const Context = createContext();         // <----- you will need to export the Context object to other components so they can use the global state       
+export function App() {
+    const [list, setList] = useState([{id: 'abel', data: 45}, {id: 'david', data: 43}, {id: 'john', data: 67}]);
+        
+    const deleteItem = (id) => {                        
+        setList(list.filter((item) => {
+             if(item.id == id)
+                  return false;
+             else
+                  return true;
+        }))
+    }
+    const addItem = (newItem) => {
+           setList((prevList) => {
+                return [...prevList, newItem];
+           })
+    }
+    return(                                     //all components can use the state and functions that are passed as an object to the value attribute
+            <>
+                <Context.Provider value={{list, deleteItem, addItem}}>    
+                    <AnotherComponent/>                        
+                </Context.Provider>    
+            </>
     )
 }
-function ComponentTwo() {
-    return(
-        <ComponentThree/>
-    )
-}
 
-function ComponentThree() {
-    return(
-        <ComponentFour/>
-    )
-}
 
-function ComponentFour() {
-    const {state, setState} = useContext(StateObject);     
+// 2) -----  To use the Context in other files, you will need to import the Context object
+import {Context} from './App.js';
+import React, {useContext} from 'react';
+
+function AnotherComponent() {
+    const {list, addItem} = useContext(Context);                //you can use ALL the functions and state that was passed in the value prop ABOVE
+        
+    const addToList = () => {
+        addItem({id: 'carlos', data: 98});
+    } 
+        
     return(         
         <h2>
             <button type="button" onClick={() => setState("this is now different")}> Click here</button>

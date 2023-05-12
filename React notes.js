@@ -336,9 +336,48 @@ array.map((val, i) => {
 
 
 
+//========================================================== ERROR BOUNDARIES =================================================
+ //keep in mind that the try catch block will only work with vanilla JS, look at the example below
+ 
+ //this is completely fine, this will catch any errors thrown by the server
+ function App() {
+        const [state, setState] = useState({});
+         
+         useEffect(() => {
+              try{                                              
+                 fetch('url')
+                      .then(response => response.json())
+                      .then(results => setState(results))
+              }   
+              catch(error){
+                console.log(error, 'AN ERROR HAS OCCURED');
+              }
+         }, [])
+         
+         return(
+                 <>
+                   {state}
+                </>
+         )
+ }
 
-
-
+  
+  //however, this is NOT fine because React will not catch the errors
+  //the logic we have here is if title or data are null, then it will throw an error that will NOT be caught by the catch block
+function Publications({ publications }) {
+          try {
+            return publications.map((publication, index) => (
+                      <div key={index}>
+                             {publication.title.toUpperCase()}
+                             {publication.data.toLowerCase()}
+                      </div>
+            ));
+          } catch (error) {
+            return (<>
+                    'AN ERROR HAS OCCURED'
+                  </>);
+          }
+}
 
 
 

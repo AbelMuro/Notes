@@ -573,6 +573,9 @@ class PercentageStat extends React.PureComponent {
 // after the component has been rendered for the second time, useState will have its argument ignored 
 // and will instead read the previous state value and store it in the state object
 
+// Keep in mind, that if you have multiple setState() functions being called in succession, 
+// React will group together the setState() calls into one re-render, instead of making multiple re-renders
+
 function HooksOne() {
     const[state, setState] = useState(1);           //you can initialize state with any string, object, array or number
     const[stateTwo, setStateTwo] = useState('can be a string');

@@ -100,8 +100,6 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                     ANOTHER virtual DOM with the changes that we made, and will compare the new virtual DOM with the old virtual DOM,
                     and calculate the most minimal way to update the real DOM. This in turn will increase performance of the application
 
-
-
                                                              
 */
 
@@ -130,6 +128,15 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 
 //=========================================== IMPORT STATEMENTS =========================================== 
 
+/*                                              CODE SPLITING
+         Instead of downloading the entire app before users can use it, code-splitting allows you to split your code into 
+         small chunks which you can then load on demand. React achieves this by using the React.lazy() and React.suspense()
+         
+         Code Splitting is also the idea of breaking down the UI into different components
+*/
+
+
+
 
 //--------------------------------------------DEFAULT IMPORT------------------------------------------------
 //each file can only have ONE export default
@@ -156,6 +163,45 @@ export const number = 34;
 import {Home} from './HomePage.js';                         //this will work
 import {HomeComponent} from './HomePage.js'                 //this will NOT work because HomePage.js is not exporting HomeComponent
 import {number as myNumber} from './HomePage.js'            //this will work
+
+
+//--------------------------------------------- DYNAMIC IMPORT ----------------------------------------------
+//instead of importing a moduleA with the import statement, you can dynamically load a module at runtime with the module() function
+//import() is a built-in function for JS
+
+function DynamicImport {
+        
+          const handleClick = () => {
+                import('./moduleA')                     //this will return a promise
+                      .then(({ moduleA }) => {
+                        // Use moduleA
+                      })
+                      .catch(err => {
+                        // Handle failure
+                      });
+          };
+
+          render() {
+            return (
+              <div>
+                <button onClick={this.handleClick}>Load</button>
+              </div>
+            );
+          }
+}
+
+
+//---------------------------------------------- LAZY LOADING ----------------------------------------------
+//lazy loading is the technique of making certain parts of a website have a delay in loading, instead of having the entire website load in one go.
+//this can greatly improve loading time for a website
+
+import {lazy} from 'react';
+
+const ProjectSection = lazy(() => import('./ProjectSection'));          //you pass a callback and you wrap arround the directory of the folder with import()
+
+
+
+
 
 
 
@@ -1048,13 +1094,22 @@ useEffect(() => {
 
 
 
-//======================================================= LAZY LOADING ======================================================================================
-//lazy loading is the technique of making certain parts of a website have a delay in loading, instead of having the entire website load in one go.
-//this can greatly improve loading time for a website
 
-import {lazy} from 'react';
 
-const ProjectSection = lazy(() => import('./ProjectSection'));          //you pass a callback and you wrap arround the directory of the folder with import()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1134,6 +1189,23 @@ function MyApp() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //------------------------------------------------------ CUSTOM HOOKS --------------------------------------------------
 // you can create your own custom hooks that encapsulates stateful behavior (calculating something) and makes code reusable
 
@@ -1170,6 +1242,26 @@ function AnotherExampleWithCustomHooks() {
 
 
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     
     
@@ -1742,6 +1834,17 @@ function EvenHandlers() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 //--------------------------------------------------------------------CONTROLLED COMPONENTS---------------------------------------------------------------------------
 
 // Controlled components are components that bind its state to its input, select, textfields, etc...
@@ -1983,6 +2086,27 @@ function Dialog() {
         </CreateBorder>
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

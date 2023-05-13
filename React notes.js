@@ -330,6 +330,18 @@ array.map((val, i) => {
 
 
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 
 
@@ -337,9 +349,11 @@ array.map((val, i) => {
 
 
 //========================================================== ERROR BOUNDARIES =================================================
- //keep in mind that the try catch block will only work with vanilla JS, look at the example below
+ // Error Boundaries are basically class components that will catch any errors that are thrown in any child component
+ // The idea is to wrap your entire application with these Error Boundaries and it will automatically detect any errors thrown from the child
+ // keep in mind that the try catch block will only work with vanilla JS, look at the example below
  
- //this is completely fine, this will catch any errors thrown by the server
+ // 1) ------  this is completely fine, this will catch any errors thrown by the server
  function App() {
         const [state, setState] = useState({});
          
@@ -360,29 +374,57 @@ array.map((val, i) => {
                 </>
          )
  }
-
   
-  //however, this is NOT fine because React will not catch the errors
-  //the logic we have here is if title or data are null, then it will throw an error that will NOT be caught by the catch block
-function Publications({ publications }) {
+// 2) ------- however, this is NOT fine because the catch block will not catch any errors thrown by the component
+function Publications() {
           try {
-            return publications.map((publication, index) => (
-                      <div key={index}>
-                             {publication.title.toUpperCase()}
-                             {publication.data.toLowerCase()}
-                      </div>
-            ));
+               return (<SomeComponent/>)                      //any errors thrown here will NOT be caught by the catch block below
+            ))
           } catch (error) {
-            return (<>
-                    'AN ERROR HAS OCCURED'
-                  </>);
+                 return (<> 'AN ERROR HAS OCCURED' </>)        
           }
 }
 
 
+ // 3) ------- one way to use error boundaries is in the following code
+ // keep in mind that the <ErrorBoundary/> will automatically catch errors in the components nested within
+ 
+ import ErrorBoundary from './ErrorBoundary.js';
+ 
+ function App() {
+       return (                 {/* ErrorBoundary will not catch errors from event handlers, Asynchronous code*/}
+            <>  
+              <ErrorBoundary>                 
+                    {/* the rest of your application */}
+              </ErrorBoundary/>
+            </>
+  )
+}
+  
+// ./ErrorBoundary.js
+ class ErrorBoundary extends Component {
+         constructor(props) {
+            super(props);
+            this.state = { error: false, errorMessage: '' };
+         }
+         
+         static getDerivedStateFromError(error) {
+            // Updating state (this method will automatically catch errors in the child component)
+            return { error: true, errorMessage: error.toString() };
+          }
 
+          componentDidCatch(error, errorInfo) {
+            // Log error to an error reporting service like Sentry
+            console.log({ error, errorInfo });
+          }
 
+          render() {
+            const { error, errorMessage } = this.state;
+            const { children } = this.props;
 
+            return error ? <ErrorFallbackUI {...{ error, errorMessage }} /> : children;
+          }
+}
 
 
 

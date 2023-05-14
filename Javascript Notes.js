@@ -553,8 +553,8 @@ printSquared(4);
 	       
 	       
 	       
-	       
-	       
+	      
+	    
 	       
 	       
 	       
@@ -650,6 +650,91 @@ printSquared(4);
 	       
 	       
 	       
+// ======================================================  JSON WEB TOKENS ==================================================================
+// JSON web token is an open-standard that defines a way for securely transmitting information between parties
+// It is a JSON object that is mainly used for authorization and authentication.
+	       
+// AUTHORIZATION:  When a user successfully logs in using their credentials, an ID token is returned. An ID token is always a JWT.
+	       
+// AUTHENTICATION: Once a user is successfully logged in, an application may request to access routes, services, or resources (e.g., APIs) on behalf of that user. 
+//    To do so, in every request, it must pass an Access Token, which may be in the form of a JWT
+	              
+// How a JSON web token approximately looks like...
+	       header : {
+	       	  "alg" : "HS4564",
+	          "typ" : "JWT"
+       	       }
+	       
+	       payload : {
+                  "sub" : "123456789",
+	          "name" : "John Doe",
+	      	  "admin" : true
+       	       }
+			
+	       HMACSHA256 : {
+             	   base64UrlEncoded(header) + '.' + base64UrlEncode(payload), 'secret'
+               }
+       
+       
+// How to use JSON web tokens in node.js
+// Typically, using JSON web tokens are used for the back end to authorize users in an application
+
+const jwt = require("jsonwebtoken");		//npm install jsonwebtoken
+	
+// 1) ---------------- endpoint when the user requests to login
+app.post("/login", (req, res) => {
+    const { username, password } = req.body;				// 1) Getting the username and password of the user
+    if (username === "admin" && password === "admin") {			// 2) checking to see if the username/password is correct
+        const token = jwt.sign({ username }, 				// 3) creating a json web token
+        'secret key for the app only', {				// make sure to use a .env variable to hide the secret key here
+            expiresIn: 86400						// the token will expire in 24 hours, then the user will be automatically logged off
+        });
+        return res.json({ username, token, msg: "Login Success" });	// returning a response to the user, indicating that the login has been successful
+    }
+    return res.json({ msg: "Invalid Credentials" });
+});
+	       
+// 2) ------------------- Before this endpoint gets called, the middleware will verify if the JSON web token
+app.get("/home", verifyTokenMiddleware, (req, res) => {
+    const { user } = req;					// req is the object that is received from the middleware
+    res.json({ msg: `Welcome ${user.username}`});
+});       
+	
+			
+// 3) -------------------- this function will verify the web token
+function verifyTokenMiddleware (req, res, next) {
+    const { token } = req.body;
+    if (!token) return res.status(403).json({ 
+        msg: "No token present" 
+    })
+    try {
+        const decoded = jwt.verify(token, 				// jwt.verify() will automatically verify the token for you
+            'secret key for the app only');				// rememeber to use an .env variable for this
+        req.user = decoded;
+    } catch (err) {
+        return res.status(401).json({ 
+            msg: "Invalid Token" 
+        });
+    }
+    next();								//next() will automatically call the callback on the third argument in app.get('/home;
+};
+  
+       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
+	       
 	       
 	       
 	       
@@ -668,7 +753,9 @@ printSquared(4);
 // API endpoints represent a digital location where the API receives requests about a specific resource 
 // With API endpoints, you can request a specific resource from an API that has alot of resources.
 // One good example would be the Twitter API, this API has endpoints for fetching posts, messages, followers, etc.. 
-// Basically, you can use the API endpoint for fetching posts, another API endpoint for fetching messages, etc..	       
+// Basically, you can use the API endpoint for fetching posts, another API endpoint for fetching messages, etc..
+	       
+
 	       
 	       
 	       

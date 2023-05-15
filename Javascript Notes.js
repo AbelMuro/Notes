@@ -1274,6 +1274,25 @@ incrementCounter();                             //counter = 5
 
 
 
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
 
 
@@ -1715,25 +1734,22 @@ TypeError;                                  //using the wrong type, for example,
 // The computer asking for the data is called the client, and the computer sending the data back is known as a server. 
 // This dance is called the request-response cycle.
 
-//If you ever get the following error when making an API request with Fetch
-//  No 'Access-Control-Allow-Origin' header is present on the requested resource. 
-//  If an opaque response serves your needs, set the request's mode to 'no-cors' to 
-//  fetch the resource with CORS disabled.
-//then it usually means that the server doesn't want client side programs to access the API
-//the api is a backend api.
-//You can tell if an api is a backend api if it authenticates with a 'secret key'
-//A frontend api authenticates with the current users session
-
-
-// The fetch API can be used to make requests to servers or used to fetch a resource
+// The fetch API can be used to make requests to servers
 // by default, fetch will do a 'GET' request
 
 // Keep in mind that when you make a 'same-origin' request to a server, the browser will always allow it.
 // However, when you make a 'cross-origin' request to a third-party server, the browser will only allow it..
 // ..IF the third-party server sends a pre-flight response with the header 'access-allow-control-origin' that has
-// your origin/url as one of the values
-
-// one such example of this is when you make a request to the Printfull API, 
+// your origin/url as one of the values			
+			
+			
+//If you ever get the following error when making an API request with Fetch
+//  No 'Access-Control-Allow-Origin' header is present on the requested resource. 
+//  If an opaque response serves your needs, set the request's mode to 'no-cors' to 
+//  fetch the resource with CORS disabled.
+//then it usually means that the server doesn't want client side programs to access the API
+			
+// Printfull API, 
 // you must first have registered an access token with printfull that has a specific URL/origin to your app.
 // printfull will then add your URL/origin to the 'access-allow-control-origin' and any request made from your
 // URL/origin will be allowed
@@ -1741,25 +1757,21 @@ TypeError;                                  //using the wrong type, for example,
 
 
 
-//second parameter documentation for fetch api
+//Second parameter documentation for fetch api
 fetch("/somePath", {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    body: JSON.stringify({name: 'carlos', age: 30}), // body data type must match "Content-Type" header	
     mode: 'cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
+    credentials: 'same-origin', // include, *same-origin, omit     (used for including credentials such as cookies)
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json'			//data will be formatted into json
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: 'follow', // manual, *follow, error
     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
+
 })
-
-
-
-
-
 
 
 
@@ -1785,11 +1797,6 @@ fetch('/somePath', {                                                    //this w
 
 
 
-
-
-
-
-
 //making a POST request with FORMS
 fetch('/', {
       method: "POST",
@@ -1808,6 +1815,33 @@ function encode(data) {
 
 
 
+
+//----------- INTERCEPTING with the fetch API ------
+// Interceptors are functions that intercept a request BEFORE it is received by the server. 
+// It can also intercept a response from the server BEFORE it is received by the client
+// They way we implement the interceptors is by redefining the built-in Fetch API
+// We basically put some lines of code before the call to the Fetch APi and after the response has been received from the server
+
+
+const { fetch: originalFetch } = window;				// getting the built-in fetch API from the window and RENAMING the function
+
+window.fetch = async (...args) => {
+    let [resource, config ] = args;					//resource is the first argument of the fetch API and config is the second argument of the fetch API
+    // request interceptor starts here					(One of the most common use cases for request interceptors is to change the headers for authentication.)
+	resource = 'https://jsonplaceholder.typicode.com/todos/2';
+    // request interceptor ends here here 
+    const response = await originalFetch(resource, config); 		// once we get to this line, we have already sent a request to the server and received a response
+    // response interceptor starts here 
+	  const json = () =>
+		    response
+		      .clone()			         		//(Responses are only allowed to be consumed once. Therefore, you need to clone the response each time you want to use it.)
+		      .json()
+		      .then((data) => ({ ...data, title: `Intercepted: ${data.title}` }));
+
+	  response.json = json;				  		//this is how you can update the response with the interceptor
+    // response interceptor ends here
+    return response;
+};
 
 
 

@@ -271,8 +271,9 @@ function outerMost() {                       //outerMost has a declaration for x
 
 
 //====================================================================== PROTOTYPE ===================================================================
-// All objects in javascript have a default property called prototype that lets you add methods and properties to that object.
-// All objects in javascript also have a hidden property called [[Prototype]] that points to the global object methods and properties
+// All objects in javascript have two default properties, __proto__ and prototype
+// Prototype is used to add new methods and properties to an object after its declaration and initialization
+// _proto_ is used to look up methods and properties that have been inherited by other objects
 
 let myObject = new Object();
 let myObject = {whatever: 3};                                //remember that this is the same as 'new Object' (Object is a constructor function that has its own methods)
@@ -281,7 +282,7 @@ myObject.hasOwnProperty();                                        //these method
 myObject.valueOf();                                               //these methods belong to the Object constructor
 
 // even though myObject does not have the methods .toString(), hasOwnProperty(), valueOf() defined inside the {}. it can still use the methods
-// because it has a built in property called prototype which points to those methods.
+// because it has a built in property called _proto_ which points to those methods.
 
 
 //-------------------------------------------------------------------prototype inheritance---------------------------------------------
@@ -290,9 +291,11 @@ myObject.valueOf();                                               //these method
 
 let myArray = new Array();
 let myArray = [1,2,3];                                       //remember that this is the same as 'new Array()' (Array is a constructor that has its own methods)
+
 myArray.push(5);                                                  //these methods belong to the Array constructor
 myArray.pop();                                                    //these methods belong to the Array constructor
 myArray.forEach(() => {})                                         //these methods belong to the Array constructor
+
 myArray.toString();                                               //these methods belong to the Object constructor
 myArray.hasOwnProperty();                                         //these methods belong to the Object constructor
 myArray.valueOf();                                                //these methods belong to the Object constructor

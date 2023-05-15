@@ -388,6 +388,20 @@ array.map((val, i) => {
  
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 
 
@@ -584,6 +598,16 @@ class PercentageStat extends React.PureComponent {
   }
 
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1354,7 +1378,7 @@ function RouterStuff() {
                 {/* This router will always be rendered first, index is the same as path="./" */}                
                 <Route index element={<Home/>}/>                                
                     
-                {/* (1) The parent Route has an <Outlet> that will be replaced by one of the nested Routes below*/} 
+                {/* (1) The parent Route has an <Outlet> that will be replaced by one of the elements from the nested Routes below, KEEP IN MIND, that everytime you have nested routes, the parent Route must have a <Outlet>*/} 
                 <Route path="/ContactUs" element={<NestedNavigationBar/>}>      
                      <Route path="/ContactUs/email" element={<EmailUs/>}/>           
                      <Route path="/ContactUs/call" element={<CallUs/>}/>            
@@ -1366,7 +1390,7 @@ function RouterStuff() {
                 <Route path="/DonateUs/:repoName" element={<ThankYou />}/>      {/* :repoName is a placeholder, it can be sent as useParam() to the <ThankYou /> */} 
                 <Route path="/DonateUs/:repoName/:otherRepoName" element={<Whatever/>}   
  
-                {/*(3) This nested route has nested routes that will each pass a url parameter to the other */}
+                {/*(3) This nested route has nested routes that will each pass a url parameter to the other, KEEP IN MIND, that everytime you have nested routes, the parent Route must have a <Outlet> */}
                 <Route path="/Complaints" element={<Complaints>}>
                         <Route path="/Complaints/:pageOne" elements={<PageOne/>}>
                         <Route path="/Complaints/:pageOne/:pageTwo" elements={<PageTwo/>}>                           
@@ -1399,9 +1423,9 @@ function NavigationBar() {
 function NestedNavigationBar() {
     return(
         <>
-            <Link to="/ContactUs/email" className="example">Email us</Link>  
-            <Link to="/ContactUs/call" className="example"> Call us</Link>
-            <Outlet />                                                          //this outlet will be replaced by one of the routers
+            <Link to="/ContactUs/email" className="example">Email us</Link>    //if the user clicks on this link, then its element will be rendered in the <Outlet/> below
+            <Link to="/ContactUs/call" className="example"> Call us</Link>     //if the user clicks on this link, then its element will be rendered in the <Outlet/> below
+            <Outlet />                                                          //this outlet will be replaced by the content of one of the elements above
         </>
     )
 }
@@ -1435,30 +1459,29 @@ function Whatever() {
 }
 //--------------------------------------------------------------- (3) ---------------------------------------------------------------------------------------
 
-function Complaints() {
-       const navigate = useNavigate(); 
-       navigate("/Complaints/page-one");                        
+function Complaints() {      
         return(                                                 
             <>
-               <Link to="/Complaints/page-one"> 
-                <Outlet/>                                               //this will be replaced by the nested routes                 
+               <Link to="/Complaints/page-one">                         //Clicking on this link will display PageOne() in the <Outlet>
+                <Outlet/>                                               //this will be replaced by one of the elements in the nested routes                 
             </> 
         )
 }
 
 function PageOne(){
      const {pageOne} = useParams();
-     const navigate = useNavigate();
-        
-     navigate("/Complaints" + pageOne + "page-two")      
+
+        return(                                                 
+            <>
+               <>'Page One'</>                                          
+               <Link to="/Complaints/" + pageOne + 'pageTwo'>           //Clicking on this link will display PageTwo() in the <Outlet>
+                <Outlet/>                                               //this will be replaced by one of the elements in the nested routes                 
+            </> 
+        )
 }
 
 function PageTwo(){
-     const {pageOne, pageTwo} = useParams();
-     const navigate = useNavigate();
-        
-     navigate("/Complaints" + pageOne + Page)
-        
+     return(<>'Page Two'</>)    
 }
 
 

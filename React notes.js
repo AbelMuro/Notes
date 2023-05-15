@@ -562,11 +562,12 @@ X   componentWillUnmount() {                                //lifecycle method t
 //----------------------------------------------------------- PURE COMPONENTS---------------------------------------------------------
 //Pure Components are class components that extends Pure.Component
 //These components do NOT rely on variables/objects defined outside of its scope
+//Passing the same argument to these components will always return the same result
 //These components will automatically re-render IF the previous state/props 
 // is different that the new state/props. If its not different, then the component will not re-render
 
 
-//this component will only be re-render if props is different from the previous props
+//this component will automatically re-render if props is different from the previous props
 class PercentageStat extends React.PureComponent {
         
    //shouldComponentUpdate(){}                  //you dont have to use this lifecycle method anymore in pure components            

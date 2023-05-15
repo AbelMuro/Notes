@@ -2290,7 +2290,7 @@ let myObject = new myConstructor("abel", 29, "San Francisco");
 //---------------------------------different ways of accepting arguments in function-----------------
 function destructuring({valueOne, valueTwo})                                  //you can pass an object that has two properties to this function
 function defaultValues(a, b, c = "string")				      //you can initialize a parameter if the function call doesnt have enough arguments
-function manyArguments(...nums){                                              //you can use the spread operator to accept an infinite number of arguments
+function manyArguments(...nums){                                              //you can use the REST operator to group together all the arguments into an array
       nums.forEach((num) => {                                                 //nums is an array at this point                                               
             console.log(num);
       })

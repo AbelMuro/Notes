@@ -1156,6 +1156,16 @@ myArray.findIndex((val) => {				//this function will iterate through the array U
 	   return true					//once we return true, we exit the loop
 })
 			
+myArray.flat(3);					//this function will 'flattened' an array 3 levels down
+							/* 	[
+								   [1,2,3, [2,3,4]],
+								   [3,4,5, [2,[3,4]]],
+							           [1,2,3]
+								]
+								
+								[1,2,3,2,3,4,3,4,5,2,3,4,1,2,3]					
+							*/
+			
 			
 let accumulatedValues = myArray.reduce((accumulator, currentVal) => { // reduce() is a method to accumulate the values in an array, the array can also be strings and other primitives
       return accumulator + currentVal;                  // The first time that the callback is run, there will be no "return value of the previous calculation". So we can supply a second argument

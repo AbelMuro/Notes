@@ -1165,14 +1165,19 @@ myArray.flat(3);					//this function will 'flattened' an array 3 levels down
 								
 								[1,2,3,2,3,4,3,4,5,2,3,4,1,2,3]					
 							*/
-			
-			
+		
 let accumulatedValues = myArray.reduce((accumulator, currentVal) => { // reduce() is a method to accumulate the values in an array, the array can also be strings and other primitives
       return accumulator + currentVal;                  // The first time that the callback is run, there will be no "return value of the previous calculation". So we can supply a second argument
 }, initialValue);                                       // If supplied, the initial value may be used in its place. Otherwise the array element at index 0 is used as     
                                                         // the initial value and iteration starts from the next element    
 							// the initialValue can be any primitive type or even a reference type
 							// keep in mind that something needs to be returns after EVERY iteration
+			
+let accumulatedValues myArray.reduceRight((accumulator, currentValue) => { //same thing as above but the array is iterated from the right instead of left
+	return accumulator + currentValue;
+}, initialValue)			
+			
+			
 
 //------------------------------------------------------------- SETS --------------------------------------------------------------------------------------------
 
@@ -2107,55 +2112,6 @@ let name = (password == "Darkness33") ? "correct pwd": "incorrect pwd";      //i
       
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-
-
-
-
-//============================================================== SELECTION STATEMENTS ============================================================== 
-
-
-//-------------------------------------------------------- IF/ELSE-IF/ELSE ---------------------------------------------------------------------------------
-let age = 25;
-if(age > 19 && age < 34){                                                  //the if statement will only execute if the expression inside returns true
-    //code goes here
-}
-
-else if(age == 15){
-    //code goes here
-}
-
-else{                                                                       //will only execute if all the other if statements above are false
-    //code goes here
-};
-
-
-
-//---------------------------------------------------------- SWITCH ----------------------------------------------------------------------------------
-
-switch(some_variable_of_any_type){                                          //switch statements check the value of the variable with the cases below                       
-    //cases use === when comparing values
-    case 0:                                                                 //case can be any value of any type
-        //code goes here
-    break;                                                                  //breaks out of the switch block
-
-    case "can be a string too": 
-        //code goes here
-    break;
-
-    default:                                                                //if all cases dont equal the variable in switch(), then default will execute
-        //code goes here
-
-};
-
-
 
 
 
@@ -2342,7 +2298,7 @@ function manyArguments(...nums){                                              //
       
       
 //--------------------------------- CALL(), APPLY(), BIND()------------------------------------------------------------
-// Call(), Apply(), Bind() will	'tie' a function into an object as if it belonged to that object
+// Call(), Apply(), Bind() will	'tie' a function into an object as if it belonged to that object.
 // Traditionally in JavaScript, you can have objects that have their own properties and methods. 
 // For example, object1 cannot use the methods of object2 and vice versa.
 // Call(), Apply() and Bind() can solve this problem
@@ -2353,13 +2309,30 @@ var obj = {
 	      //return this.num + a;
         //}
 };
-function add(a = 1){
+function add(a = 1){						  	      //call() can also work if add() was a method in an object
      return this.num + a;
 }
 	
 add.call(obj, 2);							     //the Add constructor will access all the properties and methods from 'obj' in this call()
 add.apply(obj, [2,3,4])	
-add.bind(obj);
+
+	
+//-------- bind() works a little different, it was design to bind 'this' to a function and returns a new function -------------------
+// The reason you want to do this is to pass a function that uses 'This' into another function because 'This' will lose its value
+var myButton = {
+	  content: 'OK',
+	  click() {
+	    console.log(this.content + ' clicked');
+	  }
+};
+
+myButton.click();			//this will console.log() 'OK clicked'
+
+var looseClick = myButton.click;	// when you re-assign a method like this, the value of 'this' will lose its original value
+looseClick(); 				// this will console.log 'undefined clicked'
+
+var boundClick = myButton.click.bind(myButton); // you will need to bind the original's object 'this' to make sure it doesnt lose its value
+boundClick(); 				// this will console.log 'OK clicked'
 	
 
 //---------------------------------IIFE: immediately invoked function expression------------------------

@@ -1962,13 +1962,23 @@ console.log("c");
 // All synchronous events are taken out of the normal stack of execution and will wait until 
 // the stack finishes executing
 
+//Some methods to use for Promises
+const result = Promise.resolve(123);			//resolve() will automatically resolve a value to a promise
+result.then(() => {});
+
+const result = Promise.reject('error');			//reject() will automatically reject the returning promise with the given message
+result.catch(() => {})
+
+const results  = Promise.all([Promise.resolve('hello'), Promise.resolve('world')]); // all() will accept an array of promises that must be resolved
+results.then((arrResults) => { console.log(arrResults)});			    // all() will return the results of every promise in a array						
+results.catch(() => {});						             //if one of the promises in the array is rejected, then we will use catch statement
 
 //The code below will return a "promise" object, 
 //in this case, it will take 5 seconds for the promise to resolve, 
 //just assume that it will take 5 seconds for the server to respond
-let myPromise = new Promise((results) => {   
+let myPromise = new Promise((resolve, reject) => {   
     setTimeout(() => {                  
-        results("ok")                              //once this line of code has been reached, then the promise has been resolved
+        resolve("ok")                              //once this line of code has been reached, then the promise has been resolved
     }, 5000)
 })
 

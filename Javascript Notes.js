@@ -2342,15 +2342,25 @@ function manyArguments(...nums){                                              //
       
       
 //--------------------------------- CALL(), APPLY(), BIND()------------------------------------------------------------
- function someFunc(nums){
-      console.log(nums);
- }
-
-someFunc.call(5, 6, ...);                                                     //will call a function by passing a certain number of arguments   
-someFunc.apply([1,2,3], 4, ...)                                               //will call a function by passing arguments that can also be arrays
-let anotherFunc = someFunc.bind(2);                                           //will create a new function that already has its parameters set to the arguments that you send it
-anotherFunc();                                                                //this function will be called with default paramete nums set to 2
-
+// Call(), Apply(), Bind() will	'tie' a function into an object as if it belonged to that object
+// Traditionally in JavaScript, you can have objects that have their own properties and methods. 
+// For example, object1 cannot use the methods of object2 and vice versa.
+// Call(), Apply() and Bind() can solve this problem
+	
+var obj = { 
+	num: 2,
+	//add: function (a = 1) {					      //this is what it looks like when we use call() below 
+	      //return this.num + a;
+        //}
+};
+function add(a = 1){
+     return this.num + a;
+}
+	
+add.call(obj, 2);							     //the Add constructor will access all the properties and methods from 'obj' in this call()
+add.apply(obj, [2,3,4])	
+add.bind(obj);
+	
 
 //---------------------------------IIFE: immediately invoked function expression------------------------
 //IIFE are functions that get called on the spot

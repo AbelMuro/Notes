@@ -2118,7 +2118,7 @@ function Uncontrolled() {
 
 
 
-//----------------------------------------------------------------COMPOSITION (using child components)---------------------------------------------------------------------------------------------
+//----------------------------------------------------------------CHILD PROPS---------------------------------------------------------------------------------------------
 //remember that PROPS can accept any primitive value, React components and functions
 
 //you can pass nested elements in JSX to function components
@@ -2157,6 +2157,73 @@ function Dialog() {
 
 
 
+//------------------------------------------------------ LIFTING STATE UP ------------------------------------------------------
+// Lifting state up is the idea that when two components rely on the same data in state, you can make those two components
+// into siblings in a parent component, and then you can 'lift' the state up to the parent component instead of having 
+// the state in both siblings
+
+
+// 1) -------- take the example below....
+//We have two functions that have the same state but its being used for different reasons
+function DisplayList() {
+        const [list, setList] = useState([1,2,3,4,5]); 
+        return(
+             props.map((value) => {
+                   return(<div> {value} </div>)
+             })   
+        )
+}
+
+function DisplayListLength(props) {
+        const [list, setList] = useState([1,2,3,4,5]); 
+        return(
+              <div> {props.length}</div> 
+        )
+}
+
+
+
+//2) ---------- the example below is lifting state up to a common parent component.
+// and is making the two components into siblings so they can share the state
+
+function List() {
+        const [list, setList] = useState([1,2,3,4,5]);  //this is considered lifting state up, now the 
+        
+        return(                                         
+             <DisplayList list={list}>                         
+             <DisplayListLength length={list.length}>
+        )
+
+}
+
+function DisplayList(props) {
+        return(
+             props.map((value) => {
+                   return(<div> {value} </div>)
+             })   
+        )
+}
+
+function DisplayListLength(props) {
+        return(
+              <div> {props.length}</div> 
+        )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2179,7 +2246,8 @@ function Dialog() {
 
 
 //---------------------------------------------------------------- RENDER PROPS ---------------------------------------------------------
-//the idea with Render Props is to sharing code between react components by using props whose value is a function/component
+// Render props is basically a function that is passed to a component, this function tells the component what to render
+// the idea with Render Props is to sharing code between react components by using props whose value is a function/component
 // the whole point of render props is to re-use stateful behavior and pass the state down to the child components
 // after it finishes manipulating the state
 
@@ -2344,65 +2412,22 @@ function App(){
 
 
 
+//------------------------------------------------------- CUSTOM HOOKS ---------------------------------------------------------------------------
+// Custom hooks are designed to share code between functional components
 
 
-
-
-
-
-//------------------------------------------------------ LIFTING STATE UP ------------------------------------------------------
-// Lifting state up is the idea that when two components rely on the same data in state, you can make those two components
-// into siblings in a parent component, and then you can 'lift' the state up to the parent component instead of having 
-// the state in both siblings
-
-
-// 1) -------- take the example below....
-//We have two functions that have the same state but its being used for different reasons
-function DisplayList() {
-        const [list, setList] = useState([1,2,3,4,5]); 
-        return(
-             props.map((value) => {
-                   return(<div> {value} </div>)
-             })   
-        )
-}
-
-function DisplayListLength(props) {
-        const [list, setList] = useState([1,2,3,4,5]); 
-        return(
-              <div> {props.length}</div> 
-        )
-}
-
-
-
-//2) ---------- the example below is lifting state up to a common parent component.
-// and is making the two components into siblings so they can share the state
-
-function List() {
-        const [list, setList] = useState([1,2,3,4,5]);  //this is considered lifting state up, now the 
+function useFetch(url) {
+      const [data, setData] = useState(null);           
         
-        return(                                         
-             <DisplayList list={list}>                         
-             <DisplayListLength length={list.length}>
-        )
-
-}
-
-function DisplayList(props) {
-        return(
-             props.map((value) => {
-                   return(<div> {value} </div>)
-             })   
-        )
-}
-
-function DisplayListLength(props) {
-        return(
-              <div> {props.length}</div> 
-        )
-}
-
+        useEffect(() => {
+               fetch(url)
+                   .then((response) => response.json())
+                   .then((data) => setData(data))
+                   .catch((error) => {setData(error)})
+        }, [url])
+        
+        return [data];                                          //the state must be returned from this hook to cause a re-render on the parent component
+}                                                               //you can also pass the setData function to cause a re-render in this hook AND the parent component
 
 
 

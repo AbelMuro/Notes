@@ -1669,8 +1669,37 @@ import data from './data';
 
 
 
+//======================================================= DEBOUNCING ===============================================
+//Debouncing is the idea that some function will be triggered when the user stops typing
+//The logic below works like this...
+//The onChange event handler will detect any changes made by the user.
+//Everytime the user types something in the input, it will start a timer with setTimeout
+//But as long as the user keeps typing, it will continuously reset the timer
+//When the user stops typing, the timer will start and when it finishes, it will call the setTimeout
+// and execute the function that was passed to debounce()
 
+function debounce(cb, d) {
+        let timer;
+        let text;
+        return (e) => {                              //this is the function that is passed to the onChange attribute in the <input/>
+             text = e.target.value;                  //you cannot pass the synthetic event to another function below, so you must assign the value of input here
+             if(timer) clearTimeout(timer)            
+             timer = setTimeout(() => {
+                     cb(text)                        //this is the function that was passed to debounce as the first argument
+             }, d)
+        }
+}
 
+ function App() {
+         
+      const handleChange = debounce((text) => {        //the callback passed to the first argument will be used in the setTimeout()
+             console.log(text);
+      }, 1000)
+ 
+      return(
+          <input type='text' onChange={handleChange}/>
+      )
+ }
 
 
 

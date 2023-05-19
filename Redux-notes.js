@@ -41,7 +41,14 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 //          serializable values means you can use JSON.parse(JSON.stringify()) WITHOUT losing data (arrays, object)
 //          non-serializable values means that you will lose some data if you use JSON.parse(JSON.stringify())
 
+/* 
+            REDUX USES A VARIATION OF THE FLUX ARCHITECTURE
+         Redux can only have a single global store, but FLUX can have multiple stores
+         Redux doesn't have a dispatcher, but FLUX does have a dispatcher (a dispatcher is an array of callbacks that each connect to a store)
+         Redux can only have a single state, but FLUX can have multiple states
+         
 
+*/
 
 
 

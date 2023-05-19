@@ -1209,64 +1209,6 @@ function MyApp() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//------------------------------------------------------ CUSTOM HOOKS --------------------------------------------------
-// you can create your own custom hooks that encapsulates stateful behavior (calculating something) and makes code reusable
-
-//in the example below, we are reusing a function that can 'fetch' data from an external server
-function useCustomHook(URL) {
-    const [custom, setCustom] = useState(null);
-    
-    useEffect(() => {
-       fetch(URL)
-            .then((response) => response.JSON)
-            .then((data) => setState(data))
-    },[URL])
-        
-  return [custom];
-}
-
-function ExampleWithCustomHooks() {
-    const [data] = useCustomHook("https://jsonplaceholder.typicode.com/todos");
-    return (
-        <>
-             {data && data.map((item) => {return <p key={item.id}> {item.title} </p> })} 
-        </>
-    )    
-}
-
-function AnotherExampleWithCustomHooks() {
-    const [data] = useCustomHook("https://someServer.whatever.com/someData");
-    return (
-        <>
-            {data && data.map((item) => {return <p key={item.id}> {item.title} </p> })}  
-        </>
-    )
-}
-
-
-
     
     
     
@@ -1348,6 +1290,16 @@ function ChangeTheme(turnSwitch) {
     
 
 //======================================================================== REACT ROUTER ===========================================================================================================================
+// React Routers vs Conventional Router
+// React Routers is Client-side routing
+// Conventional Router is Server-side routing
+// In Server-side routing, the server handles client requests based on the pathname of the URL.
+// In client-side routing, whenever a request is made for a route, this request is not sent to the server. Instead, the javascript code handles the routing process.
+
+// React Routers displays different routes(pages) in a single html file, while conventional router displays pages in different html files
+
+
+
 //npm install react-router-dom
     
     

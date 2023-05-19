@@ -106,20 +106,21 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                                                         AUTOMATIC BATCHING (react 18)
                     Batching is when React groups multiple setState updates into a single re-render for better performance.
                     Lets say we have 4 setState() being called in succession inside of an event handler. React will automatically
-                    group together these 4 setState() functions into one re-render.
+                    group together these 4 setState() functions into one re-render. Keep in mind that this batching is only available
+                    in concurrent mode and blocking mode
                     
                                                            CONCURRENCY (react 18)
                     Concurrency refers to having multiple tasks in progress at the same time(i.e tasks can overlap).
-                    React could only handle one task at a time in the past(which was referred to as Blocking rendering). 
+                    React could only handle one task at a time in the past (which was referred to as Blocking rendering). 
                     To solve this problem, concurrent mode was introduced in React as an experimental feature.
-                    Concurrency just means we can have two tasks in hand and can switch between them depending on the priority.
+                    Concurrency just means we can have two tasks on hand and can switch between them depending on the priority.
                     
-                    To enable concurrent mode:
+                    To enable concurrent mode:    (index.js)
                                 const rootEl = document.getElementById("root")
                                 const root = ReactDOM.createRoot(rootEl);
                                 root.render(<App/>);
                               
-                    To use legacy mode:
+                    To use legacy mode:             (index.js)
                                 const rootEl = document.getElementById('root')
                                 ReactDOM.render(<App />, rootEl)
                         
@@ -986,10 +987,8 @@ const initialState = {
 // this is the reducer, this is where the state management happens
 // it will return the new state object
 function reducer (state, action) {
-    //accessing the two properties in our state object
     const stateList = state.list;
 
-    //using a switch statement to determine what to do with the state object
     switch(action.type) {
         case 'addItem':
             return {list: [...stateList, action.item]}
@@ -1099,6 +1098,56 @@ function expensiveCalculation() {
 
     return num;
 }
+
+
+//----------------------------------------------- USE TRANSITION HOOK -----------------------------------------------
+// useTransition hook can help you separate urgent from non-urgent UI updates.
+// This is useful when you have a heavy computational but low priority task in your component
+// For Example, typing in an <input/> has high priority but is a light computational task
+// Re-styling a list of 100 employee names is a low priority but heavy computation task
+// This hook will most likely be used in scenarios that involve search boxes and displaying results
+
+// The component below will have an input and will have a long list of employee names displayed below it
+// The component below basically has the logic that the <input/> updates are going to have priority over the <ListItems> update
+
+import React, {useTransition} from 'react'
+
+function FilterList({ names }) {
+  const [query, setQuery] = useState("");
+  const [highlight, setHighlight] = useState("");
+  const [isPending, startTransition] = useTransition();
+
+  const changeHandler = (e) => {
+    setQuery(e.target.value);                                         // setQuery() function will be marked as urgent
+    startTransition(() => setHighlight(e.target.value));              // setHighlight() function will be marked as non-urgent
+  };
+
+  return (
+    <div>
+      <input onChange={changeHandler} value={query} type="text" />.    //the re-rending of this element has high priority
+      {names.map((name, i) => (
+         <ListItem key={i} name={name} highlight={highlight} />        //the re-rending of this element has low priority
+      ))}
+    </div>
+  );
+}
+
+function ListItem({ name, highlight }) {
+       /*     
+           name is a string, and highlight is a string
+           This component will compare the characters between name and highlight
+           we will change the color of the characters in name that match the characters in highlight
+       */
+}
+
+
+
+
+
+
+
+
+
 
 
 

@@ -94,12 +94,35 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 
 /* 
 
+                                                             FEATURES OF REACT
+
                                                                 VIRTUAL DOM
                     The virtual DOM is an exact copy of the REAL DOM, but it is used by React developers to 'mutate' the real DOM 
                     in the most efficient way possible. Everytime we update the virtual DOM, what happens is that React will generate
                     ANOTHER virtual DOM with the changes that we made, and will compare the new virtual DOM with the old virtual DOM,
                     and calculate the most minimal way to update the real DOM. This in turn will increase performance of the application
-
+                    
+                    
+                                                        AUTOMATIC BATCHING (react 18)
+                    Batching is when React groups multiple setState updates into a single re-render for better performance.
+                    Lets say we have 4 setState() being called in succession inside of an event handler. React will automatically
+                    group together these 4 setState() functions into one re-render.
+                    
+                                                           CONCURRENCY (react 18)
+                    Concurrency refers to having multiple tasks in progress at the same time(i.e tasks can overlap).
+                    React could only handle one task at a time in the past(which was referred to as Blocking rendering). 
+                    To solve this problem, concurrent mode was introduced in React as an experimental feature.
+                    Concurrency just means we can have two tasks in hand and can switch between them depending on the priority.
+                    
+                    To enable concurrent mode:
+                                const rootEl = document.getElementById("root")
+                                const root = ReactDOM.createRoot(rootEl);
+                                root.render(<App/>);
+                              
+                    To use legacy mode:
+                                const rootEl = document.getElementById('root')
+                                ReactDOM.render(<App />, rootEl)
+                        
                                                              
 */
 

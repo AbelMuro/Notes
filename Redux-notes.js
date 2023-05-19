@@ -34,7 +34,18 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 //       3) the reducer then receives the action and the old state object in the store and returns the new state if changes occured
 //
 //       4) the components that have useSelector() hook will re-render to show the updated state
+/* 
 
+            REDUX HAS 4 MAIN COMPONENTS
+          1) action
+          
+          2) reducer
+          
+          3) store
+          
+          4) view (DOM)
+
+*/
 
 
 //       KEEP IN MIND that the global store should ONLY have serializable values

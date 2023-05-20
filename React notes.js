@@ -109,7 +109,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                     group together these 4 setState() functions into one re-render. Keep in mind that this batching is only available
                     in concurrent mode and blocking mode
                     
-                                                           CONCURRENCY (react 18)
+                                                           CONCURRENCY MODE (react 18)
                     Concurrency refers to having multiple tasks in progress at the same time(i.e tasks can overlap).
                     React could only handle one task at a time in the past (which was referred to as Blocking rendering). 
                     To solve this problem, concurrent mode was introduced in React as an experimental feature.
@@ -123,6 +123,36 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                     To use legacy mode:             (index.js)
                                 const rootEl = document.getElementById('root')
                                 ReactDOM.render(<App />, rootEl)
+                                
+                                
+                                
+                                
+                                
+                                
+                                           CLIENT SIDE RENDERING
+                      Client side rendering is the process of rendering your application on your browser           
+                      
+                               1. First, we load the JavaScript to the client. When that has finished we can…
+                        
+                               2. Fetch the data from the server. When that has finished we can….
+
+                               3. We render the react components in the DOM… When that has finished we can…
+
+                               4. We can use the application. — see the content on the page, click on things etc.
+                     
+                     
+                                        
+                                           SERVER SIDE RENDERING
+                       Server side rendering is the process of rendering your application on the server and sending 
+                       it to the client as fully rendered HTML pages
+                       
+                                1. First, we fetch data from the server for the entire application.
+                                
+                                2. Then we render the HTML for the entire application in the server and send it to the client
+
+                                3. Load javascript to the client for the entire application
+
+                                4. Then Hydrate the page for the entire application (rendering components and attaching event handlers)
                         
                                                              
 */
@@ -224,9 +254,24 @@ import {lazy} from 'react';
 const ProjectSection = lazy(() => import('./ProjectSection'));          //you pass a callback and you wrap arround the directory of the folder with import()
 
 
+//-------------------------------------------- SUSPENSE ------------------------------------------------------
+// Suspense lets you specify a loading screen for a part of the component tree if it’s not yet ready to be displayed
+// Before React 18, <Suspense/> was designed to display a loading screen when a component was being lazy loaded.
+// But now with React 18, you can use <Suspense/> to display a loading screen for components that fetch data inside
+// an application that has been rendered on the server
 
 
+import { Suspense } from 'react';
 
+function App() {
+  return (
+    <div>                                                       //<Suspense/> will display a fallback UI while <MyComponent/> is being rendered
+      <Suspense fallback={<div>Loading...</div>}>               
+        <MyComponent />
+      </Suspense>
+    </div>
+  );
+}
 
 
 
@@ -259,16 +304,22 @@ const ProjectSection = lazy(() => import('./ProjectSection'));          //you pa
 
 
 //-----------------------------------------REACT DOM -----------------------------------------------------------------------------------------
-//When React first renders all components, it creates a VIRTUAL DOM with react.createElement and all the elements will be initially placed in the real dom
-//when React notices that a component has been updated (state was updated, which causes a re-render), it will generate another VIRTUAL DOM
-//then the two virtual DOMS get compared and react will calculate the best and most efficient way of update the real DOM
+//How to render components onto the virtual DOM
 
-
-import ReactDOM from 'react-dom/client';             //importing methods from built in packages in react
+import ReactDOM, {hydrateRoot} 'react-dom/client';             //importing methods from built in packages in react
 import App from './components';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));  //root is an element from the HTML file that will be managed by the REACT DOM
-root.render(<App /> )                                       //using render() method to print a string onto the root, you can print any expression or REACT element
+
+
+const root = document.getElementById('root')
+
+//For client-side rendering
+const clientRoot = ReactDOM.createRoot(root);  
+clientRoot.render(<App /> )                                     
+
+//For server-side rendering            
+const hydrateRoot = hydrateRoot(root);     // Create a root and attach React to the existing HTML
+hydrateRoot.render(<App />);
 
 
 
@@ -276,9 +327,6 @@ root.render(<App /> )                                       //using render() met
 
 
 
-
-
-
             
             
             
@@ -290,6 +338,12 @@ root.render(<App /> )                                       //using render() met
             
             
             
+                   
+                   
+                   
+                   
+                   
+                   
             
             
             
@@ -523,6 +577,29 @@ function Publications() {
 
 
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 
 
@@ -722,7 +799,42 @@ function HooksThree() {
             <button className="someButton"> click me </button>
         </>                         
     )                               
-}           
+}       
+
+//------------------------------------------------ MAPPING LIFECYCLE METHODS WITH USE EFFECT----------------------------------------------------------------
+
+// Mounting Phase
+
+useEffect(() => {          //getDerivedStateFromProps()
+},[props.value]);
+
+useEffect(() => {          //componentDidMount()
+},[]);
+
+
+
+//updating phase
+
+useEffect(() => {          //getDerivedStateFromProps()
+},[props.value]);
+
+memo();                    //shouldComponentUpdate()
+
+useEffect(() => {          //componentDidUpdate()
+});
+
+useCustomHook(() => {      // getSnapshotBeforeUpdate()                  
+})                         // you would have to implement your own custom hook to replicate this lifecycle method
+
+
+//unmounting phase
+
+useEffect(() => {
+    return () => {};       //componentWillUnmount
+})
+
+
+
 
 
 //------------------------------------------------------------USE LAYOUT EFFECT HOOK----------------------------------------------------------------
@@ -898,32 +1010,6 @@ function Ref() {
 }
 
 
-
-//--------------------------------------------------------FORWARD REF()---------------------------------------------------------------------------
-//you can use useRef and forwardRef together to make a parent component have control over an element in a child component
-//keep in mind that forwardRef() on a component has the same functionality as a regular React component,
-//the only difference is that you can now pass a ref along with the props
-
-
-function ParentComponent() {
-    const someRef = useRef();
-        
-     useEffect(() => {
-        someRef.current;                //someRef.current now references the <div> element in the ChildComponent
-        
-     })    
-        
-    return(
-        <ChildComponent ref={someRef}>
-    )    
-}
-
-//syntax is different, but this is still a react component
-const ChildComponent = forwardRef((props, ref) => {
-        return(
-           <div ref={ref}> greetings </div>
-        )
-})
 
 //------------------------------------------------------USE IMPERATIVE HANDLE HOOK-----------------------------------------------------------------
 //useImperativeHandle() was designed to be used together with forwardRef(), it enables the parent component to access MULTIPLE refs from the child component
@@ -1181,43 +1267,18 @@ function App() {
   );
 }
 
+//----------------------------------------------- USE ID HOOK ---------------------------------------------------------------------
+// useID() can be used to generate a unique id
 
-
-
-
-
-
-//------------------------------------------------ MAPPING LIFECYCLE METHODS WITH REACT HOOKS----------------------------------------------------------------
-
-// Mounting Phase
-
-useEffect(() => {          //getDerivedStateFromProps()
-},[props.value]);
-
-useEffect(() => {          //componentDidMount()
-},[]);
-
-
-
-//updating phase
-
-useEffect(() => {          //getDerivedStateFromProps()
-},[props.value]);
-
-memo();                    //shouldComponentUpdate()
-
-useEffect(() => {          //componentDidUpdate()
-});
-
-useCustomHook(() => {      // getSnapshotBeforeUpdate()                  
-})                         // you would have to implement your own custom hook to replicate this lifecycle method
-
-
-//unmounting phase
-
-useEffect(() => {
-    return () => {};       //componentWillUnmount
-})
+function App() {
+        const myID = useId()
+        
+        return(
+               <div id={myID}> 
+                        
+                </div>
+        )
+}
 
 
 
@@ -1255,7 +1316,9 @@ useEffect(() => {
 
 
 
-//=========================================================== MEMO ===========================================================================================
+
+
+//=========================================================== MEMO() ===========================================================================================
 // memo() is used to force a function to only re-render when its props have changed, this can improve performance.
 
 //look at the example below...
@@ -1315,6 +1378,45 @@ function MyApp() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================================== FORWARD REF() ===========================================================
+//you can use useRef and forwardRef together to make a parent component have control over an element in a child component
+//keep in mind that forwardRef() on a component has the same functionality as a regular React component,
+//the only difference is that you can now pass a ref along with the props
+
+
+function ParentComponent() {
+    const someRef = useRef();
+        
+     useEffect(() => {
+        someRef.current;                //someRef.current now references the <div> element in the ChildComponent
+        
+     })    
+        
+    return(
+        <ChildComponent ref={someRef}>
+    )    
+}
+
+//syntax is different, but this is still a react component
+const ChildComponent = forwardRef((props, ref) => {
+        return(
+           <div ref={ref}> greetings </div>
+        )
+})
 
     
     
@@ -1390,6 +1492,24 @@ function ChangeTheme(turnSwitch) {
     
     
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 

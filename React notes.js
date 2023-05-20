@@ -585,7 +585,7 @@ X   componentWillUnmount() {                                //lifecycle method t
 
 
     render() {
-        //any data manupulation can go here
+        //any data manipulation can go here
         let currentState = this.state.value;            //accessing state object
         return (
             <div>
@@ -1101,10 +1101,10 @@ function expensiveCalculation() {
 
 
 //----------------------------------------------- USE TRANSITION HOOK -----------------------------------------------
-// useTransition hook can help you separate urgent from non-urgent UI updates.
-// This is useful when you have a heavy computational but low priority task in your component
+// Transitions is a feature that takes a heavy computational task and reserves it for a low priority queue
+// In React, we create transitions with the useTransition hook
 // For Example, typing in an <input/> has high priority but is a light computational task
-// Re-styling a list of 100 employee names is a low priority but heavy computation task
+// Re-styling a list of 1000 employee names is a low priority but heavy computation task
 // This hook will most likely be used in scenarios that involve search boxes and displaying results
 
 // The component below will have an input and will have a long list of employee names displayed below it
@@ -1132,7 +1132,7 @@ function FilterList({ names }) {
   );
 }
 
-function ListItem({ name, highlight }) {
+function ListItem({ name, highlight }) {                                //to optimize this component more, you should memoize this
        /*     
            name is a string, and highlight is a string
            This component will compare the characters between name and highlight
@@ -1143,8 +1143,43 @@ function ListItem({ name, highlight }) {
 
 
 
+//--------------------------------------------- USE DEFERRED VALUE HOOK---------------------------------------------------
+// useDeferredHook() will accept a state variable as an argument and will return a 'copy' of the state. 
+// The changes made to the original state will have high priority
+// The changes made to the copy state will have low priority
+// Changes made to the original state will reflect on the copy ONLY after the dom has been updated with the original state
+// This is similar to useTransition()... 
+//   but the difference is that useTransition() will label a function as low priority
+//   and useDeferredValue() will label a copy of the state as low priority
 
 
+//The component below has this logic, we have a state variable (query) with a copy of that state (deferredQuery)
+//The whole component is a controlled component
+//When the user types a character in the <input/>, the update to the copy state will wait UNTIL the original state has
+// changed in the DOM
+//If the user continues typing in the <input/>, the update to the copy state will wait UNTIL the user stops typing
+// this is basically debouncing
+function App() {
+  const [query, setQuery] = useState('');                               //This state is high priority
+  const deferredQuery = useDefferedValue(query);                        //This state copy is low priority
+
+  const list = useMemo(() => {
+    return largeList.filter((item) => item.name.includes(query));
+  }, [deferredQuery]);                                                  //useMemo() will only change after the original state has finished updating in the dom
+
+  const handleChange = (event) => {
+    setQuery(event.target.value);
+  };
+
+  return (
+    <>
+      <input type="text" value={query} onChange={handleChange} placeholder="Search" />
+      {list.map((item) => (
+        <SearchResultItem key={item.id} item={item} />
+      ))}
+    </>
+  );
+}
 
 
 

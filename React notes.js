@@ -1526,7 +1526,6 @@ function ChangeTheme(turnSwitch) {
 // React Routers displays different routes(pages) in a single html file, while conventional router displays pages in different html files
 
 
-
 //npm install react-router-dom
     
     
@@ -1557,7 +1556,9 @@ function RouterStuff() {
                 {/* This router will always be rendered first, index is the same as path="./" */}                
                 <Route index element={<Home/>}/>                                
                     
-                {/* (1) The parent Route has an <Outlet> that will be replaced by one of the elements from the nested Routes below, KEEP IN MIND, that everytime you have nested routes, the parent Route must have a <Outlet>*/} 
+                {/* (1) The parent Route has an <Outlet> that will be replaced by one of the elements from the nested Routes below, KEEP IN MIND, that everytime you have nested routes, the parent Route must have a <Outlet>
+                        use <base href="/" /> in the index.html when you are using nested routes, this will prevent your app from sending a request for a route to the server
+                */} 
                 <Route path="/ContactUs" element={<NestedNavigationBar/>}>      
                      <Route path="/ContactUs/email" element={<EmailUs/>}/>           
                      <Route path="/ContactUs/call" element={<CallUs/>}/>            

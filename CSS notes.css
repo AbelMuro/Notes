@@ -1287,7 +1287,18 @@
 
 .usingFontFace {
     font-family: myCustomFont;
+}
 
+@font-face {
+    font-family: 'DM sans';                             /* you can load two static font files with different weights and styles like this*/
+    src: url('./Assets/Font/DMSans-Bold.ttf');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'DM sans' ;                            /* you can load two static font files with different weights and styles like this*/
+    src: url('./Assets/Font/DMSans-Regular.ttf');
+    font-weight: 400;
 }
 
 .Text_and_Font_FormattingProperties {

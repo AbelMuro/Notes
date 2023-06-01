@@ -1,6 +1,6 @@
 const path = require('path');               //path is now a module that has access to pre defined methods that are built into Node.js
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //to use a plugin with webpack, you must use require
-const dotenv = require("dotenv-webpack")     //remember to npm install dotenv-webpack to use env variables
+const dotenv = require("dotenv-webpack")     //remember to npm install dotenv-webpack -D to use env variables
 
 
 //module.exports is a node.js object that accepts objects, arrays, functions and classes as values that can be used in other js modules

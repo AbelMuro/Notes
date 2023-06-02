@@ -945,7 +945,7 @@ function addNumbers(first = "9999523423423423435", second = "2762342342342342345
 //assertions            ^
 //   
 
-//BECAREFULL WITH THE SPACES IN BETWEEN THE EXPRESSION BELOW
+//BE CAREFUL WITH THE SPACES IN BETWEEN THE EXPRESSION BELOW
 
 / [a-zA-Z] /         //Find a letter character
 / [^a-zA-Z] /        //Find a character that is NOT a letter
@@ -974,14 +974,16 @@ function addNumbers(first = "9999523423423423435", second = "2762342342342342345
 //match will return an array with the characters that match the pattern, 
 //if the string doesnt contain characters that match the pattern, then match will return null
 let myString = "this is just an example for reg exp 1 2 3 4 5";
+myString.match( / [1-4] /g);                       //will search for all numbers between 1 and 4 in the string			
+myString.match( / [0-9]{1} /g)		            //will search for one occurence of a number between 0 and 9 
+myString.match( / [0-9]{1,3} /g )	            //will search for one, two or three occurences of a number between 0 and 9
+myString.match( / \never\d+\.\d+ /g)               //you can chain together reg exp, this will select 'never' then any digit, then a period, then another digit
 myString.match( / this /g );                       //will search for 'this' in the string
-myString.match( / (this)|(is) /g );                //will search for 'this' and 'is' in the string
-myString.match( / [1-4] /g);                       //will search for all numbers between 1 and 4 in the string
+myString.match( / (this)|(is) /g );                //will search for 'this' and 'is' in the string, this separates two patterns () | ()
 myString.match( / \d /g);                          //will search for a digit in the string
 myString.match( / greetings\d /g);                //will search for 'greetings' and the first digit next to it
 myString.match( / greetings\d+ /g);                //will search for 'greetings' and all the digits next to it 
 myString.match( / \bLO /g);                        //will seach for a word that has 'LO' at the beginning of the word (will not select HELLO, but will select LOOK) 
-myString.match( / \never\d+\.\d+ /g)               //you can chain together reg exp, this will select 'never' then any digit, then a period, then another digit
 myString.match( / \.js$ /g);                      //the '$' is used to select the pattern at the END of a string
 
 

@@ -18,6 +18,28 @@
 
 
 
+
+
+
+
+
+
+//========================================================= DNS (Domain Name System) =======================================================
+// (DNS is like a contacts list on your phone that contains a list of IP addresses that your computer has visited before)
+
+// Every time the user types in a URL into a browser, the browser must translate the URL into an ip address
+// First, the browser checks the DNS cache in the browser for the ip address of the URL
+// if its not found in DNS cache, then the browser will check the DNS servers (operating system) for the ip address of the URL,
+// if its not found in DNS servers, then the browser will make an HTTP request to the server for the ip address of the URL
+// Once the browser has the IP address, the browser establishes a TCP connection to the server, this allows for HTTP requests and responses
+
+
+
+
+
+
+
+
 //=========================================================HTTP MODULE=========================================================
 // HYPER TEXT TRANSFER PROTOCOL -> all about requests and responses that are done between clients and servers
 // http module is the most used module in node.js, it uses http to receive requests and send responses to the client

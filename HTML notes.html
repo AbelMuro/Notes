@@ -44,23 +44,62 @@
             <!-- PARAGRAPH tags-->
         <p class="myClass otherClass" title="paragraph"> my paragraph </p>    <!-- using the class attribute to specify a class for the element, title can be used to create a small popup that gives a description of the element-->
         
+        
+        
+        
+        
+        
             <!-- IMAGE tag-->
         <img src="./images/space.gif" alt="space"/>                           <!-- loading an image onto the document with the src attribute, alt is used when the image doesnt load, and is usefull for screen readers-->
+        
+        
+        
+        
+        
         
             <!-- ANCHOR tags (hyperlinks)-->
         <a href="https//www.google.com" target="_self"> Home </a>             <!-- creating a link in the document, target="_self" will open the link on the same window -->        
         <a href="https://sf.gov/" target="_blank">  San Francisco </a>        <!-- target="_blank" will open the link on a new window-->      
         <a href="mailto:abelmuro93@gmail.com"> Email Me </a>                  <!-- opens up outlook, then the user will be able to email the author of the website-->
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
             <!-- DIVISION tags-->
         <div style="margin-top: 200px; color: red"> </div>                    <!-- using inline styles on this div element-->
         
-        <style>                                                               /* creating an inline stylesheet */
+        
+        
+        
+        
+        
+        
+        
+        
+        <!-- creating an inline stylesheet -->
+        <style>                                                               
               .someClass{
                     margin: auto;
                     width: 780px;
                 }
         </style>
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
             <!-- iFRAME tags: this is how you link a webpage within another webpage-->
          <iframe src="images/second part of website.html" name="link" style="height:200px; width:700px"> </iframe> 
@@ -73,14 +112,46 @@
                                                                                                                                                                       <!-- clipboard-write allows the user to copy the content to their clipboard-->
                                                                                                                                                                       <!-- add ?autoplay=1&mute=1 at the end of the URL link to make the video auto play and stay muted-->
                                                                                                                                                                       <!-- add ?loop=1 at the end of the URL to let the video play forever-->
-            <!--This image will have small clickable areas with links-->                                                                                                         <!-- add ?controls=1 at the end of the URL to show the controls in the video player-->
+                                                                                                                                                                        <!-- add ?controls=1 at the end of the URL to show the controls in the video player-->
+        
+        
+        
+        
+        <!-- ARIA attributes (Accessible Rich Internet Applications): these attributes are usefull for accessibility-->
+        
+        <button aria-label="opens a new web page" >CLICK</button>       <!-- aria-label is used to describe what the button will actually do-->
+        
+        <p aria-hidden="true">                                          <!-- aria-hidden is used for screen readers to decide to skip content-->
+            This content will be
+            skipped by Screen-Readers
+        </p>
+        
+        <div id="myFirstName">First Name</div>                           <!-- aria-labeledby works similarly to 'for' in input and labels-->
+        <input type="text" aria-labelledby="myFirstName" />
+
+
+  
+        
+        
+        
+        
+        <!--This image will have small clickable areas with links-->
         <img src="images/multiple chairs.png" alt="image not showing" usemap="#myMap" style="height:500px; width:700px">            
         <map style="display:block" name="myMap">
             <area shape="rect" coords="23,39,186,234" href="https://www.thechairstore.com/">                              <!-- use PAINT app to find coords of specific parts in the image-->
             <area shape ="circle" coords="564,366,100" href="https://www.thechairstore.com/" onclick="myFunction()">   
         </map>                                                                                                                                                            
                                                                                                                                                                       
-                                                                                                                                                               
+                
+        
+        
+        
+        
+        
+        
+        
+        
+        
                                    
             <!--VIDEO tags -->
          <video style="width:300px; height:250px" controls autoplay muted>                                <!-- controls attribute adds play, pause and volume-->
@@ -91,6 +162,13 @@
             Your browser doesn't support the video tag
          </video>
 
+        
+        
+        
+        
+        
+        
+        
             <!-- AUDIO tags-->
         <audio controls>                                                                                <!--audio can use the same attributes as <video>-->
             <source src="music.mp3" type="audio/ogg">                                                   <!-- adding more <source> means more music for the music player-->
@@ -98,24 +176,59 @@
         </audio><br>                                                                                                                                                       
                                                                                                                                                                  
         
-            <!-- OBJECT tag was designed to include plug ins (pdf readers, maps) in web browsers-->
+        
+        
+        
+        
+            <!-- OBJECT tag was designed to include plug ins (pdf readers, maps) in web sites-->
         <object width="0px" height="0px" data=""></object>
+        
+        
+        
+        
+        
+        
+        
         
         
             <!-- this is known as bookmarking, use the ID of an element to jump to another part of the same page-->
         <div id="jumpHere"> </div>
         <a href="#jumpHere"> this is how you jump to another part of the webpage </a>
        
+        
+        
+        
+        
+        
+        
+        
+        
     
             <!-- CANVAS tag: used to draw graphics (squares, lines, triangles, images, etc...) onto a website with javascript -->
          <canvas width="300" height="300"> </canvas>
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
             <!-- SVG tags: used to create 2D vectors for x and y graphs or pie charts-->
          <svg width="100" height="100">    
             <circle cx="50" cy="50" r="40" stroke="yellow" stroke-width="4" fill="red" />    
           </svg>   
 
 
+        
+        
+        
+        
+        
+        
             <!--How to use TABLES in html -->
         <table>                                     <!-- border-collapse: collapse will enable <tr/> to have borders-->
             <caption> Title of Table</caption>
@@ -141,220 +254,6 @@
             </tbody>
         </table>
 
-
-<!--=================================================================FORMS===================================================================================================================================-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <emded> was designed to embed an object in html-->
-        <embed src="" style="width:0px;height:0px">
-
-        <label style="display:block" for="boxModel"> width and height increases the content area</label>
-        <img id="boxModel" src="images/box-model.gif" style="width:600px; height:400px"><br>    
-
-       
-
-
-<!-- ::after is called after the element that uses .clearfix as its class is read by the browser-->
-        <style>
-            .clearfix::after {
-                content: "";
-                clear: both;                /* removing the floats so that html can put elements in the normal flow*/
-                display: table;             /* the element will behave like a table cell*/
-            }
-        </style>
-
-
-        <div class="clearfix" style="border-style:solid; border-width:5px; border-color:blue">
-            <p> 
-                does it work?
-            </p>
-            <img style="float:right" src="images/I.gif">
-        </div>
-
-        <p style="text-align:center; padding:50px">
-            this is how you center text
-        </p>
-
-        <p style="direction:rtl; unicode-bidi:bidi-override">
-            this is how to write text backwards
-        </p>
-
-        <p>
-            this is for vertical-align
-            <img src="images/diagonal painting.jpg" style="vertical-align:text-bottom; width:50px; height:50px">
-            property
-        </p> 
-
-
-<!-- this is how you decorate text-->
-        <style>
-            .decoration{
-                text-decoration-line: line-through;             /*these properties will decorate the line, not the text */
-                text-decoration-color:red;
-                text-decoration-style: solid;
-                text-decoration-thickness: 5px;
-                text-transform:lowercase;
-                text-indent:none;
-                letter-spacing: 5px;                            /* space between letters*/
-                line-height: 10px;                              /* space between the lines of text*/
-                word-spacing:5px;                               /* space between words*/
-                white-space:nowrap;                             /* nowrap means the text will not wrap, it will continue in a straight line to the right even if u resize the browser, this comment is a good example of nowrap*/
-                text-shadow: 5px 6px 10px red;                /* 5px=horizontal position, 6px=vertical position,  10px=blur effect, color of shadow */
-            }
-
-        </style>
-
-        <p class="decoration">
-            Greetings person, my name is alien.
-        </p>
-
-
-        <style>
-            .dropbutton{
-                display:inline-block;
-                background-color:green;
-                width:100px;
-                position:relative;                              /* not required, but its only needed if your moving the element with position:absolute */
-            }                                                       /* with left, right, top, bottom properties*/
-
-            .content{
-                display:none;
-                background-color:grey;
-                position:absolute;                              /* this is positioned relative to its initial container or it closest positioned ancestor*/
-                width:70px;
-                right:0px;
-            }
-            div.dropbutton:hover div.content{
-                display:block;
-            }
-
-        </style>    
-
-        <div class="dropbutton">
-            <a style="display:block" href=""> My Link </a>        
-            <div class="content">
-                <p> Are you amazed yet? </p>
-            </div>
-        </div>
-        <br>
-
-        <style>
-            * {                                             /*determines how the width and the height of an element is calculated */
-                box-sizing: border-box;                     /* border-box makes sure that the padding and borders does not increase the size of the width in elements*/      
-              }
-
-            div.gallery{
-                margin: 5px;
-                width: 23.99999%;                
-                border: 1px solid rgb(160, 156, 156);
-                float:left;
-            }
-
-            div.gallery:hover{
-                border:1px solid black;
-            }
-
-            div.gallery a img{
-                width:100%;
-                height:auto;
-            }
-
-            div p{
-                padding:15px; 
-                text-align: center;
-            }
-
-            /*@media is used to apply different styles for different devices */
-            /* only prevents older browsers that dont support @media from applying the specified styles*/
-            /* screen is the media type that we are applying the style for*/
-            /* "and" combines a media type(screen) with a media feature (max-width)*/
-            @media screen and (max-width: 1000px){
-                div.gallery{
-                    width: 47.99999%;
-                    margin: 15px 5px;
-                }
-            }
-
-            @media screen and (max-width:500px){
-                div.gallery{
-                    width: 97.99999%;
-                    margin: 15px 5px;
-                }
-            }
-
-        </style>
-
-
-        <div class="gallery">
-            <a href="images/faviconThingie.png" target="_blank"> 
-                <img src="images/faviconThingie.png" style="width:512; height:512">
-            </a>           
-            <p> Please add an amazing description here for your gallery</p>
-        </div>
-
-        <div class="gallery">
-            <a href="images/black chains again.jpg" target="_blank">
-                <img src="images/black chains again.jpg" style="width:512; height:512">
-            </a>
-            <p> Please add an amazing description here for your gallery</p>
-        </div>
-
-        <div class="gallery">
-            <a href="images/black chains again.jpg" target="_blank">
-                <img src="images/black chains again.jpg" style="width:512; height:512">
-            </a>
-            <p> Please add an amazing description here for your gallery</p>
-        </div>
-
-        <div class="gallery">
-            <a href="images/black chains again.jpg" target="_blank">
-                <img src="images/black chains again.jpg" style="width:512; height:512">
-            </a>
-            <p> Please add an amazing description here for your gallery</p>
-        </div>
-
-        <div style="clear:both"> </div>
-
-
-<!----------------------------------------------MARGIN COLLAPSE EXAMPLE------------------------------------------------------------------------------------------------->
-        <style>
-            #outer_container {
-                background-color: red; 
-                height: 50vh; 
-                border: 1px solid red;                      /* if the child element has its margin changed, the parent element must have a border or padding */
-            }                                                  /* or else the margin change will affect the parent element*/
-
-            #inner_container {
-                text-align: center; 
-                margin-top: 200px;
-            }
-        </style>
-
-
-
-
-        <div id="outer_container">
-
-            <div id="inner_container">
-                <p> hello </p>
-            </div>   
-
-        </div>
 
 
     </body>

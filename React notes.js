@@ -267,7 +267,7 @@ function App() {
   return (
     <div>                                                       //<Suspense/> will display a fallback UI while <MyComponent/> is being rendered
       <Suspense fallback={<div>Loading...</div>}>               
-        <MyComponent />
+        <Lazyloaded />
       </Suspense>
     </div>
   );

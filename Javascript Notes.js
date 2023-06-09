@@ -493,8 +493,11 @@ console.log(add10(2));                                                    // wil
       
       
       
-// ========================================================== CALL STACK & QUEUE ==========================================================
-//Everytime we call a function in JS, we place the function call on the STACK
+// ========================================================== EVENT LOOP: CALL-STACK & QUEUE ==========================================================
+// The event loop is a mechanism that we use as a workaround for javascript's single threaded nature
+// Everytime we call a function in JS, we place the function call on the STACK
+// An execution context is the environment of a function, this includes all the variables/objects, this, and parameters 
+// call-stack is a collection of execution context's
       
 function multiply(a, b) {                                   
       return a * b;

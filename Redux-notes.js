@@ -464,17 +464,15 @@ const store = configureStore({
 
 
 
- //========================================================REDUX THUNK=======================================================
- //thunk is a middleware that is used to create ASYNC ACTION CREATORS from some API or server
- // this type of middleware is a perfect place to make external calls to a server with fetch() or axios
- // normally you would have to import thunk from 'redux-thunk'
- // but configureStore() automatically comes with thunk
+ //========================================================REDUX THUNK =======================================================
+ // configureStore() automatically comes with redux-thunk
+
+ // redux-thunk "teaches" dispatch how to accept functions, by intercepting the function and calling it instead of passing it on to the reducers
+ // The function it intercepts is used to make AJAX calls and will instead call the dispatch function
+
  
 
 
-
-// This is an async action creator, it will create an action AFTER it has finished its external call to a server to get data
-// once it finishes, then it will dispatch the action to the reducer
 function usingThunk(URL) {
     return dispatch => {
           dispatch({type: "isLoading", isLoading: true})                            //you can dispatch this action to a different reducer to simulate a loading screen
@@ -495,7 +493,9 @@ function ExampleWithThunk() {
     const dispatch = useDispatch()
     
     const handleClick = () => {
-            dispatch(usingThunk("https://jsonplaceholder.typicode.com/todos/1"));           //remember that 'thunk' is just an action creator that makes an AJAX call         
+            dispatch(usingThunk("https://jsonplaceholder.typicode.com/todos/1"));           //remember that 'thunk' is just an action creator that makes an AJAX call 
+                .then((response) => response.json())                                        // (OPTIONAL) redux-thunk can also control what is being returned from the dispatch function
+                .then((results) => results)                                                 // it can make the dispatch function return a promise
     }
     
     return(
@@ -520,6 +520,88 @@ function ExampleWithThunk() {
 
 
 
+
+
+
+
+//================================================ REDUX PROMISE (ASYNC ACTION CREATOR)================================================
+// npm install redux-promise
+
+// redux-promise "teaches" dispatch how to accept promises, 
+// by intercepting the promise and dispatching actions when the promise resolves or rejects.
+
+
+
+// store.js
+import {configureStore} from '@reduxjs/toolkit';
+import promiseMiddleware from 'redux-promise';
+import rootReducer from './reducers';
+
+const store = configureStore( 
+   rootReducer,
+   middleware: (defaultMiddleware) => {defaultMiddleware().concat(promiseMiddleware)}
+);
+
+export default store;
+
+
+
+// action-creators.js
+export function usingReduxPromise(URL) {
+  const somePromise = fetch(URL);
+
+  return {                                         //this action will be returned when the promise is resolved
+    type: 'fetch posts',
+    payload: somePromise
+  };
+}
+
+
+//app.js
+import {usingReduxPromise} from './action-creators.js';
+import {useDispatch} from 'react-redux';
+
+function App() {
+       const dispatch = useDispatch();
+
+       const handleClick = () => {
+            dispatch(usingReduxPromise('https://someApi/'))        //usingReduxPromise() will return a promise, and redux promise will intercept the promise and return a new action when the promise resolves
+       }     
+       
+       return(
+            <button onClick={handleClick}> 
+                 Click Me       
+            </button>
+       )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //=================================================== REDUX SAGA ====================================================
 //npm install redux-saga -D
 
@@ -527,32 +609,58 @@ function ExampleWithThunk() {
 import createSagaMiddleware from 'redux-saga'
 import { configureStore } from '@reduxjs/toolkit'
 import rootReducer from '../reducers'
+import rootSaga from './saga.js'                                        //this function is coming from the 'file' below
 
-
-export const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware();
 
 export default const store = configureStore({
         reducer: rootReducer,
         middleware: (getDefaultMiddleware) => {getDefaultMiddleware().concat(sagaMiddleware)}
 })
 
+sagaMiddleware(rootSaga);
+
+
+
+
 
 
 // sagas.js
-export function* mySaga() {
-      //need to learn how to implement a saga here
+import {takeEvery, all, call, put} from 'redux-saga/effects';
+import getPosts from './getPosts.js'                        // assume that getPosts is a regular function that is making a fetch request (remember that the last .then() MUST return the results! )
 
+
+1) function* getPostsSaga() {
+     try{
+            const data = yield call(getPosts);                     //you must use call() to make a call to a regular function in saga
+            yield put({type: 'get post success', payload: data})   //dispatching an action to the reducer     
+     }
+     catch(err) {
+            yield put({type: 'get posts failed', error: err});
+     }
 }
+2) function* getPostsWatcher() {                               //you can more than one watcher
+     yield takeEvery('get posts', getPostsSaga)             //this will call getPostsSaga everytime an action with type: 'get posts' is dispatched
+}
+3) function* postsSaga(){
+      yield all([getPostsWatcher()])                        //this will run all of our watchers in parallel
+}
+4) export default function* rootSaga() {                    //this function must be exported to the store.js file above
+     yield all([postsSaga()])                               //this will run all of our sagas in parallel
+}
+
+
 
 
 // app.js 
 import {sagaMiddleware} from './store.js';
-import {mySaga} from './sagas.js';
+import getPosts from './getPosts.js'                        // assume that getPosts is a regular function that is making a fetch request (remember that the last .then() MUST return the results! )
 
 function App() {
+      const dispatch = useDispatch()      
             
       const handleClick = () => {
-            sagaMiddleware(mySaga);
+            dispatch(getPosts())                            //getPosts will be intercepted by redux-saga
       }
 
       return(

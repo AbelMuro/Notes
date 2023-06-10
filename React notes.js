@@ -1584,8 +1584,6 @@ function RouterStuff() {
 }
 
 
-
-
 function NavigationBar() {
     return(
         <>
@@ -1671,6 +1669,49 @@ function PageTwo(){
 //default page that appears when the user accesses a page that doesnt exist
 
 function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}
+
+
+
+
+//------------------------------------------------------------ withRouter() ---------------------------------------------------------
+//withRouter() is a high order component that gives a component access to the following props
+//The history prop is an object that contains information about the browser’s history.
+//The location prop is an object that contains information about the current URL. 
+//The match prop is an object that contains information about how the current URL matches the route that was defined
+
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+
+function MyComponent(props) {
+          return (
+            <div>
+              <h1>My Component</h1>
+              <p>Current location: {props.location.pathname}</p>
+            </div>
+         );
+}
+
+export default withRouter(MyComponent);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

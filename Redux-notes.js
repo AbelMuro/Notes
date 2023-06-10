@@ -654,13 +654,12 @@ import getPosts from './getPosts.js'                        // assume that getPo
 
 // app.js 
 import {sagaMiddleware} from './store.js';
-import getPosts from './getPosts.js'                        // assume that getPosts is a regular function that is making a fetch request (remember that the last .then() MUST return the results! )
 
 function App() {
       const dispatch = useDispatch()      
             
       const handleClick = () => {
-            dispatch(getPosts())                            //getPosts will be intercepted by redux-saga
+            dispatch((payload) => {type: 'get posts', payload})                            //callback will be intercepted by redux-saga
       }
 
       return(

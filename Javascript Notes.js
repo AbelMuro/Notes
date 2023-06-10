@@ -2369,11 +2369,27 @@ boundClick(); 				// this will console.log 'OK clicked'
 
 e => e + 1;                                                                      //this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
 
+	
+	
+//-------------------------------------------- Generator functions -----------------------------------------
+//Generators are functions that can be paused during execution and resumed, 
+// instead of executing all of a function’s statements in one pass.
+//When you invoke a generator function, it will return an iterator object,
+// With each call of the iterator’s next() method, the generator’s body 
+// will be executed until the next yield statement, where it will then pause:
 
-
-      
-      
-      
+	
+function* myGenerator(){
+    let first = yield 'first yield value';
+    let second = yield 'second yield value';
+    return 'third returned value';
+}
+	
+const myIterator = myGenerator()
+console.log(myIterator.next()); // {value: "first yield value", done: false}
+console.log(myIterator.next()); // {value: "second yield value", done: false}
+console.log(myIterator.next()); // {value: "third returned value", done: true}
+console.log(myIterator.next()); // {value: "undefined", done: true}      
       
       
       

@@ -346,7 +346,6 @@ import {configureStore} from '@reduxjs/toolkit';
 const store = configureStore({              //creating a 'store' that will contain our state data
     reducer: rootReducer,                   //our custom reducer
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(myMiddleware)                     //adding a new middleware to our store
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({})
 }); 
 
 export default store;
@@ -444,7 +443,6 @@ const myMiddleware = store => next => action => {
     }
  }
 
-
  //adding a new middleware to our store
 const store = configureStore({              
     reducer: rootReducer,                   
@@ -467,7 +465,7 @@ const store = configureStore({
 
 
  //========================================================REDUX THUNK=======================================================
- //thunk is a middleware that is used to define ASYNC action creators that return a function instead of an object
+ //thunk is a middleware that is used to create ASYNC ACTION CREATORS from some API or server
  // this type of middleware is a perfect place to make external calls to a server with fetch() or axios
  // normally you would have to import thunk from 'redux-thunk'
  // but configureStore() automatically comes with thunk
@@ -483,31 +481,68 @@ function usingThunk(URL) {
           fetch(URL)
                 .then(response => response.json())
                 .then((results) => {
-                      dispatch(addName("add", results.title));
+                      dispatch({type: 'add', name: results.data});
                       dispatch({type: "isLoading", isLoading: false})              //loading stops here
                  }) 
                 .catch((err) => {
                       console.log("error")
                       dispatch({type: "isLoading", isLoading: false})
                 })
-        
     }
 }    
 
- //action creator
-function addName(addOrRemove, name){    
-    let action = {
-        type: addOrRemove,
-        name: name
-    }
-    return action;
-}
-
 function ExampleWithThunk() {
     const dispatch = useDispatch()
-    dispatch(usingThunk("https://jsonplaceholder.typicode.com/todos/1"));
     
+    const handleClick = () => {
+            dispatch(usingThunk("https://jsonplaceholder.typicode.com/todos/1"));           //remember that 'thunk' is just an action creator that makes an AJAX call         
+    }
+    
+    return(
+            <button onClick={handleClick}>
+                 Click Here
+            </button>
+     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=================================================== REDUX SAGA ====================================================
+//npm install redux-saga -D
+
+import createSagaMiddleware from 'redux-saga'
+import { configureStore } from '@reduxjs/toolkit'
+import rootReducer from '../reducers'
+
+
+const sagaMiddleware = createSagaMiddleware();
+
+export const store = configureStore({
+        reducer: rootReducer,
+        middleware: (getDefaultMiddleware) => {getDefaultMiddleware().concat(sagaMiddleware)}
+})
+
+
+
+
+
+
+
+
+
 
 
 

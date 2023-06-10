@@ -523,20 +523,45 @@ function ExampleWithThunk() {
 //=================================================== REDUX SAGA ====================================================
 //npm install redux-saga -D
 
+// store.js
 import createSagaMiddleware from 'redux-saga'
 import { configureStore } from '@reduxjs/toolkit'
 import rootReducer from '../reducers'
 
 
-const sagaMiddleware = createSagaMiddleware();
+export const sagaMiddleware = createSagaMiddleware();
 
-export const store = configureStore({
+export default const store = configureStore({
         reducer: rootReducer,
         middleware: (getDefaultMiddleware) => {getDefaultMiddleware().concat(sagaMiddleware)}
 })
 
 
 
+// sagas.js
+export function* mySaga() {
+      //need to learn how to implement a saga here
+
+}
+
+
+// app.js 
+import {sagaMiddleware} from './store.js';
+import {mySaga} from './sagas.js';
+
+function App() {
+            
+      const handleClick = () => {
+            sagaMiddleware(mySaga);
+      }
+
+      return(
+             <button onClick={handleClick}>
+                  Click me
+             </button>
+     )
+
+}
 
 
 

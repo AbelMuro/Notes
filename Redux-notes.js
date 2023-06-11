@@ -605,6 +605,9 @@ function App() {
 //=================================================== REDUX SAGA ====================================================
 //npm install redux-saga -D
 
+//Redux-saga will intercept an action of a specific type
+
+
 // store.js
 import createSagaMiddleware from 'redux-saga'
 import { configureStore } from '@reduxjs/toolkit'
@@ -618,7 +621,7 @@ export default const store = configureStore({
         middleware: (getDefaultMiddleware) => {getDefaultMiddleware().concat(sagaMiddleware)}
 })
 
-sagaMiddleware(rootSaga);
+sagaMiddleware.run(rootSaga);
 
 
 
@@ -626,8 +629,13 @@ sagaMiddleware(rootSaga);
 
 
 // sagas.js
-import {takeEvery, all, call, put} from 'redux-saga/effects';
-import getPosts from './getPosts.js'                        // assume that getPosts is a regular function that is making a fetch request (remember that the last .then() MUST return the results! )
+import {takeEvery,                                          // takeEvery allows concurrent actions to be handled (user clicks on add cart like 10 times or something)
+        takeLatest,                                         // takeLatest will get the last action that is dispatched from a list of concurrent actions, any previous concurrent actions before the first one will be ignored
+        takeLeading,                                        // takeLeading will get the first action that is dispatched froma list of concurrent actions, any other concurrent actions after the first one will be ignored
+        all, 
+        call, 
+        put} from 'redux-saga/effects';   
+import {getPosts, addPost} from './fetchFunctions.js'         // assume that getPosts and addPost is a regular function that is making a fetch request (remember that the last .then() MUST return the results! )
 
 
 1) function* getPostsSaga() {
@@ -639,16 +647,25 @@ import getPosts from './getPosts.js'                        // assume that getPo
             yield put({type: 'get posts failed', error: err});
      }
 }
-2) function* getPostsWatcher() {                               //you can more than one watcher
-     yield takeEvery('get posts', getPostsSaga)             //this will call getPostsSaga everytime an action with type: 'get posts' is dispatched
+2) function* addPostSaga(action) {
+       try{
+          const data = yield call(addPost, action.payload)      //second argument will be used as an argument for addPost function
+          yield put({type: 'add post success', payload: data})  //dispatching an action to the reducer 
+       }
+        catch(error){
+             yield put({type: 'add posts failed', error: err});
+        }
 }
-3) function* postsSaga(){
-      yield all([getPostsWatcher()])                        //this will run all of our watchers in parallel
-}
-4) export default function* rootSaga() {                    //this function must be exported to the store.js file above
-     yield all([postsSaga()])                               //this will run all of our sagas in parallel
-}
+3) function* getPostsWatcher() {                              
+     yield takeEvery('get posts', getPostsSaga)              //this will call getPostsSaga everytime an action with type: 'get posts' is dispatched
+}                                                            
+4) function* addPostWatcher(){
+     yield takeLeading('add post', addPostSaga)               //this will call addPostSaga everytime an action with type: 'add posts' is dispatched
+}                                                            
 
+5) export default function* rootSaga(){
+      yield all([getPostsWatcher(), addPostWatcher()])       //this will run all of our watchers in parallel
+}
 
 
 
@@ -656,19 +673,33 @@ import getPosts from './getPosts.js'                        // assume that getPo
 import {sagaMiddleware} from './store.js';
 
 function App() {
-      const dispatch = useDispatch()      
+      const dispatch = useDispatch()     
             
-      const handleClick = () => {
-            dispatch((payload) => {type: 'get posts', payload})                            //callback will be intercepted by redux-saga
+      const handleGetPosts = () => {
+            dispatch({type: 'get posts'})                                                       //action will be intercepted by redux-saga
+      }
+                                                                                                //to my future self: if redux saga isnt working, try to create a function that returns an action for dispatch()
+      const handleAddPost = () => {
+            dispatch({type: 'add post', payload: {post: 'whatever'}})                            //callback will be intercepted by redux-saga
       }
 
       return(
-             <button onClick={handleClick}>
-                  Click me
+          <> 
+             <button onClick={handleGetPosts}>
+                 'get all posts'
              </button>
+             <button onClick={handleAddPost}>
+                  'add post'
+             </button>                  
+          </>
      )
-
 }
+
+
+
+
+
+
 
 
 
@@ -738,6 +769,31 @@ function App() {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

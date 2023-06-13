@@ -1,14 +1,21 @@
-/*  Next.js is a framework for React. A framework is a collection of pre-written JavaScript code libraries 
-        that provide developers with pre-written JS code to use for routine programming features and tasks
+/*  
+    Next.js is a framework for React. A framework is a collection of pre-written JavaScript code libraries 
+    that provide developers with pre-written JS code to use for routine programming features and tasks
 
     Next.js has client-side routing, the pages folder automatically creates a URL for each js file
-    Next.js has pre-fetching, when a Link component is on the view port, Next.js will pre-load the page in the background before the user clicks on the link
+    Next.js has pre-rendering (pre-fetching), Next.js will pre-render every page in the background, this results in faster routing
+                -the way this works is that NEXT.js will generate HTML for each page in advance, instead of the client side JS creating the HTML.
+                Then, the HTML will be 'hydrated'. This means that the JS code will run and make the page fully interactive
     Next.js does code-splitting automatically, so each page only loads what’s necessary for that page 
-    Next.js has built in support for CSS and SASS
-    Next.js has on-demand image optimization, This allows for resizing, optimizing, and serving images in modern formats like WebP when the browser supports it.
-    Next.js lazy loads images by default
+    Next.js has built in support for SASS
+    Next.js has image optimization, this means...
+                -the images are lazy loaded by default, 
+                -devs can use advanced configuration that includes props such as sizes, quality, loader and priority, etc...
+                -images are optimized on-demand as the users request them, instead of at build time, this improves build time
+                -Next.js can support modern image formats like WebP in supported browsers
+    
 
-    steps for initializing Next.js
+    Steps for initializing Next.js
     
     1) npm init -y
     
@@ -56,15 +63,13 @@ export default function FirstPost() {
 
 //========================================================= IMAGE COMPONENT ============================================================================================
 // Image component is used to display images in Next.js. It will automatically be optimized for different viewports and accepts all image formats
-
+// Keep in mind that the Image component has ALOT of props that you can use, check out the documentation for <Image>
 
 /* 
         public
              rose.jpg                   /rose.jpg
              images
                 profile.jpg             /images/profile.jpg
-
-
 */
 
 import Image from 'next/image';
@@ -77,6 +82,7 @@ export default function Home() {
                 height={144}
                 width={144}
                 alt={'Your Name'}
+                priority                                                //this will make the image load faster, images by default are lazy loaded
                 />
         </>
     )

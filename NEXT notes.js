@@ -45,9 +45,7 @@ import Link from 'next/link';
 
 export default function FirstPost() {
   return (
-      <h2>
         <Link href="/"> 'Back to home' </Link>
-      </h2>
   );
 }
 
@@ -86,6 +84,78 @@ export default function Home() {
 
 
 
+
+
+
+//======================================================== HEAD COMPONENT =========================================================================================================
+//Head component can be used to include meta data for the web app, such as the <title> and <link> tags
+
+import Head from 'next/head';
+
+export default function Home() {
+    return(
+        <>
+            <Head>
+                <title>
+                    'My next.js app'
+                </title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+//===========================================================  SCRIPT COMPONENT =============================================================================================
+// Script component can be used to load a third party library with CDN
+
+
+import Script from 'next/script';
+
+export default function Home() {
+    return(
+            <Script
+                src="https://connect.facebook.net/en_US/sdk.js"
+                strategy="lazyOnload"
+                onLoad={() =>
+                        console.log(`script loaded correctly, window.FB has been populated`)
+                }
+            />
+
+    )
+}
+
+
+
+//========================================================== CSS in NEXT.js ==============================================================================================
+//You can include css modules in Next.js in the same way as React
+
+import styles from './styles.module.css';
+
+export default function Layout({children}) {
+    return(
+        <div className={styles.container}>
+            {children}
+        </div>
+    )
+}
+
+
+//this is how you include global css in Next.js... 
+import '../common/styles.css';
+
+export default function App({Component, props}) {                       //keep in mind that this component MUST be inside _app.js and also at the TOP LEVEL of the pages folder
+    return(                                                             //NEXT.js will automatically use this component and pass every page to this component and share logic
+        <Component {...props} />        
+    )
+}
 
 
 

@@ -4,9 +4,9 @@
     Next.js has client-side routing, the pages folder automatically creates a URL for each js file
     Next.js has pre-fetching, when a Link component is on the view port, Next.js will pre-load the page in the background before the user clicks on the link
     Next.js does code-splitting automatically, so each page only loads what’s necessary for that page 
-
-
-
+    Next.js has built in support for CSS and SASS
+    Next.js has on-demand image optimization, This allows for resizing, optimizing, and serving images in modern formats like WebP when the browser supports it.
+    Next.js lazy loads images by default
 
     steps for initializing Next.js
     
@@ -53,6 +53,36 @@ export default function FirstPost() {
 
 
 
+
+
+
+//========================================================= IMAGE COMPONENT ============================================================================================
+// Image component is used to display images in Next.js. It will automatically be optimized for different viewports and accepts all image formats
+
+
+/* 
+        public
+             rose.jpg                   /rose.jpg
+             images
+                profile.jpg             /images/profile.jpg
+
+
+*/
+
+import Image from 'next/image';
+
+export default function Home() {
+    return(
+        <>
+            <Image 
+                src='/images/profile.jpg'                               //keep in mind that the images must be in the public folder, Next.js will automatically search in the public folder
+                height={144}
+                width={144}
+                alt={'Your Name'}
+                />
+        </>
+    )
+}
 
 
 

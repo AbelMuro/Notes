@@ -109,12 +109,26 @@ export default function Home(props) {           //this component will rely on th
     )
 }
 
-export async function getStaticProps() {        
+export async function getStaticProps(context) {        
   const data = await fetch('url');              //The value of the `props` key will be passed to the `Home` component
 
   return data.json();
 }
 
+
+
+/* 
+    context is an object that has the following properties
+    
+        params: An object that contains route parameters for pages using dynamic routes. 
+                For example, if the page name is pages/posts/[id].js, then params will look like { id: ... }.
+        preview: A boolean value that indicates whether the page is in preview mode or not.
+        previewData: An object that contains the preview data set by setPreviewData().
+        locale: A string that contains the active locale (if i18n is enabled).
+        locales: An array that contains all supported locales (if i18n is enabled).
+        defaultLocale: A string that contains the configured default locale (if i18n is enabled).
+
+*/
 
 
 
@@ -188,6 +202,88 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================================== DYNAMIC ROUTING ==========================================================================
+// You can create dynamic routes in Next.js, which are basically links that are generated dynamically with external data from an API or server
+// Files in the pages folder that start like this, [id].js are dynamic routes in Next.js
+// Typically, the name of the dynamic route should be the same name as the property of the object that is returned from an API call
+
+/*     EXAMPLE :        const data = await fetch('url')
+                        data                // {id: 'whatever', age: 99};
+                        
+        Since one of our properties is id, we can create a dynamic route called [id].js           
+*/
+
+
+//          /pages/[id].js
+export default function Post({post}) {
+    return (
+        <Layout>
+            {post.postName}
+            {post.postID}
+        </Layout>    
+    )
+}
+
+
+//this will generate all the dynamic pages
+export async function getStaticPaths() {
+    const posts = await fetch('https://example.com/api/posts');              //making a fetch request
+                                           
+    const paths = posts.map((path) => {    
+        return ({                               // pathsArray MUST be an array of objects
+                  params: {                     // each object MUST have a params property
+                  id: path.userName             // each object MUST have the name of the dynamic route as a property, the value will be the new name of the dynamic route
+                })       
+        })
+    }) 
+   
+    return(
+        {
+            paths,                        
+            fallback: false,            
+        }
+    )
+}
+
+//this will fetch the actual data and pass it to the post component for formating
+export async function getStaticProps(context) {
+     const id = context.params.id;                                          //you can use params to get the name of the dynamic route
+     const res = await fetch('https://example.com/api/posts/${id}');
+     const post = await res.json();
+
+     return {
+        props: {
+        post
+     }
+  }
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -350,7 +446,7 @@ export default function Layout({children}) {
 }
 
 
-//this is how you include global css in Next.js... 
+//-------------------------------- this is how you include global css in Next.js... ------
 import '../common/styles.css';
 
 export default function App({Component, props}) {                       //keep in mind that this component MUST be inside _app.js and also at the TOP LEVEL of the pages folder

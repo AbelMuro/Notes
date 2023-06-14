@@ -112,7 +112,9 @@ export default function Home(props) {           //this component will rely on th
 export async function getStaticProps(context) {        
   const data = await fetch('url');              //The value of the `props` key will be passed to the `Home` component
 
-  return data.json();
+  return {
+        props : {data : data.json()}
+    }
 }
 
 
@@ -163,7 +165,8 @@ function Profile() {
       return <div>failed to load</div>;
   if (!data) 
       return <div>loading...</div>;
-  return <div>hello {data.name}!</div>;
+  else
+      return <div>hello {data.name}!</div>;
 }
 
 
@@ -196,6 +199,8 @@ export default function Home(props) {           //this component will rely on th
 }
 
 export async function getServerSideProps(context) {
+  const data = await fetch('url');
+    
   return {
     props: {
       // props for your component
@@ -225,12 +230,6 @@ export async function getServerSideProps(context) {
 // Files in the pages folder that start like this, [id].js are dynamic routes in Next.js
 // Typically, the name of the dynamic route should be the same name as the property of the object that is returned from an API call
 
-/*     EXAMPLE :        const data = await fetch('url')
-                        data                // {id: 'whatever', age: 99};
-                        
-        Since one of our properties is id, we can create a dynamic route called [id].js           
-*/
-
 
 //          /pages/[id].js
 export default function Post({post}) {
@@ -254,7 +253,6 @@ export async function getStaticPaths() {
                 })       
         })
     }) 
-   
     return(
         {
             paths,                        
@@ -269,9 +267,9 @@ export async function getStaticProps(context) {
      const res = await fetch('https://example.com/api/posts/${id}');
      const post = await res.json();
 
-     return {
+     return {                                                               //returning the data that will be used by our component
         props: {
-        post
+            post : post
      }
   }
 }
@@ -284,8 +282,63 @@ export async function getStaticProps(context) {
 
 
 
+//========================================================== MARKDOWN ==========================================================================================
+// Markdown is a lightweight markup language for creating formatted text using a plain-text editor, its used for websites that use alot of text like blogs
+// you can render markdown by using this package
+// npm install remark remark-html
+// npm install grey-matter
 
+/*  myMarkdown.md
 
+    ---
+    title: 'When to Use Static Generation v.s. Server-side Rendering'
+    date: '2020-01-02'
+    ---
+
+    We recommend using **Static Generation** (with and without data) whenever possible because your page can be built once and served by CDN, which makes it much faster than having a server render the page on every request.
+
+    You can use Static Generation for many types of pages, including:
+
+    - Marketing pages
+    - Blog posts
+    - E-commerce product listings
+    - Help and documentation
+
+    You should ask yourself: "Can I pre-render this page **ahead** of a user's request?" If the answer is yes, then you should choose Static Generation.
+
+    On the other hand, Static Generation is **not** a good idea if you cannot pre-render a page ahead of a user's request. Maybe your page shows frequently updated data, and the page content changes on every request.
+
+    In that case, you can use **Server-Side Rendering**. It will be slower, but the pre-rendered page will always be up-to-date. Or you can skip pre-rendering and use client-side JavaScript to populate data.
+
+*/
+
+// You can use the following function to parse markdown and display it with HTML
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
+import { remark } from 'remark';
+import html from 'remark-html';
+
+export async function getPostData() {
+  const postsDirectory = path.join(process.cwd(), 'posts');         //process.cwd() will return a string that displays the current working directory and will look for the posts folder
+  const fullPath = path.join(postsDirectory, 'myMarkdown.md');      //creates the full path to the markdown file
+  const fileContents = fs.readFileSync(fullPath, 'utf8');           //reads the file and stores the content in fileContents
+
+  const matterResult = matter(fileContents);                        // Use gray-matter to parse the post metadata section
+
+  const processedContent = await remark()                           // Use remark to convert markdown into string
+    .use(html)                                                      // convering markdown into HTML
+    .process(matterResult.content);
+    
+  const contentHtml = processedContent.toString();
+
+  // Combine the data with the id and contentHtml
+  return {
+    id: 'myMarkdown.md',
+    contentHtml,
+    ...matterResult.data,
+  };
+}
 
 
 

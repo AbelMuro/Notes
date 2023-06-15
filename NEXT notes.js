@@ -67,6 +67,14 @@
 
 
 
+
+
+
+
+
+
+
+
 //======================================================== _APP.js =========================================================================================
 // The _app.js file is a component that Next.js will use to pass EVERY page as props, 
 // this is useful for having global css or wrapping the app with a <Provider> from redux or Context
@@ -78,6 +86,22 @@ export default function MyApp({Component, pageProps}) {         //Component is t
         <Component {...pageProps} />        
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -145,6 +169,21 @@ export async function getStaticProps(context) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //=================================================== STATIC GENERATION WITHOUT DATA =========================================================================
 //Also known as Client-side rendering, for pages that dont need to be pre-rendered with data, 
 //you can use the fetch api or the SWR hook to fetch data at user request
@@ -168,6 +207,14 @@ function Profile() {
   else
       return <div>hello {data.name}!</div>;
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -233,16 +280,8 @@ export async function getServerSideProps(context) {
 
 
 
-
-
-
-
-
-
-
-
 //=========================================================== DYNAMIC ROUTING ==========================================================================
-// You can create dynamic routes in Next.js, which are basically links that are generated dynamically with external data from an API or server
+// You can create dynamic routes in Next.js, which are basically links that are generated dynamically based on external data from an API or server
 // Files in the pages folder that start like this, [id].js are dynamic routes in Next.js
 // Typically, the name of the dynamic route should be the same name as the property of the object that is returned from an API call
 
@@ -295,8 +334,8 @@ export async function getStaticPaths() {
                 }                           
         })
     }) 
-    return {paths,                        
-        fallback: false}                         // false means that any paths not returned by getStaticPaths will result in a 404 page       
+    return {paths,                            // there MUST be a property called paths here                  
+        fallback: false}                      // false means that any paths not returned by getStaticPaths will result in a 404 page       
                                               // other values are true and blocking, check out documentation for this      
 }                                                  
                                                  
@@ -316,16 +355,12 @@ export async function getStaticProps(context) {
 
 
 
+//--------------------------------------- /pages/[...id].js ----------------------------------------------------------------
+// You can create nested routes by using the following syntax and boilerplate code
 
-
-
-//--------------------------------------------------- CATCH ALL ROUTES ----------------------------------------------------------------
-// You can create nested routes by using the following syntax and boilerplate code [...id].js
-
-//      /pages/posts/[...id].js
 export async function getStaticPaths() {
                                         
-    return { paths: [{params : {id: ['a', 'b', 'c']}}],       //id : ['a', 'b', 'c'] will match the page route       /pages/a/b/c             
+    return { paths: [{params : {id: ['a', 'b', 'c']}}],       //id : ['a', 'b', 'c'] will match the page route       /pages/a/b/c    only         
         fallback: false}                         
                                                   
 }  
@@ -341,11 +376,113 @@ export async function getStaticProps(context) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
+ //======================================================== useRouter() hook ===================================================================================
+ // There is a hook called useRouter() in Next.js that returns a 'router' object that has data about
+ // It can be used to get the current route, navigate between routes, and perform other operations related to routing  
     
+import { useRouter } from 'next/router'
+ 
+function ActiveLink({ children, href }) {
+  const router = useRouter()
+  const style = {
+    marginRight: 10,
+    color: router.asPath === href ? 'red' : 'black',
+  }
+ 
+  const handleClick = (e) => {
+    e.preventDefault()
+    router.push(href)
+  }
+ 
+  return (
+    <a href={href} onClick={handleClick} style={style}>
+      {children}
+    </a>
+  )
+}
+ 
+export default ActiveLink
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//====================================================== API ROUTES =============================================================
+// API Routes let you create an API endpoint inside a Next.js app.
+// For the example below, you will need to access the route http:localhost/3000/api
+// Do not fetch an API route from getStaticProps or getStaticPaths
+// API Routes do not specify CORS headers, meaning they are same-origin only by default
+
+//  ---------------- /pages/api.js --------------------
+
+export default function handler(req, res) {             // req = HTTP incoming message, res = HTTP server response
+    if(req.method === 'POST')
+        const email = req.body.email;
+   
+    const cookies = req.cookies;
     
-    
-    
+  // Then save email to your database, etc...
+}
+
+
+
+// ------------------ /pages/index.js -------------------
+
+export default function Home() {
+    const input = useRef();
+
+    const handleClick = () => {
+        fetch('/api', {
+            method: 'POST'
+            body: {email: input.current.value};
+        })             
+    }
+
+    return(
+            <form>
+                   <input type='text' onClick={handleClick} ref={input}> 
+           </form>
+    )
+
+}
+
+
+
+
+
+
+
+
+
 
 
 

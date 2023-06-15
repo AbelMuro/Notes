@@ -225,10 +225,53 @@ export async function getServerSideProps(context) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //=========================================================== DYNAMIC ROUTING ==========================================================================
 // You can create dynamic routes in Next.js, which are basically links that are generated dynamically with external data from an API or server
 // Files in the pages folder that start like this, [id].js are dynamic routes in Next.js
 // Typically, the name of the dynamic route should be the same name as the property of the object that is returned from an API call
+
+
+// /pages/index.js
+export default function Home({allPostsData}) {
+    return(
+        <>
+            //each of the following links point to a dynamic route that is created in [id.js]
+            {allPostsData.map((post) => {
+                    return(<Link href={'/pages/${post.id}'}> CLick here</Link>)       
+               })}
+
+        </>
+    )
+}
+
+export async function getStaticProps() {
+    const allPostsData = fetch('https://example.com/api/posts');
+    
+    return {
+      props: {
+        allPostsData
+      }
+    }
+  }
+
+
+
 
 
 //          /pages/[id].js
@@ -241,7 +284,6 @@ export default function Post({post}) {
     )
 }
 
-
 //this will generate all the dynamic pages
 export async function getStaticPaths() {
     const posts = await fetch('https://example.com/api/posts');              //making a fetch request
@@ -249,17 +291,18 @@ export async function getStaticPaths() {
     const paths = posts.map((path) => {    
         return ({                               // pathsArray MUST be an array of objects
                   params: {                     // each object MUST have a params property
-                  id: path.userName             // each object MUST have the name of the dynamic route as a property, the value will be the new name of the dynamic route
+                  id: path.author               // each object MUST have the name of the dynamic route as a property, the value will be the new name of the dynamic route
                 })       
         })
     }) 
     return(
         {
             paths,                        
-            fallback: false,            
-        }
-    )
-}
+            fallback: false,                        // false means that any paths not returned by getStaticPaths will result in a 404 page       
+        }                                           // other values are true and blocking, check out documentation for this
+    )                                               
+}                                                 
+
 
 //this will fetch the actual data and pass it to the post component for formating
 export async function getStaticProps(context) {
@@ -282,11 +325,28 @@ export async function getStaticProps(context) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //========================================================== MARKDOWN ==========================================================================================
 // Markdown is a lightweight markup language for creating formatted text using a plain-text editor, its used for websites that use alot of text like blogs
 // you can render markdown by using this package
 // npm install remark remark-html
 // npm install grey-matter
+
 
 /*  myMarkdown.md
 
@@ -319,26 +379,44 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
 
-export async function getPostData() {
-  const postsDirectory = path.join(process.cwd(), 'posts');         //process.cwd() will return a string that displays the current working directory and will look for the posts folder
-  const fullPath = path.join(postsDirectory, 'myMarkdown.md');      //creates the full path to the markdown file
-  const fileContents = fs.readFileSync(fullPath, 'utf8');           //reads the file and stores the content in fileContents
+export async function getMarkdownData() {
+      const postsDirectory = path.join(process.cwd(), 'posts');         //process.cwd() will return a string that displays the current working directory and will look for the posts folder
+      const fullPath = path.join(postsDirectory, 'myMarkdown.md');      //creates the full path to the markdown file
+      const fileContents = fs.readFileSync(fullPath, 'utf8');           //reads the file and stores the content in fileContents
 
-  const matterResult = matter(fileContents);                        // Use gray-matter to parse the post metadata section
+      const matterResult = matter(fileContents);                        // Use gray-matter to parse the post metadata section
 
-  const processedContent = await remark()                           // Use remark to convert markdown into string
-    .use(html)                                                      // convering markdown into HTML
-    .process(matterResult.content);
-    
-  const contentHtml = processedContent.toString();
+      const processedContent = await remark()                           // Use remark to convert markdown into string
+        .use(html)                                                      // convering markdown into HTML
+        .process(matterResult.content);
 
-  // Combine the data with the id and contentHtml
-  return {
-    id: 'myMarkdown.md',
-    contentHtml,
-    ...matterResult.data,
-  };
+      const contentHtml = processedContent.toString();
+
+      // Combine the data with the id and contentHtml
+      return {
+        id: 'myMarkdown.md',
+        contentHtml,
+        ...matterResult.data,
+      };
 }
+
+
+
+
+// Using the function getMarkdownData() in the component below
+
+export default function Home({markdown}) {
+     <div dangerouslySetInnerHTML={{__html: markdown.contentHtml}}/>
+}
+
+export async function getStaticProps() {
+    const markdown = await getMarkdownData();    
+    return {
+      props: {
+        markdown
+      },
+    };
+  }
 
 
 
@@ -362,7 +440,14 @@ export default function FirstPost() {
   );
 }
 
-
+/* 
+          pages
+             index.js              /
+             posts
+                first-post.js      /posts/first-post
+                second-post.js     /posts/second-post
+             about-me              /about-me
+*/
 
 
 

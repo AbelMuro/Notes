@@ -203,7 +203,7 @@ export async function getServerSideProps(context) {
     
   return {
     props: {
-      // props for your component
+        data
     },
   };
 }
@@ -247,7 +247,7 @@ export async function getServerSideProps(context) {
 // Typically, the name of the dynamic route should be the same name as the property of the object that is returned from an API call
 
 
-// /pages/index.js
+// 1) -----------------------        /pages/index.js --------------------------------------------
 export default function Home({allPostsData}) {
     return(
         <>
@@ -274,7 +274,7 @@ export async function getStaticProps() {
 
 
 
-//          /pages/[id].js
+// 2) --------------------------     /pages/[id].js -------------------------------------------------
 export default function Post({post}) {
     return (
         <Layout>
@@ -289,20 +289,17 @@ export async function getStaticPaths() {
     const posts = await fetch('https://example.com/api/posts');              //making a fetch request
                                            
     const paths = posts.map((path) => {    
-        return ({                               // pathsArray MUST be an array of objects
-                  params: {                     // each object MUST have a params property
+        return {                               // pathsArray MUST be an array of objects
+                 params: {                     // each object MUST have a params property
                   id: path.author               // each object MUST have the name of the dynamic route as a property, the value will be the new name of the dynamic route
-                })       
+                }                           
         })
     }) 
-    return(
-        {
-            paths,                        
-            fallback: false,                        // false means that any paths not returned by getStaticPaths will result in a 404 page       
-        }                                           // other values are true and blocking, check out documentation for this
-    )                                               
-}                                                 
-
+    return {paths,                        
+        fallback: false}                         // false means that any paths not returned by getStaticPaths will result in a 404 page       
+                                              // other values are true and blocking, check out documentation for this      
+}                                                  
+                                                 
 
 //this will fetch the actual data and pass it to the post component for formating
 export async function getStaticProps(context) {
@@ -319,6 +316,53 @@ export async function getStaticProps(context) {
 
 
 
+
+
+
+//--------------------------------------------------- CATCH ALL ROUTES ----------------------------------------------------------------
+// You can create nested routes by using the following syntax and boilerplate code [...id].js
+
+//      /pages/posts/[...id].js
+export async function getStaticPaths() {
+                                        
+    return { paths: [{params : {id: ['a', 'b', 'c']}}],       //id : ['a', 'b', 'c'] will match the page route       /pages/a/b/c             
+        fallback: false}                         
+                                                  
+}  
+
+export async function getStaticProps(context) {
+     const id = context.params.id;                            // id = ['a', 'b', 'c']
+
+    // ...
+}
+
+
+
+
+
+
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+// ======================================================== 404 CUSTOM PAGE ===============================================================================================
+// you can create your own custom 404 page
+
+
+//      pages/404.js
+export default function Custom404() {
+  return <h1>404 - Page Not Found</h1>;
+}
 
 
 

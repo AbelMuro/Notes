@@ -438,9 +438,20 @@ export default ActiveLink
 
 //====================================================== API ROUTES =============================================================
 // API Routes let you create an API endpoint inside a Next.js app.
-// For the example below, you will need to access the route http:localhost/3000/api
-// Do not fetch an API route from getStaticProps or getStaticPaths
-// API Routes do not specify CORS headers, meaning they are same-origin only by default
+// The naming convention is: /pages/api     or      /pages/api/firstEndpoint                  folder with the name api will use its files as the endpoints
+// For the example below, you can access the route http:localhost/3000/api
+
+
+/* 
+        Things to know about API Routes
+        
+    1)  Do not fetch an API route from getStaticProps or getStaticPaths
+    2)  API Routes do not specify CORS headers, meaning they are same-origin only by default 
+    3)  You can use API routes to securely communicate with a third party api
+    4)  Previewing draft content from your CMS
+    5)  Saving data to your database
+ */
+
 
 //  ---------------- /pages/api.js --------------------
 
@@ -469,11 +480,97 @@ export default function Home() {
 
     return(
             <form>
-                   <input type='text' onClick={handleClick} ref={input}> 
+                <input type='text' onClick={handleClick} ref={input}> 
            </form>
     )
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//==================================================== DYNAMIC API ROUTES ========================================================================================
+// API Routes can be dynamic, and follow similar convention to dynamic routes
+// You can access the request handler below by typing           http:localhost:3000/api/anythingGoesHere          
+
+//      /pages/api/[endpoint].js
+
+export default function handler(req, res) {
+  const { pid } = req.query;
+  res.end(`Post: ${pid}`);
+}
+
+
+
+
+
+//      /pages/index.js
+
+export default function Home() {
+    const input = useRef();
+
+    const handleClick = () => {
+        fetch('/api/anythingGoesHere', {                            //this will fetch the api endpoint in /pages/api/[endpoint].js
+            method: 'POST'
+            body: {email: input.current.value};
+        })             
+    }
+
+    return(
+            <form>
+                <input type='text' onClick={handleClick} ref={input}> 
+           </form>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

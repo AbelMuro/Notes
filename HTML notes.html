@@ -61,7 +61,14 @@
         <a href="https//www.google.com" target="_self"> Home </a>             <!-- creating a link in the document, target="_self" will open the link on the same window -->        
         <a href="https://sf.gov/" target="_blank">  San Francisco </a>        <!-- target="_blank" will open the link on a new window-->      
         <a href="mailto:abelmuro93@gmail.com"> Email Me </a>                  <!-- opens up outlook, then the user will be able to email the author of the website-->
-        
+        <a href="" onClick={handleLink}>                                      <!-- By passing an empty string, the link will STILL take you to a different page, so you must pass an onClick event handler that will use e.preventDefault()--> 
+            Click here     
+        </a>                                                                  <!-- 
+                                                                                    const handleLink = (e) => {
+                                                                                            e.preventDefault();            //this will prevent the <a> link from taking you to a different page
+                                                                                       }
+    
+                                                                                -->
         
         
         

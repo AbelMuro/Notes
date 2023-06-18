@@ -1,0 +1,80 @@
+GITHUB: This is a way of storing online code and makes it possible to share code with 
+people all over the world or just with your team mates
+
+
+GIT-REPOSITORY: An online storage used for storing code, this storage usually
+contains folder, files, or images that are a part of your project.
+
+
+BRANCHES: Branching lets you have different versions of a repository at one time.
+Usually all new repositories start with one branch named MAIN, but can have many 
+branches added later on in the project. This is especially useful for a team member 
+to make changes to a project. The team member can make changes to a lesser branch, 
+the lead developer can review the lesser branch, and if approved, can merge the lesser 
+branch with the MAIN branch. For this to work, the owner of the repository will have to 
+give permission to the team members to make changes to a side branch of the repository, 
+this is done in the settings of the repository 
+
+
+BRANCH PROTECTION RULES: You can create a protection rules for branches in GitHub.
+Typically, you want to create a branch protection rule to the MAIN branch of a repository,
+and force the team members to make changes to a SIDE branch of a repository.
+Make sure you enable the pull request rule for the MAIN branch.
+
+
+CLONING: You can clone a repository and create a local copy in your computer. 
+This also creates a local 'branch' onto your computer. This local branch is
+connected to the remote branch in the repository
+
+
+FORKING: forking is simply just creating a copy of a repository. Changes made
+to the fork will not affect the original repository.
+
+
+COMMIT CHANGES: You can make changes to a local branch of a repository
+
+
+GIT PUSH: Once you commit changes to the local branch in your computer, you can 
+'push' the changes to the remote branch. This is what actually updates the code 
+in the repository
+
+
+PULL REQUEST: You can request to merge a specific side branch to the main branch.
+Which must be approved by a lead developer or the owner of an organization
+
+
+
+
+
+
+
+
+
+GIT: This is a software used for manipulating repositories, it works in the background 
+doing all the heavy lifting. You can access Git command line interface with the terminal
+
+here are a few commonly used command lines:
+
+git --version							  //useful way to determine if the device has Git installed
+git config --global user.name "abelmuro"			  //identifying yourself, you can use --local for the local repo only
+git config --global user.email "abelmuro93@gmail.com"	  //identifying yourself, you can use --local for the local repo only
+
+
+
+
+
+Basic GIT commands:						 //keep in mind that all directories start with 'Local Disk (C:)'
+
+cd ..								       // go back one directory
+cd [name of folder]					       //this will change the current directory (remember to delete [] )
+
+git init [project name]						 //this will create a new local repository in the current directory (remember to delete [] ))
+
+git clone https://github.com/AbelMuro/FoodDasherApp.git //cloning a repository, can be SSH or HTTPS
+git clone /copy/repo/to/this/path				 //you can clone a local repo from the current repository to the repository specified
+
+git add src/index.js						 //this will add the file that has changes to the 'staged' changes
+git restore src/index.js					 //this will discard any changes made to the file
+
+git commit -m "message to go with commit"			 //commiting changes		
+					

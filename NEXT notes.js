@@ -134,10 +134,11 @@ export default function Home(props) {           //this component will rely on th
 }
 
 export async function getStaticProps(context) {        
-  const data = await fetch('url');              //The value of the `props` key will be passed to the `Home` component
+  const response = await fetch('url');              //The value of the `props` key will be passed to the `Home` component   
+  const data = await response.json();
 
   return {
-        props : {data : data.json()}
+        props : {data : data}
     }
 }
 

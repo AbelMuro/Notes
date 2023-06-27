@@ -156,7 +156,7 @@
                 
                 
             <!--RADIO BUTTONS -->                                            //accent-color: blue     only works when the radio button is checked
-            <fieldset>  
+            <fieldset>                                                      // checked={state}    onChange={handleCheck}
                 <div id="favcolor1">  
                     <input type="radio" id="blue" name="favColor" value="blue">             <!-- value in this case defines the data inputed by the user-->
                     <label for="blue"> 
@@ -222,8 +222,8 @@
                 
                                                                               //only works if the check box is checked
            <!-- CHECK BOXES-->                  //e.target.checked          //accent-color: blue            //in react, you would need to assign a state for each of the checkboxes with its own change event handler
-            <fieldset> 
-                <input type="checkbox" id="vehicle1" value="Bike" onChange={handleCheck}>                 //clip-path: circle(46% at 50% 50%);  this will make the checkbox into a circle     
+            <fieldset>                                                                                     // checked={state}    onChange={handleCheck}
+                <input type="checkbox" id="vehicle1" value="Bike" onChange={handleCheck}>                    
                 <label for="vehicle1"> 
                     I have a bike
                 </label>

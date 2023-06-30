@@ -52,7 +52,12 @@ function Card({card, setCard, itemId}) {
             handlerId: monitor.getHandlerId()  // handlerId is used to identify a container that receives draggable items
         }),
         hover: (item, monitor) => {             // hover function will receive the item that is being dragged ON TOP of the container
-            
+            setItem(
+                //change the order of the items here
+            )
+        },
+        drop(item, monitor) => {                // drop function will receive the item that was DROPPED on the container
+            //typically, you can add the item that was dropped onto the state(array) of this component
         }
     })
 
@@ -62,7 +67,7 @@ function Card({card, setCard, itemId}) {
             return {index, itemId}
         },
         isDragging: (monitor) => {              // isDragging function lets you define how the props isDragging will be true or false based on a condition
-            return itemId === monitor.getItem().itemId;    //this will ensure that isDragging still represents the item being dragged
+            return itemId === monitor.getItem().itemId;    //this will ensure that isDragging still represents the item being dragged (monitor will always check if a item is currently beind dragged)
         },
         collect: (monitor) => ({
             isDragging: monitor.isDragging()    //keep in mind that every property that is returned from the collect function can have its own method like isDragging above

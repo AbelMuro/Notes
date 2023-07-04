@@ -400,12 +400,16 @@ export async function getStaticProps(context) {
  // It can be used to get the current route, navigate between routes, and perform other operations related to routing  
     
 import { useRouter } from 'next/router'
- 
+
+//router.asPath returns the current path
+//router.push('/aboutme')  will take you to a different page in the app
+
+
 function ActiveLink({ children, href }) {
   const router = useRouter()
   const style = {
     marginRight: 10,
-    color: router.asPath === href ? 'red' : 'black',
+    color: router.asPath === href ? 'red' : 'black',            
   }
  
   const handleClick = (e) => {

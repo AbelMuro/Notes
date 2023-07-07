@@ -45,6 +45,11 @@
         onSubmit                                                //event that will be triggered when the user clicks on an <input type="submit"/>, this event should be in a <form/>       
         onFocus                                                 //event that will be triggered when the user clicks on an input
         onBlur                                                  //event that will be triggered when the user clicks on something that is NOT the input
+    
+    DOM properties for <form/>
+        e.target.elements;                                      //this will return an node list of all the inputs, fieldset, selects, buttons in the form
+        e.target.elements.password                              //this will return a reference to an <input/> that has the name attribute set to 'password'
+        e.target.elements.password.value                        //gets the value of the <input name='password'>
 
     DOM properties from <input/>
         e.target.value;                                         //returns the value of an <input/>
@@ -55,6 +60,7 @@
         e.target.validity.valueMissing;                         //returns true if the input is empty
         e.target.validity.patternMismatch:                      //returns true if the users input doesn't match the pattern attribute of the input element
         e.target.validity.customError;                          //returns true if the programmer has programmatically set the error with setCustomValidity()
+        
 -->
 <html>
     <head>

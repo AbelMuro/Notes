@@ -56,7 +56,7 @@ function Card({card, setCard, itemId}) {
                 //change the order of the items here
             )
         },
-        drop(item, monitor) => {                // drop function will receive the item that was DROPPED on the container
+        drop: (item, monitor) => {                // drop function will receive the item that was DROPPED on the container
             //typically, you can add the item that was dropped onto the state(array) of this component
         }
     })

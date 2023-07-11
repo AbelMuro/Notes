@@ -298,7 +298,7 @@
                 input[type="date"]::-webkit-calendar-picker-indicator {                         //this is how you change the calendar icon
                     background-image: url('./icons/icon-calendar.svg')
                 } 
-                -->    
+            -->    
                 
 
 
@@ -316,8 +316,8 @@
             <fieldset>
                 <label for="myfile">
                     Select a file:
-                </label>    
-                <input type="file" id="myfile" name="myfile" multiple><br>                  <!-- you can select multiple files with the multiple attribute-->
+                </label>                                                                                              <!--  you can use accept='image/png' to accept all images-->
+                <input type="file" id="myfile" name="myfile" accept="image/png, image/gif, image/jpeg" multiple><br>  <!-- you can select multiple files with the multiple attribute -->
                 <p> To select multiple files, hold down CTRL key while selecting </p>
                 <input type="hidden" id="updateDatabase" name="updateDatabase" value="666"> <!-- type="hidden" can be used to send data to a server-->
                 <input type="submit" enctype="multipart/form-data">  
@@ -325,7 +325,8 @@
                 
 
                 
-            <!--         HOW TO STYLE INPUT TYPE="FILE"
+            <!--         
+                HOW TO STYLE INPUT TYPE="FILE"
                 
                  <label htmlFor='inputFile'>                                            //you can make this into the actual input type='file'
                     <input id='inputFile' type='file'/>                                 //set this to display: none

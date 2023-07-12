@@ -351,9 +351,9 @@ import {storage} from './firebase-config';
 
 
 //the functions below are all asynchronous
-function uploadImagesToStorage(file) {
+async function uploadImagesToStorage(file) {
      const reference = refSB(storage, "/AbelsImages/" + file.name);                   //its a good idea to store the images in a folder like this
-      uploadBytes(reference, file);                                        //file can be the Javascript File that comes from the <input type="file">     
+     await uploadBytes(reference, file);                                        //file can be the Javascript File that comes from the <input type="file">     
 }                                                                                     //or it can be a blob object
 
 async function downloadImagesFromStorage(fileName){

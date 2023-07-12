@@ -31,7 +31,7 @@ export const db = getDatabase(app);                                         //al
 export const auth = getAuth(app);                                           //alot of the times, to use firebase, you will need to export these objects
 
 // Initialize storage and exporting it
-export const storage = getStorage(app);
+export const storage = getStorage(app, 'gs://link-sharing-app-f1fdc.appspot.com/');  //you must include the 'bucket' name for the storage you are trying to access
 
 // Initialize firestore database and exporting it
 export const db = getFirestore(app);

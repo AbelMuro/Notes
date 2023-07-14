@@ -281,21 +281,20 @@ export async function getServerSideProps(context) {
 
 
 
-//=========================================================== DYNAMIC ROUTING ==========================================================================
+//=========================================================== DYNAMIC ROUTING BASED ON DATA FROM A SERVER ==========================================================================
 // You can create dynamic routes in Next.js, which are basically links that are generated dynamically based on external data from an API or server
 // Files in the pages folder that start like this, [id].js are dynamic routes in Next.js
 // Typically, the name of the dynamic route should be the same name as the property of the object that is returned from an API call
 
 
-// 1) -----------------------        /pages/index.js --------------------------------------------
+// 1) -----------------------        /pages/index.js ----------------------------------------------------------------
 export default function Home({allPostsData}) {
-    return(
+     //each of the following links point to a dynamic route that is created in [id.js]
+    return(   
         <>
-            //each of the following links point to a dynamic route that is created in [id.js]
             {allPostsData.map((post) => {
                     return(<Link href={'/pages/${post.id}'}> CLick here</Link>)       
                })}
-
         </>
     )
 }
@@ -314,7 +313,7 @@ export async function getStaticProps() {
 
 
 
-// 2) --------------------------     /pages/[id].js -------------------------------------------------
+// 2) --------------------------     /pages/[id].js ----------------------------------------------------------------
 export default function Post({post}) {
     return (
         <Layout>
@@ -331,7 +330,7 @@ export async function getStaticPaths() {
     const paths = posts.map((path) => {    
         return {                               // pathsArray MUST be an array of objects
                  params: {                     // each object MUST have a params property
-                  id: path.author               // each object MUST have the name of the dynamic route as a property, the value will be the new name of the dynamic route
+                  id: path.author               // each object MUST have the name of the [dynamic route] as a property, the value will be the new name of the dynamic route
                 }                           
         })
     }) 
@@ -344,7 +343,7 @@ export async function getStaticPaths() {
 //this will fetch the actual data and pass it to the post component for formating
 export async function getStaticProps(context) {
      const id = context.params.id;                                          //you can use params to get the name of the dynamic route
-     const res = await fetch('https://example.com/api/posts/${id}');
+     const res = await fetch(`https://example.com/api/posts/${id}`);
      const post = await res.json();
 
      return {                                                               //returning the data that will be used by our component
@@ -377,6 +376,44 @@ export async function getStaticProps(context) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================================== DYNAMIC ROUTING NOT BASED ON DATA FROM A SERVER ==========================================================================
+//You can create dynamic routes that are no based on data from a server, but you have to use getServerSideProps() instead of getStaticPaths()
+//this dynamic route will catch ALL occurences of /pages/anythingGoesHere
+
+                                                        //just typing any variation of the url below in the browser will take you to this component
+// -----------------  /pages/[userprofile].js                     /pages/RoseCaldwell    /pages/JohnSmith     /pages/JerryHernandez
+
+export default function UserProfile() {
+
+}
+
+
+export function getServerSideProps(context) {
+
+}
 
 
 

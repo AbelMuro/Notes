@@ -401,25 +401,19 @@ export async function getStaticProps(context) {
     
 import { useRouter } from 'next/router'
 
-//router.asPath returns the current path
-//router.push('/aboutme')  will take you to a different page in the app
-//router.asPath    will return the current path of the app
+router.asPath            //returns the current path
+router.push('/aboutme')  //will take you to a different page in the app
 
-function ActiveLink({ children, href }) {
-  const router = useRouter()
-  const style = {
-    marginRight: 10,
-    color: router.asPath === href ? 'red' : 'black',            
-  }
+function ActiveLink() {
+  const router = useRouter();
  
-  const handleClick = (e) => {
-    e.preventDefault()
-    router.push(href)
+  const handleClick = () => {
+    router.push('/aboutme');
   }
  
   return (
-    <a href={href} onClick={handleClick} style={style}>
-      {children}
+    <a  onClick={handleClick}>
+      'Click Me'
     </a>
   )
 }

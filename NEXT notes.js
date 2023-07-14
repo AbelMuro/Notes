@@ -403,7 +403,7 @@ import { useRouter } from 'next/router'
 
 //router.asPath returns the current path
 //router.push('/aboutme')  will take you to a different page in the app
-
+//router.asPath    will return the current path of the app
 
 function ActiveLink({ children, href }) {
   const router = useRouter()

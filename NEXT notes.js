@@ -185,50 +185,6 @@ export async function getStaticProps(context) {
 
 
 
-//=================================================== STATIC GENERATION WITHOUT DATA =========================================================================
-//Also known as Client-side rendering, for pages that dont need to be pre-rendered with data, 
-//you can use the fetch api or the SWR hook to fetch data at user request
-// client-side rendering should be used for specific pages where SEO is not relevant
-
-import useSWR from 'swr';
-
-export default Home () {
-    return (
-        <Profile/>
-    )
-}
-
-function Profile() {
-  const { data, error } = useSWR('/api/user', fetch);           //works similarly to fetch api
-
-  if (error) 
-      return <div>failed to load</div>;
-  if (!data) 
-      return <div>loading...</div>;
-  else
-      return <div>hello {data.name}!</div>;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //==================================================== SERVER-SIDE RENDERING WITH DATA ==============================================================================
 // SERVER-SIDE RENDERING is the pre-rendering method that generates the HTML on each page request. New HTML is generated for each page request
@@ -281,7 +237,7 @@ export async function getServerSideProps(context) {
 
 
 
-//=========================================================== DYNAMIC ROUTING BASED ON DATA FROM A SERVER ==========================================================================
+//================================================ DYNAMIC ROUTING BASED ON DATA FROM A SERVER ==========================================================================
 // You can create dynamic routes in Next.js, which are basically links that are generated dynamically based on external data from an API or server
 // Files in the pages folder that start like this, [id].js are dynamic routes in Next.js
 // Typically, the name of the dynamic route should be the same name as the property of the object that is returned from an API call
@@ -399,7 +355,7 @@ export async function getStaticProps(context) {
 
 
 
-//=========================================================== DYNAMIC ROUTING NOT BASED ON DATA FROM A SERVER ==========================================================================
+//=================================================== DYNAMIC ROUTING NOT BASED ON DATA FROM A SERVER ==========================================================================
 //You can create dynamic routes that are no based on data from a server, but you have to use getServerSideProps() instead of getStaticPaths()
 //this dynamic route will catch ALL occurences of /pages/anythingGoesHere
 
@@ -609,22 +565,6 @@ export default function Home() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ======================================================== 404 CUSTOM PAGE ===============================================================================================
 // you can create your own custom 404 page
 
@@ -635,6 +575,164 @@ export default function Custom404() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================ LINK COMPONENT ============================================================================================
+// Link component is used to navigate between the pages in a Next.js app
+
+
+import Link from 'next/link';
+
+export default function FirstPost() {
+  return (
+        <Link href="/"> 'Back to home' </Link>
+  );
+}
+
+/* 
+          pages
+             index.js              /
+             posts
+                first-post.js      /posts/first-post
+                second-post.js     /posts/second-post
+             about-me              /about-me
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================= IMAGE COMPONENT ============================================================================================
+// Image component is used to display images in Next.js. It will automatically be optimized for different viewports and accepts all image formats
+// Keep in mind that the Image component has ALOT of props that you can use, check out the documentation for <Image>
+
+/* 
+        public
+             rose.jpg                   /rose.jpg
+             images
+                profile.jpg             /images/profile.jpg
+*/
+
+import Image from 'next/image';
+
+export default function Home() {
+    return(
+        <>
+            <Image 
+                src='/images/profile.jpg'                               //keep in mind that the images must be in the public folder, Next.js will automatically search in the public folder
+                height={144}
+                width={144}
+                alt={'Your Name'}
+                priority                                                //this will make the image load faster, images by default are lazy loaded
+                />
+        </>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//======================================================== HEAD COMPONENT =========================================================================================================
+//Head component can be used to include meta data for the web app, such as the <title> and <link> tags
+
+import Head from 'next/head';
+
+export default function Home() {
+    return(
+        <>
+            <Head>
+                <title>
+                    'My next.js app'
+                </title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//===========================================================  SCRIPT COMPONENT =============================================================================================
+// Script component can be used to load a third party library with CDN
+
+
+import Script from 'next/script';
+
+export default function Home() {
+    return(
+            <Script
+                src="https://connect.facebook.net/en_US/sdk.js"
+                strategy="lazyOnload"
+                onLoad={() =>
+                        console.log(`script loaded correctly, window.FB has been populated`)
+                }
+            />
+
+    )
+}
 
 
 
@@ -731,191 +829,6 @@ export async function getStaticProps() {
       },
     };
   }
-
-
-
-
-
-
-
-
-
-
-
-//============================================================ LINK COMPONENT ============================================================================================
-// Link component is used to navigate between the pages in a Next.js app
-
-
-import Link from 'next/link';
-
-export default function FirstPost() {
-  return (
-        <Link href="/"> 'Back to home' </Link>
-  );
-}
-
-/* 
-          pages
-             index.js              /
-             posts
-                first-post.js      /posts/first-post
-                second-post.js     /posts/second-post
-             about-me              /about-me
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//========================================================= IMAGE COMPONENT ============================================================================================
-// Image component is used to display images in Next.js. It will automatically be optimized for different viewports and accepts all image formats
-// Keep in mind that the Image component has ALOT of props that you can use, check out the documentation for <Image>
-
-/* 
-        public
-             rose.jpg                   /rose.jpg
-             images
-                profile.jpg             /images/profile.jpg
-*/
-
-import Image from 'next/image';
-
-export default function Home() {
-    return(
-        <>
-            <Image 
-                src='/images/profile.jpg'                               //keep in mind that the images must be in the public folder, Next.js will automatically search in the public folder
-                height={144}
-                width={144}
-                alt={'Your Name'}
-                priority                                                //this will make the image load faster, images by default are lazy loaded
-                />
-        </>
-    )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//======================================================== HEAD COMPONENT =========================================================================================================
-//Head component can be used to include meta data for the web app, such as the <title> and <link> tags
-
-import Head from 'next/head';
-
-export default function Home() {
-    return(
-        <>
-            <Head>
-                <title>
-                    'My next.js app'
-                </title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-    )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//===========================================================  SCRIPT COMPONENT =============================================================================================
-// Script component can be used to load a third party library with CDN
-
-
-import Script from 'next/script';
-
-export default function Home() {
-    return(
-            <Script
-                src="https://connect.facebook.net/en_US/sdk.js"
-                strategy="lazyOnload"
-                onLoad={() =>
-                        console.log(`script loaded correctly, window.FB has been populated`)
-                }
-            />
-
-    )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//========================================================== CSS in NEXT.js ==============================================================================================
-//You can include css modules in Next.js in the same way as React
-
-import styles from './styles.module.css';
-
-export default function Layout({children}) {
-    return(
-        <div className={styles.container}>
-            {children}
-        </div>
-    )
-}
-
-
-//-------------------------------- this is how you include global css in Next.js... ------
-import '../common/styles.css';
-
-export default function App({Component, props}) {                       //keep in mind that this component MUST be inside _app.js and also at the TOP LEVEL of the pages folder
-    return(                                                             //NEXT.js will automatically use this component and pass every page to this component and share logic
-        <Component {...props} />        
-    )
-}
-
-
-
-
-
-
-
-
-
-
 
 
 

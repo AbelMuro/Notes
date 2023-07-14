@@ -388,7 +388,7 @@ export function getServerSideProps(context) {
 
 
     
- //======================================================== useRouter() hook ===================================================================================
+ //======================================================== USE ROUTER() HOOK ===================================================================================
  // There is a hook called useRouter() in Next.js that returns a 'router' object that has data about
  // It can be used to get the current route, navigate between routes, and perform other operations related to routing  
     
@@ -396,6 +396,7 @@ import { useRouter } from 'next/router'
 
 router.asPath            //returns the current path
 router.push('/aboutme')  //will take you to a different page in the app
+router.query             //this will return an object with the url parameters     (/pages/whatever?ID=1234      ->      {id: 1234}  )
 
 function ActiveLink() {
   const router = useRouter();

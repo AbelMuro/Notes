@@ -396,7 +396,7 @@ import { useRouter } from 'next/router'
 
 router.asPath            //returns the current path
 router.push('/aboutme')  //will take you to a different page in the app
-router.query             //this will return an object with the url parameters     (/pages/whatever?ID=1234      ->      {id: 1234}  )
+router.query             //this will return an object with the url parameters     (/pages/whatever?ID=1234      ->      {id: 1234}  )        will also return the name of the dynamic route
 
 function ActiveLink() {
   const router = useRouter();

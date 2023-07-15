@@ -1,12 +1,19 @@
-import {useState} from 'react';
-import {useHover, useInteractions, useFloating, offset, shift} from '@floating-ui/react';
 
 
+//===================================== TOOLTIP THAT APPEARS ON HOVER ====================================================
 //In the example below, we have a button that will display a small popup everytime we hover over it
 //Generally, the process for using this package goes like this.,.
 //we use useFloating() to reference the button and the popup, and the hook will return a context object
 //we pass the context to an 'interaction' hook like useHover(), it will then return an object
 //then we use the useInteraction() and pass the object
+
+
+
+import {useState} from 'react';
+import {useHover, useInteractions, useFloating, offset, shift} from '@floating-ui/react';
+
+
+
 
 export default function Popup() {
     const [isOpen, setIsOpen] = useState(false);
@@ -38,3 +45,49 @@ export default function Popup() {
 
     )
 }
+
+
+
+
+
+//===================================== TOOLTIP THAT APPEARS AUTOMATICALLY ====================================================
+//The example below will display a tooltip when the component first gets mounted, and will close when the user clicks on the button inside the tooltip
+
+
+const PhoneMockup = () => {
+    const [isOpen, setIsOpen] = useState(true);
+ 
+    const {refs, floatingStyles} = useFloating({                             
+         open: isOpen,                                        
+         onOpenChange: setIsOpen,  
+         middleware: [offset(-450), shift({padding: 400})],
+         whileElementsMounted: autoUpdate,                                    //this is important, when the window is resized, the tooltip will follow its container 
+       });
+
+    const handleClosePopup = () => {
+        setIsOpen(false);
+    }
+   
+
+    return(
+        <section>
+            <button ref={refs.setReference}>
+                'hover over this button!'
+            </button>
+            {isOpen ? 
+                <div ref={refs.setFloating} style={floatingStyles} className={styles.tooltip}>
+                    'Tooltip'
+                    <button onClick={handleClosePopup}> 'Close Tooltip'<button>
+                </div> : <></>
+            }
+        </section>
+    )
+}
+
+
+
+
+
+
+
+

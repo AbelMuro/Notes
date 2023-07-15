@@ -69,6 +69,9 @@ function Card({card, setCard, itemId}) {
         isDragging: (monitor) => {              // isDragging function lets you define how the props isDragging will be true or false based on a condition
             return itemId === monitor.getItem().itemId;    //this will ensure that isDragging still represents the item being dragged (monitor will always check if a item is currently beind dragged)
         },
+        canDrag: () => {                        //canDrag function lets you control which items are draggable and which are not
+            return true;            
+        }
         collect: (monitor) => ({
             isDragging: monitor.isDragging()    //keep in mind that every property that is returned from the collect function can have its own method like isDragging above
         })

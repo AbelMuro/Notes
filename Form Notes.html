@@ -189,40 +189,16 @@
 
               <!-- 
                                 HOW TO CREATE CUSTOM RADIO BUTTONS AND CHECK BOXES!
-                
-                .checkBox::after {                //this is how you change the background-color of an unchecked radio button OR a check box
-                    content: "";                  // ::after will create a last-child element of .checkBox with the following properties
-                    background-color: red;
-                    display: block;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;    
-                    height: 100%;
-                }
-
-                .checkMark{                        // we can make a custom-image appear when the user clicks on a checkbox or radio button
-                    display: none;                 // we will first need to position it with position: absolute to make sure it covers the radio button
-                    position: absolute;
-                    top: 0px;
-                    bottom: 0px;
-                    left: 0px;
-                    right: 0px;
-                    margin: auto;
-                    width: 25px;
-                    height: auto;
-                    object-fit: contain;
-                    cursor: pointer;
-                }
 
                 .radioButton:checked ~ .checkMark{     // this is what actually makes the custome check mark appear
                     display: block;
                 }
 
-                <fieldset>                                                                         //this must have position: relative;
-                    <input type='check' className='checkBox'/>
-                    <img src='/images/custom-check-box.png' className='customCheckBox'>            //this image will cover the checkbox when it has been clicked
-                </fieldset>
+                <label className={styles.checkbox_container} htmlFor='checkbox'>        // style the label element to look like a radio or check box
+                    <input type='checkbox' id='checkbox'/>                              // set display: none
+                    <img className={styles.checkmark} src={checkmark}/>                 // also set this check mark image to display: none
+                </label>
+                
                 -->
 
 

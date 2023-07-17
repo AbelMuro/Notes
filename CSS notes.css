@@ -929,6 +929,13 @@
 
 
     /*---------------------------------------------GRID CONTAINER PROPERTIES------------------------------------------------------------*/
+    /*
+        FOR DYNAMICALLY SIZED COLUMNES: you can use grid-template-column: auto 1fr 1fr    
+        the column with auto will be the same size as its content, 
+        and the columns with 1fr will take up the available space remaining
+    
+    */
+    
     /* Grid container*/
     display: grid, inline-grid;                 /* this will define a grid container
             grid: defines a block container with the grid

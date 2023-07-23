@@ -420,7 +420,7 @@
                 
                 
                 
-            <!-- NUMBER SELECTION WITH VALIDATION-->
+            <!-- NUMBER SELECTION-->
             <fieldset>
                 <label for="quantity">
                     Pick a number between 1 and 20:
@@ -432,20 +432,32 @@
 
                 <!--- 
                         YOU CAN USE THE FOLLOWING PSEUDO ELEMENTS TO REMOVE THE UP AND DOWN BUTTONS THAT APPEAR IN INPUT TYPE=NUMBER
-                        keep in mind that if you remove the arrow buttons, the min and max attributes will not work properly
+                        keep in mind that if you remove the arrow buttons, the min and max attributes will not work properly, you will have to use the function below for number validation
                 
-                    input::-webkit-outer-spin-button,
-                    input::-webkit-inner-spin-button {
-                        -webkit-appearance: none;
-                        margin: 0;
-                    }
-                    
-                    input[type=number]{
-                        -moz-appearance: textfield;
-                        appearance: textfield;
-                    }
+                            input::-webkit-outer-spin-button,
+                            input::-webkit-inner-spin-button {
+                                -webkit-appearance: none;
+                                margin: 0;
+                            }
+                            
+                            input[type=number]{
+                                -moz-appearance: textfield;
+                                appearance: textfield;
+                            }
 
-                -->
+
+                
+                        YOU CAN USE THE FUNCTION BELOW TO FORCE THE USER TO INPUT A NUMBER WITHIN A RANGE
+                        THE EXAMPLE BELOW WILL FORCE THE USER TO INPUT A NUMBER BETWEEN 1 AND 12
+                
+                            const handleChange = (e) => {
+                                const userInput = e.target.value;
+                                const currentMonth = Number(userInput);
+                                if(currentMonth < 0 || currentMonth > 12 || userInput.length > 2)
+                                    return;
+                                setMonth(userInput);
+                            }                       
+                --> 
                 
 
 

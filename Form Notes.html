@@ -58,7 +58,7 @@
         e.preventDefault();                                     //prevents the default behavior of a form when it is submitted (stops auto refresh, stops the form from being submitted to server)                                                                      
         e.target.validity.typeMismatch;                         //returns true if the user doesn't type @ in an input of type='email' (this is just an example)
         e.target.validity.valueMissing;                         //returns true if the input is empty
-        e.target.validity.patternMismatch:                      //returns true if the users input doesn't match the pattern attribute of the input element
+        e.target.validity.patternMismatch:                      //returns true if the users input doesn't match the pattern attribute of the input element (pattern attribute only works with text, tel, search)
         e.target.validity.customError;                          //returns true if the programmer has programmatically set the error with setCustomValidity()
         
 -->
@@ -152,7 +152,18 @@
 
 
 
+            
+            <!-- RANGE INPUT-->
+            <fieldset> 
+                  <label>Volume (between 0 and 50):</label>
+                  <input type="range" min="0" max="50">                                        <!-- this will return a range switch that you can move -->
+            </fieldset>
 
+
+
+
+
+            
 
             
             

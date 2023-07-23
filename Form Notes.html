@@ -95,7 +95,37 @@
                 <input type="reset">                                                                 <!-- resets all input values to their default-->
             </fieldset>
 
+            
 
+            <!-- CREDIT CARD INPUTS-->
+            <fieldset> 
+                <label> 
+                    Enter credit card number
+                </label>
+                <input type='tel' pattern="[0-9\s]{19}" autocomplete="cc-number">                
+            </fieldset>
+
+
+            <!-- 
+                You can use the function below to format the credit card numbers with spaces
+            
+                    function formatCardNumber(cardNumber) {
+                        let formatCard = cardNumber.replaceAll(' ', '');                          //this algorithm relies on the length of the string, we will need to remove the spaces first
+                        let temp = '';
+                
+                        for(let i = 0; i < formatCard.length; i++){
+                            if(i % 4 === 0)                                                        //we will add a space after every 4th number in the string
+                                temp += ` ${formatCard[i]}`;
+                            else
+                                temp += formatCard[i];
+                        }
+                        return temp.replace(' ', '');
+                    }
+            -->
+
+            
+
+            
             <!-- PASSWORD INPUTS-->                                                                <!-- ::-ms-reveal{}  is a pseudo element that lets you style the visibility button in password inputs -->
             <fieldset> 
                 <label for='password'>
@@ -190,7 +220,7 @@
               <!-- 
                                 HOW TO CREATE CUSTOM RADIO BUTTONS AND CHECK BOXES!
 
-                .radioButton:checked ~ .checkMark{     // this is what actually makes the custome check mark appear
+                .radioButton:checked ~ .checkMark{                                     // this is what actually makes the custom check mark appear
                     display: block;
                 }
 
@@ -199,7 +229,7 @@
                     <img className={styles.checkmark} src={checkmark}/>                 // also set this check mark image to display: none
                 </label>
                 
-                -->
+            -->
 
 
 

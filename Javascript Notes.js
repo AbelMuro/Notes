@@ -980,6 +980,7 @@ let myString = "this is just an example for reg exp 1 2 3 4 5";
 myString.match( / [1-4] /g);                       //will search for all numbers between 1 and 4 in the string			
 myString.match( / [0-9]{1} /g)		            //will search for one occurence of a number between 0 and 9 
 myString.match( / [0-9]{1,3} /g )	            //will search for one, two or three occurences of a number between 0 and 9
+myString.match( / [0-9\s]{19} /g)	            //will search for 19 occurences of single digits OR spaces (in any combination)
 myString.match( / \never\d+\.\d+ /g)               //you can chain together reg exp, this will select 'never' then any digit, then a period, then another digit
 myString.match( / this /g );                       //will search for 'this' in the string
 myString.match( / (this)|(is) /g );                //will search for 'this' and 'is' in the string, this separates two patterns () | ()

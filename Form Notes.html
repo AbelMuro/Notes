@@ -171,15 +171,22 @@
 
             <!-- RESET INPUTS-->
             <fieldset>
-                <input type='reset' value='RESET'>                                                <!-- Reset input will reset all the UNCONTROLED inputs to their default value-->
-            </fieldset>                                                                           
+                <input type='reset' value='RESET'>                              <!-- Reset input will reset all the UNCONTROLED inputs to their default value-->
+            </fieldset>                                                         <!-- if you want to reset the value of a CONTROLLED input, you must use the onReset() event handler in a Form -->
         
             <!-- 
-                    const handleReset = (e) => {                                            // if you have an onClick event handler for input type='reset',
-                        const form = e.currentTarget.form;                                  //  you must call the reset() function manually to trigger the onReset event handler in the form
+                    const handleClick = (e) => {                                //  if you have an onClick event handler for input type='reset',
+                        const form = e.currentTarget.form;                      //  you must call the reset() function manually to trigger the onReset event handler in the form
                         form.reset();
                     }
-            
+
+                    const handleReset = (e) => {
+                        //use the name attribute here to reset the values of the controlled components manually
+                    }
+    
+                    <form onReset={handleReset}>
+                        <input type='reset' onClick={handleClick}>
+                    </form>
             -->
 
 

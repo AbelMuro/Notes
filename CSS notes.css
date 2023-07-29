@@ -113,10 +113,11 @@
     
         content-box: the padding, margin and border are added to the width and height of an element (this is default)
     */
-    box-shadow: 5px 10px 15px red;    /* we create a shadow for the box and move it 
+    box-shadow: 5px 10px 15px 20px red;    /* we create a shadow for the box and move it 
         5px to the left or right, 
         10px to the top or bottom, 
         15px defines by how much we blur the shadow
+        20px defines both the height and width of the shadow
         red is the color of the shadow
 
         its best to use the filter function equivalent of this one

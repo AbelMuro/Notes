@@ -238,11 +238,13 @@
             <!-- RANGE INPUT-->
             <fieldset> 
                   <label>Volume (between 0 and 50):</label>
-                  <input type="range" min="0" max="50">                                        <!-- this will return a range switch that you can move -->
+                  <input type="range" min="0" max="100" defaultValue='80' disabled>         <!-- this will return a range switch that you can move -->
             </fieldset>
 
 
             <!-- 
+                HOW TO STYLE AN INPUT TYPE RANGE
+            
                 .range{                                                                        
                     appearance: none;                                                        // removes the default styling for input type range
                     width: 100px;

@@ -175,18 +175,33 @@
             </fieldset>                                                         <!-- if you want to reset the value of a CONTROLLED input, you must use the onReset() event handler in a Form -->
         
             <!-- 
+            // ----------------------CONTROLLED COMPONENTS--------------------------------------------
                     const handleClick = (e) => {                                //  if you have an onClick event handler for input type='reset',
                         const form = e.currentTarget.form;                      //  you must call the reset() function manually to trigger the onReset event handler in the form
                         form.reset();
                     }
 
                     const handleReset = (e) => {
-                        //use the name attribute here to reset the values of the controlled components manually
+                        // you must use useRef(), forwardRef() and useImperativeHandle() to reset the state manually in controlled components
                     }
     
                     <form onReset={handleReset}>
                         <input type='reset' onClick={handleClick}>
                     </form>
+
+
+
+
+            
+            // ----------------------- UNCONTROLLED COMPONENTS -----------------------------------------
+                    //the uncontrolled component must have a defaultValue attribute for the reset to work
+
+            
+                    <form onReset={handleReset}>
+                        <input type='text' defaultValue='type here'>                
+                        <input type='reset'>
+                    </form>
+            
             -->
 
 
@@ -227,7 +242,28 @@
             </fieldset>
 
 
+            <!-- 
+                .range{                                                                        
+                    appearance: none;                                                        // removes the default styling for input type range
+                    width: 100px;
+                    height: 12px;
+                    border-radius: 33.5px;
+                    background-color: rgba(47, 47, 47, 0.05);                                // this will color the background of the input type range but NOT the thumb itself
+                }
+                
+                .range::-webkit-slider-thumb {                                               // this selector will style the thumb in the input type range                      
+                    appearance: none;                                                        
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 100%;
+                    background-color: red;
+                    box-shadow: -250px 0px 0px 350px red;                                    //you will need to use box-shadow to style the background color on the LEFT side of the thumb
+                }
 
+                <input type='range' className='range' />
+                
+            
+            -->
 
 
 

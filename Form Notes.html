@@ -323,7 +323,7 @@
                 
                 
             <!--RADIO BUTTONS -->                                            //accent-color: blue     only works when the radio button is checked
-            <fieldset>                                                      // checked={state}    onChange={handleCheck}
+            <fieldset>                                                       //remember to use the 'name' attribute to 'group' together the radio buttons
                 <div id="favcolor1">  
                     <input type="radio" id="blue" name="favColor" value="blue">             <!-- value in this case defines the data inputed by the user-->
                     <label for="blue"> 
@@ -353,6 +353,27 @@
                     <input type='checkbox' id='checkbox'/>                              // set display: none
                     <img className={styles.checkmark} src={checkmark}/>                 // also set this check mark image to display: none
                 </label>
+
+
+
+
+                    HOW TO MAKE A CONTROLLED COMPONENT WITH RADIO BUTTONS
+
+                function RadioButtons() {
+                    const [selectedRadio, setSelectedRadio] = useState('')
+
+                    const handleRadio = (e) => {
+                        setSelectedRadio(e.target.value);
+                    }
+
+                    return(
+                        <form> 
+                            <input type='radio' value='green' checked={selectedRadio === 'green'} onChange={handleRadio}/>
+                            <input type='radio' value='blue' checked={selectedRadio === 'blue'} onChange={handleRadio}/>
+                            <input type='radio' value='red' checked={selectedRadio === 'red'} onChange={handleRadio}/>
+                        </form>
+                    )                
+                }
                 
             -->
 

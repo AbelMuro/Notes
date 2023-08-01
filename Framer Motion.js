@@ -90,7 +90,20 @@ function Circle() {
     
 }
 
+//SCROLLING ANIMATION: you can animate an element based on scrolling
 
+function Circle() {
+
+    return(
+          <motion.div 
+            className={'circle'} 
+            initial={{opacity: 0, backgroundColor: 'green'}} 
+            whileInView={{opacity: 1, backgroundColor: 'white'}}                 //once this element is in view, it will trigger the animation
+            viewport={{once: true}}                                              //decide to repeat the animation once or an indefinite amount of times
+          />
+    )
+          
+}
 
 
 
@@ -192,7 +205,7 @@ function App() {
 }
 
 
-
+//==============================================
 
 
 

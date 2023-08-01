@@ -2,6 +2,10 @@
 //npm install framer-motion
 
 
+
+
+
+
 //==================================== <motion/> component =========================================================
 
 
@@ -90,6 +94,11 @@ function Circle() {
 
 
 
+
+
+
+
+
 //================================== useMotionValue() and useTransform() =============================================================
 //These two hooks are used together to keep track of changes during an animation
 //useMotionValue returns a 
@@ -109,6 +118,93 @@ function MotionValues() {
         </motion.div>
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================== useCycle() =======================================================================================
+//useCycle() works similarly to useState(), it can be used to toggle between two different sets of styles
+//in the example below, we will have a button that will display a circle and a square when it is clicked on
+
+
+
+const variantsForCircle = {                                    //we will toggle between these two objects with useCycle
+      open: {
+          opacity: 1,
+          backgroundColor: 'green'
+      },
+      closed: {
+          opacity: 0,
+          backgroundColor: 'transparent'
+      }
+   }
+
+const variantsForSquare = {                                    //we will toggle between these two objects with useCycle
+      open: {
+          opacity: 0.5,
+          backgroundColor: 'red'
+      },
+      closed: {
+          opacity: 0,
+          backgroundColor: 'transparent'
+      }
+   }
+
+
+
+
+function App() {
+    const [isOpen, toggleOpen] = useCycle(false, true);              //isOpen will have either true or false as the values, toggleOpen() is a function used to toggle between true and false
+
+    const handleClick = () => {
+        toggleOpen();
+    }
+
+    return(
+        <>
+            <motion.div
+                className={'circle'}
+                initial={false}
+                animate={isOpen ? 'open' : 'closed'}                    //animate property will toggle between the 'open' styles and the 'closed' styles
+                variants={variantsForCircle}>                           //you must pass an object that has the two properties 'open' and 'closed'
+                  
+                  <motion.div                                            //by clicking on the button below, this child element will also have its styles toggle between 'open' and 'closed'
+                      className={'square'}                              //but it MUST have a variants prop
+                      variants={variantsForSquare}                       //you must pass an object that has the two properties 'open' and 'closed', it doesnt have to be the same object that you pass to the parent component
+                      />    
+                        
+            </motion.div>    
+
+            <button onClick={handleClick}>                              //clicking on this button will toggle between the 'open' styles and the 'closed' styles
+                click me
+            </button>    
+        </>
+
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

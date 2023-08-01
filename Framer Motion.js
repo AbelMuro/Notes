@@ -101,9 +101,104 @@ function Circle() {
             whileInView={{opacity: 1, backgroundColor: 'white'}}                 //once this element is in view, it will trigger the animation
             viewport={{once: true}}                                              //decide to repeat the animation once or an indefinite amount of times
           />
-    )
-          
+    )    
 }
+
+
+
+
+//EXIT ANIMATIONS: before an element is removed from the dom, you can use the exit prop to apply some animation before the element is removed
+
+const variants = {
+    exit: {
+        x: -1000
+    }
+};
+
+
+function App() {
+    const [remove, setRemove] = useState(false);
+
+    const handleClick = () => {
+        setRemove(!remove);
+    }
+
+
+    return(
+        <AnimatePresence>
+            {remove ? <></> : 
+            <motion.div                      //before this element is removed, it will run some animation
+                key='1'                      //key prop is required for this to work
+                className={'box'} 
+                variants={variants} 
+                exit='exit'                  //the exit prop will use the exit property from the object in variants
+              />}
+                
+            <button onClick={handleClick}>
+                remove from dom
+            </button>        
+        </AnimatePresence>
+
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+//==================================== useScroll() and useSpring() ====================================================
+
+/*  
+    useSpring() is a hook used to create an specific type of animation that resembles a spring
+    useScroll() is a hook that returns 4 values; 
+
+    scrollYProgress: the current progress of the scroll position of the viewport (y-axis) 0-1
+    scrollXProgress: the current progress of the scroll position of the viewport (x-axis) 0-1
+
+    In the example below, we are using useScroll() and useSpring() together to create 
+    an animation that expands an element based on the progress of the scroll in the viewport's y-axis
+    We create the illusion of a progress bar that stays fixed to the top of the viewport
+    and will grow or shrink as the user scrolls down or up
+*/
+
+import {motion, useScroll, useSpring}
+
+function ProgressBar() {
+    const {scrollYProgress} = useScroll();
+    const scaleX = useSpring(scrollYProgress, {
+        stiffness: 100,         //how fast the animation occurs
+        damping: 30,            //how fast the animation ends
+        restDelta: 0.001
+    })
+
+    return(
+        <motion.div className={'progress-bar'} style={{scaleX}} />  
+    )
+}
+
+/* 
+    .progress-bar{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background-color: red;
+        transform-origin: 0%;
+    }
+*/
+
+
+
+
+
+
 
 
 

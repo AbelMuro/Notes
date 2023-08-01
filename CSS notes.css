@@ -1319,6 +1319,7 @@
     text-decoration-style: solid, wavy, double;                 /* the style of the line that is displayed by the property above */   
     text-decoration-thickness: 50px;                            /* the thickness of the line that is displayed by the property above */
 
+    text-wrap: balance;                                         /* this will make sure that the text is evenly wrapped when its container is resized*/
     text-indent: 50px;                                          /* the indent for text*/
     text-align: center, left, right, justify;                   /* will align an INLINE element(text) within a block element, justify extends lines of text to make sure they are all of equal length*/
     text-justify: inter-word, inter-character;                  /* only works if 'text-align: justify'... inter-word: increases/decreases space between words, inter-character: increases/decreased space between letters... you see the difference when you resize the window */

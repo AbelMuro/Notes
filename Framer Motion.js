@@ -21,6 +21,7 @@ function Circle () {
           initial={{opacity: 0, scale: 0.5}}                    //you can set false to this attribute and the animation will cancel automatically 
           animate={{opacity: 1, scale: 1.2}}                    //if you set null to one of the css properties, it will use the default value for the property
           transition={{
+              opacity: {duration: 0.2},                        //you can assign a transition to a specific property like this
               duration: 3,
               times: [0, 0.2, 1],                               //by default, the animation is spaced evenly, you can override this with the times prop
               delay: 0.5,
@@ -363,8 +364,21 @@ function App() {
 
 
 
-//MOTION VALUES: you can use the motionValue() hook with the useAnimateHook() and useTransform()
 
+
+
+
+
+
+
+
+
+
+
+
+
+//MOTION VALUES: you can use the motionValue() hook with the useAnimateHook() and useTransform()
+//the example below will animate through 0 and 100
 function App() {
     const [,animate] = useAnimate();
     const count = useMotionValue(0);                                       //we essentially return an object that has a reference to 0
@@ -390,6 +404,137 @@ function App() {
 
 
 
+//============================================== LAYOUTS ===================================================
+// The layout prop in the motion component can add animation to a grid or flex box
+// Layout animations are triggered when a component re-renders and its layout has changed (items are removed, re-arranged, or added)
+// keep in mind, sometimes the child components will have distortion that occurs when the animation occurs
+// to remove this distortion, you can set layout as a prop to the child components
+// if there is a property that you dont want to animate with layout, you will need to set the inline styles for that property style={{borderRadius: 20}}
+
+
+function App() {
+    const [list, setList] = useState();
+
+    return(
+        <motion.div className={'grid'} layout transition={{duration: 0.8}}>        //by using transition={layout: { duration: 0.3 }} you are setting the duration ONLY for the layout animation
+             <motion.div className={'box'} layout></motion.div>    
+             <motion.div className={'box'} layout style={borderRadius: 20}></motion.div>    
+             <motion.div className={'box'} layout></motion.div>
+        </motion.div>    
+
+
+        <motion.div className={'gridWithScroll'} layoutScroll style={{overflow: 'scroll'}}>    //if your grid has a scroll bar, you must use the style and layoutScroll prop    
+             <motion.div className={'box'} layout></motion.div>    
+             <motion.div className={'box'} layout></motion.div>    
+             <motion.div className={'box'} layout></motion.div>
+        </motion.div>    
+    )
+}
+
+
+//LAYOUT-GROUP: This component ensures that when one component has its layout changed, the other layouts will be smoothly moved
+/* 
+    [accordion]                  [accordion]
+    [accordion]                      content
+                                     content
+                                  [accordion]              //this accordion will have an animation when its pushed down
+*/
+
+function Accordion() {                                      //this component will display a drop down
+  const [isOpen, setIsOpen] = useState(false)
+  
+  return (
+    <motion.div
+      layout
+      onClick={() => setIsOpen(!isOpen)}>
+        <motion.h2 layout>header</motion.h2>
+        {isOpen ? 'content' : null}
+    </motion.div>
+  )
+}
+
+function App() {                                           // with LayoutGroup, the accordion on the bottom will be pushed down smoothly
+  return (                                                 // when the accordion on the top is spread open
+    <LayoutGroup>          
+      <Accordion />
+      <Accordion />
+    </LayoutGroup>  
+  )
+}
+    
+
+
+
+//LAYOUT-ID: When a new component is added that has a layoutId prop that matches an existing component, 
+//it will automatically animate out from the old component.
+
+function App() {
+  const [example, setExample] = useState(false)
+
+  const handleClick = () => {
+    setExample(!example);
+  }
+
+  return (
+    <div className={'container'}>
+        <div className={'box'}>
+          {example && <motion.div className={'line'} layoutId="underline" />  }   // this line will move to the element on the bottom when it's removed from the dom
+        </div>
+        <div className={'box'}>
+          {!example && <motion.div className={'line'} layoutId="underline" />  }  //this line will move to the element on the top when it's removed from the dom
+        </div>
+        <button onClick={handleClick}>
+          click me
+        </button>
+    </div>
+
+  )
+}
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=============================================== HOOKS =========================================================
+const x = useMotionValue();              // motion values are objects that are assigned to the style attribute of elements
+                                         // they are used to keep track of a specific css property
+
+const {
+       scrollYProgress,                   //current value of the y-axis scroll position
+       scrollXProgress                    //current value of the x-axis scroll position
+      } = useScroll();                    //returns a motion value that contains data about the scrolling position of the webpage
+
+
+const scaleX = useSpring(x, {            // useSpring() accepts a motion value and will return another motion value
+    stiffness: 100,                      // the returned motion value will be used to create an animation that resembles a spring
+    damping: 30,                         //in this example, any changes made to x will make scaleX grow or shrink
+    restDelta: 0.001
+})
+
+
+const background = useTransform(         //useTransform() accepts a motion value and will return another motion value
+    x,                                   //the returned motion value will be used to create an animation that changes the background color
+    [-100, 0, 100],                                    
+    ["linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
+    "linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
+    "linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"]
+  )
+
+
 
 
 
@@ -405,7 +550,7 @@ function App() {
 //==================================== useScroll() and useSpring() ====================================================
 
 /*  
-    useSpring() is a hook used to create an specific type of animation that resembles a spring
+    useSpring() is a hook that returns a motion value and will animate a certain css property based on stiffness, damping and restDelta props
     useScroll() is a hook that returns 4 values; 
 
     scrollYProgress: the current progress of the scroll position of the viewport (y-axis) 0-1
@@ -459,23 +604,59 @@ function ProgressBar() {
 
 //================================== useMotionValue() and useTransform() =============================================================
 //These two hooks are used together to keep track of changes during an animation
-//useMotionValue returns a 
+//useMotionValue returns a motion value, a variable that keeps track of the changes of a specific css property
+//Basically, you can change an Element A by assigning a motion value to Element B, any changes made to element B will affect Element A
 
 import {motion, useMotionValue, useTransform } from 'framer-motion';
 
-function MotionValues() {
-    const x = useMotionValue(0);      
-    const background = useTransform(
-      x,
-      [-100, 0, 100],
-      ['red', 'green', 'white'],
-    )
-  
-    return(
-        <motion.div style={{background}}>
-        </motion.div>
-    )
+function App() {
+  const x = useMotionValue(0);                          //this motion value will keep track of changes in the x-axis of an element
+  const background = useTransform(                      //useTransform() will use the motion value and create animations based on the current value
+    x,
+    [-100, 0, 100],                                     // if x is -100, then we will animate to the first linear gradient in th 
+    ["linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
+    "linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
+    "linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"]
+  )
+
+  return(
+      <motion.div className={'container'} style={{background}}> //the background color will change as you drag the child element
+          <motion.div 
+            className={'box'} 
+            style={{x}}                                 //you must assign the motion value to the style prop
+            drag='x'                                     //when this component is dragged, it will cause changed to the motion value
+            dragConstraints={{left: 0, right: 0, top: 0, bottom: 0}}>
+          </motion.div>      
+      </motion.div>
+  )
 }
+
+
+
+//useTransform() with functions
+function TransformWithFunctions() {
+    const count = useMotionValue(0)
+    const rounded = useTransform(count, latest => Math.round(latest))    //passing a function to the second argument can be used to format the motion values
+    const [,animate] = useAnimate();
+  
+    useEffect(() => {
+        const controls = animate(count, 100, {duration: 1.2})
+        return controls.stop
+    }, [])
+    
+    return <motion.div>{rounded}</motion.div>
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -515,9 +696,6 @@ const variantsForSquare = {                                    //we will toggle 
           backgroundColor: 'transparent'
       }
    }
-
-
-
 
 function App() {
     const [isOpen, toggleOpen] = useCycle(false, true);              //isOpen will have either true or false as the values, toggleOpen() is a function used to toggle between true and false

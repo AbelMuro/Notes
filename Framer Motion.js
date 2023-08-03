@@ -72,36 +72,6 @@ function Circle
 
 
 
-          
-// GESTURES: this will create a hover animation and a click animation when the user hovers or clicks on the circle
-function Circle() {
-  return (
-       <motion.div 
-          className='circle' 
-          initial={{opacity: 0}}
-          whileHover={{scale: 1.2}}                        
-          whileTab={{scale: 0.9}}    
-          whileInView={{opacity: 1}}
-        />          
-    )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -197,7 +167,10 @@ function VariantsWithFunctions() {
 function Circle() {
     return(
         <motion.div    
-            drag                                         
+            drag                           //you can set drag='x' or drag='y' to force the element to only drag on the x-axis or y-axis        
+            dragSnapToOrigin={true}        //this will force the element to go back to its origin when the user stops dragging the element
+            dragElastic={1}                //must be a value between 0 and 1; the degree of movement allowed outside of constraints
+            dragMomentum={true}            // applies momentum when the user stops dragging the element
             dragConstraints={{
               top: -50,                                
               left: -50,
@@ -389,6 +362,99 @@ function App() {
         </motion.div>
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================== GESTURES =============================================
+// Gestures are similar to click events, focus, events, hover events, etc
+
+function Circle() {
+  return (
+       <motion.div 
+          className='circle' 
+          initial={{opacity: 0}}
+          whileHover={{
+            scale: 1.2,
+            transition: {duration: 2}              //remember that you can use transition with gestures
+          }}      
+          whileTab={{scale: 0.9}}                  //gesture for click events
+          whileInView={{opacity: 1}}               //gesture for elements that first appear in the viewport
+          whileFocus={{scale: 1.2}}                //gesture for input elements or any element that receives focus
+          whileDrag={{color: 'red'}}               //gesture for elements that are currently being dragged
+
+          onHoverStart={(e) => {}}                 //function that fires when the user hovers over the element
+          onHoverEnd={(e) => {}}                   //function that fires when the users mouse leaves the element
+          onTabStart={(e, info) => {}}             //function that fires when the tab start on the element (info = {point: {x, y}})
+          onTabCancel={(e, info) => {}}            //function that fires when the tab ends (info = {point: {x, y}})
+          onPanStart={(e, info) => {}}             //function that fires when the user presses down on an element and then moves away at least 3 pixels  (info = {point: {x, y}})  for mobile -> touch-action: none; this will disabled pan on mobile device
+          onPanEnd={(e, info) => {}}               //function that fires when the user stop panning
+          
+      />          
+    )
+}
+
+
+
+//GESTURES WITH VARIANTS: you can propagate changes to the child components with variants through gestures
+const variants = {
+  hover: {
+    scale: 1.2,
+    transition: {duration: 2}
+  },
+  tab: {
+    scale: 0.9
+  }
+}
+
+function Circle() {
+  return (
+       <motion.div 
+          className='circle' 
+          whileHover={'hover'}                        
+          whileTab={'tab'}    
+          variants={variants}
+        >                                   //the onPointerDownCapture is used to prevent the child component from firing the gestures on the parent component
+            <motion.div variants={variants} onPointerDownCapture{e => e.stopPropagation()}> 
+            </motion.div>
+        </motion.div>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

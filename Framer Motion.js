@@ -371,12 +371,6 @@ function App() {
 
 
 
-
-
-
-
-
-
 //MOTION VALUES: you can use the motionValue() hook with the useAnimateHook() and useTransform()
 //the example below will animate through 0 and 100
 function App() {
@@ -468,12 +462,18 @@ function App() {                                           // with LayoutGroup, 
 //LAYOUT-ID: When a new component is added that has a layoutId prop that matches an existing component, 
 //it will automatically animate out from the old component.
 
+/* 
+     [ ________             ]        
+
+              |
+              |            //there will be an animation that occurs here
+              v
+     
+     [           __________ ]
+*/
+
 function App() {
   const [example, setExample] = useState(false)
-
-  const handleClick = () => {
-    setExample(!example);
-  }
 
   return (
     <div className={'container'}>
@@ -483,9 +483,6 @@ function App() {
         <div className={'box'}>
           {!example && <motion.div className={'line'} layoutId="underline" />  }  //this line will move to the element on the top when it's removed from the dom
         </div>
-        <button onClick={handleClick}>
-          click me
-        </button>
     </div>
 
   )

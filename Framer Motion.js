@@ -117,15 +117,6 @@ function AnimateList() {
 
 
 
-
-
-
-
-
-
-
-
-
 //DYNAMIC VARIANTS: variants can be a function that can use its parameters to dynamically style a css property
 
 const variants = {
@@ -162,70 +153,6 @@ function VariantsWithFunctions() {
 
 
 
-//DRAGGABLE: this will make the circle draggable but with certain constraints
-//the circle below can only be dragged 50px to the top, 50 px to the left, etc..
-function Circle() {
-    return(
-        <motion.div    
-            drag                           //you can set drag='x' or drag='y' to force the element to only drag on the x-axis or y-axis        
-            dragSnapToOrigin={true}        //this will force the element to go back to its origin when the user stops dragging the element
-            dragElastic={1}                //must be a value between 0 and 1; the degree of movement allowed outside of constraints
-            dragMomentum={true}            // applies momentum when the user stops dragging the element
-            dragConstraints={{
-              top: -50,                                
-              left: -50,
-              right: 50,
-              bottom: 50,
-            }}
-          />
-      )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//DRAGGABLE WITH CONTAINER: you can create a large container and use it as the area in which a draggable item can be dragged
-function Circle() {
-      const contraints = useRef();
-  
-      return(
-         <div>           
-            <motion.div 
-              className={'container'}                        {/* large container that will be used for the draggable item*/}
-              ref={contraints}>                               {/* you must assign the same ref object to the container and the draggable item*/}
-
-            <motion.div    
-                drag                                           {/* draggable item*/}
-                dragConstraints={contraints}                  
-              />
-        </div>
-      )
-    
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 //SCROLLING ANIMATION: you can animate an element based on scrolling
 function Circle() {
@@ -238,17 +165,6 @@ function Circle() {
           />
     )    
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -305,66 +221,47 @@ function App() {
 
 
 
+//========================================== DRAGGABLE COMPONENTS ===============================
 
-
-
-//================================== IMPERATIVE ANIMATIONS: useAnimate() ==========================================
-//useAnimate() works in the same way as <motion/> component
-//the difference here is that useAnimate() allows for a more complex way of handling animations
-
-import {useAnimate} from 'framer-motion';
-
-function App() {
-    const [ref, animate] = useAnimate();        //ref is an object that must be assigned to the element we want to animate
-
-    useEffect(() => {
-        const animation = async () => {
-          await animate(scope.current, { x: 0 }, {duration: 0.5})            //second object is the css properties
-          await animate(scope.current, { x: 100}, {duration: 0.5, delay: 2}) //third object is the transition properties
-          await animate(scope.current, { x: 20}, {duration: 0.5})
-          await animate('div', {y: 45}, {duration: 0.4})                      //you can use a tag selector to animate a group of elements
-        }
-        
-        animation();
-
-      return animation.stop;                     //when the component is unmounted, it will call the stop() function to clean up the animation
-      }, [])
-
-    return(    
-        <div className={'box'} ref={ref}></div>
-    )
+//the circle below can only be dragged 50px to the top, 50 px to the left, etc..
+function Circle() {
+    return(
+        <motion.div    
+            drag                           //you can set drag='x' or drag='y' to force the element to only drag on the x-axis or y-axis        
+            dragSnapToOrigin={true}        //this will force the element to go back to its origin when the user stops dragging the element
+            dragElastic={1}                //must be a value between 0 and 1; the degree of movement allowed outside of constraints
+            dragMomentum={true}            // applies momentum when the user stops dragging the element
+            dragConstraints={{
+              top: -50,                                
+              left: -50,
+              right: 50,
+              bottom: 50,
+            }}
+          />
+      )
 }
 
 
 
 
-
-
-
-
-
-
-//MOTION VALUES: you can use the motionValue() hook with the useAnimateHook() and useTransform()
-//the example below will animate through 0 and 100
-function App() {
-    const [,animate] = useAnimate();
-    const count = useMotionValue(0);                                       //we essentially return an object that has a reference to 0
-    const rounded = useTransform(count, latest => Math.round(latest));      
-    
-    useEffect(() => {
-      const controls = animate(count, 100)                                 //we animate the motion value from 0 to 100
-      
-      return controls.stop
-    }, [])
-    
-    return <motion.div>
-            {rounded}
-        </motion.div>
+//DRAGGABLE WITH CONTAINER: you can create a large container and use it as the area in which a draggable item can be dragged
+function Circle() {
+      const contraints = useRef();
   
+      return(
+         <div>           
+            <motion.div 
+              className={'container'}                        {/* large container that will be used for the draggable item*/}
+              ref={contraints}/>                               {/* you must assign the same ref object to the container and the draggable item*/}
+
+            <motion.div    
+                drag                                           {/* draggable item*/}
+                dragConstraints={contraints}                  
+              />
+        </div>
+      )
+    
 }
-
-
-
 
 
 
@@ -575,6 +472,8 @@ function App() {
 //=============================================== HOOKS =========================================================
 const x = useMotionValue();              // motion values are objects that are assigned to the style attribute of elements
                                          // they are used to keep track of a specific css property
+                                         //in this case, x will keep track of the elements position on the x-axis
+                                         // you can assign x to one of the hooks below to apply a different animation to a different css property
 
 const {
        scrollYProgress,                   //current value of the y-axis scroll position
@@ -591,17 +490,80 @@ const scaleX = useSpring(x, {            // useSpring() accepts a motion value a
 
 const background = useTransform(         //useTransform() accepts a motion value and will return another motion value
     x,                                   //the returned motion value will be used to create an animation that changes the background color
-    [-100, 0, 100],                                    
-    ["linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
+    [-100, 0, 100],                                                // we map these values            
+    ["linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",  //to these values
     "linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
     "linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"]
   )
 
 
+const [boxRef, animate] = useAnimate();    //useAnimate() can imperatively create animations using a ref object (animate() should be called in a useEffect)
+await animate(boxRef.current, {x: 12}, {duration: 0.2} //first argument is the ref of the element, second is the css properties we want to animate, third is the transitition 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+              
+//------------------------------------------- useAnimate() ----------------------------------------------------
+//useAnimate() works in the same way as <motion/> component
+//the difference here is that useAnimate() allows for a more complex way of handling animations
+
+import {useAnimate} from 'framer-motion';
+
+function App() {
+    const [ref, animate] = useAnimate();        //ref is an object that must be assigned to the element we want to animate
+
+    useEffect(() => {
+        const animation = async () => {
+          await animate(scope.current, { x: 0 }, {duration: 0.5})            //second object is the css properties
+          await animate(scope.current, { x: 100}, {duration: 0.5, delay: 2}) //third object is the transition properties
+          await animate(scope.current, { x: 20}, {duration: 0.5})
+          await animate('div', {y: 45}, {duration: 0.4})                      //you can use a tag selector to animate a group of elements
+        }
+        
+        animation();
+
+      return animation.stop;                     //when the component is unmounted, it will call the stop() function to clean up the animation
+      }, [])
+
+    return(    
+        <div className={'box'} ref={ref}></div>
+    )
+}
+
+
+
+
+
+//MOTION VALUES: you can use the motionValue() hook with the useAnimateHook() and useTransform()
+//the example below will animate through 0 and 100
+function App() {
+    const [,animate] = useAnimate();
+    const count = useMotionValue(0);                                       //we essentially return an object that has a reference to 0
+    const rounded = useTransform(count, latest => Math.round(latest));      
+    
+    useEffect(() => {
+      const controls = animate(count, 100)                                 //we animate the motion value from 0 to 100
+      
+      return controls.stop
+    }, [])
+    
+    return <motion.div>
+            {rounded}
+        </motion.div>
+  
+}
 
 
 

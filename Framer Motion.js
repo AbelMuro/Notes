@@ -21,12 +21,16 @@ function Circle () {
           initial={{opacity: 0, scale: 0.5}}                    //you can set false to this attribute and the animation will cancel automatically 
           animate={{opacity: 1, scale: 1.2}}                    //if you set null to one of the css properties, it will use the default value for the property
           transition={{
-              type: 'tween, spring',                            //use Tween to use DURATION based animation, use Spring for spring based animation(default)
+              opacity: {duration: 0.2},                         //you can assign a transition to a specific property like this
+              type: 'spring',                                   //use Tween to use DURATION based animation, use Spring for spring based animation(default)
               bounce: 0.24,                                     //type='spring, 'determines the level of bounciness the animation will be, must be a value between 0 and 1 (if duration is set, then this defaults to 0.25)
               damping: 7,                                       //type='spring', strength of opposing force. If set to 0, spring will oscillate indefinitely. Set to 10 by default.
-              opacity: {duration: 0.2},                         //you can assign a transition to a specific property like this
-              duration: 3,                                      //if type=spring, then durarion will be overridden if stiffness, damping or mass are set
-              times: [0, 0.2, 1],                               //by default, the animation is spaced evenly, you can override this with the times prop
+              mass: 21,                                         //Mass of the moving object. Higher values will result in more lethargic movement. can be any number
+              stiffness: 23,                                    //Stiffness of the spring. Higher values will create more sudden movement
+            
+              type:'tween',
+              duration: 3,                                      //if type=spring, then durarion will be overridden if stiffness, damping or mass are set, and will be defaulted to 0.8 if bounce is set
+              times: [0, 0.2, 1],                               //by default, the animation is spaced evenly, you can override this with the times prop 0 -> 0.2 -------> 1
               delay: 0.5,                                                                   
               ease: [0, 0.71, 0.2, 1.01],                       // defines a timing function, similar to transition: all 0.2 linear/ease-in (built in timing functions, linear, ease-in, ease-out)
               repeat: 1, 2, 'Infinite',                         // the number of times the transition will occur

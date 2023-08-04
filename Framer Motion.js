@@ -21,11 +21,14 @@ function Circle () {
           initial={{opacity: 0, scale: 0.5}}                    //you can set false to this attribute and the animation will cancel automatically 
           animate={{opacity: 1, scale: 1.2}}                    //if you set null to one of the css properties, it will use the default value for the property
           transition={{
-              opacity: {duration: 0.2},                        //you can assign a transition to a specific property like this
+              opacity: {duration: 0.2},                         //you can assign a transition to a specific property like this
               duration: 3,
               times: [0, 0.2, 1],                               //by default, the animation is spaced evenly, you can override this with the times prop
-              delay: 0.5,
-              ease: [0, 0.71, 0.2, 1.01]
+              delay: 0.5,                                                                   
+              ease: [0, 0.71, 0.2, 1.01],                       //define a timing function, similar to transition: all 0.2 linear/ease-in
+              repeat: 1, 2, 'Infinite',                         // the number of times the transition will occur
+              repeatType: 'loop, reverse, mirror',              //loop repeats the animation from the start, reverse alternates between forward and backwards playback
+              repeatDelay: 0.3,                                 // the delay between each repeating transition
           }}                 
         />  
   )
@@ -77,12 +80,13 @@ function Circle
 
 
 //VARIANTS: you can use the variants prop to create animations in child components
-
 const list = {
-      visible: { opacity: 1,
-                 transition: {
-                  when: "beforeChildren",     //parent components animation will finished before the childrens animations starts
-                  staggerChildren: 0.3,
+      visible: {  opacity: 1,
+                  transition: {
+                    when: "beforeChildren or afterChildren",     //parent component transitions will finish before or after childrens transition
+                    delayChildren: 0.2,         // similar to the property above, but it offers a more precise delay
+                    staggerChildren: 0.1,       // first child will be delayed by 0.1, the second child delayed by 0.2, the third child delayed by 0.3 (calculate staggerDelay will be added to delayChildren)
+                    staggerDirection: -1,       // direction in which the children are delayed, -1 means the last child is delayed by 0.1, the second to last child is delayed by 0.2...                  
                 },
                },
       hidden: { opacity: 0 ,
@@ -90,11 +94,11 @@ const list = {
                     when: "afterChildren",    //parent components animation will finish after the childrens animation ends
                 },
               },
-  }
+}
 
 const item = {
-  visible: { opacity: 1, x: 0 },
-  hidden: { opacity: 0, x: -100 },
+      visible: { opacity: 1, x: 0 },
+      hidden: { opacity: 0, x: -100 },           
 }
 
 function AnimateList() {
@@ -130,7 +134,6 @@ const variants = {
 }
 
 function VariantsWithFunctions() {
-  
     return items.map((item, i) => (
       <motion.li
         custom={i}              //here you are calling the visibile function and passing a value
@@ -139,34 +142,6 @@ function VariantsWithFunctions() {
       />
   ))
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//SCROLLING ANIMATION: you can animate an element based on scrolling
-function Circle() {
-    return(
-          <motion.div 
-            className={'circle'} 
-            initial={{opacity: 0, backgroundColor: 'green'}} 
-            whileInView={{opacity: 1, backgroundColor: 'white'}}                 //once this element is in view, it will trigger the animation
-            viewport={{once: true}}                                              //decide to repeat the animation once or an indefinite amount of times
-          />
-    )    
-}
-
-
 
 
 
@@ -221,6 +196,15 @@ function App() {
 
 
 
+
+
+
+
+
+
+
+
+
 //========================================== DRAGGABLE COMPONENTS ===============================
 
 //the circle below can only be dragged 50px to the top, 50 px to the left, etc..
@@ -230,10 +214,15 @@ function Circle() {
             drag                           //you can set drag='x' or drag='y' to force the element to only drag on the x-axis or y-axis        
             dragSnapToOrigin={true}        //this will force the element to go back to its origin when the user stops dragging the element
             dragElastic={1}                //must be a value between 0 and 1; the degree of movement allowed outside of constraints
-            dragMomentum={true}            // applies momentum when the user stops dragging the element
+            dragMomentum={true}            // applies momentum (element keeps moving) when the user stops dragging the element
+            dragPropagation                // if a child component is dragged, it will also drag the parent component with it
+            dragListener={false}           // setting this to false will ensure that this element can ONLY be dragged using useDragControls()
+            dragTransition={{              //applies an animation when the user lets go of the draggable element and hits one of the contraints
+                bounceStiffness: 600,      //the animation takes the form of a spring
+                bounceDamping: 10 }}
             dragConstraints={{
-              top: -50,                                
-              left: -50,
+              top: 50,                                
+              left: 50,
               right: 50,
               bottom: 50,
             }}
@@ -252,10 +241,10 @@ function Circle() {
          <div>           
             <motion.div 
               className={'container'}                        {/* large container that will be used for the draggable item*/}
-              ref={contraints}/>                               {/* you must assign the same ref object to the container and the draggable item*/}
+              ref={contraints}/>                             {/* you must assign the same ref object to the container and the draggable item*/}
 
             <motion.div    
-                drag                                           {/* draggable item*/}
+                drag                                         {/* draggable item*/}
                 dragConstraints={contraints}                  
               />
         </div>
@@ -263,6 +252,24 @@ function Circle() {
     
 }
 
+//DRAG CONTROLS: you can drag a component by clicking on another component
+function DragControls () {
+  const dragControls = useDragControls();
+
+  const startDrag = (e) => {
+      dragControls.start(e, {snapToCursor: true})
+  }
+  
+  return(
+      <button onPointerDown={startDrag}>            //by clicking on this button, you can drag the element below
+          click me
+      </button>
+      <motion.div 
+        className={'box'} 
+        dragControls={dragControls}
+      />
+  )
+}
 
 
 
@@ -293,6 +300,7 @@ function Circle() {
           }}      
           whileTab={{scale: 0.9}}                  //gesture for click events
           whileInView={{opacity: 1}}               //gesture for elements that first appear in the viewport
+            viewport={{once: true}}                //the whileInView gesture will only run once
           whileFocus={{scale: 1.2}}                //gesture for input elements or any element that receives focus
           whileDrag={{color: 'red'}}               //gesture for elements that are currently being dragged
 
@@ -302,7 +310,8 @@ function Circle() {
           onTabCancel={(e, info) => {}}            //function that fires when the tab ends (info = {point: {x, y}})
           onPanStart={(e, info) => {}}             //function that fires when the user presses down on an element and then moves away at least 3 pixels  (info = {point: {x, y}})  for mobile -> touch-action: none; this will disabled pan on mobile device
           onPanEnd={(e, info) => {}}               //function that fires when the user stop panning
-          
+          onDragStart={(e, info) => {}}            //function that fires when the user starts dragging the element
+          onDragEnd={(e, info) => {}}              //function that fires when the user stops dragging the element
       />          
     )
 }
@@ -344,9 +353,60 @@ function Circle() {
 
 
 
+//================================================= SCROLLING ANIMATION ====================================================
+//you can animate an element based on the scroll position of the user
+
+function Circle() {
+    const {scrollYProgress} = useScroll();        //we get the current value of the scroll position on the y-axis
+  
+    return(
+          <motion.div 
+            className={'circle'}         
+            style={scaleX: scrollYProgress}      //this component will be resized based on the current value of scrollYProgress                                     
+          />
+    )    
+}
 
 
 
+//VIEWPORT ANIMATION: animation that occurs when the element is first seen in the viewport
+
+function Circle() {
+    return(
+          <motion.div 
+            className={'circle'}    
+            initial={{opacity : 0}}
+            whileInView={{opacity: 1, transition: {duration: 0.7}}}   
+            viewport={{once: true}}                  //scrolling animation will only occur once
+            onViewportEnter={(entry) => {}}          //function that is fired when the element appears in the viewport (Provides the IntersectionObserverEntry with details of the intersection event)
+            onViewportLeave=((entry) => {})          //function that is fired when the element leaves the viewport  (Provides the IntersectionObserverEntry with details of the intersection event)
+          />
+    )    
+}
+
+
+              
+
+//VIEWPORT PROPS: a prop that enables us to customize the scrolling behavior
+
+function Circle() {
+    const containerRef = useRef();
+  
+    return(
+        <div ref={containerRef} style={{overflow: 'hidden'}}> //(this must have a scroll bar)
+            <motion.div 
+              initial={{opacity: 0}}
+              whileInView={{opacity: 1}   
+              viewport={{
+                  once: true,           // animation will only occur once
+                  root: containerRef,   // by assigning a ref object here, the container that has this same ref will act as the viewport
+                  margin: '100px',      // The more margin, the longer it will take for the viewport to see the element, the less margin, the less it will take to see the element in the viewport
+              }}                
+            />
+       </div>
+    )
+}
+  
 
 
 
@@ -475,6 +535,7 @@ const x = useMotionValue();              // motion values are objects that are a
                                          //in this case, x will keep track of the elements position on the x-axis
                                          // you can assign x to one of the hooks below to apply a different animation to a different css property
 
+
 const {
        scrollYProgress,                   //current value of the y-axis scroll position
        scrollXProgress                    //current value of the x-axis scroll position
@@ -497,12 +558,19 @@ const background = useTransform(         //useTransform() accepts a motion value
   )
 
 
-const [boxRef, animate] = useAnimate();    //useAnimate() can imperatively create animations using a ref object (animate() should be called in a useEffect)
-await animate(boxRef.current, {x: 12}, {duration: 0.2} //first argument is the ref of the element, second is the css properties we want to animate, third is the transitition 
-
-
-
-
+              
+const dragControls = useDragControls();   //useDragControls() can drag an element A by click on another element B
+const startDrag = (e) => {                //you will need an event handler that calls the start() function
+    dragControls.start(e, {snapToCursor: true})//the start() function will drag the element B
+}
+<button onPointerDown={startDrag}>      //Element A calls the event handler
+    click me
+</button>
+<motion.div 
+  className={'box'} 
+  dragControls={dragControls}          //Element B will be dragged
+/>
+              
 
 
 

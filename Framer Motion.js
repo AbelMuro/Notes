@@ -493,6 +493,7 @@ function App() {                                           // with LayoutGroup, 
 
 //LAYOUT-ID: When a new component is added that has a layoutId prop that matches an existing component, 
 //it will automatically animate out from the old component.
+//MAKE SURE TO DISABLE TRANSITION CSS PROPERTY ON THE ELEMENTS THAT HAVE LAYOUTID
 
 /* 
      [ ________             ]        

@@ -162,7 +162,8 @@ function VariantsWithFunctions() {
 //EXIT ANIMATIONS: before an element is removed from the dom, you can use the exit prop to apply some animation before the element is removed
 const variants = {
     exit: {
-        x: -1000
+        x: -1000,
+        opacity: 0,
     }
 };
 
@@ -178,7 +179,7 @@ function App() {
         <AnimatePresence>
             {remove ? <></> : 
             <motion.div                      //before this element is removed, it will run some animation
-                key='1'                      //key prop is required for this to work
+                key='1'                      //key prop is required for this to work (if its an img, then this should be assigned the src of the img as well)
                 className={'box'} 
                 variants={variants} 
                 exit='exit'                  //the exit prop will use the exit property from the object in variants

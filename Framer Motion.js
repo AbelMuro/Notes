@@ -8,7 +8,7 @@
             if the website shifts to the left or right, you can fix this bug by using the following selector
 
             html, body {
-              width: 100vw;
+              max-width: 100vw;
               overflow-x: hidden;          //this will prevent the website from being moved to the left or right
             }
 

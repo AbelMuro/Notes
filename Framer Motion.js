@@ -412,6 +412,15 @@ function Circle() {
 
 function Circle() {
     const containerRef = useRef();
+
+    const amount = useMemo(() => {                           //this is a good way to define the amount prop based on the size of the viewport
+          if(mobile)
+              return 0.3;
+          else if (tablet)
+              return 0.6;
+          else 
+              return 0.8;
+    }, [mobile, tablet])
   
     return(
         <div ref={containerRef} style={{overflow: 'hidden'}}> //(this must have a scroll bar)
@@ -421,7 +430,8 @@ function Circle() {
               viewport={{
                   once: true,           // animation will only occur once
                   root: containerRef,   // by assigning a ref object here, the container that has this same ref will act as the viewport
-                  margin: '100px',      // The more margin, the longer it will take for the viewport to see the element, the less margin, the less it will take to see the element in the viewport
+                  margin: '100px',      // The more margin, the longer it will take for the viewport to see the element, the less margin, the less it will take to see the element in the viewport                       
+                  amount: 0.6,          // define the percentage of the element that has to be in view for the scrolling animation to occur        
               }}                
             />
        </div>

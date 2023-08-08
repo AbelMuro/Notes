@@ -7,9 +7,10 @@
 
             if the website shifts to the left or right, you can fix this bug by using the following selector
 
-            html, body {
+            html, body, #root {
               max-width: 100vw;
               overflow-x: hidden;          //this will prevent the website from being moved to the left or right
+              transition: none;            //this can also help prevents bugs with framer motion
             }
 
 

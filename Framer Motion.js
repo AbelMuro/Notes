@@ -100,6 +100,9 @@ function Circle
 
 
 //VARIANTS: you can use the variants prop to create animations in child components
+//Keep in mind that if you use variants for a child component, and the animation is triggered throught the parent component
+// you should not have use any animation for the child components through the initial and animate prop
+
 const list = {
       visible: {  opacity: 1,
                   transition: {

@@ -632,15 +632,15 @@ function App() {
 
     useEffect(() => {
         const animation = async () => {
-          await animate(scope.current, { x: 0 }, {duration: 0.5})            //second object is the css properties
-          await animate(scope.current, { x: 100}, {duration: 0.5, delay: 2}) //third object is the transition properties
+          const animating = await animate(scope.current, { x: 0 }, {duration: 0.5})            //second object is the css properties
+          await animate(scope.current, { x: 100}, {duration: 0.5, delay: 2})                   //third object is the transition properties
           await animate(scope.current, { x: 20}, {duration: 0.5})
-          await animate('div', {y: 45}, {duration: 0.4})                      //you can use a tag selector to animate a group of elements
+          await animate('div', {y: 45}, {duration: 0.4})                                       //you can use a tag selector to animate a group of elements
         }
         
         animation();
 
-      return () =>  {animation.stop;}                     //when the component is unmounted, it will call the stop() function to clean up the animation
+      return () =>  {animating.stop;}                     //when the component is unmounted, it will call the stop() function to clean up the animation
       }, [])
 
     return(    

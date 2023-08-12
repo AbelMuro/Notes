@@ -571,8 +571,7 @@ const x = useMotionValue();              // motion values are objects that are a
                                          // you can assign x to one of the hooks below to apply a different animation to a different css property
 
 
-const {
-       scrollYProgress,                   //current value of the y-axis scroll position
+const {scrollYProgress,                   //current value of the y-axis scroll position
        scrollXProgress                    //current value of the x-axis scroll position
       } = useScroll();                    //returns a motion value that contains data about the scrolling position of the webpage
 
@@ -598,17 +597,21 @@ const dragControls = useDragControls();   //useDragControls() can drag an elemen
 const startDrag = (e) => {                //you will need an event handler that calls the start() function
     dragControls.start(e, {snapToCursor: true})//the start() function will drag the element B
 }
-<button onPointerDown={startDrag}>      //Element A calls the event handler
-    click me
-</button>
-<motion.div 
-  className={'box'} 
-  dragControls={dragControls}          //Element B will be dragged
-/>
+    <button onPointerDown={startDrag}>      //Element A calls the event handler
+       click me
+   </button>
+   <motion.div 
+      className={'box'} 
+      dragControls={dragControls}          //Element B will be dragged
+    />
               
 
 
+const [x, cycle] = useCycle({x : -100}, {x: 120});            //hook that lets you cycle between two animations
 
+    <div animate={x} onTapStart={() => cycle()} onTapEnd={() => cycle()}>
+                
+    </div>
 
 
 
@@ -637,7 +640,7 @@ function App() {
         
         animation();
 
-      return animation.stop;                     //when the component is unmounted, it will call the stop() function to clean up the animation
+      return () =>  {animation.stop;}                     //when the component is unmounted, it will call the stop() function to clean up the animation
       }, [])
 
     return(    

@@ -1,3 +1,11 @@
+----------------------------------------------------- LEET CODE PROBLEMS SOLVED ---------------------------------------------
+
+1) Two Sum: 
+
+
+  
+
+
 ----------------------------------------------------------- ALGORITHMS --------------------------------------------------------------------
 
 
@@ -17,27 +25,24 @@
 
 
 
-//BINARY SEARCH ALGORITHM: is a searching algorithm used in a sorted array by repeatedly dividing the search interval in half. 
-               //The idea of binary search is to use the information that the array is sorted and reduce the time 
-               //complexity to O(Log n). 
+//BINARY SEARCH ALGORITHM: is a searching algorithm used in a SORTED array by repeatedly dividing the search interval in half. 
+//The time complexity is O(Log n). 
                
                EX:
                
                 var search = function(nums, target) {
-                    let middle;
-                    let end =  nums.length - 1;
-                    let start = 0;
+                  let middle;
 
-                    while(start <= end){
-                        middle = Math.floor((start + end) / 2);         //make sure to round down the result here 
-                        if(nums[middle] > target)                       //we 
-                            end = middle - 1;
+                  for(let i = 0, j = nums.length - 1; i <= j;){
+                        middle = Math.floor((i + j) / 2);               //we get the middle index of the array
+                        if(nums[middle] > target)                                 
+                            j = middle - 1;
                         else if(nums[middle] < target)
-                            start = middle + 1;
+                            i = middle + 1;
                         else
-                            return middle;
-                    }
-                    return -1;
+                            return middle; 
+                  }
+                  return -1;
                 };
 
 
@@ -65,7 +70,7 @@
               let A = [1,2,3,4,5,6,7,8,9,10];
               let X = 10;
               
-              for(let i = 0, j = A.length - 1; i < j; ){
+              for(let i = 0, j = A.length - 1; i < j; i++; j--){
                   if(A[i] + A[j] > X)
                       j++
                   
@@ -74,7 +79,6 @@
                     
                   else if(A[i] + A[j] == X)
                       return 1;
-              
               }
     
 
@@ -98,35 +102,28 @@
     
     
 //SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, the time complexity for this algorithm is O(n)
-                     __    __    __
-        VISUAL:     |  |  |  |  |  |
-                [1, 2, 3, 4, 5, 6, 7, 8]
-                 |  |  |  |  |  |
-                 ----  ----  ----
+                     __    __ 
+        VISUAL:     |  |  |  | 
+                [1, 2, 3, 4, 5]           
+                 |  |  |  |  
+                 ----  ----         //you can think of this as a 'window' that contains elements
                  
                  
-         //EX:  Given an array of integers of size ‘n’, Our aim is to calculate the maximum sum of ‘k’ consecutive elements in the array.
-                             
-              arr = [100, 200, 300, 400]          k = 2
-              output = 700
-        
-              function maxSum(arr, k) {
-                  let max = 0;
-                  let sum = 0;
-                  
-                  for (let i = 0; i < k; i++) {                  // find initial sum of first k elements
-                      sum += arr[i];
-                      max = sum;                                 // initially, sum = 300
-                  }
-                                                            // remember that i = k, so 'i' will point to the third element in the first iteration
-                  for (let i = k; i < arr.length; i++) {    // first iteration: 
-                      sum += arr[i] - arr[i - k];                 // sum = 300, so what we do here is add 300 and subtract 100 from sum
-                      if (sum > max) {                            // so now the sum = 500, this is the sum of the second and third elements of the array 
-                          max = sum;                              // this if statement is for unsorted arrays 
-                      }
-                  }
-                  return max;
-              }
+         //EX:  Given an array of integers, Our aim is to calculate the maximum sum of 5 consecutive elements in the array.
+                          
+              const SlidingWindow = (arr) => {
+                let currSum = getSumOfFirstFiveElements(arr, 5);                //you have to manually implement this function
+                let largestSum = currSum;
+              
+                for (let i = 1; i <= arr.length - 5; i++) {
+                    currSum -= arr[i - 1];                                     // subtract first element from the 'window'
+                    currSum += arr[i + 4];                                     // add next element to the 'window' 
+                    largestSum = Math.max(largestSum, currSum);
+                }
+              
+                return largestSum;
+              };
+            
 
 
 

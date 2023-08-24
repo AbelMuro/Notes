@@ -1,6 +1,15 @@
 ----------------------------------------------------- LEET CODE PROBLEMS SOLVED ---------------------------------------------
+/*
 
-1) Two Sum: 
+  1)  Two Sum: 
+      use two pointer technique, one pointer starts at the beginning, 
+      the other pointer will be right next to the first pointer.
+      Use if statements to check the current sum of the elements in the array
+
+
+
+*/
+    
 
 
   

@@ -25,7 +25,10 @@
 
       OR you can just sort the original word and the anagram in alphabetical order and compare them!!!!
 
-
+  347) Top K Frequent Elements
+        use a hash map to keep track of the occurences of each number in the array,
+        then convert the map into an array and sort it in descending order
+        then traverse through the first k elements in the array and push those elements into another array
   
 */
     

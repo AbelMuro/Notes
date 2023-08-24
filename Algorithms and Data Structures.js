@@ -7,6 +7,9 @@
       Use if statements to check the current sum of the elements in the array
 
 
+  217) Contains Duplicates:
+       use a hash map to check for duplicates, you want to use map.has(), map.get(), and map.set()
+
 
 */
     

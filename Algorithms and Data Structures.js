@@ -7,10 +7,26 @@
       Use if statements to check the current sum of the elements in the array
 
 
+  49) Group Anagrams:
+      Use a loop to traverse through the array of words, then sort each word in alphabetical order and
+      add the sorted word as a property of a hash map, then use the unsorted word and add it as a value of the hash map
+
+
   217) Contains Duplicates:
        use a hash map to check for duplicates, you want to use map.has(), map.get(), and map.set()
 
+  242) Valid Anagram
+      use a hash map to count the occurences for each letter in the original word string,
+      then traverse through the hash map and subtract the letter occurences in the anagram
 
+      [1,3,2,3] -> letter occurences of original word
+      [1,3,2,2] -> letter occurences of anagram
+      [0,0,0,1] -> since we have a non-zero number in the hash map, the anagram is NOT an anagram of original word
+
+      OR you can just sort the original word and the anagram in alphabetical order and compare them!!!!
+
+
+  
 */
     
 

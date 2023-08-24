@@ -11,9 +11,9 @@
       Use a loop to traverse through the array of words, then sort each word in alphabetical order and
       add the sorted word as a property of a hash map, then use the unsorted word and add it as a value of the hash map
 
-
   217) Contains Duplicates:
-       use a hash map to check for duplicates, you want to use map.has(), map.get(), and map.set()
+       use a hash map to check for duplicates, the properties will be used to represent the letters, the values
+       will be used to contain the occurences
 
   242) Valid Anagram
       use a hash map to count the occurences for each letter in the original word string,

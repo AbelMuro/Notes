@@ -18,6 +18,19 @@
   238) Product of Array Except Self
         use two arrays, one called prefix, and the other called postfix. Postfix will contain the product of 
         all the values before the current index, and prefix will contain the product of all the values after the current index
+        
+                                                        orig index   prefix index
+        original array: [1, 2, 3, 4]                             [0] [1]          [1] [2]       [2] [3]
+                            -->
+        prefix:         [1, 2, 6, 24]      we start with 1  ->    1 * 2 = 2       2 * 3 = 6      6 * 4 = 24
+
+                            <--
+        postfix:        [24, 24, 12, 4]
+
+        we then multiply the elements of both prefix and postfix as shown below
+
+        results:       [1 * 24,    1 * 12 = 12,     2 * 4 = 8,     6 * 1 = 6]
+
 
 
   242) Valid Anagram

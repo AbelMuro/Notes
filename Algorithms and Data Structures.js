@@ -15,6 +15,11 @@
        use a hash map to check for duplicates, the properties will be used to represent the letters, the values
        will be used to contain the occurences
 
+  238) Product of Array Except Self
+        use two arrays, one called prefix, and the other called postfix. Postfix will contain the product of 
+        all the values before the current index, and prefix will contain the product of all the values after the current index
+
+
   242) Valid Anagram
       use a hash map to count the occurences for each letter in the original word string,
       then traverse through the hash map and subtract the letter occurences in the anagram

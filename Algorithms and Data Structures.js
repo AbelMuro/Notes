@@ -16,6 +16,10 @@
       Use a loop to traverse through the array of words, then sort each word in alphabetical order and
       add the sorted word as a property of a hash map, then use the unsorted word and add it as a value of the hash map
 
+  125) Valid Palindrome: 
+      traverse through the string and add the current character into another string palindrome IF its an alpha numeric character.
+      convert all characters into lower case and reverse the palindrome and compare them
+
   128) Longest Consecutive sequence
       Sort the array in ascending order and use a local variable to keeps track of the longest sequence.
       

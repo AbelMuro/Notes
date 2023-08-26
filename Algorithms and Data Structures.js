@@ -179,15 +179,15 @@
               let A = [1,2,3,4,5,6,7,8,9,10];
               let X = 10;
               
-              for(let i = 0, j = A.length - 1; i < j; i++; j--){
+              for(let i = 0, j = A.length - 1; i < j;){
                   if(A[i] + A[j] > X)
-                      j++
+                      i++
                   
                   else if(A[i] + A[j] < X)
-                      i++;
+                      j--;
                     
                   else if(A[i] + A[j] == X)
-                      return 1;
+                      return true;
               }
     
 
@@ -252,7 +252,7 @@
 
 
 
-//BUBBLE SORT ALGORITHM: designed to sort an array in ascending order with time complexity of 0(n2)
+//BUBBLE SORT ALGORITHM: designed to sort an array in ascending order with time complexity of 0(n^2)
                 
                 let arr = [1, 4, 3, 1, 5]
               
@@ -505,14 +505,14 @@
       
       
       
-------------------------------------------------------- DATA STRUCTURE ----------------------------------------------------------
+------------------------------------------------------- DATA STRUCTURES ----------------------------------------------------------
 
 
 
 STACK DATA STRUCTURE: 
 
 
-                LIFO: last in first out.... one good example of this is when you click on a link and then press the back button
+                //LIFO: last in first out
                       
                         push()
                     ____________________
@@ -535,7 +535,7 @@ STACK DATA STRUCTURE:
 
 
 
-                FIFO: first in first out... 
+                //FIFO: first in first out... 
                 
                           push()
                  ________________________

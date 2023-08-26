@@ -19,6 +19,9 @@
     If the sum of the current three elements is greater than 0, you decrement the third pointer
     If the sum is equal to 0, then you incremenet the second pointer OR you decrement the third pointer
 
+  20) Valid Parenthesis:
+    use a stack, first in and first out
+    use Array.push() and Array.pop();
 
   36) Valid Sudoku:
       use a hash map to store the values of the multi dimensional array. You will need two for loops

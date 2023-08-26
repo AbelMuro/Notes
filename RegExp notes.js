@@ -14,8 +14,8 @@
 
 / [a-zA-Z] /         //Find a letter character
 / [^a-zA-Z] /        //Find a character that is NOT a letter
-/ \w /	             //Find an alphanumeric character (letter and number)
-/ \W /	             //Find an non-alphanumeric character (letter and number)
+/ \w /	             //Find an alphanumeric character (letter and number)  [^a-zA-Z0-9_]
+/ \W /	             //Find an non-alphanumeric character (letter and number) [^a-zA-Z0-9_]
 / \d /	             //Find a digit
 / \D /	             //Find a non-digit character
 / \s /	             //Find a whitespace character

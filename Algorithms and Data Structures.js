@@ -6,6 +6,13 @@
       the other pointer will be right next to the first pointer.
       Use if statements to check the current sum of the elements in the array
 
+  11) Container with most water
+    use two pointer technique, first pointer starts at the beginning, second pointer starts in the end.
+    if first pointer's element is less than the second pointer's element, we increment the first pointer
+    if first pointer's element is more than the second pointer's element, we decrement the second pointer,
+    we calculate the area in every iteration by multiplying the element and result of subtracting the two pointers
+    we use a variable maxArea to keep track of the max area calculated in every iteration.
+
   15) 3Sum
     use three pointer technique, first pointer starts in the beginning, second one starts with the second element, third starts at the very end of the array
     If the sum of the current three elements is less than 0, you increment the second pointer

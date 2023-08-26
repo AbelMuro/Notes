@@ -6,6 +6,13 @@
       the other pointer will be right next to the first pointer.
       Use if statements to check the current sum of the elements in the array
 
+  15) 3Sum
+    use three pointer technique, first pointer starts in the beginning, second one starts with the second element, third starts at the very end of the array
+    If the sum of the current three elements is less than 0, you increment the second pointer
+    If the sum of the current three elements is greater than 0, you decrement the third pointer
+    If the sum is equal to 0, then you incremenet the second pointer OR you decrement the third pointer
+
+
   36) Valid Sudoku:
       use a hash map to store the values of the multi dimensional array. You will need two for loops
       One to traverse the rows, and the second to traverse the columns. The index that you use for the for loops

@@ -6,10 +6,24 @@
       the other pointer will be right next to the first pointer.
       Use if statements to check the current sum of the elements in the array
 
+  36) Valid Sudoku:
+      use a hash map to store the values of the multi dimensional array. You will need two for loops
+      One to traverse the rows, and the second to traverse the columns. The index that you use for the for loops
+      will be used as properties of the hash map and the numbers in the sudoku will be used as values for the hash map
+      Make sure to use an array as the value for each key in the hash map
 
   49) Group Anagrams:
       Use a loop to traverse through the array of words, then sort each word in alphabetical order and
       add the sorted word as a property of a hash map, then use the unsorted word and add it as a value of the hash map
+
+  128) Longest Consecutive sequence
+      Sort the array in ascending order and use a local variable to keeps track of the longest sequence.
+      
+        next element          current element      
+      sortedNums[i + 1] === sortedNums[i] + 1
+
+      the code above will help you determine if the next element is part of the current sequence. 
+      Typically, you want to use a for loop to traverse through the array
 
   217) Contains Duplicates:
        use a hash map to check for duplicates, the properties will be used to represent the letters, the values

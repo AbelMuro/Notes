@@ -18,7 +18,10 @@
 
   125) Valid Palindrome: 
       traverse through the string and add the current character into another string palindrome IF its an alpha numeric character.
-      convert all characters into lower case and reverse the palindrome and compare them
+      reverse all characters in palindrome and assign it to another variable reversePalindrome
+      convert all characters in palindrome into lower case and reassign it to palindrome variable
+      compare reversePalindrome and palindrome
+
 
   128) Longest Consecutive sequence
       Sort the array in ascending order and use a local variable to keeps track of the longest sequence.
@@ -28,6 +31,13 @@
 
       the code above will help you determine if the next element is part of the current sequence. 
       Typically, you want to use a for loop to traverse through the array
+
+  167) Two Sume II - Input Array Is Sorted
+      use two pointer technique, one pointer starts in the beginning, the other pointer starts at the end
+      when two elements add up to a number that is greater than the target, you decrement the pointer at the end
+      when two elements add up to a number that is less than the target, you increment the pointer in the beginning
+      If its equal, then you return the indices
+
 
   217) Contains Duplicates:
        use a hash map to check for duplicates, the properties will be used to represent the letters, the values

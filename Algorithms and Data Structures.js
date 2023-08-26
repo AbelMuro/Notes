@@ -26,6 +26,24 @@
       will be used as properties of the hash map and the numbers in the sudoku will be used as values for the hash map
       Make sure to use an array as the value for each key in the hash map
 
+      map.set(row, board[row][column]);      
+      map.set(column, board[row][column]);
+
+
+  42) Trapping Rain Water
+        You will need to find the max value on the left of each index and the max value on the right as well.
+        Then you will need to use this formula to calculate the amount of water the index can store
+
+        min(maxLeftHeight, maxRightHeight) - height[i]        // make sure to exclude the result if its negative
+
+        you can use the following for loops
+        
+          for(let i = 0; i < height.length; i++)
+              for(let l = i - 1; l >= 0; l--)                // the innter for loop will check all the values on the left side of the index
+
+          for(let i = height.length - 1; i >= 0; i--){
+             for(let r = i + 1; r < height.length; r++)       // the inner for loop will check  all the values on the right side of the index
+    
   49) Group Anagrams:
       Use a loop to traverse through the array of words, then sort each word in alphabetical order and
       add the sorted word as a property of a hash map, then use the unsorted word and add it as a value of the hash map

@@ -131,6 +131,13 @@
         use a hash map to keep track of the occurences of each number in the array,
         then convert the map into an array and sort it in descending order
         then traverse through the first k elements in the array and push those elements into another array
+
+  739) Daily Temperatures
+        use a stack FIFO to store the temperatures and their index.
+        You want to use an inner while loop that will continue popping the elements 
+        on top of the stack.
+        You calculate the daysWaited by subtracting the index from the element on top of the stack 
+        from the current index
   
 */
     

@@ -67,6 +67,11 @@
       the code above will help you determine if the next element is part of the current sequence. 
       Typically, you want to use a for loop to traverse through the array
 
+  150) Evaluate Reverse Polish Notation
+      use a stack FIFO to store the operands. Traverse through the array and push the numbers onto the stack, 
+      when you encounter a operator (+, -, *, /), you will need to pop() the last two elements of the stack
+      and perform the operation, and then put the result back onto the top of the stack
+
 
   155) Min Stack
       very straightforward, the MinStack function should have a 'private variable' called this.stack = [];

@@ -23,6 +23,16 @@
     use a stack, first in and first out
     use Array.push() and Array.pop();
 
+  22) Generate Parentheses
+      use two stacks FIFO, one stack to contain a combination of parentheses for one 'branch' 
+      and another stack to contain ALL the combinations of parenthesis
+
+      For the backtracking technique, you first need to understand that a combination must have exactly n opening parenthesis and n closing parenthesis
+      Also, the number of opening parenthesis must always be greater than the number of closing parenthesis
+      the base case must have a condition that checks if opening and closing parenthesis are BOTH equal to n
+      the second case must check if opening parenthesis is less than n (you increment opening by 1)
+      the third case must check if opening is greater than closed, (you incremenet closing by 1)
+  
   36) Valid Sudoku:
       use a hash map to store the values of the multi dimensional array. You will need two for loops
       One to traverse the rows, and the second to traverse the columns. The index that you use for the for loops

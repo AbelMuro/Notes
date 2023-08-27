@@ -67,7 +67,13 @@
       the code above will help you determine if the next element is part of the current sequence. 
       Typically, you want to use a for loop to traverse through the array
 
-  167) Two Sume II - Input Array Is Sorted
+
+  155) Min Stack
+      very straightforward, the MinStack function should have a 'private variable' called this.stack = [];
+      the other functions should be easy to implement
+
+
+  167) Two Sum II - Input Array Is Sorted
       use two pointer technique, one pointer starts in the beginning, the other pointer starts at the end
       when two elements add up to a number that is greater than the target, you decrement the pointer at the end
       when two elements add up to a number that is less than the target, you increment the pointer in the beginning

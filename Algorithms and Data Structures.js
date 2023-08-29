@@ -91,6 +91,17 @@
       when you encounter a operator (+, -, *, /), you will need to pop() the last two elements of the stack
       and perform the operation, and then put the result back onto the top of the stack
 
+  153) Find Minimum In Rotated Sorted Array
+      we use a variation of binary search,
+      First we calculate the middle index of the array, then we check if the left pointer is less than the right pointer
+      if its true, the we save the value of the left pointer because we know that section of the array is already sorted
+      Every iteration we must check if the current value of middle is less than the saved value in min
+      Then we check if the middle value is greater than or equal to the left pointer, 
+      if its true, then we check the right side of array
+      if its false, then we check the left side of the array
+      
+      
+      
 
   155) Min Stack
       very straightforward, the MinStack function should have a 'private variable' called this.stack = [];
@@ -155,14 +166,23 @@
         from the current index
 
   853) Car fleet
-    combine the positions array and the speed array into one array and then sort it in descending order
+    Combine the positions array and the speed array into one array and then sort it in descending order
     You will have to use a stack to contain the time it takes for one car to arrive to the target
     (target - position)/speed = time
 
     When you calculate the time for a car, you push it into the stack. 
     If the top of the stack is less than or equal to the element beneath it, then we pop the element on top
     The idea here is that those two elements that we compared have become a car fleet
-     
+
+ 875) Koko eating Bananas
+     Find the max value in the piles array, that value will be the max value for k. [1,2,3,....., k]
+     Then use a 'for' loop to iterate to k
+     Use an inner 'for' loop to traverse through the piles array and divide each value with the current k, 
+        the result of that will be accumulated into a variable currentHours
+        CurrentHours is the hours it will take for the monkey to consume all piles at speed k
+    if currentHours is greater than h, then we traverse on the right side of the k array
+    if currenthours is less than or equal to h, then we traverse on the left side of k array
+    this is where we use binary search
   
 */
     

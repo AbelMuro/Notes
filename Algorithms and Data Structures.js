@@ -61,6 +61,14 @@
       Use a loop to traverse through the array of words, then sort each word in alphabetical order and
       add the sorted word as a property of a hash map, then use the unsorted word and add it as a value of the hash map
 
+  74) Search 2D matrix
+      Use binary search two times. Once for the rows, and again for the columns in the matrix
+      You will need to check the first column and the last column of each row and see if the target falls within that range. 
+      If it does, then use binary search on that row only.
+      If the first column of the row is less than the target, then you move to the previous row
+      If the last column of the row is more than the target, then you move to the next row
+  
+
   125) Valid Palindrome: 
       traverse through the string and add the current character into another string palindrome IF its an alpha numeric character.
       reverse all characters in palindrome and assign it to another variable reversePalindrome
@@ -131,6 +139,12 @@
         use a hash map to keep track of the occurences of each number in the array,
         then convert the map into an array and sort it in descending order
         then traverse through the first k elements in the array and push those elements into another array
+
+  704) Binary Search
+    use the binary search algorithm. Declare a local variable middle and use the formula (i + j)/2 
+    to calculate the middle index. Then use the middle index to compare that value with the target
+    If the middle index is less than the target, you subtract middle by 1 and assign the result to i
+    If the middle index is more than the target, you add middle by 1 and assign the result to j
 
   739) Daily Temperatures
         use a stack FIFO to store the temperatures and their index.

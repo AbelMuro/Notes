@@ -5,6 +5,7 @@
       use two pointer technique, one pointer starts at the beginning, 
       the other pointer will be right next to the first pointer.
       Use if statements to check the current sum of the elements in the array
+      return the indices of the pointers if the current sum is equal to the target
 
   11) Container with most water
     use two pointer technique, first pointer starts at the beginning, second pointer starts in the end.

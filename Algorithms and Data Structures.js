@@ -138,6 +138,16 @@
         on top of the stack.
         You calculate the daysWaited by subtracting the index from the element on top of the stack 
         from the current index
+
+  853) Car fleet
+    combine the positions array and the speed array into one array and then sort it in descending order
+    You will have to use a stack to contain the time it takes for one car to arrive to the target
+    (target - position)/speed = time
+
+    When you calculate the time for a car, you push it into the stack. 
+    If the top of the stack is less than or equal to the element beneath it, then we pop the element on top
+    The idea here is that those two elements that we compared have become a car fleet
+     
   
 */
     

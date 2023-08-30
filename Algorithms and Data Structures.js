@@ -183,6 +183,17 @@
     if currentHours is greater than h, then we traverse on the right side of the k array
     if currenthours is less than or equal to h, then we traverse on the left side of k array
     this is where we use binary search
+
+
+    2325) Decode the message
+      use a hash map to contain all the first occuring letters in the string 'key' and assign a corresponding letter in the alphabet
+      key = hello world ...
+            h e l o w   r d ...     we get the first occurence of EVERY letter in the key above
+            a b c d e   f g  ...    and assign a letter in the alphabet 
+             
+      then traverse through the string 'message' and check every letter to see if it exists in the hash map
+      If it does, then we get the value of the current key and we accumulate it to some local variable
+    
   
 */
     

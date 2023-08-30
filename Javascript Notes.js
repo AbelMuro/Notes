@@ -849,8 +849,7 @@ let name = "abel"
 `You can add variables to strings like this ${name}`;                  //string interpolation
 "this is a string";
 let x = "hello" + "world" + 67;                                        //strings can be concantenated, 67 will be converted into a string
-x[0]                                                                   //characters in strings can be accessed as if it was an array                
-let y = "2" + 2;                                                       //this will return a string '22'
+x[0]                                                                   //characters in strings can be accessed as if it was an array, but you can't mutate the string by doing x[0] = 'r'                
 let z = "4" - 3;                                                       //this will return a number 1 because - will convert the string into a number;
 
 'a' < 'b';                                                             // We are comparing the hexadecimal value of the letters in the string                                                                         
@@ -860,10 +859,18 @@ let z = "4" - 3;                                                       //this wi
                                                                        // 's', 't', 'r' are the same, so at this point, everything is true
                                                                        // but 'i' is less than 'o' in the hexadecimal chart, so the whole comparison return false
 
+parseInt('a', 36) - 9							//this will convert 'a' into 1, this is useful for finding the location of a letter in the alphabet  a -> 1  b -> 2   c -> 3 ....  y -> 25  z -> 26
+
+const index = 2
+const letter = (index + 9).toString(36)					//this will convert 2 into 'b', this is usefull for getting letters in the alphabet based on their position   1 -> a   b -> 2   3 -> c  ....  25 -> y   26 -> z
+
 let num = 123123                                                        //.toLocaleString() will add commas to a number, but keep in mind that the number will be converted into a string
 console.log(num.toLocaleString());                                      //will display '123,123'
 num.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})		//.toLocaleString() has two arguments that you can use
-	
+
+
+
+
 //the following function enables adding two extremely large numbers without BigInt(not all versions of node.js and browsers can support BigInt)
 //the logic of the following functions goes like this..
 

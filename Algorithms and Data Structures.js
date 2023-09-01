@@ -259,6 +259,7 @@
 
 
 //TWO POINTER MANIPULATION ALGORITHM: Two pointers is an easy and effective technique that is typically used for searching pairs in a sorted array.
+
 //Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
 //The time complexity for this algorithm is O(n)
             EX:
@@ -595,60 +596,63 @@
 ------------------------------------------------------- DATA STRUCTURES ----------------------------------------------------------
 
 
+/*   
 
-STACK DATA STRUCTURE: 
+  STACK data structure:
+  
+  A stack is a linear data structure in which elements 
+  can be inserted and deleted only from one side of the list, 
+  called the top. A stack follows the LIFO (Last In First Out) principle, 
+  i.e., the element inserted at the last is the first element to come out.
 
 
                 //LIFO: last in first out
                       
-                        push()
-                    ____________________
-                   |                    | 
-                  link4                 v
-                                  |            |
-                                  |   link3    |
-                                  |   link2    |
-                                  |   link1    |
-                                   -------------                                                           
+                        push()                                             pop()
+                    ____________________                      _________________________
+                   |                    |                     |                        |
+                  link 4                v                     ^                        v
+                                  |            |         |            |               link 4 
+                                  |   link3    |         |   link3    |                       
+                                  |   link2    |         |   link2    |
+                                  |   link1    |         |   link1    |
+                                   -------------          ------------                                               
                                    
-                                                      pop()
-                                         _________________________________
-                                        |                                 |
-                                  |            |                          v
-                                  |   link3    |                        link 4
-                                  |   link2    |
-                                  |   link1    |
-                                   -------------
+*/
 
+
+
+/*
+    QUEUE data structure  
+    
+    Queue is a linear data structure in which elements can be inserted only 
+    from one side of the list called rear, and the elements can be deleted 
+    only from the other side called the front. The queue data structure 
+    follows the FIFO (First In First Out) principle, 
+    i.e. the element inserted at first in the list, 
+    is the first element to be removed from the list.
 
 
                 //FIFO: first in first out... 
                 
-                          push()
-                 ________________________
-                |                        |
-               link 4              |     v    |
-                                   |  link3   |
-                                   |  link2   |
-                                   |  link1   |
-                                    ----------
-                
-                
+                       push()                                              
+                 ________________________                         
+                |                        |                        
+               link 4              |     v    |              |          |  
+                                   |  link3   |              |  link4   |               
+                                   |  link2   |              |  link3   |
+                                   |  link1   |              |  link2   |
+                                    ----------                ----------
+                                                                   |           pop()          
+                                                                    ----------------------- > link 1
+  */
+                   
 
-                                   |          |                 
-                                   |  link4   |               
-                                   |  link3   |
-                                   |  link2   |
-                                    ----------
-                                        |                       
-                                        ----------------------- > link1
-                                                  pop()
-                
-                
+
                 
    
    
-   BINARY TREE: a data structure that has a root node, each node has three parts; data, left pointer and right pointer.
+   //BINARY TREE: a data structure that has a root node, each node has three parts; data, left pointer and right pointer.
    
                                               root node
                                                  __

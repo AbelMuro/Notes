@@ -241,7 +241,32 @@
                   return -1;
                 };
 
+//you can modify the algorithm to count duplicate values if they equal to the target
 
+                    var search = function(nums, target) {
+                  let middle;
+
+                  for(let i = 0, j = nums.length - 1; i <= j;){
+                        middle = Math.floor((i + j) / 2);               //we get the middle index of the array
+                        if(nums[middle] > target)                                 
+                            j = middle - 1;
+                        else if(nums[middle] < target)
+                            i = middle + 1;
+                        else{
+                          let left = middle - 1;
+                          let right = middle + 1;
+                
+                          while(nums[left] === target)
+                              left--;
+                          while(nums[right] === target)
+                              right++;
+                          
+                          break;
+                        }
+                          
+                  }
+                  return -1;
+                };
 
 
 

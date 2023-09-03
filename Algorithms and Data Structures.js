@@ -224,7 +224,7 @@
 //BINARY SEARCH ALGORITHM: is a searching algorithm used in a SORTED array by repeatedly dividing the search interval in half. 
 //The time complexity is O(Log n). 
                
-               EX:
+//Binary search that excludes the left and right pointers;
                
                 var search = function(nums, target) {
                   let middle;
@@ -241,9 +241,9 @@
                   return -1;
                 };
 
-//you can modify the algorithm to count duplicate values if they equal to the target
+//Binary search with duplicate values
 
-                    var search = function(nums, target) {
+            var search = function(nums, target) {
                   let middle;
 
                   for(let i = 0, j = nums.length - 1; i <= j;){
@@ -268,10 +268,24 @@
                   return -1;
                 };
 
+//Binary search that counts the left and right pointers
 
-
-
-
+            const binarySearch = (target, arr) => {
+                  let left = 0;
+                  let right = arr.length;
+              
+                  while (left < right) {
+                      let mid = Math.floor((left + right) / 2);
+                      if (arr[mid] > target) {
+                          right = mid;
+                      } else if (arr[mid] < target) {
+                          left = mid + 1;
+                      } else {
+                          return mid;
+                      }
+                  }
+                  return -1
+            }
 
 
 

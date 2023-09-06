@@ -439,7 +439,7 @@ function SomeComponent() {
     //different ways to access state
     const selectOne = useSelector(state => state.list)     //useSelector will return the property list from the state object      
     const selectTwo = useSelector(state => state.list.array, shallowEqual)  //if you are selecting an object from the state, make sure to pass shallowEqual on the second argumentbecause you return a new reference everytime the useSelector gets called
-    const selectTwo = useSelector(selectCounter);             //useSelector will return the property list after we manipulated it
+    const selectThree = useSelector(selectCounter);             //useSelector will return the property list after we manipulated it
 }
 
 

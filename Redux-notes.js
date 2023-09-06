@@ -112,6 +112,24 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //================================================== REDUCER ==============================================
 //The reducer is a function that uses action objects to mutate state data
 //reducer must be a pure function, meaning it must not change the state directly 
@@ -195,131 +213,6 @@ export default rootReducer;
 
 
 
-//=============================================== CREATE SLICE() ===============================================================
-//createSlice() does multiple things for you at once, it creates a reducer, and generates action creators that 
-//correspond to the 'case' or 'types 'in your reducers
-//the whole point of this function is to reduce boilerplate code.
-
-
-import { createSlice } from '@reduxjs/toolkit'
-
-const initialState = { value: 0 }
-
-const counterSlice = createSlice({
-  name: 'counter',                                                          //name of reducer
-  initialState,                                                             //initial state of reducer
-  reducers: {                                                               //the reducer function
-    increment(state) {                                                      // you can think of this as a 'case' in the 'switch' of a reducer function
-      state.value++
-    },
-    decrement(state) {                                                       // you can think of this as a 'case' in the 'switch' of a reducer function
-      state.value--
-    },
-    incrementByAmount(state, action) {                                       // you can think of this as a 'case' in the 'switch' of a reducer function
-      state.value += action.payload
-    },
-  },
-})
-
-export const { increment, decrement, incrementByAmount } = counterSlice.actions                 //automatically creating action creators to dispatch
-export default counterSlice.reducer                                                             //exporting the reducer
-
-
-
-
-
-
-
-
-
-//======================================================= CREATE REDUCER =========================================================
-//another way of creating a reducer, although you have to use createActions() from redux tool kit with createReducer()
-
-import { createAction, createReducer } from '@reduxjs/toolkit'
-
-const increment = createAction('counter/increment')
-const decrement = createAction('counter/decrement')
-const incrementByAmount = createAction('counter/incrementByAmount')
-const initialState = { value: 0 }
-
-const counterReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
-  builder
-    .addCase(increment, (state, action) => {                            //the 'case'
-      state.value++
-    })
-    .addCase(decrement, (state, action) => {
-      state.value--                         
-    })
-    .addCase(incrementByAmount, (state, action) => {
-      state.value += action.payload
-    })
-})
-
-
-
-
-
-
-
-
-
-//===================================================== USE DISPATCH HOOK =================================================
-// you can use the useDispatch hook to dispatch actions to the reducer
-
-import {useDispatch} from 'react-redux';
-
-function ChildComponent() {
-    const dispatch = useDispatch();
-    
-    const handleClick = (e) => {
-        const newItem = e.target.value;
-        dispatch({type: "add item", item: newItem})      //dispatching an action object to the reducer
-    }
-    return (
-        <><button onClick={handleClick}> Click Me</button></>
-    )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=========================================================== USE SELECTOR HOOK ===================================================================
-// you can use useSelector() hook to access the state object
-// keep in mind that every component that has useSelector() 
-// will be re-rendered when the state object changes
-// useSelector() will automatically have the new state every time
-
-import {useSelector} from 'react-redux';             //must be used within a component to cause a re-render when state changes
-import {createSelector} from '@reduxjs/toolkit';     //createSelectors enable us to manipulate how the state properties will be viewed        
-
-
-//the createSelector below was designed for Apps that only have one reducer
-const selectList = createSelector(
-    (state) => state.list,                          //first callback must return a property from the state
-    (list) => list                                  //second callback can be used to manipulate the property that was pass down from the first callback
-)
-
-//the createSelector below was designed for Apps that have more than one reducer
-const selectCounter = createSelector(
-    (state) => state.CounterReducer,                 //first callback must return one of the names of the reducer
-    (CounterReducer) => CounterReducer.counter       //second callback you can access the actual property
-
-)
-
-function SomeComponent() {
-    //different ways to access state
-    const selectOne = useSelector((state) => state.list)     //useSelector will return the property list from the state object       
-    const selectTwo = useSelector(selectCounter);             //useSelector will return the property list after we manipulated it
-}
 
 
 
@@ -387,21 +280,180 @@ store.subscribe(() => {console.log(store.getState())})//subscribe will call the 
 
 
 
-//================================================ ACTION OBJECTS========================================================
-//action objects
-let action = {
-    type: "add item",                               //all action object must have a type property
-    item: "horse",
+
+
+
+
+
+
+
+
+
+
+
+
+//================================================ REDUX TOOLKIT ===========================================================
+
+
+
+
+//------------------------------------------------------------ CREATE SLICE() ------------------------------------------------------------
+//createSlice() does multiple things for you at once, it creates a reducer, and generates action creators that 
+//correspond to the 'case' or 'types 'in your reducers
+//the whole point of this function is to reduce boilerplate code.
+
+
+import { createSlice } from '@reduxjs/toolkit'
+
+const initialState = { value: 0 }
+
+const counterSlice = createSlice({
+  name: 'counter',                                                          //name of reducer
+  initialState,                                                             //initial state of reducer
+  reducers: {                                                               //the reducer function
+    increment(state) {                                                      // you can think of this as a 'case' in the 'switch' of a reducer function
+      state.value++
+    },
+    decrement(state) {                                                       // you can think of this as a 'case' in the 'switch' of a reducer function
+      state.value--
+    },
+    incrementByAmount(state, action) {                                       // you can think of this as a 'case' in the 'switch' of a reducer function
+      state.value += action.payload
+    },
+  },
+})
+
+export const { increment, decrement, incrementByAmount } = counterSlice.actions                 //automatically creating action creators to dispatch
+export default counterSlice.reducer                                                             //exporting the reducer
+
+
+
+
+
+
+
+//------------------------------------------------------------ CREATE REDUCER() ------------------------------------------------------------
+//another way of creating a reducer, although you have to use createActions() from redux tool kit with createReducer()
+
+import { createAction, createReducer } from '@reduxjs/toolkit'
+
+const increment = createAction('counter/increment')
+const decrement = createAction('counter/decrement')
+const incrementByAmount = createAction('counter/incrementByAmount')
+const initialState = { value: 0 }
+
+const counterReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
+  builder
+    .addCase(increment, (state, action) => {                            //the 'case'
+      state.value++
+    })
+    .addCase(decrement, (state, action) => {
+      state.value--                         
+    })
+    .addCase(incrementByAmount, (state, action) => {
+      state.value += action.payload
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//===================================================== REDUX HOOKS =====================================================
+
+
+
+//--------------------------------------------------- USE DISPATCH HOOK ---------------------------------------------------
+// you can use the useDispatch hook to dispatch actions to the reducer
+
+import {useDispatch} from 'react-redux';
+
+function ChildComponent() {
+    const dispatch = useDispatch();
+    
+    const handleClick = (e) => {
+        const newItem = e.target.value;
+        dispatch({type: "add item", item: newItem})      //dispatching an action object to the reducer
+    }
+    return (
+        <><button onClick={handleClick}> Click Me</button></>
+    )
 }
 
-//action creators
-function createAction(addOrRemove, item){           //you can define a function that will help you create an action object
-    let action = {
-        type: addOrRemove,
-        item: item
-    }
-    return action;
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------- USE SELECTOR HOOK ---------------------------------------------------
+// you can use useSelector() hook to access the state object
+// keep in mind that every component that has useSelector() 
+// will be re-rendered when the state object changes
+// useSelector() will automatically have the new state every time
+
+import {useSelector, shallowEqual} from 'react-redux';             //must be used within a component to cause a re-render when state changes
+import {createSelector} from '@reduxjs/toolkit';     //createSelectors enable us to manipulate how the state properties will be viewed        
+
+
+//the createSelector below was designed for Apps that only have one reducer
+const selectList = createSelector(
+    (state) => state.list,                          //first callback must return a property from the state
+    (list) => list                                  //second callback can be used to manipulate the property that was pass down from the first callback
+)
+
+//the createSelector below was designed for Apps that have more than one reducer
+const selectCounter = createSelector(
+    (state) => state.CounterReducer,                 //first callback must return one of the names of the reducer
+    (CounterReducer) => CounterReducer.counter       //second callback you can access the actual property
+
+)
+
+function SomeComponent() {
+    //different ways to access state
+    const selectOne = useSelector(state => state.list)     //useSelector will return the property list from the state object      
+    const selectTwo = useSelector(state => state.list.array, shallowEqual)  //if you are selecting an object from the state, make sure to pass shallowEqual on the second argumentbecause you return a new reference everytime the useSelector gets called
+    const selectTwo = useSelector(selectCounter);             //useSelector will return the property list after we manipulated it
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

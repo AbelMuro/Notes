@@ -63,7 +63,29 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
 
 
-//                  STEPS TO INTEGRATE REDUX INTO YOUR REACT APPLICATION
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//===================== STEPS TO INTEGRATE REDUX INTO YOUR REACT APPLICATION ==================================================
+
+//                 
 //      1) create a folder called './store' with the file store.js
 //
 //      2) store.js will have the following boilerplate code
@@ -102,8 +124,7 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
                        <Provider store={store}>
                              
                         </Provider>
-                 )
-                        
+                 )                     
             }
 
 
@@ -137,16 +158,6 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 //to make changes to the state object in the reducer, you want to make use of these array functions
 // that return an updated version of the array and doesnt mutate the original array
 
-// state.filter((element, index) => {           //removes certain elements from the array
-//                  if(element > 1) 
-//                      return true;            //element will be included in the new array
-//                  else
-//                     return false;           //element will be excluded from the new array
-//                })
-//
-// state.map((element, index) => {             //similar to forEach(), but returns an updated array and
-//              return element + 1;            //doesnt affect the original array
-//  })
 
 const reducer = (state = {list: []}, action) => {       //you can initialize state with a global object if you want
     let stateList = state.list;
@@ -438,7 +449,7 @@ const selectCounter = createSelector(
 function SomeComponent() {
     //different ways to access state
     const selectOne = useSelector(state => state.list)     //useSelector will return the property list from the state object      
-    const selectTwo = useSelector(state => state.list.array, shallowEqual)  //if you are selecting an object from the state, make sure to pass shallowEqual on the second argumentbecause you return a new reference everytime the useSelector gets called
+    const selectTwo = useSelector(state => state.list.array, shallowEqual)  //if you are selecting an object from the state, you MUST pass shallowEqual, this will make useSelector compare every property in the object, if any property is different then a rerender happens
     const selectThree = useSelector(selectCounter);             //useSelector will return the property list after we manipulated it
 }
 

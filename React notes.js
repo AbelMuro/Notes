@@ -5,25 +5,27 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 /* 
         steps to initialize React in your application
             
-            1) npm init -y                  //creates package.json
+            1) npm init -y                                                          //creates package.json
 
-            2) npm install react            //installs the react library
-               npm install react-dom        //installs the react dom library 
+            2) npm install react                                                    //installs the react library
+               npm install react-dom                                                //installs the react dom library 
             
-             3) npm install webpack --save-dev       //installs webpack core
-               npm install webpack-cli --save-dev   //install webpack command line interface (terminal stuff)
+             3) npm install webpack --save-dev                                      //installs webpack core
+               npm install webpack-cli --save-dev                                   //install webpack command line interface (terminal stuff)
                npm install webpack-dev-server --save-dev 
                
-             4) npm install @babel/core --save-dev          //installs the core files for babel (@ means that the package comes in modules)
-                npm install babel-loader --save-dev         //installs a loader that webpack uses to transpile JS code into valid JS code
-                npm install @babel/preset-react --save-dev  //installs a group of plugins that will transpile JSX into valid JS
-                npm install @babel/preset-env --save-dev    //installs a group of plugins that will transpile all the new features of JS 
+             4) npm install @babel/core --save-dev                                  //installs the core files for babel (@ means that the package comes in modules)
+                npm install babel-loader --save-dev                                 //installs a loader that webpack uses to transpile JS code into valid JS code
+                npm install @babel/preset-react --save-dev                          //installs a group of plugins that will transpile JSX into valid JS
+                npm install @babel/preset-env --save-dev                            //installs a group of plugins that will transpile all the new features of JS 
                
-              5) npm install html-webpack-plugin --save-dev  //installs a plugin that will create an html file in the /dist folder based on a template we have in /src
+              5) npm install html-webpack-plugin --save-dev                          //installs a plugin that will create an html file in the /dist folder based on a template we have in /src
                
-              6) npm install css-loader --save-dev                    //installs the loaders for css files and <style> tags
-                 npm install style-loader --save-dev
-               
+              6) npm install css-loader --save-dev                                   //installs the loaders for css files and <style> tags
+                 npm install style-loader --save-dev                                 
+
+              7) npm install babel-plugin-root-import --save-dev                    //enables you to create flags like '~/' to represent a specific directory like './src'                    
+                                                                                    //check .babelrc notes for more info
               7) configure webpack   (look at webpack notes for more info)
               
               8) In your package.json file, write the following scripts

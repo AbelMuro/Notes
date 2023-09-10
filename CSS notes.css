@@ -446,6 +446,20 @@
 
     */ 
 
+
+    /* MISCELLANEOUS TRANSFORM PROPERTIES*/
+    clip-path: circle(20px at 30px 35px)            /*  20px is the size of the circle, 30px 35px is the position of the circle,     30px left or right        35px top or bottom
+                                                        displays a circle inside an element, this circle acts like a viewport to the element
+
+                                                                        ----------------------
+                                                                       |     ____             |
+                                                                       |    /     \           |     //anything outside the circle will not be visible in the DOM
+                                                                       |    \     /           |     //just image that the poorly drawn thing inside the square is actually a circle,
+                                                                       |      ----            |
+                                                                        ----------------------
+                                                    */
+                                                    
+
 }
 
 

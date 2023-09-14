@@ -60,7 +60,7 @@
         e.target.validity.valueMissing;                         //returns true if the input is empty
         e.target.validity.patternMismatch:                      //returns true if the users input doesn't match the pattern attribute of the input element (pattern attribute only works with type = text, tel, search, email, url, password)
         e.target.validity.customError;                          //returns true if the programmer has programmatically set the error with setCustomValidity()
-        
+        e.target.style.setProperty('--placeholder', 'blue')     //you can dynamically change the color for the placeholder text in inputs, but make sure that the ::placeholder has a css variable assigned to color property
 -->
 <html>
     <head>

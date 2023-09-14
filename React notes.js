@@ -1528,13 +1528,8 @@ function ChangeTheme(turnSwitch) {
 // React Routers displays different routes(pages) in a single html file, while conventional router displays pages in different html files
 
 
-//npm install react-router-dom
+// npm install react-router-dom
     
-    
-//const navigate = useNavigate();                   
-//navigate("/aboutUs", {state: {data: "whatever"}});     //  will navigate to the '/aboutUs' component and pass {data: "whatever"} to another component
-
-//const {state} = useLocation();                         // '/aboutUs' component can use useLocation() to access the data being passed from navigate()
     
 function RouterStuff() {
     return(
@@ -1637,7 +1632,8 @@ function Whatever() {
      navigate("/DonateUs/" + repoName + otherRepoName + "somethingElse");   
      
 }
-//--------------------------------------------------------------- (3) ---------------------------------------------------------------------------------------
+//--------------------------------------------------------------- (3) useParams() hook---------------------------------------------------------------------------------------
+//useParams() hook is used to pass url parameters from one route to another
 
 function Complaints() {      
         return(                                                 
@@ -1649,7 +1645,7 @@ function Complaints() {
 }
 
 function PageOne(){
-     const {pageOne} = useParams();
+     const {pageOne} = useParams();                                    //pageOne = '/page-one'
 
         return(                                                 
             <>
@@ -1675,28 +1671,36 @@ function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}
 
 
 
-//------------------------------------------------------------ withRouter() ---------------------------------------------------------
-//withRouter() is a high order component that gives a component access to the following props
-//The history prop is an object that contains information about the browser’s history.
-//The location prop is an object that contains information about the current URL. 
-//The match prop is an object that contains information about how the current URL matches the route that was defined
 
-import React from 'react';
-import { withRouter } from 'react-router-dom';
 
-function MyComponent(props) {
-          return (
-            <div>
-              <h1>My Component</h1>
-              <p>Current location: {props.location.pathname}</p>
-            </div>
-         );
+
+
+//------------------------------------------------------- useLocation() and useNavigate() hook ----------------------------------------------------------------------------------
+//useNavigate() is used to navigate to a different route in the app
+//useLocation() is used to get information from the current route AND to pass data from one route to another
+
+function Home() {
+        const navigate = useNavigate();     
+        
+        const handleClick = () => {
+                navigate("/aboutUs", {state: {data: "whatever"}});     //  will navigate to the '/aboutUs' component and pass {data: "whatever"} to another component
+        }
+        
+        return(
+                <button onClick={handleClick}> 
+                        Go to About me page 
+                </button>
+        )
 }
 
-export default withRouter(MyComponent);
 
+function AboutUs() {
+        const {state} = useLocation();                         // '/aboutUs' component can use useLocation() to access the data being passed from navigate()
+        const location = useLocation();                        // OR you can access the location object that contains information about the current route
 
-
+        location.pathname;                                     //returns '/aboutUS'
+        
+}
 
 
 

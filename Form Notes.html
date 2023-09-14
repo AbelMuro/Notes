@@ -277,13 +277,28 @@
 
             
             
-            <!-- TEXT AREA -->
+            <!-- TEXT AREA, rows defines the height of the text area, columns defines the width of the text area-->
             <fieldset>
-                <textarea style="resize: none; width: 400px; height: 400px" name="textarea" required> </textarea>
+                <textarea 
+                    name="textarea" 
+                    rows='5'                 
+                    cols='30' 
+                    required> 
+                </textarea> 
                 <input type="submit"> 
             <fieldset>
 
+        <!-- 
+                STYLING A TEXT AREA
 
+                .textarea{
+                    width: 400px;
+                    height: 400px;
+                    resize: none;                //disables the user from resizing the text area
+                
+                }
+                                           
+         -->
 
 
 

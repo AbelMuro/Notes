@@ -36,9 +36,9 @@ function Circle () {
               opacity: {duration: 0.2},                         //you can assign a transition to a specific property like this
               type: 'spring',                                   //use Tween to use DURATION based animation, use Spring for spring based animation(default)
               bounce: 0.24,                                     //type='spring, 'determines the level of bounciness the animation will be, must be a value between 0 and 1 (if duration is set, then this defaults to 0.25) this property will be overridden if stiffness, damping or mass is set
-              damping: 7,                                       //type='spring', strength of opposing force. If set to 0, spring will oscillate indefinitely. Set to 10 by default.
+              damping: 6,                                       //type='spring', strength of opposing force. If set to 0, spring will oscillate indefinitely. Set to 10 by default.
               mass: 21,                                         //Mass of the moving object. Higher values will result in more lethargic movement. can be any number
-              stiffness: 23,                                    //Stiffness of the spring. Higher values will create more sudden movement
+              stiffness: 150,                                    //Stiffness of the spring. Higher values will create more sudden movement
             
               type:'tween',
               duration: 3,                                      //if type=spring, then durarion will be overridden if stiffness, damping or mass are set, and will be defaulted to 0.8 if bounce is set

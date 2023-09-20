@@ -347,14 +347,14 @@
                  
          //EX:  Given an array of integers, Our aim is to calculate the maximum sum of 5 consecutive elements in the array.
                           
-              const SlidingWindow = (arr) => {
-                let currSum = getSumOfFirstFiveElements(arr, 5);                //you have to manually implement this function
-                let largestSum = currSum;
+              const SlidingWindow = (arr, k = 5) => {
+                let sum = getSumOfFirstFiveElements(arr, k);                //you have to manually implement this function
+                let largestSum = sum;
               
-                for (let i = 1; i <= arr.length - 5; i++) {
-                    currSum -= arr[i - 1];                                     // subtract first element from the 'window'
-                    currSum += arr[i + 4];                                     // add next element to the 'window' 
-                    largestSum = Math.max(largestSum, currSum);
+                for (let i = 0; i <= arr.length - k; i++) {              
+                    sum -= arr[i];                                        // subtract first element from the 'window'
+                    sum += arr[i + k];                                     // add next element to the 'window' 
+                    largestSum = Math.max(largestSum, sum);
                 }
               
                 return largestSum;

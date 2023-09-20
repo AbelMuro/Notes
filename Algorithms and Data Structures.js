@@ -297,10 +297,12 @@
 
 
 
-//TWO POINTER MANIPULATION ALGORITHM: Two pointers is an easy and effective technique that is typically used for searching pairs in a sorted array.
+//TWO POINTER MANIPULATION ALGORITHM: Two pointers is an easy and effective technique that is typically used for searching pairs in a SORTED array.
 
 //Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
 //The time complexity for this algorithm is O(n)
+
+            //Two pointer that is used for a single array
             EX:
               
               let A = [1,2,3,4,5,6,7,8,9,10];
@@ -318,7 +320,19 @@
               }
     
 
+              //Two pointer that is used for two arrays 
+              // (looking for a MINIMUM common value in both arrays)
+                  let i = 0;
+                  let j = 0;
 
+                  while (i < nums1.length && j < nums2.length) {
+                      if (nums1[i] === nums2[j]) 
+                          return nums1[i]
+                      else if (nums1[i] < nums2[j])
+                          i++;          
+                      else
+                          j++;                     
+                  }              
 
 
 

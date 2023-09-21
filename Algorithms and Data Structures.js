@@ -222,6 +222,7 @@
 
 
 //BINARY SEARCH ALGORITHM: is a searching algorithm used in a SORTED array by repeatedly dividing the search interval in half. 
+//This algorithm is designed to find a target in an array
 //The time complexity is O(Log n). 
                
 //Binary search that excludes the left and right pointers;

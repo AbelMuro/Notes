@@ -320,17 +320,19 @@
               }
     
 
-              //Two pointer that is used for two arrays 
-              // (looking for a MINIMUM common value in both arrays)
+              // Two pointer that is used for two arrays 
+              // EX: look for a MINIMUM common value in both arrays
                   let i = 0;
                   let j = 0;
 
                   while (i < nums1.length && j < nums2.length) {
                       if (nums1[i] === nums2[j]) 
                           return nums1[i]
-                      else if (nums1[i] < nums2[j])
-                          i++;          
-                      else
+                        
+                      else if (nums1[i] < nums2[j])              //the logic here is the smaller number must keep incrementing
+                          i++;    
+                        
+                      else if(nums1[i] > nums2[j])
                           j++;                     
                   }              
 

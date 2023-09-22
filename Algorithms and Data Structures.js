@@ -289,7 +289,7 @@
             }
 
 
-
+//Binary Search: Aggressive Cows
 
 
 
@@ -383,7 +383,7 @@
 
           // Sliding window when k represents the maximum number of operations performed
           // Return the maximum number of consecutive 'T's or 'F's in the string s
-          // after performing the operation at most k times.
+          // after performing the operation(changing 'T' to 'F' or vice versa) at most k times.
             VISUAL:  
                      'TTFFTTFTFFTT'    'TTFFTTFTFFTT'      'TTFFTTFTFFTT'        'TTFFTTFTFFTT'
                       |  |              |       |           |          |               |     |

@@ -355,17 +355,20 @@
     
     
 //SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, the time complexity for this algorithm is O(n)
+
+
+
+        //Sliding Window when k represents the length of the window
+        //EX:  Given an array of integers, Our aim is to calculate the maximum sum of 5 consecutive elements in the array.
                      __    __ 
         VISUAL:     |  |  |  | 
                 [1, 2, 3, 4, 5]           
                  |  |  |  |  
                  ----  ----         //you can think of this as a 'window' that contains elements
-                 
-                 
-         //EX:  Given an array of integers, Our aim is to calculate the maximum sum of 5 consecutive elements in the array.
+                            
                           
               const SlidingWindow = (arr, k = 5) => {
-                let sum = getSumOfFirstFiveElements(arr, k);                //you have to manually implement this function
+                let sum = getSumOfFirstKElements(arr, k);                //you have to manually implement this function
                 let largestSum = sum;
               
                 for (let i = 0; i <= arr.length - k; i++) {              
@@ -378,10 +381,36 @@
               };
             
 
+          // Sliding window when k represents the maximum number of operations performed
+          // Return the maximum number of consecutive 'T's or 'F's in the string s
+          // after performing the operation at most k times.
+            VISUAL:  
+                     'TTFFTTFTFFTT'    'TTFFTTFTFFTT'      'TTFFTTFTFFTT'        'TTFFTTFTFFTT'
+                      |  |              |       |           |          |               |     |
+                      ----               -------             ----------                 -----
+                          ->                      ->                       ->
 
-
-
-
+              
+            const SlidingWindow = (s, k) => {
+                let maxFreq = 0;             
+                let count = {T: 0, F: 0}               //we keep a dictionary that counts the number of occurences for 'T' and 'F'  
+                let left = 0;
+            
+                for(let right = 0; right < s.length; right++){
+                    if(s[right === 'T'])
+                      count['T']++;  
+                    else if (s[right] === 'F')
+                      count['F']++;
+                  
+                    maxFreq = Math.max(maxFreq, count[s[right]]);  
+            
+                    let windowLength = right - left + 1;     
+                    if(windowLength > maxFreq + k)       //at this point, the window starts to shrink from the left side
+                        count[s[left++]]--;
+                }
+                return s.length - left;
+            
+            };
 
 
 

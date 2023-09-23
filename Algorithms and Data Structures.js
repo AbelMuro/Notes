@@ -289,9 +289,9 @@
             }
 
 
-//Binary Search: Aggressive Cows
+//Binary Search: Aggressive Cows, used for searching the maximum value of the minimum distance between any two elements in an array
 
-
+//EX: given an array of numbers, find the largest minimum distance between any two numbers in the array
 
 
 

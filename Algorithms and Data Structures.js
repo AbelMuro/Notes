@@ -289,12 +289,64 @@
             }
 
 
-//Binary Search: Aggressive Cows, used for searching the maximum value of the minimum distance between any two elements in an array
+//Binary Search: Aggressive Cows, used for searching the maximum value of the minimum distance between any two elements within k elements in an array
 
 //EX: given an array of numbers, find the largest minimum distance between any two numbers in the array
 
+         [1,    2 ,    4,     8,     9]
 
+        // what we do here is create a range between 0 and 9, we use binary search on this range
+        // each of these numbers IN THE RANGE represents a possible distance that can be used to place k cows
+       
+        // k = 3
+        // Each line below represents a cow
+                                                   //keep in mind that mid is the distance that you MUST maintain when you place the cows
+1)        [1,    2 ,    4,     8,     9]            mid = 4   // we could not place 3 cows, so this distance cannot be used as an answer
+           |                   |                        
 
+2)        [1,    2 ,    4,     8,     9]            mid = 2   // we were able to place 3 cows, so this distance is a possible answer
+           |            |      |    
+
+2)        [1,    2 ,    4,     8,     9]            mid = 3   // we were able to place 3 cows, so this distance is a possible answer
+           |            |      |  
+
+          The answer is mid = 3;
+
+          var AggressiveCoews = function(price, k) {
+                price.sort((a, b) => a - b);                        //sorting is required
+                
+                let result = 0;
+                let left = 0;
+                let right = price[price.length - 1];
+                
+                while (low <= high) {                               //we traverse through a range of distances
+                  const mid = Math.floor((left + right) / 2);
+                  if (hasAtLeastKCows(mid, price, k)) {
+                      result = mid;        
+                      left = mid + 1;                               
+                  } 
+                  else 
+                      right = mid - 1;                              //if we cannot place k = 3 cows with distance 'mid', then everything on the right side will be invalid
+                  }
+                
+                  return result;
+          };
+
+          function hasAtLeastKCows(distance, price, k) {            //we determine if the distance given here is possible 
+                  let lastVal = price[0];
+                  let cows = 1;
+                
+                  for (let i = 1; i < price.length; i++) {
+                    const diff = price[i] - lastVal;
+                    if (diff >= distance) {
+                      cows++;
+                      lastVal = price[i];
+                    }
+                  }
+                
+                  return cows >= k;
+          };
+          
 
 
 
@@ -381,7 +433,7 @@
               };
             
 
-          // Sliding window when k represents the maximum number of operations performed
+          // Sliding window when k represents the maximum number of operations allowed
           // Return the maximum number of consecutive 'T's or 'F's in the string s
           // after performing the operation(changing 'T' to 'F' or vice versa) at most k times.
             VISUAL:  

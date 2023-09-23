@@ -431,10 +431,14 @@
               
                 return largestSum;
               };
-            
+
+
+
 
           // Sliding window when k represents the maximum number of operations allowed
-          // Return the maximum number of consecutive 'T's or 'F's in the string s
+          // This method only works if we can perform operations on BOTH T and F
+
+          // EX: Return the maximum number of consecutive 'T's or 'F's in the string s
           // after performing the operation(changing 'T' to 'F' or vice versa) at most k times.
             VISUAL:  
                      'TTFFTTFTFFTT'    'TTFFTTFTFFTT'      'TTFFTTFTFFTT'        'TTFFTTFTFFTT'
@@ -443,32 +447,55 @@
                           ->                      ->                       ->
 
               
-            const SlidingWindow = (s, k) => {
-                let maxFreq = 0;             
-                let count = {T: 0, F: 0}               //we keep a dictionary that counts the number of occurences for 'T' and 'F'  
+            var maxConsecutiveAnswers = function(answerKey, k) {
+                let maxSubstring = 0;
                 let left = 0;
+                let count = {T: 0, F: 0};
             
-                for(let right = 0; right < s.length; right++){
-                    if(s[right]  === 'T')
-                      count['T']++;  
-                    else if (s[right] === 'F')
-                      count['F']++;
-                  
-                    maxFreq = Math.max(maxFreq, count[s[right]]);  
+                for(let right = 0; right < answerKey.length; right++){
+                    count[answerKey[right]]++                            // we count the occurences of 'T' and 'F'
             
-                    let windowLength = right - left + 1;     
-                    if(windowLength > maxFreq + k)       //at this point, the window starts to shrink from the left side
-                        count[s[left++]]--;
-                }
-                return s.length - left;
+                    if(Math.min(count.T, count.F) > k)                   // if we had 'T T T F F', then we can only make changes to 'F F' because k = 2
+                        count[answerKey[left++]]--;                      // so we need to make sure that the minimum occurence of 'T' or 'F 'is less than or equal to k
+      
+                    let windowLength = right - left + 1;
+                    maxSubstring = Math.max(maxSubstring, windowLength);
+                }  
             
+                return maxSubstring; 
             };
 
 
 
 
+            //Sliding Window when k represents the maximum number of operations allowed
+            //This method only works if when can perform on ONE type of data (changing 0's but not 1's)
 
+            //EX: Given a binary array nums and an integer k, return the maximum number of 
+            // consecutive 1's in the array if you can flip at most k 0's.
 
+            var longestOnes = function(nums, k) {
+                  let zeroCount = 0;                            //we only keep track of the number of zeroes in the window
+                  let left = 0;
+                  let maxSubstring = 0;        
+                  let windowLength;
+              
+                  for(let right = 0; right < nums.length; right++){
+                      if(nums[right] === 0)
+                          zeroCount++;
+              
+                      if(zeroCount <= k){                        //as long as the zero-count is less than k (maximum allowable operations)
+                          windowLength = right - left + 1;                
+                          maxSubstring = Math.max(maxSubstring, windowLength);
+                      }
+                      else if(zeroCount > k){                    //if zeroes exceed k, then we shrink the window
+                          if(nums[left++] === 0)
+                              zeroCount--;
+                      }       
+                  }
+                  
+                  return maxSubstring;
+              };
 
 
 

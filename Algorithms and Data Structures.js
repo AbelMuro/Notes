@@ -449,7 +449,7 @@
                 let left = 0;
             
                 for(let right = 0; right < s.length; right++){
-                    if(s[right === 'T'])
+                    if(s[right]  === 'T')
                       count['T']++;  
                     else if (s[right] === 'F')
                       count['F']++;

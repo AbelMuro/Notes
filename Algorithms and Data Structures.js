@@ -289,7 +289,7 @@
             }
 
 
-//Binary Search: Aggressive Cows, used for searching the maximum value of the minimum distance between any two elements within k elements in an array
+//Binary Search: Aggressive Cows, used for searching the maximum value of the minimum distance between any two elements within a subarray of k length in an array
 
 //EX: given an array of numbers, find the largest minimum distance between any two numbers in the array
 
@@ -302,13 +302,13 @@
         // Each line below represents a cow
                                                    //keep in mind that mid is the distance that you MUST maintain when you place the cows
 1)        [1,    2 ,    4,     8,     9]            mid = 4   // we could not place 3 cows, so this distance cannot be used as an answer
-           |                   |                        
+           |                   |                              // (we continue looking on the left side of the current range)
 
 2)        [1,    2 ,    4,     8,     9]            mid = 2   // we were able to place 3 cows, so this distance is a possible answer
-           |            |      |    
+           |            |      |                               // (we continue looking on the left side of the current range)
 
-2)        [1,    2 ,    4,     8,     9]            mid = 3   // we were able to place 3 cows, so this distance is a possible answer
-           |            |      |  
+2)        [1,    2 ,    4,     8,     9]            mid = 3   // we were able to place 3 cows, so this distance is a possible answer 
+           |            |      |                              // (but since we are finding the MAX distance, we continue looking on the right side of current range)
 
           The answer is mid = 3;
 
@@ -347,6 +347,37 @@
                   return cows >= k;
           };
           
+
+
+
+
+        //Binary Search: when k represents the data about the number that we are looking for (smallest number, largest number)
+        //In this case, you should always create a range of possible values within the array
+
+         matrix = [1,5,9,10,11,12,13,13,15];
+
+        let left = matrix[0];
+        let answer = matrix[0];
+        let right = matrix[matrix.length - 1];
+
+        while(left < right){
+          let middle = Math.floor((left + right)/2);
+          
+          for(let i = 0; i < matrix.length; i++){
+              //search through the original array and compare 'middle' with the values here somehow
+          }
+
+          if(/*mid does not meet some condition*/){
+             left = mid + 1;      
+             answer = mid + 1;
+          }
+          else  //if mid meets some condition, we keep mid within the range but cut the range by half
+            right = mid;
+        }
+
+
+
+
 
 
 

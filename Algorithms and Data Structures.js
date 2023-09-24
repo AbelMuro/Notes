@@ -597,6 +597,32 @@
 
 
 
+//DYNAMIC PROGRAMMING: The main idea of dynamic programming is to consider a significant problem and break it into smaller, 
+//                     individualized components. When it comes to implementation, optimal techniques rely 
+//                     on data storage and reuse to increase algorithm efficiency.
+
+            //EX: Find a pair of numbers in an array whose sum is equal to the given target
+      
+            [8, 10, 2, 9, 7, 5]
+  
+            function pairNumbersMemoized(target){
+                
+              	let map = new Map();
+                  
+              	for (num in sequence) {
+                  	let diff = target - num;   // (target = 10) - (num = 8) = (diff = 2)    the pair that we are checking here is [8, 2]
+                 	 
+                  	if (map.has(diff))           //O(1) - constant time lookup
+                   		   return [num, diff];              	            	
+                  	else                       
+                      	map.set(num, num);      //store previously seen value    		
+                  }
+                  
+              	return -1;
+             }
+
+
+
 
 
 

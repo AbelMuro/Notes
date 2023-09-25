@@ -225,7 +225,7 @@
 //This algorithm is designed to find a target in an array
 //The time complexity is O(Log n). 
                
-//Binary search that excludes the left and right pointers;
+1)            //Binary search that excludes the left and right pointers;
                
                 var search = function(nums, target) {
                   let middle;
@@ -242,7 +242,7 @@
                   return -1;
                 };
 
-//Binary search with duplicate values
+2)         //Binary search with duplicate values
 
             var search = function(nums, target) {
                   let middle;
@@ -269,7 +269,7 @@
                   return -1;
                 };
 
-//Binary search that counts the left and right pointers
+3)         //Binary search that counts the left and right pointers
 
             const binarySearch = (target, arr) => {
                   let left = 0;
@@ -289,9 +289,9 @@
             }
 
 
-//Binary Search: Aggressive Cows, used for searching the maximum value of the minimum distance between any two elements within a subarray of k length in an array
 
-//EX: given an array of numbers, find the largest minimum distance between any two numbers in the array
+4)      //Binary Search: Aggressive Cows, used for searching the maximum value of the minimum distance between any two elements within a subarray of k length in an array
+        //EX: given an array of numbers, find the largest minimum distance between any two numbers in the array
 
          [1,    2 ,    4,     8,     9]
 
@@ -301,14 +301,14 @@
         // k = 3
         // Each line below represents a cow
                                                    //keep in mind that mid is the distance that you MUST maintain when you place the cows
-1)        [1,    2 ,    4,     8,     9]            mid = 4   // we could not place 3 cows, so this distance cannot be used as an answer
-           |                   |                              // (we continue looking on the left side of the current range)
-
-2)        [1,    2 ,    4,     8,     9]            mid = 2   // we were able to place 3 cows, so this distance is a possible answer
-           |            |      |                               // (we continue looking on the left side of the current range)
-
-2)        [1,    2 ,    4,     8,     9]            mid = 3   // we were able to place 3 cows, so this distance is a possible answer 
-           |            |      |                              // (but since we are finding the MAX distance, we continue looking on the right side of current range)
+        1)        [1,    2 ,    4,     8,     9]            mid = 4   // we could not place 3 cows, so this distance cannot be used as an answer
+                   |                   |                              // (we continue looking on the left side of the current range)
+        
+        2)        [1,    2 ,    4,     8,     9]            mid = 2   // we were able to place 3 cows, so this distance is a possible answer
+                   |            |      |                               // (we continue looking on the left side of the current range)
+        
+        2)        [1,    2 ,    4,     8,     9]            mid = 3   // we were able to place 3 cows, so this distance is a possible answer 
+                   |            |      |                              // (but since we are finding the MAX distance, we continue looking on the right side of current range)
 
           The answer is mid = 3;
 
@@ -351,7 +351,7 @@
 
 
 
-        //Binary Search: when k represents the data about the number that we are looking for (smallest number, largest number)
+5)      //Binary Search: when k represents the data about the number that we are looking for (smallest number, largest number)
         //In this case, you should always create a range of possible values within the array
 
          matrix = [1,5,9,10,11,12,13,13,15];
@@ -386,7 +386,7 @@
 //Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
 //The time complexity for this algorithm is O(n)
 
-            //Two pointer that is used for a single array
+1)          //Two pointer that is used for a single array
             EX:
               
               let A = [1,2,3,4,5,6,7,8,9,10];
@@ -404,7 +404,7 @@
               }
     
 
-              // Two pointer that is used for two arrays 
+2)            // Two pointer that is used for two arrays 
               // EX: look for a MINIMUM common value in both arrays
                   let i = 0;
                   let j = 0;
@@ -440,8 +440,7 @@
 //SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, the time complexity for this algorithm is O(n)
 
 
-
-        //Sliding Window when k represents the length of the window
+1)      //Sliding Window when k represents the length of the window
         //EX:  Given an array of integers, Our aim is to calculate the maximum sum of 5 consecutive elements in the array.
                      __    __ 
         VISUAL:     |  |  |  | 
@@ -466,7 +465,7 @@
 
 
 
-          // Sliding window when k represents the maximum number of operations allowed
+2)        // Sliding window when k represents the maximum number of operations allowed
           // This method only works if we can perform operations on BOTH T and F
 
           // EX: Return the maximum number of consecutive 'T's or 'F's in the string s
@@ -499,7 +498,7 @@
 
 
 
-            //Sliding Window when k represents the maximum number of operations allowed
+3)          //Sliding Window when k represents the maximum number of operations allowed
             //This method only works if when can perform on ONE type of data (changing 0's but not 1's)
 
             //EX: Given a binary array nums and an integer k, return the maximum number of 
@@ -527,6 +526,10 @@
                   
                   return maxSubstring;
               };
+
+
+
+
 
 
 
@@ -600,12 +603,13 @@
 //DYNAMIC PROGRAMMING: The main idea of dynamic programming is to consider a significant problem and break it into smaller, 
 //                     individualized components. When it comes to implementation, optimal techniques rely 
 //                     on data storage and reuse to increase algorithm efficiency.
+//                     Complexity for this algorithm is O(n);
 
             //EX: Find a pair of numbers in an array whose sum is equal to the given target
       
             [8, 10, 2, 9, 7, 5]
   
-            function pairNumbersMemoized(target){
+            function DynamicProgramming(target){
                 
               	let map = new Map();
                   
@@ -693,117 +697,11 @@
                                                          //fib(2) becomes 1 + 0, fibt(3) becomes 1 + 1, and so on.
                                                          //this is the backtracking phase 
       
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-//INFIX to POSTFIX: IF you want to convert a string that has an mathematical expression into valid js. You will need to convert the string from infix to postfix
-//infix: Human readable format for expressions (5 + 3) * 4 - 3 but this format is terrible for computer algorithms
-//postfix: It is NOT a human readable format expressions 53+ 4* 3- but this format is perfect for computer algorithms
-      
-
-    //this function determines the precedence in the order of operations
-    const precedence = (c) => {
-        if(c == '^')
-            return 3;
-        else if(c == '/' || c=='*')
-            return 2;
-        else if(c == '+' || c == '-')
-            return 1;
-        else
-            return -1;
-    }
-
-    const inFixToPostFix = (s) => {
-        let stack = []; 
-        let result = "";
- 
-        for(let i = 0; i < s.length; i++) {
-            let c = s[i];
- 
-            // If the scanned character is a operand, add it to output string.
-            if(c >= '0' && c <= '9')
-                result += c;
- 
-            // If the scanned character is an ‘(‘, push it to the stack.
-            else if(c == '(')
-                stack.push('(');
- 
-            // If the scanned character is an ‘)’, pop and to output string from the stack, until an ‘(‘ is encountered.
-            else if(c == ')') {
-                while(stack[stack.length - 1] != '('){              //we continue popping the top character from the stack until we find a "("
-                    result += stack[stack.length - 1];
-                    stack.pop();
-                }
-                stack.pop();
-            }
- 
-            //If an operator is scanned
-            else {
-                result += " ";                                      //we add a space here to group together whole numbers that have more that a single digit
-                while(stack.length > 0 && precedence(c) <= precedence(stack[stack.length - 1])) {       
-                    result += stack[stack.length - 1];              //we continue popping from the stack as long as the current operator has less precedence
-                    stack.pop();                                    //than the operator that's on top of the stack
-                }
-                stack.push(c);
-            }
-          
-          if(i == s.length - 1)
-              result += " ";                                      //we add a space here to group together the last whole number
-        }
- 
-        // Pop all the remaining elements from the stack
-        while(stack.length != 0) {
-            result += stack[stack.length - 1];
-            stack.pop();
-        }
- 
-        return result;
-    
-    }
-
+       
       
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+   
       
       
       
@@ -870,9 +768,72 @@
                    
 
 
+
+//Linked Lists: is a linear data structure, in which elements are not stored at a contiguous location, 
+//              rather they are linked using pointers. Linked List forms a series of connected nodes, 
+//              where each node stores the data and the address of the next node.
+
+
+
+    //single-linked lists: 
+    
+              Head   --->   [data, next] --->   [data, next] --->   [data, next] ---> NULL
+    
+    //Double-linked lists
+      
+              Head   <--->   [prev, data, next]  <--->   [prev, data, next]  <--->   [prev, data, next]  <--->  NULL
+    
+    
+    //Circular-linked lists, the last node points to the very first node
+    
+              Head   --->   [data, next]  --->   [data, next]  --->   [data, next]  ---
+                     |_________________________________________________________________|
+                                                                              
+
+
+
+  /* Floyd’s Cycle Finding Algorithm (Hare-Tortoise algorithm): 
+            This algorithm uses two pointers to find a cycle in a linked list 
+            One pointer will traverse through the list slowly,
+            while the other pointer will traverse through the list quickly
+  */
+
                 
-   
-   
+        3  -->   2 -->  0 -->  -4 
+                 ^              v
+                 |______________|     cycle
+                
+      var hasCycle = function(head) {
+          let slow = head;
+          let fast = head;
+        
+          while (fast !== null && fast.next !== null) {    //if 'fast' points to a null value, then we know there is no cycle
+              slow = slow.next;
+              fast = fast.next.next;
+              if (slow === fast)                            //at some point in the cycle, slow and fast will eventually point to the same node
+                  return true;
+              
+          }
+          return false;
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+            
    //BINARY TREE: a data structure that has a root node, each node has three parts; data, left pointer and right pointer.
    
                                               root node

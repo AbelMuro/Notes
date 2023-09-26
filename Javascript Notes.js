@@ -943,63 +943,62 @@ function addNumbers(first = "9999523423423423435", second = "2762342342342342345
 
 
 
+//============================================================== OBJECTS ============================================================== 
+
+let obj = {name: 'abel', age: '30'};
+obj['name'] = 'muro';				              // you can use array-notation to change values of objects
+obj.age = 45;						      // the typical syntax of accessing a value of an object
+'name' in objectOne;					     // returns true if 'name' is a property in objectTwo
+delete objectOne['name'];				     // deletes a property from the object
+
+
+let objectOne = {name: "abel"};
+let objectTwo = {age: "29"};
+Object.assign(objectOne, ObjectTwo);                         // assign will add all the properties from the second argument to the first argument (creates a shallow copy)
+Object.freeze(objectOne);                                    // freeze will prevent you from adding or changing properties on the object
+Object.seal(objectOne);                                      // seal will let you change the properties of an object, but wont let you add new ones 
+Object.defineProperty(objectOne, "birthplace", value: "richmond", writable: false) //lets you add a new property to the object, writable means that you cant change the value
+
+//------------------------------------------------------------Object literal----------------------------------------------------------
+let test_scores = { 
+    math: 23, 
+    science: 45, 
+    history: 67, 
+    P_E: "didnt show up", 
+    my_method: function(){                                                  // you can also add functions/methods inside objects
+        return this.math + this.science;}
+};  
+test_scores.math = 56;                                                      //this is how you access the elements of an object
+test_scores['math'];                                                        //you can use array notation to access a property from the object
+test_scores.my_method();                                                    // this is how you access an objects' method
+test_scores.prototype.english = "45";                                       // all objects have this property called prototype that lets you add properties and methods 
+
+
+//---------------------------------------------------------SPREAD OPERATOR with objects-----------------------------
+//keep in mind that the spread operator will return a SHALLOW copy of the original object, 
+//meaning that changes made to the new object will affect the original object
+
+//clever way of joining two objects together
+let example = {valueOne: 1, valueTwo: 2};
+let anotherExample = {...example, valueThree: 3};                        
+
+
+//you can also destructure objects.
+let randomness = {value: 1, value: 2}
+let {exampleOne, exampleTwo} = randomness;                                  //exampleOne and exampleTwo can be used like variables
+let result = exampleOne + exampleTwo;
 
 
 
 
+//-------------------------------------------------- CLONING objects------------------------------------------------------
+//to make a DEEP clone of an object, do the following steps below...
 
+let data = {name: "alice", age: "26"};   
 
+const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of data
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//============================================================= WEB WORKERS API ===========================================================================
-//in the case where you want to load more than one script files. you can use web workers api to handle one script while the main thread handles the other.
-//Generally, javascript is single threaded, but with web workers, they make it possible to run different processes on a different thread.
-
-//--------------------------index.js or index.html------------------------------------
-
-       if(window.Worker){
-            let worker = new Worker("./scriptOne.js");                              //creating a Worker object
-
-            worker.onmessage = function(e){                                         //passing a function that will handle all incoming responses from the worker
-                console.log(e.data)             
-            }            
-            let button = document.querySelector("#selectButton");                   //clicking on this button will trigger a postMessage() that will send data to the worker
-            button.addEventListener("click", () => {
-                worker.postMessage("my first worker");
-            })
-       }
-
-
-
-
-//---------------------- Worker.js ------------------------------------------------
-
-      this.onmessage = function(e){
-            let temp = e.data + "yes";                                              //e.data is the data that was sent by worker.postMessage in previous file
-            this.postMessage(temp);                                                 //this postMessage will send a reply back to the main thread
-      }
-
-
-
-
-
+const deepCopyTwo = structuredClone(data);                           //creates a deep copy of data
 
 
 
@@ -1480,58 +1479,6 @@ let my_variable = new class_one.class_two();
 
 
 
-
-
-
-//============================================================== OBJECTS ============================================================== 
-
-let objectOne = {name: "abel"};
-let objectTwo = {age: "29"};
-Object.assign(objectOne, ObjectTwo);                         // assign will add all the properties from the second argument to the first argument (creates a shallow copy)
-Object.freeze(objectOne);                                    // freeze will prevent you from adding or changing properties on the object
-Object.seal(objectOne);                                      // seal will let you change the properties of an object, but wont let you add new ones 
-Object.defineProperty(objectOne, "birthplace", value: "richmond", writable: false) //lets you add a new property to the object, writable means that you cant change the value
-
-//------------------------------------------------------------Object literal----------------------------------------------------------
-let test_scores = { 
-    math: 23, 
-    science: 45, 
-    history: 67, 
-    P_E: "didnt show up", 
-    my_method: function(){                                                  // you can also add functions/methods inside objects
-        return this.math + this.science;}
-};  
-test_scores.math = 56;                                                      //this is how you access the elements of an object
-test_scores['math'];                                                        //you can use array notation to access a property from the object
-test_scores.my_method();                                                    // this is how you access an objects' method
-test_scores.prototype.english = "45";                                       // all objects have this property called prototype that lets you add properties and methods 
-
-
-//---------------------------------------------------------SPREAD OPERATOR with objects-----------------------------
-//keep in mind that the spread operator will return a SHALLOW copy of the original object, 
-//meaning that changes made to the new object will affect the original object
-
-//clever way of joining two objects together
-let example = {valueOne: 1, valueTwo: 2};
-let anotherExample = {...example, valueThree: 3};                        
-
-
-//you can also destructure objects.
-let randomness = {value: 1, value: 2}
-let {exampleOne, exampleTwo} = randomness;                                  //exampleOne and exampleTwo can be used like variables
-let result = exampleOne + exampleTwo;
-
-
-
-
-//-------------------------------------------------- CLONING objects------------------------------------------------------
-//to make a DEEP clone of an object, do the following steps below...
-
-let data = {name: "alice", age: "26"};   
-
-const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of data
-
-const deepCopyTwo = structuredClone(data);                           //creates a deep copy of data
 
 
 

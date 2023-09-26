@@ -793,17 +793,19 @@
 
 
 
- 1)  /* Floyd’s Cycle Finding Algorithm (Hare-Tortoise algorithm): 
+     1)  /* Detecting a cycle within a linked list.
+     
+            Floyd’s Cycle Finding Algorithm (Hare-Tortoise algorithm): 
   
             This algorithm uses two pointers to find a cycle in a linked list 
             One pointer will traverse through the list slowly,
             While the other pointer will traverse through the list quickly
-    */
+      */
 
                 
         3  -->  2 -->  0 -->  -4 
-                 ^              v
-                 |______________|     cycle
+                ^              v
+                |______________|     cycle
                 
       var hasCycle = function(head) {
           let slow = head;
@@ -825,7 +827,7 @@
 
   2)  //Reversing a Linked list:
 
-      1 -> 2 -> 3 -> 4 -> 5 ->  null
+      1 -> 2 -> 3 -> 4 -> 5 ->  null      ----->      5 -> 4 -> 3 -> 2 -> 1 -> null
 
       var reverseList = function(head){
         let reversed = null;                                //this will contain the reversed list
@@ -841,14 +843,41 @@
         return reversed;                                
       }
 
+      
+
+  3)    //Removing duplicates from a Linked List
+
+      1 -> 1 -> 2 -> 3 -> 4 -> 5 -> 5 -> null;
+  
+      var deleteDuplicates = function(head) {
+        var current = head;
+        
+        while(current) {
+            if(current.next !== null && current.val === current.next.val)   // we check if 2 consecutive nodes are duplicates        1 -> 1 -> 2
+                current.next = current.next.next;                           // we sever one of the duplicated nodes from the list    1 -> 2 
+            else                                                            // keep in mind that current is still referencing the same node, 
+                current = current.next;                                     // we will continue to reference the same node until the 'if' statement is false 
+        }
+        
+        return head;
+    };
 
 
 
+  4) //Finding the middle node of a linked list (using floyds algorithm)
 
 
-
-
-
+    var findMiddleNode = function(head){
+        let slow;
+        let fast;
+      
+        while (fast && fast.next){          //slow will eventually point to the middle node of the list
+            slow = slow.next;
+            fast = fast.next.next
+        }
+       return slow;
+    }
+    
 
 
 

@@ -769,6 +769,20 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Linked Lists: is a linear data structure, in which elements are not stored at a contiguous location, 
                 rather they are linked using pointers. Linked List forms a series of connected nodes, 
                 where each node stores the data and the address of the next node. 
@@ -834,9 +848,9 @@
         let next = null                                     //this will be used to temporarily save a portion of the list
         let currentNode = head;
 
-        while(currentNode){
+        while(currentNode){                                 // currenttNode = 1                                            next iteration: currentNode = 2
             next = currentNode.next;                        // we are saving 2 -> 3 -> 4 -> 5 -> null                      next iteration: 3 -> 4 -> 5 -> null
-            currentNode.next = reversed;                    // we disconnected 1 from the list, 1 -> null                  next iteration: 2 -> 1 -> null
+            currentNode.next = reversed;                    // we disconnect 1 from the list, 1 -> null                  next iteration: 2 -> 1 -> null
             reverse = currentNode;                          // reverse = 1 -> null                                         next iteration: 2 -> 1 -> null
             currentNode = next;                             // we move to node 2                                           next iteration: we move to node 3 
         }
@@ -881,7 +895,31 @@
 
 
 
-                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             
    //BINARY TREE: a data structure that has a root node, each node has three parts; data, left pointer and right pointer.

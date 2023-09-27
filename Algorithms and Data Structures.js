@@ -850,7 +850,7 @@
 
         while(currentNode){                                 // currenttNode = 1                                            next iteration: currentNode = 2
             next = currentNode.next;                        // we are saving 2 -> 3 -> 4 -> 5 -> null                      next iteration: 3 -> 4 -> 5 -> null
-            currentNode.next = reversed;                    // we disconnect 1 from the list, 1 -> null                  next iteration: 2 -> 1 -> null
+            currentNode.next = reversed;                    // we disconnect 1 from the list, 1 -> null                    next iteration: 2 -> 1 -> null
             reverse = currentNode;                          // reverse = 1 -> null                                         next iteration: 2 -> 1 -> null
             currentNode = next;                             // we move to node 2                                           next iteration: we move to node 3 
         }
@@ -867,7 +867,7 @@
         var current = head;
         
         while(current) {
-            if(current.next !== null && current.val === current.next.val)   // we check if 2 consecutive nodes are duplicates        1 -> 1 -> 2
+            if(current.next && current.val === current.next.val)            // we check if 2 consecutive nodes are duplicates        1 -> 1 -> 2
                 current.next = current.next.next;                           // we sever one of the duplicated nodes from the list    1 -> 2 
             else                                                            // keep in mind that current is still referencing the same node, 
                 current = current.next;                                     // we will continue to reference the same node until the 'if' statement is false 
@@ -878,8 +878,31 @@
 
 
 
-  4) //Finding the middle node of a linked list (using floyds algorithm)
+  4) //Removing all occurences of a number in a linked list
 
+      var removeElements = function(head, val) {
+
+          while(head){                                 //this loop guarantees that the first nodes will not contain the value to be removed
+              if(head.val === val)
+                  head = head.next;
+              else
+                  break;
+          }
+      
+          let currentNode = head;
+          while(currentNode && currentNode.next) {      
+              if (currentNode.next.val === val)         
+                  currentNode.next = currentNode.next.next;
+              else 
+                  currentNode = currentNode.next;      //we only move the pointer to the next node IF node.next !== val
+          }
+          return head;
+      };
+
+
+
+
+  5) //Finding the middle node of a linked list (using floyds algorithm)
 
     var findMiddleNode = function(head){
         let slow;

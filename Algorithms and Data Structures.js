@@ -916,6 +916,27 @@
     }
     
 
+  6) //Traversing through a double linked list
+
+    var traversingBack =  function(steps) {        //steps is the number of nodes that we have to traverse
+      
+      while (currentNode.back && steps) {
+          currentNode = currentNode.back;
+          steps--;
+      }
+      
+      return currentNode;
+  };
+
+    var traversingForward =  function(steps) {        //steps is the number of nodes that we have to traverse
+      
+      while (currentNode.next && steps) {
+          currentNode = currentNode.next;
+          steps--;
+      }
+      
+      return currentNode;
+  };
 
 
 

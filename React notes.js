@@ -872,55 +872,42 @@ function Example() {
 // Rememeber that its a good idea to use high order components to augment the App component with Context
 
 
+// 1) ----- You should use a HOC to implement context in your application
 
-// 1) ----- This component is similar to a redux reducer, it has event handlers that can update the state and any component can call these functions
+//        ./Context
+export const Context = createContext();
 
-//      /app.js
-export const Context = createContext();         // <----- you will need to export the Context object to other components so they can use the global state       
-export function App() {
-    const [list, setList] = useState([{id: 'abel', data: 45}, {id: 'david', data: 43}, {id: 'john', data: 67}]);
-        
-    const deleteItem = (id) => {                        
-        setList(list.filter((item) => {
-             if(item.id == id)
-                  return false;
-             else
-                  return true;
-        }))
+export default function ShareContext (App) {                                        //you pass the app component as an argument
+    
+    return () => {
+        const [stateOne, setStateOne] = useState('');
+        const [stateTwo, dispatch] = useReducer(reducer, initialState);            //you can implement your reducer in a different file
+
+       const value = {
+            stateOne, setStateOne,
+            stateTwo, dispatch
+        }
+
+        return(
+            <Context.Provider value={value}>                                        //make sure to surround the app with Context.Provider
+                <App/>
+            </Context.Provider>
+        )
     }
-    const addItem = (newItem) => {
-           setList((prevList) => {
-                return [...prevList, newItem];
-           })
-    }
-    return(                                     //all components can use the state and functions that are passed as an object to the value attribute
-            <>
-                <Context.Provider value={{list, deleteItem, addItem}}>    
-                    <AnotherComponent/>                        
-                </Context.Provider>    
-            </>
-    )
 }
 
 
 // 2) -----  To use the Context in other files, you will need to import the Context object
-import {Context} from './App.js';
+import {Context} from './Context';
 import React, {useContext} from 'react';
 
 function AnotherComponent() {
-    const {list, addItem} = useContext(Context);                //you can use ALL the functions and state that was passed in the value prop ABOVE
-        
-    const addToList = () => {
-        addItem({id: 'carlos', data: 98});
-    } 
-        
-    return(         
-        <h2>
-            <button type="button" onClick={() => setState("this is now different")}> Click here</button>
-            {state} 
-        </h2>
-    )
+    const {stateOne, setStateOne} = useContext(Context);                //you can use any variable or function in the value object ABOVE
+   // ....
 }
+
+
+
 
 
 
@@ -2623,6 +2610,7 @@ function App(){
 }
 
 
+//you can also use HOC to sepat
 
 
 

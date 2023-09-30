@@ -147,6 +147,7 @@ function CONST_variables() {
 //hoisting is a process where javascript hoists all variable declarations to the top of its scope, however, their values do not get hoisted
 //keep in mind that functions also get hoisted up with their definitions
 //all var, let and const variables get hoisted to the top of the functions scope and assigned the value of undefined
+//function declarations also get hoisted up, but they all get hoisted up WITH its definition
 //but let and const cannot be accessed before its declaration because everything before the declaration is the temporal dead zone
 
 Hoisting();                                               // this is still legal, but if you use a function expression, then it wont work

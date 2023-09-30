@@ -399,10 +399,136 @@ person.sayHello();
 
 
 
+//============================================================== FUNCTIONS ==============================================================
+//Functions are similar to the functions in math, they take an input(argument), process the input, and return an output
+//keep in mind that the return statement should be on the same line as the output being returned from the function                
+
+
+//------------------------------------------------------pure function----------------------------------------------------------------
+//The function does not rely on external variables in a closure
+//The function produces the same result if the same arguments are passed to the function
+//The function doesn't make any HTTP calls to a server
+//The function doesn't mutate the arguments passed to it
+	
+function myFunction(a, b){                                      	     //a and b are called arguments   
+    let c = a + b;
+    return c;                                                                 //function will return a string
+}
+function_with_parameters(1, 2);                                               // this is how you call a function
+
+
+//-------------------constructor function; this function lets you create objects---------------------------------
+function myConstructor(name, age, city){                                     //This is a constructor function, it allows us to create objects
+    this.name = name;
+    this.age = age;
+    this.city = city;
+    this.method = function () {
+    	return this.name + this.age + this.city;	
+    }
+}
+let myObject = new myConstructor("abel", 29, "San Francisco");
+
+
+//---------------------------------different ways of accepting arguments in function-----------------
+function destructuring({valueOne, valueTwo})                                  //you can pass an object that has two properties to this function
+function defaultValues(a, b, c = "string")				      //you can initialize a parameter if the function call doesnt have enough arguments
+function manyArguments(...nums){                                              //you can use the REST operator to group together all the arguments into an array
+      nums.forEach((num) => {                                                 //nums is an array at this point                                               
+            console.log(num);
+      })
+}
+      
+      
+//--------------------------------- CALL(), APPLY(), BIND()------------------------------------------------------------
+// Call(), Apply(), Bind() will	'tie' a function into an object as if it belonged to that object.
+// Traditionally in JavaScript, you can have objects that have their own properties and methods. 
+// For example, object1 cannot use the methods of object2 and vice versa.
+// Call(), Apply() and Bind() can solve this problem
+	
+var obj = { 
+	num: 2,
+	//add: function (a = 1) {					      //this is what it looks like when we use call() below 
+	      //return this.num + a;
+        //}
+};
+function add(a = 1){						  	      //call() can also work if add() was a method in an object
+     return this.num + a;
+}
+	
+add.call(obj, 2);							     //the Add constructor will access all the properties and methods from 'obj' in this call()
+add.apply(obj, [2,3,4])	
+
+	
+//-------- bind() works a little different, it was design to bind 'this' to a function and returns a new function -------------------
+// The reason you want to do this is to pass a function that uses 'This' into another function because 'This' will lose its value
+var myButton = {
+	  content: 'OK',
+	  click() {
+	    console.log(this.content + ' clicked');
+	  }
+};
+
+myButton.click();			//this will console.log() 'OK clicked'
+
+var looseClick = myButton.click;	// when you re-assign a method like this, the value of 'this' will lose its original value
+looseClick(); 				// this will console.log 'undefined clicked'
+
+var boundClick = myButton.click.bind(myButton); // you will need to bind the original's object 'this' to make sure it doesnt lose its value
+boundClick(); 				// this will console.log 'OK clicked'
+	
+
+//---------------------------------IIFE: immediately invoked function expression------------------------
+//IIFE are functions that get called on the spot
+
+//keep in mind that IIFE functions are now part of a block scope
+(function(){                                          //the moment you define the function, it gets called right away
+    let a = 100;
+})();
+
+
+//------------------------------------------ arrow functions--------------------------------------------
+//Arrow functions help reduce the syntax of a regular function
+//another thing to note is that arrow functions dont have their own 'this'
+//meaning that if you use 'this' in an arrow function, then it will refer to the scope in which the function was defined
+
+
+(a, b) => {return "something"};                                                 //This is an arrow function, it has different syntax but it does the same thing as a function
+
+e => e + 1;                                                                      //this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
+
+	
+	
+//-------------------------------------------- Generator functions -----------------------------------------
+//Generators are functions that can be paused during execution and resumed, 
+// instead of executing all of a function’s statements in one pass.
+//When you invoke a generator function, it will return an iterator object,
+// With each call of the iterator’s next() method, the generator’s body 
+// will be executed until the next yield statement, where it will then pause:
+
+	
+function* myGenerator(){
+    let first = yield 'first yield value';
+    let second = yield 'second yield value';
+    return 'third returned value';
+}
+	
+const myIterator = myGenerator()
+console.log(myIterator.next()); // {value: "first yield value", done: false}
+console.log(myIterator.next()); // {value: "second yield value", done: false}
+console.log(myIterator.next()); // {value: "third returned value", done: true}
+console.log(myIterator.next()); // {value: "undefined", done: true}      
 
 
 
+//-------------------------------------------------- THIS in functions ------------------------------------------------
+//keep in mind that arrow functions dont have 'this' binded, but regular functions do
 
+this;					// 'this' is the same as the 'this' in the function below
+const myArrowFunc = () => {
+	this;
+}
+
+myArrowFunc();
 
 
 
@@ -2100,186 +2226,11 @@ while(false);
 
 
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
 
 
 
 
 
-
-
-
-//============================================================== LABELS ==============================================================
-    //labels start with the syntax "label: statements"
-
-some_label:{                                                        //you can create any type of label with any type of identifier
-    let i = 8;
-    i++;
-    i += 2; 
-    break some_label;                                               //break can be used here as well as continue
-    i += 3;
-};
-
-
-
-
-
-
-
-
-
-
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-
-
-
-
-
-//============================================================== FUNCTIONS ==============================================================
-//Functions are similar to the functions in math, they take an input(argument), process the input, and return an output
-//keep in mind that the return statement should be on the same line as the output being returned from the function                
-
-
-//------------------------------------------------------pure function----------------------------------------------------------------
-//The function does not rely on external variables in a closure
-//The function produces the same result if the same arguments are passed to the function
-//The function doesn't make any HTTP calls to a server
-//The function doesn't mutate the arguments passed to it
-	
-function myFunction(a, b){                                      	     //a and b are called arguments   
-    let c = a + b;
-    return c;                                                                 //function will return a string
-}
-function_with_parameters(1, 2);                                               // this is how you call a function
-
-
-//-------------------constructor function; this function lets you create objects---------------------------------
-function myConstructor(name, age, city){                                     //This is a constructor function, it allows us to create objects
-    this.name = name;
-    this.age = age;
-    this.city = city;
-    this.method = function () {
-    	return this.name + this.age + this.city;	
-    }
-}
-let myObject = new myConstructor("abel", 29, "San Francisco");
-
-
-//---------------------------------different ways of accepting arguments in function-----------------
-function destructuring({valueOne, valueTwo})                                  //you can pass an object that has two properties to this function
-function defaultValues(a, b, c = "string")				      //you can initialize a parameter if the function call doesnt have enough arguments
-function manyArguments(...nums){                                              //you can use the REST operator to group together all the arguments into an array
-      nums.forEach((num) => {                                                 //nums is an array at this point                                               
-            console.log(num);
-      })
-}
-      
-      
-//--------------------------------- CALL(), APPLY(), BIND()------------------------------------------------------------
-// Call(), Apply(), Bind() will	'tie' a function into an object as if it belonged to that object.
-// Traditionally in JavaScript, you can have objects that have their own properties and methods. 
-// For example, object1 cannot use the methods of object2 and vice versa.
-// Call(), Apply() and Bind() can solve this problem
-	
-var obj = { 
-	num: 2,
-	//add: function (a = 1) {					      //this is what it looks like when we use call() below 
-	      //return this.num + a;
-        //}
-};
-function add(a = 1){						  	      //call() can also work if add() was a method in an object
-     return this.num + a;
-}
-	
-add.call(obj, 2);							     //the Add constructor will access all the properties and methods from 'obj' in this call()
-add.apply(obj, [2,3,4])	
-
-	
-//-------- bind() works a little different, it was design to bind 'this' to a function and returns a new function -------------------
-// The reason you want to do this is to pass a function that uses 'This' into another function because 'This' will lose its value
-var myButton = {
-	  content: 'OK',
-	  click() {
-	    console.log(this.content + ' clicked');
-	  }
-};
-
-myButton.click();			//this will console.log() 'OK clicked'
-
-var looseClick = myButton.click;	// when you re-assign a method like this, the value of 'this' will lose its original value
-looseClick(); 				// this will console.log 'undefined clicked'
-
-var boundClick = myButton.click.bind(myButton); // you will need to bind the original's object 'this' to make sure it doesnt lose its value
-boundClick(); 				// this will console.log 'OK clicked'
-	
-
-//---------------------------------IIFE: immediately invoked function expression------------------------
-//IIFE are functions that get called on the spot
-
-//keep in mind that IIFE functions are now part of a block scope
-(function(){                                          //the moment you define the function, it gets called right away
-    let a = 100;
-})();
-
-
-//------------------------------------------ arrow functions--------------------------------------------
-//Arrow functions help reduce the syntax of a regular function
-//another thing to note is that arrow functions dont have their own 'this'
-//meaning that if you use 'this' in an arrow function, then it will refer to the scope in which the function was defined
-
-
-(a, b) => {return "something"};                                                 //This is an arrow function, it has different syntax but it does the same thing as a function
-
-e => e + 1;                                                                      //this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
-
-	
-	
-//-------------------------------------------- Generator functions -----------------------------------------
-//Generators are functions that can be paused during execution and resumed, 
-// instead of executing all of a function’s statements in one pass.
-//When you invoke a generator function, it will return an iterator object,
-// With each call of the iterator’s next() method, the generator’s body 
-// will be executed until the next yield statement, where it will then pause:
-
-	
-function* myGenerator(){
-    let first = yield 'first yield value';
-    let second = yield 'second yield value';
-    return 'third returned value';
-}
-	
-const myIterator = myGenerator()
-console.log(myIterator.next()); // {value: "first yield value", done: false}
-console.log(myIterator.next()); // {value: "second yield value", done: false}
-console.log(myIterator.next()); // {value: "third returned value", done: true}
-console.log(myIterator.next()); // {value: "undefined", done: true}      
       
       
       

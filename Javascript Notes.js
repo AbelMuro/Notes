@@ -272,6 +272,7 @@ function outerMost() {                       //outerMost has a declaration for x
 
 
 //====================================================================== PROTOTYPE ===================================================================
+// Prototype is basically the mechanism that allows objects to inherit methods and properties from another object
 // All objects in javascript have two default properties, __proto__ and prototype
 // Prototype is used to add new methods and properties to an object after its declaration and initialization
 // _proto_ is used to look up methods and properties that have been inherited by other objects
@@ -530,6 +531,9 @@ const myArrowFunc = () => {
 }
 
 myArrowFunc();
+
+
+
 
 
 
@@ -1072,19 +1076,22 @@ function addNumbers(first = "9999523423423423435", second = "2762342342342342345
 
 //============================================================== OBJECTS ============================================================== 
 
-let obj = {name: 'abel', age: '30'};
+let obj = new Object();				              // you can create objects using the constructor notation
+let obj = {name: 'abel', age: '30'};			      // the typical way of creating objects in JS
 obj['name'] = 'muro';				              // you can use array-notation to change values of objects
 obj.age = 45;						      // the typical syntax of accessing a value of an object
 'name' in objectOne;					     // returns true if 'name' is a property in objectTwo
 delete objectOne['name'];				     // deletes a property from the object
 
 
-let objectOne = {name: "abel"};
+//Rememeber that Object is a CLASS with its own methods that can be used for objects
+let objectOne = {name: "abel"};				    
 let objectTwo = {age: "29"};
 Object.assign(objectOne, ObjectTwo);                         // assign will add all the properties from the second argument to the first argument (creates a shallow copy)
 Object.freeze(objectOne);                                    // freeze will prevent you from adding or changing properties on the object
 Object.seal(objectOne);                                      // seal will let you change the properties of an object, but wont let you add new ones 
 Object.defineProperty(objectOne, "birthplace", value: "richmond", writable: false) //lets you add a new property to the object, writable means that you cant change the value
+
 
 //------------------------------------------------------------Object literal----------------------------------------------------------
 let test_scores = { 
@@ -1099,6 +1106,7 @@ test_scores.math = 56;                                                      //th
 test_scores['math'];                                                        //you can use array notation to access a property from the object
 test_scores.my_method();                                                    // this is how you access an objects' method
 test_scores.prototype.english = "45";                                       // all objects have this property called prototype that lets you add properties and methods 
+
 
 
 //---------------------------------------------------------SPREAD OPERATOR with objects-----------------------------
@@ -1499,7 +1507,7 @@ sessionStorage.clickcount = 1;                             //a property that you
 
 
 //syntax for creating a class                  
-class my_class{
+class MyClass{
     constructor(grade) {                                              //every class MUST have a constructor
         this.grade = grade;                                           //you declare the properties of the object like this
     }
@@ -1520,9 +1528,10 @@ class my_class{
     }
 
 }
-let abels_object = new my_class("F");                                   //declaring an object of my_class by calling the constructor
-abels_object.setGrade("B");                                             //calling method inside object
-object.new_variable = "t";                                              //you can create new properties for a class like this: 
+let myObject = new MyClass("F");                                   //declaring an object of my_class by calling the constructor
+MyClass.my_second_method();				            //you can call static methods with this syntax
+myObject.setGrade("B");                                             //calling method inside object
+myObject.new_variable = "t";                                        //you can create new properties for a class like this: 
 
 
 

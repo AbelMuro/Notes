@@ -2000,9 +2000,13 @@ result.then(() => {});
 const result = Promise.reject('error');			//reject() will automatically reject the returning promise with the given message
 result.catch(() => {})
 
-const results  = Promise.all([Promise.resolve('hello'), Promise.resolve('world')]); // all() will accept an array of promises that must be resolved
-results.then((arrResults) => { console.log(arrResults)});			    // all() will return the results of every promise in a array						
-results.catch(() => {});						             //if one of the promises in the array is rejected, then we will use catch statement
+const results  = Promise.all([Promise.resolve('hello'), Promise.resolve('world')]);  // all() will accept an array of promises that must ALL be resolved for all() to be resolved
+results.then((arrResults) => { console.log(arrResults)});	 	             // arrResults is an array that contains the results of the promises		    					
+results.catch(() => {});						             //if one of the promises in the array is rejected, then all() will be rejected
+
+const results = Promise.allSettled([Promise.resolve('hello'), Promise.reject('word')]); // .allSettled() will accept an array of promises, .allSettled() will ALWAYS resolve once all promises have been settled
+results.then((arrResults) => {console.log(arrResults)});				//arrResults is an array that contains the results of the promises
+
 
 //The code below will return a "promise" object, 
 //in this case, it will take 5 seconds for the promise to resolve, 

@@ -1318,63 +1318,6 @@ my_map.get([1,2,3]);                                                       //thi
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//==================================================== DATA HIDING/ DATA ENCAPSULATION ============================================================
-//Data encapsulation is the idea of making variables private for a function. In other words, the variables can only be accessed by the function
-                       
-                        
-
-function increment(){
-      let counter = 0;			//this variable becomes a private variable
-      
-      return add(){
-         counter++;
-      }
-}
-                        
- var incrementCounter = increment();
-                        
-incrementCounter();                             //counter = 1
-incrementCounter();                             //counter = 2
-incrementCounter();                             //counter = 3
-incrementCounter();                             //counter = 4
-incrementCounter();                             //counter = 5
-
-
-
-
-
-
-
-
-
-
-
-			
-			
-			
-			
 			
 			
 			
@@ -1413,22 +1356,6 @@ document.cookie = "password=cobra69";                                           
 
 //it is strongly recommended that you use npm install js-cookies for the set and get methods for cookies, 
 //cookies doesn't have any pre-build set and get methods, but there is an npm package that implements these methods
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1583,49 +1510,6 @@ let my_variable = new class_one.class_two();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			
-			
-			
-			
-			
-			
 
 
 
@@ -2357,8 +2241,7 @@ document.getElementById("div").lastElementChild;                                
 document.getElementById("div").closest(".className")                            //will choose the closest parent/grandparent element that has the specified selector
 document.querySelector("div").scrollIntoView({behavior: 'smooth'});             //you can automatically scroll to a specific element by using scrollIntoView()
 
-//event handlers, remember that these handlers can also be called inline as attributes
-//also remember that these even handlers can be used on the "window" object
+// EVENT LISTENERS are triggered by the user
 document.getElementById("id").onclick = function() {                
     //code goes here
 }
@@ -2400,7 +2283,20 @@ document.getElementById("id").addEventListener("click", (e) => {
 })
 
 
+// EVENT EMITTERS are triggered manually by the programmer
 
+const EventEmitter = require('events');
+
+class MyEmitter extends EventEmitter {}
+
+const myEmitter = new MyEmitter();
+
+myEmitter.on('customEvent', () => {
+  console.log('an event occurred!');
+});
+
+myEmitter.emit('customEvent');			//emit() can trigger the event 
+	
 
 
 //========================================================= REDEFINING NODE methods =============================================

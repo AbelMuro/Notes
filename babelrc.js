@@ -1,4 +1,6 @@
 // make sure to save the file as .babelrc
+// npm install babel-plugin-root-import --save-dev
+
 
 {
 "plugins": [

@@ -800,13 +800,14 @@ import storage from 'redux-persist/lib/storage';                                
 import storageSession from 'reduxjs-toolkit-persist/lib/storage/session'            //using the session storage to store the state
 
                                
-const persistedReducer = persistReducer({key: 'root', storage}, RootReducer);       //creating a persisted reducer and specifying the local storage to be used to persist the state
+1) const persistedReducer = persistReducer({key: 'root', storage}, RootReducer);       //creating a persisted reducer and specifying the local storage to be used to persist the state
 
-export const store = configureStore({                      
+2) export const store = configureStore({                      
     reducer: persistedReducer,                                                     // {serializableCheck} will make sure that redux doesn't check to see if redux-persist actions are serializable
     middleware : getDefaultMiddleware => getDefaultMiddleware({serializableCheck: {ignoredActions: [PERSIST, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]}})
 })
-export const persistedStore = persistStore(store);                                  //this function will make the global store persist and rehydrate the store
+
+3) export const persistedStore = persistStore(store);                                  //this function will make the global store persist and rehydrate the store
 
 
 
@@ -817,7 +818,6 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {store, peristedStore} from './'
 
 function App() {
-
         return(
                 <Provider store={store}>
                     <PersistGate 
@@ -829,8 +829,6 @@ function App() {
                     </PersistGate>
                 </Provider>
          )
-
-
 }
 
 
@@ -838,10 +836,21 @@ function App() {
 
 
 
+//======================================================== REDUX DEEP PERSIST ===========================================================================
+// You can use redux-deep-persist to persist a part of the state. 
+// The only difference below is that there is one extra step we do before we create a persisted reducer
+// npm install redux-deep-persist
 
+import { getPersistConfig } from 'redux-deep-persist';
 
-
-
+1) const config = getPersistConfig({
+    key: 'root',
+    storage,
+    whitelist: ['theme'],                                          // we will only persist the theme state in the local storage
+    rootReducer: Reducer
+});
+                               
+2) const persistedReducer = persistReducer(config, RootReducer);       
 
 
 

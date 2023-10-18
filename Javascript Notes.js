@@ -64,6 +64,55 @@ let x = [1,2,3];
 
 
 
+
+
+
+
+
+
+//================================================= BITWISE OPERATORS =====================================================
+//Every number, letter and symbol has a binary representation that is used by the computer
+//Take the example below...
+
+const a = 5; // 00000000000000000000000000000101
+const b = 3; // 00000000000000000000000000000011
+
+
+console.log(5 & 3);	// returns 1   (00000000000000000000000000000001) 	
+			/* 
+   			   5	00000000000000000000000000000101
+   			   3	00000000000000000000000000000011
+       			  ---------------------------------------	//compares both binary representations and returns all COMMON 1's
+	   		   1	00000000000000000000000000000001
+   			*/
+
+console.log(5 | 3);    // returns 7    (00000000000000000000000000000111)
+			/* 
+   			   5	00000000000000000000000000000101
+   			   3    00000000000000000000000000000011
+	 	          ----------------------------------------    // compares both binary representations and returns all 1's in BOTH numbers
+	     	           7    00000000000000000000000000000111
+   			*/
+
+console.log(5 << 2)	// returns 20    (00000000000000000000000000010100)
+			/* 
+   		 	   5   00000000000000000000000000000101
+	  		   2   00000000000000000000000000000010	    // will find the first occurence of 1 from the left,
+			  --------------------------------------    // and shift the bits to the left
+   			   20  00000000000000000000000000010100
+   			*/
+
+console.log(5 >> 2);	// returns 1      (00000000000000000000000000000001)
+			/* 
+   		 	   5   00000000000000000000000000000101
+	  		   2   00000000000000000000000000000010	    // will find the first occurence of 1 from the left
+			  --------------------------------------    // and shift the bits to the right
+   			   1   00000000000000000000000000000001
+   
+   			*/
+
+
+
 //=================================================== WINDOW OBJECT ========================================================
 // The window object represents the browsers window or the tab that displays the app or website. It is the parent of all objects
 // that are created in JS. All objects, variables, functions and classes are automatically members of the window object

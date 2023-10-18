@@ -108,7 +108,6 @@ console.log(5 >> 2);	// returns 1      (00000000000000000000000000000001)
 	  		   2   00000000000000000000000000000010	    // will find the first occurence of 1 from the left
 			  --------------------------------------    // and shift the bits to the right
    			   1   00000000000000000000000000000001
-   
    			*/
 
 

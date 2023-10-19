@@ -73,9 +73,16 @@ let x = [1,2,3];
 //================================================= BITWISE OPERATORS =====================================================
 //Every number, letter and symbol has a binary representation that is used by the computer
 //Take the example below...
-
 const a = 5; // 00000000000000000000000000000101
 const b = 3; // 00000000000000000000000000000011
+
+
+
+//you can get the binary representation of a number by using the following line of code
+let num = 5;
+(num >>> 0).toString(2);    //returns 00000000000000000000000000000101
+
+
 
 
 console.log(5 & 3);	// returns 1   (00000000000000000000000000000001) 	

@@ -230,7 +230,7 @@
                 var search = function(nums, target) {
                   let middle;
 
-                  for(let i = 0, j = nums.length - 1; i <= j;){
+                  for(let i = 0, j = nums.length - 1; i < j;){
                         middle = Math.floor((i + j) / 2);               //we get the middle index of the array
                         if(nums[middle] > target)                                 
                             j = middle - 1;

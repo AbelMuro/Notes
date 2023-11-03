@@ -3,6 +3,8 @@
 
 
 //The example below will re-arrange a list of items
+//KEEP IN MIND, you should NOT use the transform property on items that are being dragged
+//doing so will create visual bugs on mobile and tablet devices
 
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -33,7 +35,7 @@ function App () {
       <DndProvider backend={HTML5Backend}>                      //make sure to wrap your app component with this context provider
           <main>
             {cards.map((card, i) =>                                  
-               return(<Card card={card} setCards={setCard} itemId={i}/>)
+               return(<Card card={card} setCards={setCard} itemId={card.id}/>)
           </main>
       </DndProvider> 
     )
@@ -67,7 +69,7 @@ function Card({card, setCard, itemId}) {
             return {index, itemId}
         },
         isDragging: (monitor) => {              // isDragging function lets you define how the props isDragging will be true or false based on a condition
-            return itemId === monitor.getItem().itemId;    //this will ensure that isDragging still represents the item being dragged (monitor will always check if a item is currently beind dragged)
+            return itemId === monitor.getItem().itemId;    //this will ensure that isDragging still represents the item being dragged (monitor will always check if a item is currently being dragged)
         },
         canDrag: () => {                        //canDrag function lets you control which items are draggable and which are not
             return true;            

@@ -22,7 +22,7 @@ module.exports = {
             favicon: './src/favicon.ico',     //loading a favicon in our html template
             template: './src/index.html'      //this is a template for our production html file, we are defining how the html will look like before we make our production html file
         }),
-        new dotenv;                           //this enables the use of env variables, you must use process.env.name_of_variable
+        new dotenv({systemvars: true})        //this enables the use of env variables, you must use process.env.name_of_variable (systemvars tells us that any env variable defined in a web-host(netlify) is a system variable, and MUST be used for the app)
     ],
     devServer: {                              //configuration property for the development server
         port: 3000,                           //the devServer will start in port 3000

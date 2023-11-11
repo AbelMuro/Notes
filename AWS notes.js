@@ -34,8 +34,8 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 1) Create a bucket in S3 console
 
 2) set the following options for the bucket
-    --ACL's disabled
-    --unblock all public access
+    --ACL's enabled                                (in case you miss this part, you can go to 'Permissions', and then to 'Object Ownership', then click on ACL's enabled)
+    --unblock all public access                    (in case you miss this part, you can go to 'Permissions', then to 'Block Public Access', then uncheck 'Block all public access' )
     
 3) open the bucket and then click on properties
 

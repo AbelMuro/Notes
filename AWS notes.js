@@ -46,19 +46,29 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     --Host a static website
     --set the landing page for the website (index.html)
 
-6) then click on permission for the bucket
+6) Go to Permissions
 
-7) click on add actions and then type in S3, then search for GetObject
+7) Click on 'Edit' in Bucket Policy
 
-8) Then click on Add a Resource, select object for the resource and type in the bucket name and replace {ObjectName} with *
+8) Copy the 'Bucket ARN' and then click on 'Policy Generator'
 
-9) Then on the policy json text, change the Principal value to "*"
+9) Set the settings below...
 
-10) Now all you have to do is import all the files in the /dist folder to the bucket (not the folder itself)
+    --type of policy: S3 Bucket Policy
+    --Principal: *
+    --Actions: GetObject
+    --Paste the Bucket ARN and then type '/*' next to it
+    Then click on Add Statement and then Generate Policy (copy the JSON code that pops up)
+    
+11) Go back to Permissions -> Bucket Policy -> edit -> paste the policy and then click Save
 
-you can use the command line instead.. aws s3 sync ./dist s3://{name-of-bucket}
+12) Now all you have to do is import all the files in the /dist folder to the bucket (not the folder itself)
 
-11) once everything is working properly, go back to properties and scroll all the way down and click on the link in static website hosting
+    you can also use the command line instead.. aws s3 sync ./dist s3://{name-of-bucket}
+
+13) Select all the files that you imported in the bucket and then click on 'Actions', and then click on 'Make public using ACL'  
+
+14) once everything is working properly, go back to properties and scroll all the way down and click on the link in static website hosting
 
 */
 

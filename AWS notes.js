@@ -9,14 +9,25 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 //========================================================== AMAZON S3 =================================================================================
 /*
 Amazon Web Services S3 is an 'object' storage service that can be used to store data such as any type of files (text, image, video, etc...) and folders
 
+S3 is basically a NoSQL database
 S3 also has a REST API that is used by the back-end to make requests and receive responses from a bucket
 S3 is mostly used for backup and storage. Useful for saving distinct copies of you data
 S3 can also be used to host/deploy a static website
-S3 is basically a NoSQL database
 
 S3 uses Buckets and Objects. Buckets are containers for objects, and objects are files or any metadata that describes the file.
 
@@ -29,7 +40,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     object data: can be any type of file; text, js, css, image, video, literally any file
     
     
---------------------------------------------HOW TO DEPLOY/HOST A WEBSITE WITH S3----------------------------------------------------------------------
+--------------------------------------------HOW TO MANUALLY DEPLOY A WEBSITE WITH S3----------------------------------------------------------------------
 
 1) Create a bucket in S3 console
 
@@ -37,22 +48,13 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     --ACL's enabled                                (in case you miss this part, you can go to 'Permissions', and then to 'Object Ownership', then click on ACL's enabled)
     --unblock all public access                    (in case you miss this part, you can go to 'Permissions', then to 'Block Public Access', then uncheck 'Block all public access' )
     
-3) open the bucket and then click on properties
+3) Go to properties and then click on STATIC WEBSITE HOSTING and enable static website hosting for the bucket
 
-4) then scroll all the way down and click on the edit button in STATIC WEBSITE HOSTING
+4) Go to Permissions and then click on 'Edit' in Bucket Policy
 
-5) set the following options
-    --enable
-    --Host a static website
-    --set the landing page for the website (index.html)
+5) Copy the 'Bucket ARN' and then click on 'Policy Generator'
 
-6) Go to Permissions
-
-7) Click on 'Edit' in Bucket Policy
-
-8) Copy the 'Bucket ARN' and then click on 'Policy Generator'
-
-9) Set the settings below...
+6) Set the settings below...
 
     --type of policy: S3 Bucket Policy
     --Principal: *
@@ -60,17 +62,85 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     --Paste the Bucket ARN and then type '/*' next to it
     Then click on Add Statement and then Generate Policy (copy the JSON code that pops up)
     
-11) Go back to Permissions -> Bucket Policy -> edit -> paste the policy and then click Save
+7) Go back to Permissions -> Bucket Policy -> edit -> paste the policy and then click Save
 
-12) Now all you have to do is import all the files in the /dist folder to the bucket (not the folder itself)
+8) Now all you have to do is import all the files in the /dist folder to the bucket (not the folder itself)
 
     you can also use the command line instead.. aws s3 sync ./dist s3://{name-of-bucket}
 
-13) Select all the files that you imported in the bucket and then click on 'Actions', and then click on 'Make public using ACL'  
+9) Select all the files that you imported in the bucket and then click on 'Actions', and then click on 'Make public using ACL'  
 
-14) once everything is working properly, go back to properties and scroll all the way down and click on the link in static website hosting
+10) once everything is working properly, go back to properties and scroll all the way down and click on the link in static website hosting
 
+
+
+
+
+------------------------------------------------HOW TO CONNECT A GITHUB REPOSITORY TO S3------------------------------------------------------------
+    1) Create an S3 Bucket 
+
+    2) set these settings on the bucket
+        --ACL's enabled                                (in case you miss this part, you can go to 'Permissions', and then to 'Object Ownership', then click on ACL's enabled)
+        --unblock all public access                    (in case you miss this part, you can go to 'Permissions', then to 'Block Public Access', then uncheck 'Block all public access' )
+
+    3) Go to Permissions and click on 'Edit' in Bucket policy, then copy the Bucket ARN
+       Then click on Policy Generator and set the following options...
+       
+        --type of policy: S3 Bucket Policy
+        --Principal: *
+        --Actions: All
+        --Paste the Bucket ARN and then type '/*' next to it
+        Then click on Add Statement and then Generate Policy (copy the JSON code that pops up)
+        
+    4)  Go back to Permissions -> Bucket Policy -> edit -> paste the policy and then click Save
+
+    5) Then go to 'Properties' and then STATIC WEBSITE HOSTING, and enable static website hosting
+
+    6) Open up AWS CodePipeline
+
+    7) Create a pipeline with these settings
+
+        step 1)
+            --pipeline type: V1 
+            --Create or use an existing role and check 'Allow AWS codePipeline to create a service role....'
+            --Advanced Settings: check Custom locations and Default AWS managed Key
+            
+        step 2)
+            --Source Provider: Github Version 2
+            --Connect to Github
+            --Select repository
+            --push in a branch
+            --speciify 'main' as the branch name
+            --check CodePipeline Default
+            
+        step 3)
+            --Select AWS CodeBuild
+            --Click on Create project (this will create a project in AWS CodeBuild)
+            --Click on managed image
+            --for operating system, select amazon linux
+            --for runtime, select standard
+            --for image, select 'aws/codebuild/amazonlinux2-x86_64-standard:5.0'
+            --check 'use a buildspec file' (go to 'buildspec.yml' notes for more details).... this part is essential!!
+            Then click on save
+            
+        step 4)
+            -- Select Amazon S3
+            -- Select a bucket that will host the static website
+            -- click on Extract file before deploy
+
+        8) Then on the next page, click on Create Pipeline
+
+        9) IF everything went as planned, then the S3 bucket you created before should have hosted the static website 
+           and any changes made to the github repository will be displayed to the S3 bucket
 */
+
+
+
+
+//========================================= AMAZON CODEPIPELINE ================================================================
+
+
+
 
 
 
@@ -84,7 +154,6 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 /* 
     Amazon EC2 instance is a service that launches/deploys virtual servers in the cloud. An instance is an individual server
     in the cloud.
-
 */
 
 

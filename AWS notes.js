@@ -39,7 +39,98 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             
     object data: can be any type of file; text, js, css, image, video, literally any file
     
+
+
+
+
+
+------------------------------------------HOW TO USE S3 AS A DATABASE WITH THE SDK-----------------------------------------------------------------------
+1) Create a bucket in s3 console
+
+2) set the following options for the bucket
+    --ACL's enabled                                (in case you miss this part, you can go to 'Permissions', and then to 'Object Ownership', then click on ACL's enabled)
+    --unblock all public access                    (in case you miss this part, you can go to 'Permissions', then to 'Block Public Access', then uncheck 'Block all public access' )
+    Then click on create bucket
     
+3) Go to Permissions and then click on 'Edit' in Bucket Policy
+
+4) Copy the 'Bucket ARN' and then click on 'Policy Generator'
+
+5) Set the settings below...
+
+    --type of policy: S3 Bucket Policy
+    --Principal: *
+    --Actions: GetObject, PutObject
+    --Paste the Bucket ARN and then type '/*' next to it
+    Then click on Add Statement and then Generate Policy (copy the JSON code that pops up)
+    
+6) Go back to Permissions -> Bucket Policy -> edit -> paste the policy and then click Save
+
+7) Then go to Permissions and then scroll down to CORS and paste the following.... (this will set up the bucket as an API)
+    
+        [
+            {
+                "AllowedHeaders": [
+                        "*"
+                    ],
+                "AllowedMethods": [
+                        "PUT",
+                        "HEAD",
+                        "GET"
+                    ],
+                "AllowedOrigins": [
+                    "*"
+                ],
+                "ExposeHeaders": []
+            }
+        ]
+
+8) Create a file 'S3.js' with the following lines of code...
+    //npm install aws-sdk
+    
+    import aws from 'aws-sdk';
+    
+    const bucketName = 'database-example'
+    const region;
+    const accessKeyId;
+    const secretAccessKey;
+    
+    const s3 = new aws.S3({
+        region,
+        accessKeyId,
+        secretAccessKey,
+        signatureVersion: '4'
+    })
+    
+    export function generateUploadURL() {
+        const imageName = 'random'
+    }
+
+9) Now you need to create or use an 'IAM' user that has an 'access key id' and a 'secret access key' 
+    and also a policy that allows that user to access the S3 bucket
+
+10) Go to 'IAM console' and then click 'Policies', then click on 'Create Policy', then set the following options...
+
+    --select S3
+    --click on Write and select PutObject (this action lets the user put objects into the database)
+    --click on Read and select GetObject (this action lets the user get objects from the database)
+    --Go To resources, Then click on Add ARN 
+        --Then type in the ARN of the s3 bucket and click on 'Any object name'
+        Then click on 'Add ARN'
+        
+11) Give a name to the policy and create it (remember the name of the policy)
+
+12) Now you need to assign that policy to the IAM user, To do this, go back to 'IAM console' and click on 'Users'
+
+13) Select the user, and then click on 'Add Permissions', then click on 'Attack policies directly' and search for the policy that you just created
+
+14) finally, click on next and then on Add Permissions
+
+15) Your IAM user is now ready to access the S3 bucket
+
+
+    
+
 --------------------------------------------HOW TO MANUALLY DEPLOY A WEBSITE WITH S3----------------------------------------------------------------------
 
 1) Create a bucket in S3 console
@@ -47,6 +138,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 2) set the following options for the bucket
     --ACL's enabled                                (in case you miss this part, you can go to 'Permissions', and then to 'Object Ownership', then click on ACL's enabled)
     --unblock all public access                    (in case you miss this part, you can go to 'Permissions', then to 'Block Public Access', then uncheck 'Block all public access' )
+    Then click on create bucket
     
 3) Go to properties and then click on STATIC WEBSITE HOSTING and enable static website hosting for the bucket
 

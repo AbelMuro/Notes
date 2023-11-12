@@ -87,24 +87,48 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
 8) Create a file 'S3.js' with the following lines of code...
     //npm install aws-sdk
+    //s3.js
+        import aws from 'aws-sdk';
+        
+        const s3 = new aws.S3({
+            region: 'us-west-1',
+            accessKeyId: '',
+            secretAccessKey: '',
+            signatureVersion: 'v4'
+        })
+        
+        export function generateUploadURL(objectName) {                        //objectName = 'myImage'
     
-    import aws from 'aws-sdk';
-    
-    const bucketName = 'database-example'
-    const region;
-    const accessKeyId;
-    const secretAccessKey;
-    
-    const s3 = new aws.S3({
-        region,
-        accessKeyId,
-        secretAccessKey,
-        signatureVersion: '4'
-    })
-    
-    export function generateUploadURL() {
-        const imageName = 'random'
-    }
+            const params = ({
+                Bucket: 'bucket name goes here',
+                Key: objectName,
+                Expires: 60
+            });
+        
+            const uploadURL = await s3.getSignedUrlPromise('putObject', params);
+        
+            return uploadURL;                                                    //remember, that this is a promise object
+        }
+
+    //app.js
+        import S3 from './s3.js'
+
+        function App() {
+
+        const url = await S3.generateUploadURL();                //remember that generateUploadURL() returns a promise
+        const handleClick = async () => {
+                await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: 'first piece owwwww!',
+                })
+            }
+
+                return(<button onClick={handleClick}> Click here!</button>)
+            }
+        
 
 9) Now you need to create or use an 'IAM' user that has an 'access key id' and a 'secret access key' 
     and also a policy that allows that user to access the S3 bucket
@@ -116,7 +140,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     --click on Read and select GetObject (this action lets the user get objects from the database)
     --Go To resources, Then click on Add ARN 
         --Then type in the ARN of the s3 bucket and click on 'Any object name'
-        Then click on 'Add ARN'
+    Then click on 'Add ARN'
         
 11) Give a name to the policy and create it (remember the name of the policy)
 

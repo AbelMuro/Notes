@@ -4,18 +4,24 @@
     <head>
                                              <!-- META tags -->    
             <!-- meta tags describe data about the document, they are used by the browser-->
-            <!-- meta tags also help with search engine optimization-->
+            <!-- meta tags also help with search engine optimization (SEO)-->
         <meta charset="UTF-8"/>                                                  <!-- the default character set is UTF-8 -->
-        <meta name="keywords" content ="Abel, website, html"/>                   <!-- this defines keywords for search engines-->
+        
+        <meta name="keywords" content="Abel, website, html"/>                   <!-- this defines keywords for search engines-->
         <meta name="author" content="Abel Muro"/>                                <!-- defines the author of the webpage-->
+        <meta name='description' content='The description for your app goes here'/> <!--This defines the description that appears when someone googles your application-->
+        <meta name="theme-color" content="#4285f4" />                            <!-- This meta tag will give a specific theme color to the surrounding interface of the browser (in mobile, the search bar will be colored blue) -->
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F6FA"/> <!--You can define different themes for the surrounding interface of a browser by checking the users prefered theme-->
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#313E51"/> <!--You can define different themes for the surrounding interface of a browser by checking the users prefered theme-->
+        
         <meta http-equiv="refresh" content="60"/>                                <!-- determines the refresh rate in seconds-->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'"> <!-- using content-security-policy for the website, this will help prevent cross-site attacks and data-injection attacks, this will give full controls to the-->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'"/> <!-- using content-security-policy for the website, this will help prevent cross-site attacks and data-injection attacks, this will give full controls to the-->
         <meta http-equiv="X-UA-Compatible" content="IE=edge">                    <!-- defines the version of internet explorer the website/app should be rendered as, IE=edge means that the page will display content in the 'highest mode' available-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  <!-- this will make the webpage look the same across all devices-->
-                                                        <!-- width=device-width sets the current width of webpage to the width of the device-->
-                                                        <!-- initial-scale sets the zoom level of the webpage, 1.0 means that it wont zoom, 10 means that it will zoom at max-->        
+                                                                                 <!-- width=device-width sets the current width of webpage to the width of the device-->
+                                                                                 <!-- initial-scale sets the zoom level of the webpage, 1.0 means that it wont zoom, 10 means that it will zoom at max-->        
                                             <!-- TITLE tag -->
-        <title> my first website</title>                                            <!-- title tag defines the title used in the window tab--!>
+        <title> my first website</title>                                          <!-- title tag defines the title used in the window tab--!>
 
                                             <!-- LINK tags-->
         <link rel="icon" href="images/faviconThingie.png"/>                         <!-- this will add an icon(favicon) to the window tab-->
@@ -25,17 +31,17 @@
                                             <!-- SCRIPT tags-->
             <!-- script tags are used to include javascript code into the document-->
         <script src="https://kit.fontawesome.com/29995223a0.js" crossorigin="anonymous"></script>   <!-- script tags can also be used to include the CDN of frameworks (bootstrap, jquery, materialize, etc...) -->             
-        <script type="module">                                                      <!-- type="module" defines a script that has its own scope -->                                                          
-                import {someFunction} from './scripts.js';                          <!-- this is useful for importing functions or variables from a JS file-->
+        <script type="module">                                                      //type="module" defines a script that has its own scope                                                          
+                import {someFunction} from './scripts.js';                          // this is useful for importing functions or variables from a JS file
                 window.someFunction = someFunction;
         </script>
-        <script defer>                                                              <!-- its always a good idea to use the defer attribute to make sure the scripts are loaded AFTER the document is loaded-->
+        <script defer>                                                              //its always a good idea to use the defer attribute to make sure the scripts are loaded AFTER the document is loaded
             let sum = 0;
             sum++;
             console.log(sum);
             document.querySelector(".someClass").innerHTML = sum;
         </script>
-        
+
     </head>
 
 

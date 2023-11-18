@@ -33,6 +33,12 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                      "build": "webpack --mode production"
               
               8) create /src folder with index.js and index.html (index.html must have <div id="root"> </div>)
+                      make sure to implement your <meta/> tags for SEO (DONT FORGET TO ADD A FAVICON!)
+                            <meta name="author" content="Abel Muro"/>       
+                            <meta name="keywords" content="front-end quiz, html quiz, css quiz, javascript quiz, accessibility quiz"/>
+                            <meta name="description" content="Front-end quiz that will test your skills in HTML, CSS, Javascript and Accessibility!"/> 
+                            <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F6FA" />                           //you can remove the media attribute if you just want ONE custom theme
+                            <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#313E51" />
               
               9) generally, index.js will have..
               

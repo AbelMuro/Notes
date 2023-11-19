@@ -12,9 +12,16 @@
     "name": "Front end Quiz App",
     "icons": [
       {
-        "src": "/favicon-32x32.png",
+        "src": "/quiz icon.png",                    //this image is used for splash screens
         "type": "image/png",
-        "sizes": "32x32"
+        "sizes": "512x512",
+        "purpose": "any",
+      },
+       {
+        "src": "/quiz icon.png",                   //this icon is used for your app in mobile devices (think of the youtube app on your phone, that app has an icon of a red box and a white play buttohn) 
+        "type": "image/png",
+        "sizes": "196x196",
+        "purpose": "any maskable"
       }
     ],
     "start_url": ".",

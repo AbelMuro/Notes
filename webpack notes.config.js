@@ -1,7 +1,7 @@
 const path = require('path');               //path is now a module that has access to pre defined methods that are built into Node.js
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //to use a plugin with webpack, you must use require
-const dotenv = require("dotenv-webpack")     //remember to npm install dotenv-webpack -D to use env variables
-
+const dotenv = require("dotenv-webpack")     //npm install dotenv-webpack -D
+const CopyWebpackPlugin = require('copy-webpack-plugin');    //npm install copy-webpack-plugin -D         you will NEED this if you are planning on having a /public folder
 
 //module.exports is a node.js object that accepts objects, arrays, functions and classes as values that can be used in other js modules
 //to use module.exports..
@@ -22,7 +22,10 @@ module.exports = {
             favicon: './src/favicon.ico',     //loading a favicon in our html template
             template: './src/index.html'      //this is a template for our production html file, we are defining how the html will look like before we make our production html file
         }),
-        new dotenv({systemvars: true})        //this enables the use of env variables, you must use process.env.name_of_variable (systemvars tells us that any env variable defined in a web-host(netlify) is a system variable, and MUST be used for the app)
+        new dotenv({systemvars: true}),        //this enables the use of env variables, you must use process.env.name_of_variable (systemvars tells us that any env variable defined in a web-host(netlify) is a system variable, and MUST be used for the app)
+        new CopyWebpackPlugin({
+            patterns: [{ from: 'public', to: '' }],        //this will copy all the files from the public folder to the build directory
+          }),
     ],
     devServer: {                              //configuration property for the development server
         port: 3000,                           //the devServer will start in port 3000

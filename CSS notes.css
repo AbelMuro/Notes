@@ -105,8 +105,25 @@
     margin-left: 5px;                   /* the left side margin of the element*/
     margin-right: 5px;                  /* the right side margin of the element*/
 
-/*------------------------------------MISCELLANEOUS BOX PROPERTIES------------------------------------------------------*/
+}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.Miscellaneous {
+    
     box-sizing: border-box, content-box;             /* this property lets us calculate the total width and height of a box
         border-box: the padding, margin and border are NOT added to the width and height of an element, 
                     the content is shrunk to adjust the padding and margin.
@@ -152,6 +169,16 @@
         collapse: will hide the element and will also hide the space the element generates
     */
 
+    clip-path: circle(20px at 30px 35px)            /*  20px is the size of the circle, 30px 35px is the position of the circle,     30px left or right        35px top or bottom
+                                                        displays a circle inside an element, this circle acts like a viewport to the element
+
+                                                                        ----------------------
+                                                                       |     ____             |
+                                                                       |    /     \           |     //anything outside the circle will not be visible in the DOM
+                                                                       |    \     /           |     //just image that the poorly drawn thing inside the square is actually a circle,
+                                                                       |     ----             |
+                                                                        ----------------------
+                                                    */
 }
 
 
@@ -447,23 +474,8 @@
         FOR EXAMPLE: 
             if we have rotate(45deg), and we set transform-origin: top left
             then the center of rotation will be the point marked at the top left
-
-            
-
     */ 
 
-
-    /* MISCELLANEOUS TRANSFORM PROPERTIES*/
-    clip-path: circle(20px at 30px 35px)            /*  20px is the size of the circle, 30px 35px is the position of the circle,     30px left or right        35px top or bottom
-                                                        displays a circle inside an element, this circle acts like a viewport to the element
-
-                                                                        ----------------------
-                                                                       |     ____             |
-                                                                       |    /     \           |     //anything outside the circle will not be visible in the DOM
-                                                                       |    \     /           |     //just image that the poorly drawn thing inside the square is actually a circle,
-                                                                       |      ----            |
-                                                                        ----------------------
-                                                    */
                                                     
 
 }
@@ -508,6 +520,12 @@
 
         rotate3(1, 2, 1, 25deg) = v1 (1, 2, 1), and the element will be rotated 25deg
     */
+
+    backface-visibility: hidden            /* Property that decides if the back of an element is to be hidden*/
+
+    transform-style: preserve-3d;          /* indicates that the child elements should be positioned in the 3d space*/
+
+                                            /* To view an example of the two properties above, check out the repository https://github.com/AbelMuro/my-team-website/tree/main/src/Pages/About/MeetDirectors */
 }
 
 

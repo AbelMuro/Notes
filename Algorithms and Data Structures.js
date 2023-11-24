@@ -1,207 +1,3 @@
------------------------------------------------------ LEET CODE PROBLEMS SOLVED ---------------------------------------------
-/*
-
-  1)  Two Sum: 
-      use two pointer technique, one pointer starts at the beginning, 
-      the other pointer will be right next to the first pointer.
-      Use if statements to check the current sum of the elements in the array
-      return the indices of the pointers if the current sum is equal to the target
-
-  11) Container with most water
-    use two pointer technique, first pointer starts at the beginning, second pointer starts in the end.
-    if first pointer's element is less than the second pointer's element, we increment the first pointer
-    if first pointer's element is more than the second pointer's element, we decrement the second pointer,
-    we calculate the area in every iteration by multiplying the element and result of subtracting the two pointers
-    we use a variable maxArea to keep track of the max area calculated in every iteration.
-
-  15) 3Sum
-    use three pointer technique, first pointer starts in the beginning, second one starts with the second element, third starts at the very end of the array
-    If the sum of the current three elements is less than 0, you increment the second pointer
-    If the sum of the current three elements is greater than 0, you decrement the third pointer
-    If the sum is equal to 0, then you incremenet the second pointer OR you decrement the third pointer
-
-  20) Valid Parenthesis:
-    use a stack, first in and first out
-    use Array.push() and Array.pop();
-
-  22) Generate Parentheses
-      use two stacks FIFO, one stack to contain a combination of parentheses for one 'branch' 
-      and another stack to contain ALL the combinations of parenthesis
-
-      For the backtracking technique, you first need to understand that a combination must have exactly n opening parenthesis and n closing parenthesis
-      Also, the number of opening parenthesis must always be greater than the number of closing parenthesis
-      the base case must have a condition that checks if opening and closing parenthesis are BOTH equal to n
-      the second case must check if opening parenthesis is less than n (you increment opening by 1)
-      the third case must check if opening is greater than closed, (you incremenet closing by 1)
-  
-  36) Valid Sudoku:
-      use a hash map to store the values of the multi dimensional array. You will need two for loops
-      One to traverse the rows, and the second to traverse the columns. The index that you use for the for loops
-      will be used as properties of the hash map and the numbers in the sudoku will be used as values for the hash map
-      Make sure to use an array as the value for each key in the hash map
-
-      map.set(row, board[row][column]);      
-      map.set(column, board[row][column]);
-
-
-  42) Trapping Rain Water
-        You will need to find the max value on the left of each index and the max value on the right as well.
-        Then you will need to use this formula to calculate the amount of water the index can store
-
-        min(maxLeftHeight, maxRightHeight) - height[i]        // make sure to exclude the result if its negative
-
-        you can use the following for loops
-        
-          for(let i = 0; i < height.length; i++)
-              for(let l = i - 1; l >= 0; l--)                // the innter for loop will check all the values on the left side of the index
-
-          for(let i = height.length - 1; i >= 0; i--){
-             for(let r = i + 1; r < height.length; r++)       // the inner for loop will check  all the values on the right side of the index
-    
-  49) Group Anagrams:
-      Use a loop to traverse through the array of words, then sort each word in alphabetical order and
-      add the sorted word as a property of a hash map, then use the unsorted word and add it as a value of the hash map
-
-  74) Search 2D matrix
-      Use binary search two times. Once for the rows, and again for the columns in the matrix
-      You will need to check the first column and the last column of each row and see if the target falls within that range. 
-      If it does, then use binary search on that row only.
-      If the first column of the row is less than the target, then you move to the previous row
-      If the last column of the row is more than the target, then you move to the next row
-  
-
-  125) Valid Palindrome: 
-      traverse through the string and add the current character into another string palindrome IF its an alpha numeric character.
-      reverse all characters in palindrome and assign it to another variable reversePalindrome
-      convert all characters in palindrome into lower case and reassign it to palindrome variable
-      compare reversePalindrome and palindrome
-
-
-  128) Longest Consecutive sequence
-      Sort the array in ascending order and use a local variable to keeps track of the longest sequence.
-      
-        next element          current element      
-      sortedNums[i + 1] === sortedNums[i] + 1
-
-      the code above will help you determine if the next element is part of the current sequence. 
-      Typically, you want to use a for loop to traverse through the array
-
-  150) Evaluate Reverse Polish Notation
-      use a stack FIFO to store the operands. Traverse through the array and push the numbers onto the stack, 
-      when you encounter a operator (+, -, *, /), you will need to pop() the last two elements of the stack
-      and perform the operation, and then put the result back onto the top of the stack
-
-  153) Find Minimum In Rotated Sorted Array
-      we use a variation of binary search,
-      First we calculate the middle index of the array, then we check if the left pointer is less than the right pointer
-      if its true, the we save the value of the left pointer because we know that section of the array is already sorted
-      Every iteration we must check if the current value of middle is less than the saved value in min
-      Then we check if the middle value is greater than or equal to the left pointer, 
-      if its true, then we check the right side of array
-      if its false, then we check the left side of the array
-      
-      
-      
-
-  155) Min Stack
-      very straightforward, the MinStack function should have a 'private variable' called this.stack = [];
-      the other functions should be easy to implement
-
-
-  167) Two Sum II - Input Array Is Sorted
-      use two pointer technique, one pointer starts in the beginning, the other pointer starts at the end
-      when two elements add up to a number that is greater than the target, you decrement the pointer at the end
-      when two elements add up to a number that is less than the target, you increment the pointer in the beginning
-      If its equal, then you return the indices
-
-
-  217) Contains Duplicates:
-       use a hash map to check for duplicates, the properties will be used to represent the letters, the values
-       will be used to contain the occurences
-
-  238) Product of Array Except Self
-        use two arrays, one called prefix, and the other called postfix. Postfix will contain the product of 
-        all the values before the current index, and prefix will contain the product of all the values after the current index
-        
-                                                        orig index   prefix index
-        original array: [1, 2, 3, 4]                             [0] [1]          [1] [2]       [2] [3]
-                            -->
-        prefix:         [1, 2, 6, 24]      we start with 1  ->    1 * 2 = 2       2 * 3 = 6      6 * 4 = 24
-
-                            <--
-        postfix:        [24, 24, 12, 4]
-
-        we then multiply the elements of both prefix and postfix as shown below
-
-        results:       [1 * 24,    1 * 12 = 12,     2 * 4 = 8,     6 * 1 = 6]
-
-
-
-  242) Valid Anagram
-      use a hash map to count the occurences for each letter in the original word string,
-      then traverse through the hash map and subtract the letter occurences in the anagram
-
-      [1,3,2,3] -> letter occurences of original word
-      [1,3,2,2] -> letter occurences of anagram
-      [0,0,0,1] -> since we have a non-zero number in the hash map, the anagram is NOT an anagram of original word
-
-      OR you can just sort the original word and the anagram in alphabetical order and compare them!!!!
-
-  347) Top K Frequent Elements
-        use a hash map to keep track of the occurences of each number in the array,
-        then convert the map into an array and sort it in descending order
-        then traverse through the first k elements in the array and push those elements into another array
-
-  704) Binary Search
-    use the binary search algorithm. Declare a local variable middle and use the formula (i + j)/2 
-    to calculate the middle index. Then use the middle index to compare that value with the target
-    If the middle index is less than the target, you subtract middle by 1 and assign the result to i
-    If the middle index is more than the target, you add middle by 1 and assign the result to j
-
-  739) Daily Temperatures
-        use a stack FIFO to store the temperatures and their index.
-        You want to use an inner while loop that will continue popping the elements 
-        on top of the stack.
-        You calculate the daysWaited by subtracting the index from the element on top of the stack 
-        from the current index
-
-  853) Car fleet
-    Combine the positions array and the speed array into one array and then sort it in descending order
-    You will have to use a stack to contain the time it takes for one car to arrive to the target
-    (target - position)/speed = time
-
-    When you calculate the time for a car, you push it into the stack. 
-    If the top of the stack is less than or equal to the element beneath it, then we pop the element on top
-    The idea here is that those two elements that we compared have become a car fleet
-
- 875) Koko eating Bananas
-     Find the max value in the piles array, that value will be the max value for k. [1,2,3,....., k]
-     Then use a 'for' loop to iterate to k
-     Use an inner 'for' loop to traverse through the piles array and divide each value with the current k, 
-        the result of that will be accumulated into a variable currentHours
-        CurrentHours is the hours it will take for the monkey to consume all piles at speed k
-    if currentHours is greater than h, then we traverse on the right side of the k array
-    if currenthours is less than or equal to h, then we traverse on the left side of k array
-    this is where we use binary search
-
-
-    2325) Decode the message
-      use a hash map to contain all the first occuring letters in the string 'key' and assign a corresponding letter in the alphabet
-      key = hello world ...
-            h e l o w   r d ...     we get the first occurence of EVERY letter in the key above
-            a b c d e   f g  ...    and assign a letter in the alphabet 
-             
-      then traverse through the string 'message' and check every letter to see if it exists in the hash map
-      If it does, then we get the value of the current key and we accumulate it to some local variable
-    
-  
-*/
-    
-
-
-  
-
-
 ----------------------------------------------------------- ALGORITHMS --------------------------------------------------------------------
 
 
@@ -498,6 +294,11 @@
 
 
 
+
+
+
+
+
 3)          //Sliding Window when k represents the maximum number of operations allowed
             //This method only works if when can perform on ONE type of data (changing 0's but not 1's)
 
@@ -526,6 +327,42 @@
                   
                   return maxSubstring;
               };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//PREFIX SUM: This is a technique that creates an array where each value is the sum of all the values before it
+
+    let arr = [10, 20, 10, 5, 15];
+    let prefixSumArr = [10, 30, 40, 45, 60];              //0 + 10 = 10        20 + 10 = 30         10 + 20 + 10 = 40
+
+      function fillPrefixSum() { 
+            let arr = [10, 4, 16, 20]; 
+            let prefixSum = [];
+            prefixSum[0] = arr[0]; 
+       
+            for (let i = 1; i < n; i++) 
+                prefixSum[i] = prefixSum[i - 1] + arr[i]; 
+
+            //prefixSum = [10, 14, 30, 50]
+      } 
+
+
+
+
+
+
 
 
 
@@ -586,6 +423,11 @@
                         }
                     }
                 }
+
+
+
+
+
 
 
 

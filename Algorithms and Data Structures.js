@@ -1,19 +1,6 @@
 ----------------------------------------------------------- ALGORITHMS --------------------------------------------------------------------
 
 
-//LINEAR SEARCH ALGORITHM: is a searching algorithm that goes through each element in the array, one by one. The time complexity 
-              //for this algorithm is O(n)
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -177,6 +164,23 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //TWO POINTER MANIPULATION ALGORITHM: Two pointers is an easy and effective technique that is typically used for searching pairs in a SORTED array.
 
 //Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
@@ -215,6 +219,11 @@
                       else if(nums1[i] > nums2[j])
                           j++;                     
                   }              
+
+
+
+
+
 
 
 
@@ -344,24 +353,47 @@
 
 //PREFIX SUM: This is a technique that creates an array where each value is the sum of all the values before it
 
-    let arr = [10, 20, 10, 5, 15];
-    let prefixSumArr = [10, 30, 40, 45, 60];              //0 + 10 = 10        20 + 10 = 30         10 + 20 + 10 = 40
+            let arr = [10, 20, 10, 5, 15];
+            let prefixSumArr = [10, 30, 40, 45, 60];              //0 + 10 = 10        20 + 10 = 30         10 + 20 + 10 = 40
 
-      function fillPrefixSum() { 
-            let arr = [10, 4, 16, 20]; 
-            let prefixSum = [];
-            prefixSum[0] = arr[0]; 
-       
-            for (let i = 1; i < n; i++) 
-                prefixSum[i] = prefixSum[i - 1] + arr[i]; 
+1)          // Left prefix sum that doesnt include a 0 in the beginning
 
-            //prefixSum = [10, 14, 30, 50]
-      } 
-
-
-
+              function fillPrefixSum() { 
+                    let arr = [10, 4, 16, 20]; 
+                    let prefixSum = [arr[0]];
+               
+                    for (let i = 1; i < n; i++) 
+                        prefixSum[i] = prefixSum[i - 1] + arr[i]; 
+        
+                    //prefixSum = [10, 14, 30, 50]
+              } 
 
 
+
+2)          // Left prefix sum that includes a 0 in the beginning
+
+              function fillPrefixSum() {
+                    let arr = [10, 20, 10, 5, 15];
+                    let prefixSumArr = [0];              
+    
+                    for(let i = 0; i < arr.length; i++){
+                          prefix[i + 1] = prefix[i] + arr[i];
+                    }                
+              }
+
+
+
+
+3)             // Right prefix sum that includes a 0 in the end (first value will contain the sum of the last value and everything after that)
+
+                function fillPrefixSum(){
+                      let arr = [10, 20, 30, 40, 40];
+                      let rightSum = [0];
+                  
+                      for(let r = nums.length - 2; r >= 0; r--){
+                          rightSum.unshift(rightSum[0] + nums[r + 1]);
+                      }                  
+                }
 
 
 

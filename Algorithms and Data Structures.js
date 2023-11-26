@@ -409,7 +409,6 @@
 //RECURSION: its the ability of a function to call it self many times. The whole point of recursion is to break a problem into smaller parts, thereby reducing the
 //complexity of the problem at hand. Typically, all recursive functions have a base case that will terminate the recursive calls once the case is true
 
-  
                 function recursion(n){
                       if(n == 0)                //base case
                         return;
@@ -420,10 +419,8 @@
                 recursion(5);
 
 
-
-
-        EX: factorial
-            
+// Calculate the factorial of a number using recursion
+          
                 function factorial(n){
                     if(n == 0) 
                         return 1;
@@ -432,24 +429,22 @@
                         return n * factorial(n - 1);
                 }
 
-        VISUAL:
-              
-               factorial(5)                 //first call to the recursive function
-               5 * factorial(4)
-               4 * factorial(3)
-               3 * factorial(2)
-               2 * factorial(1)
-               factorial = 1;               //base case returns true
-               2 * 1                        //this is the backtracking phase
-               3 * 2
-               4 * 6 
-               5 * 24
-               factorial(5) = 120
+                VISUAL:
+                      
+                       factorial(5)                 //first call to the recursive function
+                       5 * factorial(4)
+                       4 * factorial(3)
+                       3 * factorial(2)
+                       2 * factorial(1)
+                       factorial = 1;               //base case returns true
+                       2 * 1                        //this is the backtracking phase
+                       3 * 2
+                       4 * 6 
+                       5 * 24
+                       factorial(5) = 120
                
                
-               
-               
-         EX: Fibonacci series
+// Calculate a specific number from the fibonacci sequence        
          
          function fib(n) {
               if(n <= 1)
@@ -458,7 +453,7 @@
               return fib(n - 1) + fib(n - 2)
          }
          
-         
+         fib(5)
          
          VISUAL: 
                                                   fib(5)                                                      //first call to the recursive function
@@ -479,11 +474,41 @@
 
 
 
+//Find the sum of all the digits using recursion
 
+      function sumOfDigits(number) {
+          // Base case: If the number is a single digit, return it
+          if (number < 10) 
+              return number;
+              
+          // Extract the last digit
+          const lastDigit = number % 10;
+          
+          // Recursively call the function with the remaining digits
+          const remainingNumber = Math.floor(number / 10);
+          return lastDigit + sumOfDigits(remainingNumber);
+       }
+          
+      sumOfDigits(1234);
 
+  
+      VISUAL: 
+                sumOfDigits(1234)        last = 4
+                      |
+                      |
+                      |
+                sumOfDigits(123)         last = 3
+                      |
+                      |
+                      |
+                sumOfDigits(12)          last = 2
+                      |
+                      |
+                      |
+                sumOfDigits(1)           last = 1
 
-
-
+                    //the last recursive call
+                    //will return and start the backtracking process
 
 
 

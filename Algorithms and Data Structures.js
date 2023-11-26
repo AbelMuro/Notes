@@ -406,112 +406,12 @@
 
 
 
-
-//BUBBLE SORT ALGORITHM: designed to sort an array in ascending order with time complexity of 0(n^2)
-                
-                let arr = [1, 4, 3, 1, 5]
-              
-              
-              
-                           i = 0;
-                  
-                           j j+1
-                          [1, 4, 3, 1, 5]
-                          
-                              j j+1
-                          [1, 4, 3, 1, 5]                   //we swap 4 and 3 because arr[j] > arr[j + 1];
-                          
-                                 j j+1                       
-                          [1, 3, 4, 1, 5]                   //we swap 4 and 1
-                          
-                                    j j+1
-                          [1, 3, 1, 4, 5]                   //we end the first iteration of the array
-                          
-                          
-                          
-                           i = 1;
-                          
-                           j j+1 
-                          [1, 3, 1, 4, 5]
-                          
-                              j j+1
-                          [1, 3, 1, 4, 5]                   //we swap 3 and 1
-                          
-                                 j j+1
-                          [1, 1, 3, 4, 5]                   //we end the second iteration here, remember that  j < arr.lenght - 1 - i;  so we dont iterate to the end of the array at this point
-                          
-                          
-                          
-                           i = 2;
-                          
-                           j j+1
-                          [1, 1, 3, 4, 5]                   //this is the last iteration
-                          
-
-                for (let i = 0; i < arr.length - 1; i++) {
-                    for (let j = 0; j < arr.length - i - 1; j++) {
-                        if (arr[j] > arr[j+1]) {
-                          swap(arr[j], arr[i]);                 //pseudo code
-                        }
-                    }
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//DYNAMIC PROGRAMMING: The main idea of dynamic programming is to consider a significant problem and break it into smaller, 
-//                     individualized components. When it comes to implementation, optimal techniques rely 
-//                     on data storage and reuse to increase algorithm efficiency.
-//                     Complexity for this algorithm is O(n);
-
-            //EX: Find a pair of numbers in an array whose sum is equal to the given target
-      
-            [8, 10, 2, 9, 7, 5]
-  
-            function DynamicProgramming(target){
-                
-              	let map = new Map();
-                  
-              	for (num in sequence) {
-                  	let diff = target - num;   // (target = 10) - (num = 8) = (diff = 2)    the pair that we are checking here is [8, 2]
-                 	 
-                  	if (map.has(diff))           //O(1) - constant time lookup
-                   		   return [num, diff];              	            	
-                  	else                       
-                      	map.set(num, num);      //store previously seen value    		
-                  }
-                  
-              	return -1;
-             }
-
-
-
-
-
-
-
-
 //RECURSION: its the ability of a function to call it self many times. The whole point of recursion is to break a problem into smaller parts, thereby reducing the
 //complexity of the problem at hand. Typically, all recursive functions have a base case that will terminate the recursive calls once the case is true
 
   
                 function recursion(n){
-                      if(n == 0)
+                      if(n == 0)                //base case
                         return;
                       
                       recursion(n - 1);
@@ -562,15 +462,65 @@
          
          VISUAL: 
                                                   fib(5)                                                      //first call to the recursive function
-                            fib(4)                   +                   fib(3)
-                   fib(3)      +     fib(2)          +          fib(2)     +     fib(1)
+
+                            fib(4)                   +                  fib(3)
+
+                   fib(3)      +        fib(2)       +         fib(2)     +     fib(1)
+
               fib(2) + fib(1)  +   fib(1) + fib(0)   +    fib(1) + fib(0)
+
          fib(1) + fib(0)
+
          
         fib(1) = 1    fib(0) = 0                         //at this point, the base case returns true, so now just replace all fib(1) with 1 and fib(0) with 0
                                                          //fib(2) becomes 1 + 0, fibt(3) becomes 1 + 1, and so on.
                                                          //this is the backtracking phase 
       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//DYNAMIC PROGRAMMING: The main idea of dynamic programming is to consider a significant problem and break it into smaller, 
+//                     individualized components. When it comes to implementation, optimal techniques rely 
+//                     on data storage and reuse to increase algorithm efficiency.
+//                     Complexity for this algorithm is O(n);
+
+            //EX: Find a pair of numbers in an array whose sum is equal to the given target
+      
+            [8, 10, 2, 9, 7, 5]
+  
+            function DynamicProgramming(target){
+                
+              	let map = new Map();
+                  
+              	for (num in sequence) {
+                  	let diff = target - num;   // (target = 10) - (num = 8) = (diff = 2)    the pair that we are checking here is [8, 2]
+                 	 
+                  	if (map.has(diff))           //O(1) - constant time lookup
+                   		   return [num, diff];              	            	
+                  	else                       
+                      	map.set(num, num);      //store previously seen value    		
+                  }
+                  
+              	return -1;
+             }
+
+
        
       
       

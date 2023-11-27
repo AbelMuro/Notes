@@ -419,62 +419,8 @@
                 recursion(5);
 
 
-// Calculate the factorial of a number using recursion
-          
-                function factorial(n){
-                    if(n == 0) 
-                        return 1;
-                    
-                    else
-                        return n * factorial(n - 1);
-                }
-
-                VISUAL:
-                      
-                       factorial(5)                 //first call to the recursive function
-                       5 * factorial(4)
-                       4 * factorial(3)
-                       3 * factorial(2)
-                       2 * factorial(1)
-                       factorial = 1;               //base case returns true
-                       2 * 1                        //this is the backtracking phase
-                       3 * 2
-                       4 * 6 
-                       5 * 24
-                       factorial(5) = 120
-               
-               
-// Calculate a specific number from the fibonacci sequence        
-         
-         function fib(n) {
-              if(n <= 1)
-                return n;
-              
-              return fib(n - 1) + fib(n - 2)
-         }
-         
-         fib(5)
-         
-         VISUAL: 
-                                                  fib(5)                                                      //first call to the recursive function
-
-                            fib(4)                   +                  fib(3)
-
-                   fib(3)      +        fib(2)       +         fib(2)     +     fib(1)
-
-              fib(2) + fib(1)  +   fib(1) + fib(0)   +    fib(1) + fib(0)
-
-         fib(1) + fib(0)
-
-         
-        fib(1) = 1    fib(0) = 0                         //at this point, the base case returns true, so now just replace all fib(1) with 1 and fib(0) with 0
-                                                         //fib(2) becomes 1 + 0, fibt(3) becomes 1 + 1, and so on.
-                                                         //this is the backtracking phase 
-      
-
-
-
-//Find the sum of all the digits using recursion
+// Find the sum of all the digits using recursion 
+// (this method breaks down the problem into smaller sub problems)
 
       function sumOfDigits(number) {
           // Base case: If the number is a single digit, return it
@@ -493,29 +439,74 @@
 
   
       VISUAL: 
-                sumOfDigits(1234)        last = 4
+                sumOfDigits(1234) = 6 + 4 = 10       last = 4
                       |
                       |
                       |
-                sumOfDigits(123)         last = 3
+                sumOfDigits(123) = 3 + 3  = 6        last = 3
                       |
                       |
                       |
-                sumOfDigits(12)          last = 2
+                sumOfDigits(12) = 1 + 2 = 3         last = 2
                       |
                       |
                       |
-                sumOfDigits(1)           last = 1
+                sumOfDigits(1) = 1   
 
-                    //the last recursive call
-                    //will return and start the backtracking process
-
+                    //the last recursive call will return and start the backtracking process
 
 
 
 
 
+// Prints all possible strings of length k that can be formed from a array of n characters
+//( this method creates multiple instances of a problem and checks every instance)
 
+
+    const arr = ['a', 'b'];
+    const k = 3;
+    let answer = []
+
+    function findAllKLength(prefix, n, k) {
+        if (k === 0) {
+            answer.push(prefix);
+            return;
+         }
+
+        for (let i = 0; i < n; i++) {
+            const newPrefix = prefix + arr[i];
+            findAllKLength(newPrefix, n, k - 1);
+        }
+    }
+
+    findAllKLength('', arr.length, k);
+
+
+
+    VISUAL:
+
+                                                                                            findAllKLength('')                 k = 3
+                                                                                                   |
+                                                                                                   |
+                                        findAllKLength('a')                                                                                  findAllKLength('b')       k = 2
+                                                |                                                                                                    |
+                                                |                                                                                                    |
+                findAllKLength('aa')                          findAllKLength('ab')                                 findAllKLength('ba')                               findAllKLength('bb')    k = 1
+                        |                                              |                                                   |                                                   |
+                        |                                              |                                                   |                                                   |
+  findAllKLength('aaa')  findAllKLength('aab')       findAllKLength('aba') findAllKLength('abb')        findAllKLength('baa') findAllKLength('bab')          findAllKLength('bba') findAllKLength('bbb')   k = 0;
+
+
+
+
+
+
+
+
+
+
+
+        
 
 
 

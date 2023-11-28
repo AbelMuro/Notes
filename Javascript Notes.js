@@ -62,68 +62,6 @@ let x = [1,2,3];
 
 
 
-
-
-
-
-
-
-
-
-//================================================= BITWISE OPERATORS =====================================================
-//Every number, letter and symbol has a binary representation that is used by the computer
-//Take the example below...
-const a = 5; // 00000000000000000000000000000101
-const b = 3; // 00000000000000000000000000000011
-
-
-
-//you can get the binary representation of a number by using the following line of code
-let num = 5;
-(num >>> 0).toString(2);    //returns 00000000000000000000000000000101
-
-
-
-
-console.log(5 & 3);	// returns 1   (00000000000000000000000000000001) 	
-			/* 
-   			   5	00000000000000000000000000000101
-   			   3	00000000000000000000000000000011
-       			  ---------------------------------------	//compares both binary representations and returns all COMMON 1's
-	   		   1	00000000000000000000000000000001
-   			*/
-
-console.log(5 | 3);    // returns 7    (00000000000000000000000000000111)
-			/* 
-   			   5	00000000000000000000000000000101
-   			   3    00000000000000000000000000000011
-	 	          ----------------------------------------    // compares both binary representations and returns all 1's in BOTH numbers
-	     	           7    00000000000000000000000000000111
-   			*/
-
-console.log(5 << 2)	// returns 20    (00000000000000000000000000010100)
-			/* 
-   		 	   5   00000000000000000000000000000101
-	  		   2   00000000000000000000000000000010	    // will find the first occurence of 1 from the left,
-			  --------------------------------------    // and shift the bits to the left
-   			   20  00000000000000000000000000010100
-   			*/
-
-console.log(5 >> 2);	// returns 1      (00000000000000000000000000000001)
-			/* 
-   		 	   5   00000000000000000000000000000101
-	  		   2   00000000000000000000000000000010	    // will find the first occurence of 1 from the left
-			  --------------------------------------    // and shift the bits to the right
-   			   1   00000000000000000000000000000001
-   			*/
-
-console.log(5 ^ 3)      // returns 6      (00000000000000000000000000000110)
-			/* 
-   			    5   00000000000000000000000000000101
-	  		    3   00000000000000000000000000000011    //finds all the 1's in both binaries, but NOT the common 1's
-	 		   --------------------------------------
-       		            6   00000000000000000000000000000110
-   			*/
  
 
 
@@ -132,13 +70,134 @@ console.log(5 ^ 3)      // returns 6      (00000000000000000000000000000110)
 // that are created in JS. All objects, variables, functions and classes are automatically members of the window object
 // Some useful properties in the window object are the following...
 
-/* 
-	window.navigator; 		//this will return an object that contains data relative to the operating system of the user (read-only)
 
-*/
+window.navigator; 		//this will return an object that contains data relative to the operating system of the user (read-only)
+window.scrollTo(0,0)
+window.addEventListener('scroll', () => {})
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== DOM ==============================================================
+
+//keep in mind that every element in a document is considered a "node" and the text inside an element are called text nodes
+document.getElementById("random_ID").childNodes[0];                             //you can use .childNodes[] as an array to reference any child elements
+const node = document.getElementById("random_ID");                              //this returns a reference to an element                      
+document.querySelector("class/tagName").removeChild(node.childNodes[0]);           //removing a nested child element from the parent container
+document.querySelector("class/tagName").removeChild(parent);
+document.querySelector("class/tagName").appendChild(new_node);                     //inserts a child node AT THE END of an parent element
+document.querySelector("class/tagName").insertBefore(new_node, existing_child_node);//inserts a new child element/node before an existing child element/node
+
+
+
+//the different ways to reference an element from the DOM
+document.getElementById("random_ID");                                           
+document.getElementsByTagName("div");                                            //this will return an array of references
+document.getElementsByTagName("div")[0];                                        //you can use array syntax to get the first, second,... element of a specific tag type, this can be used by ALL methods
+document.getElementsByClassName("my_class");                   
+document.querySelector("p.class_name");                                         //this follows the same syntax as css , this will return the first occurance within the document that matches the specified selector
+document.querySelectorAll("p.class_name");                                      //this will return an array with all the elements that have <p class="class_name">
+//you can use either id or name attributes here
+document.forms["form_id"];                                                      //this returns a reference to a form with the ID "form_ID"     
+document.forms["form_id"]["input_name"];                                        //getting a child element <input> that has the attribute name = "input_name" 
+document.forms["form_id"]["input_name"].value;                                  //getting the value inputted by the user
+
+
+//changing the content and attributes of elements
+document.querySelector("class/tagName").innerHTML = "adding text";                 //innerHTML is inside the tags of the element
+document.querySelector("class/tagName").innerHTML;                                 //this will return a text node that contains the text inside the tag elements
+document.querySelector("class/tagName").height = "100px";                           //you can assign a different value to ANY ATTRIBUTE by their name directly
+document.querySelector("class/tagName").style.backgroundColor = "red";             //to change a CSS property, this is the syntax you must use, remember that the properties are camel case
+document.querySelector("class/tagName").setAttribute(color, "red");                //you can also add a new attribute to an element
+
+
+//creating and deleting elements, these elements only show up on the document if they are inserted to an existing element in the document
+document.createElement("div");                                                  //creating a <div> </div> element
+document.createTextNode("hello world!");                                        //creating a text node (same as innerHTML) and returns a reference to that node
+document.body.removeChild(node);                                                //this is how you remove an entire element 
+
+
+document.getElementById("div").childNodes[0].nodeValue;                         //you can reference a child element with childNodes[0],and nodeValue is the same as .innerHTML              
+document.getElementById("div").firstElementChild;                               //references the first child element nested within
+document.getElementById("div").lastElementChild;                                //references the last child element nested within
+document.getElementById("div").closest(".className")                            //will choose the closest parent/grandparent element that has the specified selector
+document.querySelector("div").scrollIntoView({behavior: 'smooth'});             //you can automatically scroll to a specific element by using scrollIntoView()
+
+// EVENT LISTENERS are triggered by the user
+document.getElementById("id").onclick = function() {                
+    //code goes here
+}
+document.getElementById("id").resize = function() {                             //functions is called when the element is resized
+    //code goes here
+}
+document.getElementById("id").onmouseover = function() {                        //function is called when the user hovers over the element
+    //code goes here
+}
+document.getElementById("id").onload = function() {                             //this function is called when the user enters the page          
+    //code goes here                                                            //this can be used to check cookies on the webpage, and check the visitors browser type and version
+}
+document.getElementById("id").onunload = function() {                           //this function is called when the user leaves the page            
+    //code goes here
+}
+document.getElementById("id").onchange = function() {                           //function is called in conjunction with input fields, when the user inputs something, and leaves the field,           
+    //code goes here                                                                the function will be invoked 
+}
+document.getElementById("id").onfocus = function() {                            //function is called when a user focuses on an input field
+    //code goes here
+} 
+document.getElementById("id").addEventListener("click", myFunction);            //this is the same as the event handlers above, this is useful for adding multiple functions for the same event
+document.getElementById("id").addEventListener("click", mySecondFunction);
+document.getElementById("parent").addEventListener("click", mySecondFunction, false)//third parameter specifies whether the parent element or the child element will have their even handleled first
+document.getElementById("child").addEventListener("click", mySecondFunction, false) //default is false, which means that the child event will be handleled first and then the parent event
+document.getElementById("id").addEventListener("click", function() {myThirdFunction(a,b)});     //in case you want to call a function that has parameters
+document.getElementById("id").addEventListener("click", (e) => {
+
+    //keep in mind that you can access any attribute of an element that you target
+    e.target;                           //targeting the element that triggered the event,
+    e.target.parentElement              //targeting the parent element of the element that triggered the event
+    e.target.value                      //targeting the element that triggered the event and getting their value attribute, this is useful for form elements
+    e.target.children                   //targeting the element that triggered the event and returning all child nodes nested within that element
+    e.target.id                         //targeting the element that triggered the event and getting the value in their ID attribute
+    e.target.classList                  //targetting the element that triggered the event and getting the classlist of the element
+    e.target.src                        //targetting the element that triggered the event and getting the src attribute
+    e.target.style.width = "300px"      //targeting the element that triggered the event and assigning 300px to its width property (setting inline styles)
+    e.target.matches(".someClass");     //this is useful for trying to target an element only if it matches the requested selector (will return true or false)
+})
+
+
+// EVENT EMITTERS are triggered manually by the programmer
+
+const EventEmitter = require('events');
+
+class MyEmitter extends EventEmitter {}
+
+const myEmitter = new MyEmitter();
+
+myEmitter.on('customEvent', () => {
+  console.log('an event occurred!');
+});
+
+myEmitter.emit('customEvent');			//emit() can trigger the event 
 
 
 
@@ -464,6 +523,17 @@ person.sayHello();
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 //============================================================== FUNCTIONS ==============================================================
 //Functions are similar to the functions in math, they take an input(argument), process the input, and return an output
 //keep in mind that the return statement should be on the same line as the output being returned from the function                
@@ -610,6 +680,15 @@ myArrowFunc();
 
 
 
+
+
+
+
+
+
+
+
+
 //================================================================ CLOSURES ===========================================================
 // Closures are functions that maintain a REFERENCE to the variables/objects that are defined outside of its local scope
 // Keep in mind that in other programming languages, a function does not have access to variables defined outside of its scope
@@ -649,274 +728,17 @@ console.log(add10(2));                                                    // wil
      
       
       
-      
-      
-      
-      
-      
-      
-      
- //================================================ JAVASCRIPT EXECUTION CONTEXT ==========================================================
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-      
-      
-      
-      
-      
-      
-      
-// ========================================================== EVENT LOOP: CALL-STACK & QUEUE ==========================================================
-// The event loop is a mechanism that we use as a workaround for javascript's single threaded nature
-// Everytime we call a function in JS, we place the function call on the STACK
-// An execution context is the environment of a function, this includes all the variables/objects, this, and parameters 
-// call-stack is a collection of execution context's
-      
-function multiply(a, b) {                                   
-      return a * b;
-}                                   //this is the order in which the functions will be called (we will use FIFO stack technique)
-                                                                                             ______________________
-function square(n) {                            |                |                          |                      |
-      return multiply(n, n)                     |                |                  |       |         |            v
-}                                               |                |                  |       |         |         multiply() 
-                                                |                |                  |       |         |    
-                                                | multiply()     |                  |       ^         |
-function printSquare(n){                        | squared()      |                  | squared()       |
-      let squared = square(n);                  | printSquared() |                  | printSquared()  |
-      console.log(squared);                     |________________|                  |_________________|
-}
-      
-printSquared(4);
-
-
-//using asynchronous operations with the call stack, keep in mind that when JS encounters an asynchronous line of code, 
-// it is removed from the stack and placed in the webAPI thread, even though JS is single threaded, we can still call concurrent
-// code because the browsers have these API's that are essentially another thread.
-                        
- console.log("Hi");                    
-                        
- setTimeout(() => {
-       console.log("there")
- }, 5000);
-                                                //EVENT LOOP
-  console.log("ho");
-                        
-            //stack                                                                    //webAPI's
-                                                                    
-       |                   |                                                        |               |
-       | console.log("ho") |  //setTimeout() will be removed from the stack         |               |     //once setTimeout() finishes its delay, 
-       | setTimeout()      |              -------------------------->               |  setTimeout() |     // it will be placed in the task queue    
-       | console.log("hi") |  //and will be placed in the WebAPI 'stack'            |               | 
-       |___________________|                                                        |_______________|
-
-                     ^                                                                     |
-                     |                                                                     |
-                     |                                                                     |
-                     |                                                                     |
-                     |   //task queue                                                      |
-            |                           |  <______________________________________________ |      
-            |                           |
-            |                           | 
-            |    setTimeout()           |
-            |___________________________|
-            //keep in mind that the setTimeout() will only be placed in the stack ONCE THE STACK IS EMPTY
-
-      
-      
-      
-      
-      
-	
+         
+          
 	       
 	       
 	       
 	       
 	       
-	      
-	    
 	       
 	       
 	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-//======================================================= HTTP ===========================================================================     
-// HTTP stands for hyper text transfer protocol, it's a protocol that describes how a web browser and a web server communicates with each other.
-// The web browser will send a request to the web server and will wait for a response from the web server.
-/* HTTP VERBS: are methods that we use to interact with the web server and database
-	      GET method
-	      POST method
-	      DELETE method
-	      PUT method
-	             
-	       
-// CORS (Cross Origin Resource Sharing)	is a 'HTTP-header based mechanism' that allows a server to specify which domains/scheme/port are ALLOWED 
-// to get resources from the server. CORS relies on another mechanism called Pre-flight requests, in these preflight request, it will contain the 
-// http method (put, delete, post), the domain of the client, etc.., of the original request that is being made. The server will then check the 
-// pre-flight request and send a pre-flight response back to the client. In this Pre-flight response, it will contain the http methods that 
-// the server will permit the client to make.	
-	       
-// This allows web developers to control how their site reacts to cross-site requests 
-// https://domain-name.com/....	     
-	       
-/* 
-	Pre-flight request that is sent by the web browser to the web server			
-		OPTIONS /resource/foo
-		Access-Control-Request-Method: DELETE					<-------------
-		Access-Control-Request-Headers: origin, x-requested-with
-		Origin: https://foo.bar.org
-
-	Pre-flight response that is sent by the web server back to the web browser
-		HTTP/1.1 204 No Content
-		Connection: keep-alive
-		Access-Control-Allow-Origin: https://foo.bar.org
-		Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE		<-------------
-		Access-Control-Max-Age: 86400
-		
-	Since the pre-flight response contains the delete method in one of the headers,
-	then that means the client can send delete requests to the server
-
-*/
-
-	       
-
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	 
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-//================================================================== API's =====================================================================    
-	       
-// API means Application Programming Interface, it is an interface that is used between two programs to communicate with each other. 
-// The two programs are called the Client and the Server. Typically, the Client will send a request to the server to either request 
-// data or to update the database somehow. The server will receive the request and then will send a response back to the client. The response
-// is either a message telling the client that the request is succefull/rejected, or the actual data that the client requested
-
-// Alot of the times, the API may have alot of resources/data that a user can request. One way to 'organize' this data is by using API endpoint	
-// API endpoints represent a digital location where the API receives requests about a specific resource 
-// With API endpoints, you can request a specific resource from an API that has alot of resources.
-// One good example would be the Twitter API, this API has endpoints for fetching posts, messages, followers, etc.. 
-// Basically, you can use the API endpoint for fetching posts, another API endpoint for fetching messages, etc..
-	       
-
-	       
-	       
-	       
-// We can use URL's to specify an endpoint of an API
-fetch('https://horoscopes-ai.p.rapidapi.com/get_horoscope/aries/today/general/en');    
-fetch('https://horoscopes-ai.p.rapidapi.com/get_horoscope/libra/tomorrow/general/en');
-	       
-	       
-//------------------------------------------------------------ RESTful API's -----------------------------------------------------------------
-// REST stands for REpresentation State Transfer. REST is the way that HTTP should be used. For an API to be restful, 
-// it needs to use the following conventions(keep in mind that there are much more convetions that were not listed below)			
-			
-	       
-/* 
-	1) Separate client and server: any changes made to the code in the client should NOT affect the server in any way, and vice versa
-           different clients can send requests to the same server and they all receive the same response with the same data
-	   
-	2) Stateless: Each request must contain all of the info necessary to be understood by the server WITHOUT being dependent on the
-   	   server remembering prior requests. The server cannot store any session data from the client.
-	 
-	3) Communication between client and server: the server basically uses the HTTP methods to communicate with the client
-
-
-	4) Response Codes: The server must send responses that contain one of the status codes below...
-	
-	200 (OK)			This is the standard response for successful HTTP requests.
-	201 (CREATED)			This is the standard response for an HTTP request that resulted in an item being successfully created.
-	204 (NO CONTENT)		This is the standard response for successful HTTP requests, where nothing is being returned in the response body.
-	400 (BAD REQUEST)		The request cannot be processed because of bad request syntax, excessive size, or another client error.
-	403 (FORBIDDEN)			The client does not have permission to access this resource.
-	404 (NOT FOUND)			The resource could not be found at this time. It is possible it was deleted, or does not exist yet.
-	500 (INTERNAL SERVER ERROR)	The generic answer for an unexpected failure if there is no more specific information available.
-*/	       
-	       
-	       
-	       
-	       
+	     
 	       
 	       
 	       
@@ -1203,18 +1025,6 @@ const deepCopyTwo = structuredClone(data);                           //creates a
 
 
 
-
-
-
-
-
-
-
-//====================================================================== DATA STRUCTURES =============================================================================
- 
-
-
-
 //-------------------------------------------------------------------- ARRAYS ------------------------------------------------------------------------------------------
 //with const arrays, u can change the contents of the elements of the array, but not the order
 //keep in mind that you can also use negative values as an index for an element 
@@ -1388,100 +1198,7 @@ my_map.get([1,2,3]);                                                       //thi
 			
 			
 			
-			
-			
-			
-			
-			
-			
-			
-			
-
-
-
-//============================================================ COOKIES ==========================================================
-// cookies have a capacity of 4kb
-// cookies live on the client side, typically, cookies should be used to store data that is NOT sensitive, such as user's preferences
-// by default, a cookie is deleted when the browser is closed
-
-//keep in mind that cookies should always be assigned data that has 'name and value'
-document.cookie = "username=john doe";                                              //all cookies must be in this format... "property: value"
-document.cookie = "username=jane box";                                              //replacing the value in cookie username 
-document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC";            //you can set the expiration date for cookies
-document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC; path='/'"   //path='/' tells the browser which path/route the cookie belongs to
-document.cookie = "username= ; expires=Thu, 09 Dec 1970 00:00:00 UTC; path='/'"     //to delete a cookie, just put the expiration date before today, also you should include the path="/" because some browsers might need it
-
-
-//using .cookie twice wont overwrite the previous value assigned to .cookie
-document.cookie = "usename=HotStuff69";
-document.cookie = "password=cobra69";                                               //console.log() will display 'username=usename=HotStuff69 password=cobra69'
-   
-
-//it is strongly recommended that you use npm install js-cookies for the set and get methods for cookies, 
-//cookies doesn't have any pre-build set and get methods, but there is an npm package that implements these methods
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//============================================================== SESSION ==============================================================================
-//session is another way of storing data, similar to local storage and cookies
-//sessions have a capacity of 5mb
-//sessions are only for data on the same browser tab, and will be deleted when the browser tab closes
-//sessions are only for the browser, they dont get sent to the server like cookies do with every request
-//sessions are more similar to local storage than cookies
-
-//you should use json.stringify() to pass data to the sessionStorage
-//and json.parse() to get the data from the session
-
-sessionStorage.setItem("key", "value");
-sessionStorage.setItem("data" , JSON.stringify(object));
-      
-sessionStorage.getItem("key");                              //returns a string
-sessionStorage.getItem("data");                             //make sure to JSON.parse() this JSON formatted data
-
-sessionStorage.removeItem("data");
-sessionStorage.clear();
-
-sessionStorage.clickcount = 1;                             //a property that you can use to keep track of the number of clicks of the user
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
 
 
 
@@ -1570,76 +1287,6 @@ class_one.class_two = class {
 }
 
 let my_variable = new class_one.class_two();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//============================================================= AUDIO OBJECT ==============================================================================
-//you can use the audio constructor to load mp3 or wav files.
-
-
-
-
-//using HTML audio tag to load audio files
-<audio src={"https://www.computerhope.com/jargon/m/example.mp3"} controls id="#audio" controlsList="nodownload" autoPlay loop></audio>
-//  or
-<audio controls id="audio" controlsList="nodownload" autoPlay loop>
-      <source src="https://www.computerhope.com/jargon/m/example.mp3" />
-</audio>
-
-
-
-
-
-//using JS to load audio files
-const audio = new Audio("https://www.computerhope.com/jargon/m/example.mp3");
-audio.type = "audio/mp3";
-audio.addEventListener("play", (e) => {
-         //this event will trigger when the user plays the audio
-})
-
-try{
-    await audio.play();                   //you always want to wait until the client receives the response from the server
-    audio.volume = 4;                     //you can increase or decrease the volume with this property
-}
-catch(err){
-      console.log("could not play audio");
-}
-
-
-
-
-
-
-
-
 
 
 
@@ -1863,63 +1510,6 @@ window.fetch = async (...args) => {
 
 
 
-    
-//============================================================== SYNCHRONOUS ============================================================== 
-
-//by default, javascript is synchronous... which means all the lines are placed in a stack and executed one by one
-
-
-console.log("a");                                           //all these lines of code are placed on a stack and executed in order
-console.log("b");                             
-console.log("c");
-
-//output: a b c
-
-
-
-
-
-
-
-
-//============================================================== ASYNCHRONOUS ==============================================================
-//asynchronous means NOT simultaneously. if a line of code is async, then it will be taken out of the stack, and will wait until the stack
-//finishes executing before the async operation starts executing
-
-
-console.log(setTimeout("a", 0);                             //because setTimeout is async, it will be taken out of the stack 
-console.log("b");                                           //and will wait until the code below finishes executing
-console.log("c");
-
-//output: b c a
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1933,6 +1523,31 @@ console.log("c");
 
 
 //==============================================================  PROMISES ============================================================== 
+
+
+//SYNCHRONOUS:  by default, javascript is synchronous... which means all the lines are placed in a stack and executed one by one
+
+	console.log("a");                                           //all these lines of code are placed on a stack and executed in order
+	console.log("b");                             
+	console.log("c");
+	
+	//output: a b c
+
+
+
+
+//ASYNCHRONOUS means NOT simultaneously. if a line of code is async, then it will be taken out of the stack, and will wait until the stack
+//finishes executing before the async operation starts executing
+
+	console.log(setTimeout("a", 0);                             //because setTimeout is async, it will be taken out of the stack 
+	console.log("b");                                           //and will wait until the code below finishes executing
+	console.log("c");
+	
+	//output: b c a
+
+
+
+
 //Promise objects were designed to handle async events (calls to a server), and it will be resolved when the event is successful
 //Promises are also useful for chaining callbacks together, which in turn prevent callback hell
 //The reason why you want to use promises for an operation that takes a while to complete is because
@@ -1974,12 +1589,6 @@ myPromise.then((results) => {                       //then() is a function that 
 })
 
 doSomethingElse();                                  //this function will be called immediately after the Promise constructor is called 
-
-
-
-
-
-
 
 
 
@@ -2110,30 +1719,6 @@ let name = (password == "Darkness33") ? "correct pwd": "incorrect pwd";      //i
 
 
 
-
-
-
-
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-
-
-
-
-
 //============================================================== LOOPS ==============================================================
 
 //Do not use "for in" over an Array if the index order is important.
@@ -2190,6 +1775,365 @@ while(false);
 
 
 
+	
+
+
+     
+// ========================================================== EVENT LOOP: CALL-STACK & QUEUE ==========================================================
+// The event loop is a mechanism that we use as a workaround for javascript's single threaded nature
+// Everytime we call a function in JS, we place the function call on the STACK
+// An execution context is the environment of a function, this includes all the variables/objects, this, and parameters 
+// call-stack is a collection of execution context's
+      
+function multiply(a, b) {                                   
+      return a * b;
+}                                   //this is the order in which the functions will be called (we will use FIFO stack technique)
+                                                                                             ______________________
+function square(n) {                            |                |                          |                      |
+      return multiply(n, n)                     |                |                  |       |         |            v
+}                                               |                |                  |       |         |         multiply() 
+                                                |                |                  |       |         |    
+                                                | multiply()     |                  |       ^         |
+function printSquare(n){                        | squared()      |                  | squared()       |
+      let squared = square(n);                  | printSquared() |                  | printSquared()  |
+      console.log(squared);                     |________________|                  |_________________|
+}
+      
+printSquared(4);
+
+
+//using asynchronous operations with the call stack, keep in mind that when JS encounters an asynchronous line of code, 
+// it is removed from the stack and placed in the webAPI thread, even though JS is single threaded, we can still call concurrent
+// code because the browsers have these API's that are essentially another thread.
+                        
+ console.log("Hi");                    
+                        
+ setTimeout(() => {
+       console.log("there")
+ }, 5000);
+                                                //EVENT LOOP
+  console.log("ho");
+                        
+            //stack                                                                    //webAPI's
+                                                                    
+       |                   |                                                        |               |
+       | console.log("ho") |  //setTimeout() will be removed from the stack         |               |     //once setTimeout() finishes its delay, 
+       | setTimeout()      |              -------------------------->               |  setTimeout() |     // it will be placed in the task queue    
+       | console.log("hi") |  //and will be placed in the WebAPI 'stack'            |               | 
+       |___________________|                                                        |_______________|
+
+                     ^                                                                     |
+                     |                                                                     |
+                     |                                                                     |
+                     |                                                                     |
+                     |   //task queue                                                      |
+            |                           |  <______________________________________________ |      
+            |                           |
+            |                           | 
+            |    setTimeout()           |
+            |___________________________|
+            //keep in mind that the setTimeout() will only be placed in the stack ONCE THE STACK IS EMPTY
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	       
+
+
+	
+
+
+//============================================================= AUDIO OBJECT ==============================================================================
+//you can use the audio constructor to load mp3 or wav files.
+
+
+
+
+//using HTML audio tag to load audio files
+<audio src={"https://www.computerhope.com/jargon/m/example.mp3"} controls id="#audio" controlsList="nodownload" autoPlay loop></audio>
+//  or
+<audio controls id="audio" controlsList="nodownload" autoPlay loop>
+      <source src="https://www.computerhope.com/jargon/m/example.mp3" />
+</audio>
+
+
+
+
+
+//using JS to load audio files
+const audio = new Audio("https://www.computerhope.com/jargon/m/example.mp3");
+audio.type = "audio/mp3";
+audio.addEventListener("play", (e) => {
+         //this event will trigger when the user plays the audio
+})
+
+try{
+    await audio.play();                   //you always want to wait until the client receives the response from the server
+    audio.volume = 4;                     //you can increase or decrease the volume with this property
+}
+catch(err){
+      console.log("could not play audio");
+}
+
+
+
+
+
+
+
+
+//============================================================ COOKIES ==========================================================
+// cookies have a capacity of 4kb
+// cookies live on the client side, typically, cookies should be used to store data that is NOT sensitive, such as user's preferences
+// by default, a cookie is deleted when the browser is closed
+
+//keep in mind that cookies should always be assigned data that has 'name and value'
+document.cookie = "username=john doe";                                              //all cookies must be in this format... "property: value"
+document.cookie = "username=jane box";                                              //replacing the value in cookie username 
+document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC";            //you can set the expiration date for cookies
+document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC; path='/'"   //path='/' tells the browser which path/route the cookie belongs to
+document.cookie = "username= ; expires=Thu, 09 Dec 1970 00:00:00 UTC; path='/'"     //to delete a cookie, just put the expiration date before today, also you should include the path="/" because some browsers might need it
+
+
+//using .cookie twice wont overwrite the previous value assigned to .cookie
+document.cookie = "usename=HotStuff69";
+document.cookie = "password=cobra69";                                               //console.log() will display 'username=usename=HotStuff69 password=cobra69'
+   
+
+//it is strongly recommended that you use npm install js-cookies for the set and get methods for cookies, 
+//cookies doesn't have any pre-build set and get methods, but there is an npm package that implements these methods
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== SESSION ==============================================================================
+//session is another way of storing data, similar to local storage and cookies
+//sessions have a capacity of 5mb
+//sessions are only for data on the same browser tab, and will be deleted when the browser tab closes
+//sessions are only for the browser, they dont get sent to the server like cookies do with every request
+//sessions are more similar to local storage than cookies
+
+//you should use json.stringify() to pass data to the sessionStorage
+//and json.parse() to get the data from the session
+
+sessionStorage.setItem("key", "value");
+sessionStorage.setItem("data" , JSON.stringify(object));
+      
+sessionStorage.getItem("key");                              //returns a string
+sessionStorage.getItem("data");                             //make sure to JSON.parse() this JSON formatted data
+
+sessionStorage.removeItem("data");
+sessionStorage.clear();
+
+sessionStorage.clickcount = 1;                             //a property that you can use to keep track of the number of clicks of the user
+
+
+
+
+
+
+
+
+
+
+
+
+
+       
+//======================================================= HTTP ===========================================================================     
+// HTTP stands for hyper text transfer protocol, it's a protocol that describes how a web browser and a web server communicates with each other.
+// The web browser will send a request to the web server and will wait for a response from the web server.
+/* HTTP VERBS: are methods that we use to interact with the web server and database
+	      GET method
+	      POST method
+	      DELETE method
+	      PUT method
+	             
+	       
+// CORS (Cross Origin Resource Sharing)	is a 'HTTP-header based mechanism' that allows a server to specify which domains/scheme/port are ALLOWED 
+// to get resources from the server. CORS relies on another mechanism called Pre-flight requests, in these preflight request, it will contain the 
+// http method (put, delete, post), the domain of the client, etc.., of the original request that is being made. The server will then check the 
+// pre-flight request and send a pre-flight response back to the client. In this Pre-flight response, it will contain the http methods that 
+// the server will permit the client to make.	
+	       
+// This allows web developers to control how their site reacts to cross-site requests 
+// https://domain-name.com/....	     
+	       
+/* 
+	Pre-flight request that is sent by the web browser to the web server			
+		OPTIONS /resource/foo
+		Access-Control-Request-Method: DELETE					<-------------
+		Access-Control-Request-Headers: origin, x-requested-with
+		Origin: https://foo.bar.org
+
+	Pre-flight response that is sent by the web server back to the web browser
+		HTTP/1.1 204 No Content
+		Connection: keep-alive
+		Access-Control-Allow-Origin: https://foo.bar.org
+		Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE		<-------------
+		Access-Control-Max-Age: 86400
+		
+	Since the pre-flight response contains the delete method in one of the headers,
+	then that means the client can send delete requests to the server
+
+*/
+
+
+
+
+
+
+
+
+
+
+//================================================================== API's =====================================================================    
+	       
+// API means Application Programming Interface, it is an interface that is used between two programs to communicate with each other. 
+// The two programs are called the Client and the Server. Typically, the Client will send a request to the server to either request 
+// data or to update the database somehow. The server will receive the request and then will send a response back to the client. The response
+// is either a message telling the client that the request is succefull/rejected, or the actual data that the client requested
+
+// Alot of the times, the API may have alot of resources/data that a user can request. One way to 'organize' this data is by using API endpoint	
+// API endpoints represent a digital location where the API receives requests about a specific resource 
+// With API endpoints, you can request a specific resource from an API that has alot of resources.
+// One good example would be the Twitter API, this API has endpoints for fetching posts, messages, followers, etc.. 
+// Basically, you can use the API endpoint for fetching posts, another API endpoint for fetching messages, etc..
+	       
+
+	       
+	       
+	       
+// We can use URL's to specify an endpoint of an API
+fetch('https://horoscopes-ai.p.rapidapi.com/get_horoscope/aries/today/general/en');    
+fetch('https://horoscopes-ai.p.rapidapi.com/get_horoscope/libra/tomorrow/general/en');
+	       
+	       
+//------------------------------------------------------------ RESTful API's -----------------------------------------------------------------
+// REST stands for REpresentation State Transfer. REST is the way that HTTP should be used. For an API to be restful, 
+// it needs to use the following conventions(keep in mind that there are much more convetions that were not listed below)			
+			
+	       
+/* 
+	1) Separate client and server: any changes made to the code in the client should NOT affect the server in any way, and vice versa
+           different clients can send requests to the same server and they all receive the same response with the same data
+	   
+	2) Stateless: Each request must contain all of the info necessary to be understood by the server WITHOUT being dependent on the
+   	   server remembering prior requests. The server cannot store any session data from the client.
+	 
+	3) Communication between client and server: the server basically uses the HTTP methods to communicate with the client
+
+
+	4) Response Codes: The server must send responses that contain one of the status codes below...
+	
+	200 (OK)			This is the standard response for successful HTTP requests.
+	201 (CREATED)			This is the standard response for an HTTP request that resulted in an item being successfully created.
+	204 (NO CONTENT)		This is the standard response for successful HTTP requests, where nothing is being returned in the response body.
+	400 (BAD REQUEST)		The request cannot be processed because of bad request syntax, excessive size, or another client error.
+	403 (FORBIDDEN)			The client does not have permission to access this resource.
+	404 (NOT FOUND)			The resource could not be found at this time. It is possible it was deleted, or does not exist yet.
+	500 (INTERNAL SERVER ERROR)	The generic answer for an unexpected failure if there is no more specific information available.
+*/	       
+	       
+	       
+	       
+	  
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	
+
+//================================================= BITWISE OPERATORS =====================================================
+//Every number, letter and symbol has a binary representation that is used by the computer
+//Take the example below...
+const a = 5; // 00000000000000000000000000000101
+const b = 3; // 00000000000000000000000000000011
+
+
+
+//you can get the binary representation of a number by using the following line of code
+let num = 5;
+(num >>> 0).toString(2);    //returns 00000000000000000000000000000101
+
+
+
+
+console.log(5 & 3);	// returns 1   (00000000000000000000000000000001) 	
+			/* 
+   			   5	00000000000000000000000000000101
+   			   3	00000000000000000000000000000011
+       			  ---------------------------------------	//compares both binary representations and returns all COMMON 1's
+	   		   1	00000000000000000000000000000001
+   			*/
+
+console.log(5 | 3);    // returns 7    (00000000000000000000000000000111)
+			/* 
+   			   5	00000000000000000000000000000101
+   			   3    00000000000000000000000000000011
+	 	          ----------------------------------------    // compares both binary representations and returns all 1's in BOTH numbers
+	     	           7    00000000000000000000000000000111
+   			*/
+
+console.log(5 << 2)	// returns 20    (00000000000000000000000000010100)
+			/* 
+   		 	   5   00000000000000000000000000000101
+	  		   2   00000000000000000000000000000010	    // will find the first occurence of 1 from the left,
+			  --------------------------------------    // and shift the bits to the left
+   			   20  00000000000000000000000000010100
+   			*/
+
+console.log(5 >> 2);	// returns 1      (00000000000000000000000000000001)
+			/* 
+   		 	   5   00000000000000000000000000000101
+	  		   2   00000000000000000000000000000010	    // will find the first occurence of 1 from the left
+			  --------------------------------------    // and shift the bits to the right
+   			   1   00000000000000000000000000000001
+   			*/
+
+console.log(5 ^ 3)      // returns 6      (00000000000000000000000000000110)
+			/* 
+   			    5   00000000000000000000000000000101
+	  		    3   00000000000000000000000000000011    //finds all the 1's in both binaries, but NOT the common 1's
+	 		   --------------------------------------
+       		            6   00000000000000000000000000000110
+   			*/
+
+
 
 
       
@@ -2202,7 +2146,10 @@ while(false);
 
              
              
-             
+
+
+
+	
              
              
              
@@ -2256,109 +2203,6 @@ function someEventHandler() {
 
 
 
-//============================================================== DOM ==============================================================
-
-
-
-
-//keep in mind that every element in a document is considered a "node" and the text inside an element are called text nodes
-document.getElementById("random_ID").childNodes[0];                             //you can use .childNodes[] as an array to reference any child elements
-const node = document.getElementById("random_ID");                              //this returns a reference to an element                      
-document.querySelector("class/tagName").removeChild(node.childNodes[0]);           //removing a nested child element from the parent container
-document.querySelector("class/tagName").removeChild(parent);
-document.querySelector("class/tagName").appendChild(new_node);                     //inserts a child node AT THE END of an parent element
-document.querySelector("class/tagName").insertBefore(new_node, existing_child_node);//inserts a new child element/node before an existing child element/node
-
-
-
-//the different ways to reference an element from the DOM
-document.getElementById("random_ID");                                           
-document.getElementsByTagName("div");                                            //this will return an array of references
-document.getElementsByTagName("div")[0];                                        //you can use array syntax to get the first, second,... element of a specific tag type, this can be used by ALL methods
-document.getElementsByClassName("my_class");                   
-document.querySelector("p.class_name");                                         //this follows the same syntax as css , this will return the first occurance within the document that matches the specified selector
-document.querySelectorAll("p.class_name");                                      //this will return an array with all the elements that have <p class="class_name">
-//you can use either id or name attributes here
-document.forms["form_id"];                                                      //this returns a reference to a form with the ID "form_ID"     
-document.forms["form_id"]["input_name"];                                        //getting a child element <input> that has the attribute name = "input_name" 
-document.forms["form_id"]["input_name"].value;                                  //getting the value inputted by the user
-
-
-//changing the content and attributes of elements
-document.querySelector("class/tagName").innerHTML = "adding text";                 //innerHTML is inside the tags of the element
-document.querySelector("class/tagName").innerHTML;                                 //this will return a text node that contains the text inside the tag elements
-document.querySelector("class/tagName").height = "100px";                           //you can assign a different value to ANY ATTRIBUTE by their name directly
-document.querySelector("class/tagName").style.backgroundColor = "red";             //to change a CSS property, this is the syntax you must use, remember that the properties are camel case
-document.querySelector("class/tagName").setAttribute(color, "red");                //you can also add a new attribute to an element
-
-
-//creating and deleting elements, these elements only show up on the document if they are inserted to an existing element in the document
-document.createElement("div");                                                  //creating a <div> </div> element
-document.createTextNode("hello world!");                                        //creating a text node (same as innerHTML) and returns a reference to that node
-document.body.removeChild(node);                                                //this is how you remove an entire element 
-
-
-document.getElementById("div").childNodes[0].nodeValue;                         //you can reference a child element with childNodes[0],and nodeValue is the same as .innerHTML              
-document.getElementById("div").firstElementChild;                               //references the first child element nested within
-document.getElementById("div").lastElementChild;                                //references the last child element nested within
-document.getElementById("div").closest(".className")                            //will choose the closest parent/grandparent element that has the specified selector
-document.querySelector("div").scrollIntoView({behavior: 'smooth'});             //you can automatically scroll to a specific element by using scrollIntoView()
-
-// EVENT LISTENERS are triggered by the user
-document.getElementById("id").onclick = function() {                
-    //code goes here
-}
-document.getElementById("id").resize = function() {                             //functions is called when the element is resized
-    //code goes here
-}
-document.getElementById("id").onmouseover = function() {                        //function is called when the user hovers over the element
-    //code goes here
-}
-document.getElementById("id").onload = function() {                             //this function is called when the user enters the page          
-    //code goes here                                                            //this can be used to check cookies on the webpage, and check the visitors browser type and version
-}
-document.getElementById("id").onunload = function() {                           //this function is called when the user leaves the page            
-    //code goes here
-}
-document.getElementById("id").onchange = function() {                           //function is called in conjunction with input fields, when the user inputs something, and leaves the field,           
-    //code goes here                                                                the function will be invoked 
-}
-document.getElementById("id").onfocus = function() {                            //function is called when a user focuses on an input field
-    //code goes here
-} 
-document.getElementById("id").addEventListener("click", myFunction);            //this is the same as the event handlers above, this is useful for adding multiple functions for the same event
-document.getElementById("id").addEventListener("click", mySecondFunction);
-document.getElementById("parent").addEventListener("click", mySecondFunction, false)//third parameter specifies whether the parent element or the child element will have their even handleled first
-document.getElementById("child").addEventListener("click", mySecondFunction, false) //default is false, which means that the child event will be handleled first and then the parent event
-document.getElementById("id").addEventListener("click", function() {myThirdFunction(a,b)});     //in case you want to call a function that has parameters
-document.getElementById("id").addEventListener("click", (e) => {
-
-    //keep in mind that you can access any attribute of an element that you target
-    e.target;                           //targeting the element that triggered the event,
-    e.target.parentElement              //targeting the parent element of the element that triggered the event
-    e.target.value                      //targeting the element that triggered the event and getting their value attribute, this is useful for form elements
-    e.target.children                   //targeting the element that triggered the event and returning all child nodes nested within that element
-    e.target.id                         //targeting the element that triggered the event and getting the value in their ID attribute
-    e.target.classList                  //targetting the element that triggered the event and getting the classlist of the element
-    e.target.src                        //targetting the element that triggered the event and getting the src attribute
-    e.target.style.width = "300px"      //targeting the element that triggered the event and assigning 300px to its width property (setting inline styles)
-    e.target.matches(".someClass");     //this is useful for trying to target an element only if it matches the requested selector (will return true or false)
-})
-
-
-// EVENT EMITTERS are triggered manually by the programmer
-
-const EventEmitter = require('events');
-
-class MyEmitter extends EventEmitter {}
-
-const myEmitter = new MyEmitter();
-
-myEmitter.on('customEvent', () => {
-  console.log('an event occurred!');
-});
-
-myEmitter.emit('customEvent');			//emit() can trigger the event 
 	
 
 

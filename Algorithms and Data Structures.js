@@ -423,7 +423,6 @@
 // (this method breaks down the problem into smaller sub problems)
 
       function sumOfDigits(number) {
-          // Base case: If the number is a single digit, return it
           if (number < 10) 
               return number;
               
@@ -440,17 +439,17 @@
   
       VISUAL: 
                 sumOfDigits(1234) = 6 + 4 = 10       last = 4
-                      |
-                      |
-                      |
+                      |             ^_______
+                      |                     |
+                      v                     | 
                 sumOfDigits(123) = 3 + 3  = 6        last = 3
-                      |
-                      |
-                      |
+                      |            ^_______
+                      |                   |
+                      V                   |
                 sumOfDigits(12) = 1 + 2 = 3         last = 2
-                      |
-                      |
-                      |
+                      |          ^
+                      |          |
+                      V          |
                 sumOfDigits(1) = 1   
 
                     //the last recursive call will return and start the backtracking process
@@ -461,7 +460,6 @@
 
 // Prints all possible strings of length k that can be formed from a array of n characters
 //( this method creates multiple instances of a problem and checks every instance)
-
 
     const arr = ['a', 'b'];
     const k = 3;

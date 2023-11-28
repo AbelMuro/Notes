@@ -413,10 +413,14 @@
                       if(n == 0)                //base case
                         return;
                       
-                      recursion(n - 1);
+                      recursion(n - 1);        //recursive call
                 }
 
                 recursion(5);
+
+
+
+
 
 
 // Find the sum of all the digits using recursion 
@@ -450,9 +454,9 @@
                       |          ^
                       |          |
                       V          |
-                sumOfDigits(1) = 1   
+                sumOfDigits(1) = 1                   //we start the backtracking process here
 
-                    //the last recursive call will return and start the backtracking process
+
 
 
 

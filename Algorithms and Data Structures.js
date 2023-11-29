@@ -423,8 +423,89 @@
 
 
 
-// Find the sum of all the digits using recursion 
-// (this method breaks down the problem into smaller sub problems)
+
+
+
+
+1)    // Reverse a stack using recursion
+      // (this method lets you use an instance of a function to store data)
+
+        function recurse(i, j){
+            if(j < 0)
+                return 0;
+                
+            let prev = St[i];                      //every instance will have its own prev
+            let current = recurse(i + 1, j - 1)   
+            St[current] = prev;
+            return current + 1;
+
+        }
+
+        recurse(0, St.length - 1);
+
+
+
+
+  VISUAL:
+
+        stack = [1,2,3,4,5]
+    
+        reverse(0, 4)     prev = 1            //every instance will have its own prev that can be used by another instance
+            |
+            |
+        reverse(1, 3)     prev = 2
+            |
+            |
+        reverse(2, 2)     prev = 3
+            |
+            |
+        reverse(3, 1)     prev = 4
+            |
+            |
+        reverse(4, 0)     prev = 5
+            
+
+
+
+
+2)     // Generate a sequence that looks like this 
+       // 16, 11, 6, 1, -4, 1, 6, 11, 16
+
+        let sequence = [];
+        function printSequence(n) {
+            sequence.push(n);
+            if (n <= 0)
+                return;
+            
+            printSequence(n - 5);
+            sequence.push(n);      //remember that n will be different for every instance
+          }
+
+         printSequence(n);
+        
+
+
+  VISUAL: 
+          printSequence(16)    n = 16
+                |
+                |
+          printSequence(11)    n = 11
+                |
+                |
+          printSequence(6)     n = 6
+                |
+                |
+          printSequence(1)     n = 1
+                |
+                |
+          printSequence(-4)   // back tracking starts here
+
+
+
+
+
+3)   // Find the sum of all the digits using recursion 
+     // (this method breaks down the problem into smaller sub problems)
 
       function sumOfDigits(number) {
           if (number < 10) 
@@ -462,8 +543,11 @@
 
 
 
-// Prints all possible strings of length k that can be formed from a array of n characters
-//( this method creates multiple instances of a problem and checks every instance)
+
+
+
+4)   // Prints all possible strings of length k that can be formed from a array of n characters
+    //( this method creates multiple instances of a problem and checks every instance)
 
     const arr = ['a', 'b'];
     const k = 3;

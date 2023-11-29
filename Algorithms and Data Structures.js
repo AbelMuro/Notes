@@ -504,7 +504,27 @@
 
 
 
-3)   // Find the sum of all the digits using recursion 
+
+3)   //Find the middle node of a linked list
+     //(this function is using floyds algorithm recursively)
+    let head = linkedList;
+
+    function traverse(fast, slow) {
+        if(fast && fast.next){
+             return traverse(fast.next.next, slow.next);            
+        }
+        else {
+            return slow;            
+        }           
+    }
+    traverse(head, head);
+
+
+
+
+
+
+4)   // Find the sum of all the digits using recursion 
      // (this method breaks down the problem into smaller sub problems)
 
       function sumOfDigits(number) {
@@ -546,7 +566,7 @@
 
 
 
-4)   // Prints all possible strings of length k that can be formed from a array of n characters
+5)   // Prints all possible strings of length k that can be formed from a array of n characters
     //( this method creates multiple instances of a problem and checks every instance)
 
     const arr = ['a', 'b'];

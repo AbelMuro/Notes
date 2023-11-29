@@ -781,7 +781,17 @@
           return false;
       };
 
+      //RECURSIVELY
 
+    function traverse(fast, slow) {
+        if(fast && fast.next){
+             return traverse(fast.next.next, slow.next);            
+        }
+        else {
+            return slow;            
+        }           
+    }
+    traverse(head, head);
 
 
 
@@ -803,7 +813,26 @@
         return reversed;                                
       }
 
+      //RECURSIVELY
+
+      function reverse(next){
+        if(!next.next){
+            reverseList = next;
+            return next;
+        }
+
+        let prevNode = reverse(next.next);
+        prevNode.next = next;
+        next.next = null;
+        return next; 
+    }
+
+    reverse(head);
       
+
+
+
+
 
   3)    //Removing duplicates from a Linked List
 

@@ -831,9 +831,6 @@
       
 
 
-
-
-
   3)    //Removing duplicates from a Linked List
 
       1 -> 1 -> 2 -> 3 -> 4 -> 5 -> 5 -> null;
@@ -850,6 +847,21 @@
         
         return head;
     };
+
+    //RECURSIVELY
+
+    var deleteDuplicates = function(head) {
+        if (!head) 
+            return null;
+    
+        while (head.next && head.val == head.next.val) {
+            head.next = head.next.next;
+        }
+        head.next = deleteDuplicates(head.next)
+        return head;
+    };
+
+
 
 
 
@@ -874,7 +886,21 @@
           return head;
       };
 
+      //RECURSIVELY
+      let del = 5;
+  
+      function traverse(next) {
+          while(next && next.val === del)
+              next = next.next;
+          
+          if(!next)
+              return null
+        
+          next.next = traverse(next.next);
+          return next;  
+      }
 
+      traverse(head);
 
 
   5) //Finding the middle node of a linked list (using floyds algorithm)
@@ -915,8 +941,23 @@
 
 
 
+7)   //Merging two sorted lists into one sorted list
+     // (RECURSIVELY)
 
-
+    var mergeTwoLists = function (l1, l2) {
+        if (!l1) 
+            return l2;
+        else if (!l2) 
+            return l1;
+        else if (l1.val <= l2.val) {
+            l1.next = mergeTwoLists(l1.next, l2);
+            return l1;
+        } 
+        else {
+            l2.next = mergeTwoLists(l1, l2.next);
+            return l2
+        }
+    };
 
 
 

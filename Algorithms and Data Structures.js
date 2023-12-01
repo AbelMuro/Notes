@@ -783,15 +783,7 @@
 
       //RECURSIVELY
 
-    function traverse(fast, slow) {
-        if(fast && fast.next){
-             return traverse(fast.next.next, slow.next);            
-        }
-        else {
-            return slow;            
-        }           
-    }
-    traverse(head, head);
+
 
 
 
@@ -915,7 +907,20 @@
         }
        return slow;
     }
-    
+
+    //RECURSIVELY
+
+    function traverse(fast, slow) {
+        if(fast && fast.next){
+             return traverse(fast.next.next, slow.next);            
+        }
+        else {
+            return slow;            
+        }           
+    }
+    traverse(head, head);
+
+
 
   6) //Traversing through a double linked list
 
@@ -960,7 +965,19 @@
     };
 
 
+8)  //Check if the linked list is a palindrome
 
+    let next2 = head;
+    let flag = true;
+
+    function traverse(next) {            //the idea here is that as we start to backtrack
+        if(node.next)                    // we will use another pointer that traverses from the beginning
+            traverse(next.next);
+        if(next.val !== next2.val)
+            flag = false;
+        next2 = next2.next;
+    }
+    traverse(head)
 
 
 

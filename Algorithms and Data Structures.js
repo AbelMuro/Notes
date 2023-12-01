@@ -981,7 +981,18 @@
 
 
 
+9) //Traversing a linked list and saving a reference to the previous node
 
+  var deleteNode = function(node, prev) {
+
+    if (node.next) {
+        prev = node;                  //this is where we save a reference to the previous node
+        node.val = node.next.val;
+        deleteNode(node.next, prev);
+    } else {
+        prev.next = null;
+    }
+};
 
 
 

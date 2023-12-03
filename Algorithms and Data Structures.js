@@ -1010,7 +1010,8 @@
 
 
             
-   //BINARY TREE: a data structure that has a root node, each node has three parts; data, left pointer and right pointer.
+//BINARY TREE: a data structure that has a root node, each node has three parts; data, left pointer and right pointer.
+//BINARY SEARCH TREE: a binary tree that has its values sorted, in other words the left node's value is always less than the root, and the right node's val is always more than the root
    
                                               root node
                                                  __
@@ -1028,30 +1029,25 @@
    
    
    
-   DEPTH-FIRST-SEARCH: this is a way of traversing through a binary tree or any other data structure, this method will traverse through an entire branch 
-   before back-tracking to the next branch
-   
-                TRAVERSE WITH RECURSION:
-                
-                          var traverse = function(nextNode) {
-                                if(!nextNode)
-                                    return null;                          //we stop the traversing in this specific instance of the recursive function
+  /* DEPTH-FIRST-SEARCH: this is a way of traversing through a binary tree or any other data structure, this method will traverse through an entire branch 
+   before back-tracking to the next branch */
+            
+                          function DFS (next) {
+                                if(!next)
+                                    return;                    //we stop the traversing in this specific instance of the recursive function
 
-                                console.log(nextNode.val);                //accessing the value in the node
-                                traverse(nextNode.left)                 //creating an instance where the function obtains the next node's value
-                                traverse(nextNode.right)                //creating another instance where the function obtains the next node's value
+                                console.log(next.val);         //accessing the value in the node
+                                DFS(next.left)                 //creating an instance where the function obtains the next node's value
+                                DFS(next.right)                //creating another instance where the function obtains the next node's value
                             };
    
    
    
-   BREADTH-FIRST SEARCH: this method will traverse through an entire line of nodes before moving on to the next node. The only problem with this approach
+  /* BREADTH-FIRST SEARCH: this method will traverse through an entire line of nodes before moving on to the next node. The only problem with this approach
    is that you will need to find the height of the largest branch in the binary tree, so you will need to implement a DFS function that traverses through each 
-   branch. Once you find the height of the biggest branch, you will use the height to traverse each level in the binary tree .
-   
-    
-   
-                1) find height of the biggest branch in the binary tree
-                
+   branch. Once you find the height of the biggest branch, you will use the height to traverse each level in the binary tree . */
+
+
                              function findHeight(nextNode) {
                                     if(!nextNode)
                                         return 0;                                                 //the moment that this return statement is returned, we start to backtrack
@@ -1063,23 +1059,61 @@
                                     }
                               }
                               let height = findHeight(root);
-                
 
-                  2) recurse through each level in the binary tree
-                  
-                               function currentLevel(nextNode, level) {           //recursive function that iterates each node on the current level
-                                      if(!nextNode)
+
+                             function currentLevel(next, level) {         
+                                      if(!next)
                                           return;
-                                      if(level == 1)
-                                          console.log(nextNode.val)
+                                      if(level === 1)
+                                          console.log(next.val)
                                       else if(level > 1){
                                           currentLevel(nextNode.left, level - 1);
                                           currentLevel(nextNode.right, level - 1);            
                                       }
                                  }  
                                  
-                                  for(let i = 1; i <= height; i++)                //we use the height to calculate how many levels to iterate in binary tree
-                                      currentLevel(root, i);
+                              for(let i = 1; i <= height; i++)                //we use the height to calculate how many levels to iterate in binary tree
+                                   currentLevel(root, i);
+
+
+  /* IN-ORDER TRAVERSAL: this method will traverse through a binary search tree and will access the values in ascending order.
+    this method works best with binary search trees which are guaranteed to have its values sorted */
+
+
+                          function inOrderTraversal(next){
+                                if(!next)
+                                    return;        
+                                inOrderTraversal(next.left);
+                                console.log(next.val);
+                                inOrderTraversal(next.right)
+                            }
+                        
+                            inOrderTraversal(root);
+
+
+
+                1) //Traverse through a binary SEARCH tree and return a node that has a specific value
+                  // (this method traverses only ONE branch, this ONLY works with binary SEARCH trees)
+
+                        function bfs(next){
+                            if(!next)
+                                return null;
+                            if(next.val === val)
+                                return next;
+                          
+                            if(next.val > val)
+                                return bfs(next.left);
+                            else
+                                return bfs(next.right);        
+                          }
+                      
+                          bfs(root);
+
+
+                
+
+                  
+
 
 
 

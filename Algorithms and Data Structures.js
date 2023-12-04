@@ -1029,7 +1029,7 @@
    
    
    
-  /* DEPTH-FIRST-SEARCH: this is a way of traversing through a binary tree or any other data structure, this method will traverse through an entire branch 
+  /* DEPTH-FIRST-SEARCH: (PRE-ORDER TRAVERSAL) this is a way of traversing through a binary tree or any other data structure, this method will traverse through an entire branch 
    before back-tracking to the next branch */
             
                           function DFS (next) {
@@ -1081,14 +1081,15 @@
 
 
                           function inOrderTraversal(next){
-                                if(!next)
-                                    return;        
-                                inOrderTraversal(next.left);
+                                if(next.left)
+                                    inOrderTraversal(next.left);
                                 console.log(next.val);
-                                inOrderTraversal(next.right)
+                                if(next.right)
+                                    inOrderTraversal(next.right)
                             }
                         
                             inOrderTraversal(root);
+
 
 
 

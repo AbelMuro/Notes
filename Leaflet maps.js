@@ -29,7 +29,8 @@ function Map({lat, long}) {
         }));
     },[])
 
-    /*specifying a tile layer, track resize and a marker to the map */
+
+    /* adding a tile layer to the map*/
     useEffect(() => {
         if(!map) return;
 
@@ -37,8 +38,28 @@ function Map({lat, long}) {
             'https://tile.openstreetmap.org/{z}/{x}/{y}.png', 
           {maxZoom: 19}
         ).addTo(map);
-        map.trackResize = true;                                              //track size will update the map everytime the viewport is resized
-        L.marker([lat, long]).addTo(map);                                    // adding a marker to the map
+        
+        map.trackResize = true;                                                //track size will update the map everytime the viewport is resized
+
+        return () => {                                                        //clean up
+            map.off();
+            map.remove();
+        }
+    }, [map])
+
+    
+    /* Adding a marker to the map */
+    useEffect(() => {
+        if(!map) return;
+
+        const icon = L.icon({
+            iconUrl: 'url of custom icon goes here',
+            iconSize: [40, 48],
+            iconAnchor: [22, 94],
+            popupAnchor: [-3, -76],
+        })
+        
+        L.marker([lat, long], {icon: icon}).addTo(map);                       // you can exclude the second argument if you want to use the default icon
 
         return () => {                                                        //clean up
             map.off();

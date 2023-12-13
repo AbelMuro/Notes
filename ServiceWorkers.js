@@ -13,6 +13,43 @@
 
 */
 
+
+//Workbox-Routing Module
+
+/* 
+  workbox-routing module is a module that makes it easy 
+  to route network requests to different functions that provide responses 
+*/
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
+
+
+// this function will let the browser make a request to a server for images to be displayed
+// if the server is unavailable, then the browser will access the cache for the images
+workbox.routing.registerRoute(
+    ({ request }) => request.destination === 'image',
+    new workbox.strategies.NetworkFirst()
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //  -----------------------Remember to save this file 'ServiceWorker.js' into the public folder of your project (outside the src folder)-------------------------------
 
 1)  // Install service worker 

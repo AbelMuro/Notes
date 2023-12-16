@@ -1,5 +1,7 @@
 //Heroku is a web host you have use to deploy your app, however you will need to develop a server that can host the static files for your app
 
+//REMEMBER to remove all buildpacks from the configuration in HEROKU
+
 //  1)  First create a server.js file with the following lines of code
 
 

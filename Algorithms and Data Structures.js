@@ -716,9 +716,43 @@
 
 
 
+/* 
+    HEAP DATA STRUCTURE: a structure that organizes elements based on a hierachy, typically the first element has the highest priority while the last element has the lowest priority
+*/
+
+      //1) find the k weakest rows in a matrix
+
+      let mat = [
+          [1,1,1,0,0],
+          [1,0,0,0,0],
+          [1,1,0,0,0],
+          [1,1,1,1,1];
+      ]
 
 
-
+      var kWeakestRows = function(mat, k) {
+          let heap = [];
+          let answer = [];
+      
+          for(let i = 0; i < mat.length; i++){          
+              let soldiers = 0;
+              for(let j = 0; j < mat[i].length; j++){
+                  if(mat[i][j] === 1)
+                      soldiers++;
+                  else
+                      break;
+              }
+              heap.push([i, soldiers]);                //you map the index with the total number of soldiers
+          }
+      
+          heap.sort((a, b) => a[1] - b[1]);            //this is where you sort the heap based on priority
+      
+          for(let i = 0; i < k; i++){                  //now we can easily access the first k elements because we know those k elements are the weakest rows
+              answer.push(heap[i][0]);
+          }
+      
+          return answer;
+      };
 
 
 

@@ -27,30 +27,30 @@
 
 2)         //Binary search with duplicate values
 
-            var search = function(nums, target) {
-                  let middle;
-
-                  for(let i = 0, j = nums.length - 1; i <= j;){
-                        middle = Math.floor((i + j) / 2);               //we get the middle index of the array
-                        if(nums[middle] > target)                                 
-                            j = middle - 1;
-                        else if(nums[middle] < target)
-                            i = middle + 1;
-                        else{
-                          let left = middle - 1;
-                          let right = middle + 1;
-                
-                          while(nums[left] === target)
-                              left--;
-                          while(nums[right] === target)
-                              right++;
-                          
-                          break;
-                        }
-                          
-                  }
-                  return -1;
-                };
+            var targetIndices = function(nums, target) {
+                let answers = [];
+                let l = 0;
+                nums.sort((a, b) => a - b);
+            
+                for(let r = nums.length - 1; l <= r;){                      //we want to find the leftmost occurence of the target in the array
+                    let middle = Math.floor((l + r)/2);
+            
+                    if(nums[middle] >= target)
+                        r = middle - 1;
+                    else
+                        l = middle + 1;
+                }
+            
+                while(l < nums.length){                                      //this loop will count all values equal to the target 
+                    if(nums[l] === target){
+                        answers.push(l);
+                        l++;
+                    }
+                    else
+                        break;
+                }
+                return answers;
+            };
 
 3)         //Binary search that counts the left and right pointers
 

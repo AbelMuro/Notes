@@ -717,7 +717,7 @@
 
 
 /* 
-    HEAP DATA STRUCTURE: a structure that organizes elements based on a hierachy, typically the first element has the highest priority while the last element has the lowest priority
+    PRIORITY QUEUE (heap): a structure that organizes elements based on a hierachy, typically the first element has the highest priority while the last element has the lowest priority
 */
 
       //1) find the k weakest rows in a matrix

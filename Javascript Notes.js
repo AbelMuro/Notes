@@ -596,20 +596,23 @@ add.apply(obj, [2,3,4])
 	
 //-------- bind() works a little different, it was design to bind 'this' to a function and returns a new function -------------------
 // The reason you want to do this is to pass a function that uses 'This' into another function because 'This' will lose its value
-var myButton = {
-	  content: 'OK',
-	  click() {
-	    console.log(this.content + ' clicked');
-	  }
+
+const person = {
+  firstName: "John",						//this value will be replaced by the value in the employee object
+  lastName: "Doe",
+  method: function () {
+    return this.firstName + " " + this.lastName;
+  },
 };
 
-myButton.click();			//this will console.log() 'OK clicked'
+const employee = {
+  firstName: "Jane",
+  lastName: "Smith",
+};
 
-var looseClick = myButton.click;	// when you re-assign a method like this, the value of 'this' will lose its original value
-looseClick(); 				// this will console.log 'undefined clicked'
+let employeeName = person.method.bind(employee);		//all properties in 'person' will be replaced by the properties in 'employee'
 
-var boundClick = myButton.click.bind(myButton); // you will need to bind the original's object 'this' to make sure it doesnt lose its value
-boundClick(); 				// this will console.log 'OK clicked'
+console.log(employeeName()); // Jane Smith
 	
 
 //---------------------------------IIFE: immediately invoked function expression------------------------

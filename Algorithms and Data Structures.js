@@ -1059,23 +1059,7 @@
                                                      /      \
                                                     __       __
                                                    |__|     |__|
-    
-   
-   
-   
-  /* DEPTH-FIRST-SEARCH: (PRE-ORDER TRAVERSAL) this is a way of traversing through a binary tree or any other data structure, this method will traverse through an entire branch 
-   before back-tracking to the next branch */
-            
-                          function DFS (next) {
-                                if(!next)
-                                    return;                    //we stop the traversing in this specific instance of the recursive function
-
-                                console.log(next.val);         //accessing the value in the node
-                                DFS(next.left)                 //creating an instance where the function obtains the next node's value
-                                DFS(next.right)                //creating another instance where the function obtains the next node's value
-                            };
-   
-   
+      
    
   /* BREADTH-FIRST SEARCH: this method will traverse through an entire line of nodes before moving on to the next node. The only problem with this approach
    is that you will need to find the height of the largest branch in the binary tree, so you will need to implement a DFS function that traverses through each 
@@ -1110,6 +1094,22 @@
                                    currentLevel(root, i);
 
 
+
+  /* DEPTH-FIRST-SEARCH: (PRE-ORDER TRAVERSAL) this is a way of traversing through a binary tree or any other data structure, this method will traverse through an entire branch 
+   before back-tracking to the next branch */
+            
+                          function DFS (next) {
+                                if(!next)
+                                    return;                    //we stop the traversing in this specific instance of the recursive function
+
+                                console.log(next.val);         //accessing the value in the node
+                                DFS(next.left)                 //creating an instance where the function obtains the next node's value
+                                DFS(next.right)                //creating another instance where the function obtains the next node's value
+                            };
+
+
+
+
   /* IN-ORDER TRAVERSAL: this method will traverse through a binary search tree and will access the values in ascending order.
     this method works best with binary search trees which are guaranteed to have its values sorted */
 
@@ -1123,6 +1123,43 @@
                             }
                         
                             inOrderTraversal(root);
+
+
+
+/* POST-ORDER TRAVERSAL: this method will search through a binary tree, starting from the ends of the branches and works it way to the root*/
+
+                          function traverse(next) {
+                              if(!next)
+                                  return;
+                      
+                              traverse(next.left);
+                              traverse(next.right);
+                              console.log(next.val);
+                          }
+                      
+                          traverse(root);
+
+
+
+/* ITERATION: You can use iteration to traverse through a binary tree*/
+
+                      function traverse(head){
+                            const queue = [head];                          //all the nodes will be placed in an array
+                        
+                            while(queue.length) {
+                                const current = queue.shift();             //we initially remove the first node from the array           
+                                console.log(current.val)                   //we can access the node from here
+                                                        
+                                if(current.left)                           //we start to traverse through both branches of a node, if they exist
+                                    queue.push(current.left);
+                                if(current.right) 
+                                    queue.push(current.right);
+                            }                        
+                      }
+
+                      traverse(head);
+
+
 
 
 

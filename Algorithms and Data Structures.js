@@ -1073,7 +1073,7 @@
                                         let lheight = findHeight(nextNode.left);
                                         let rheight = findHeight(nextNode.right);
 
-                                        return lheight > rheight ? lheight + 1 : rheight + 1;     //when we backtrack, we will continue adding 1 to the previous height everytime 
+                                        return  Math.max(lheight, rheight) + 1;                //when we backtrack, we will continue adding 1 to the previous height everytime 
                                     }
                               }
                               let height = findHeight(root);
@@ -1096,7 +1096,7 @@
 
 
   /* DEPTH-FIRST-SEARCH: (PRE-ORDER TRAVERSAL) this is a way of traversing through a binary tree or any other data structure, this method will traverse through an entire branch 
-   before back-tracking to the next branch */
+   before back-tracking to the next branch, it starts at the root node and works its way down to the end of a branch */
             
                           function DFS (next) {
                                 if(!next)
@@ -1113,7 +1113,7 @@
   /* IN-ORDER TRAVERSAL: this method will traverse through a binary search tree and will access the values in ascending order.
     this method works best with binary search trees which are guaranteed to have its values sorted */
 
-
+                    //traversing BST in ascending order
                           function inOrderTraversal(next){
                                 if(next.left)
                                     inOrderTraversal(next.left);
@@ -1123,6 +1123,18 @@
                             }
                         
                             inOrderTraversal(root);
+
+                    //traversing BST in descending order
+                            function traverse(next){
+                                if(!next)
+                                    return next;
+                                
+                                traverse(next.right);   
+                                console.log(next.val);             
+                                traverse(next.left);
+                            }
+                        
+                            traverse(root);
 
 
 
@@ -1163,28 +1175,36 @@
 
 
 
-
                 1) //Traverse through a binary SEARCH tree and return a node that has a specific value
                   // (this method traverses only ONE branch, this ONLY works with binary SEARCH trees)
 
-                        function bfs(next){
+                        function traverse(next){
                             if(!next)
                                 return null;
                             if(next.val === val)
-                                return next;
-                          
-                            if(next.val > val)
-                                return bfs(next.left);
+                                return next;                
+                            else if(next.val > val)
+                                return traverse(next.left);
                             else
-                                return bfs(next.right);        
+                                return traverse(next.right);        
                           }
                       
-                          bfs(root);
+                          traverse(root);
 
 
-                
-
+                2) // Merge two binary tree into one tree, if there are two overlapping nodes in both trees, then add both node values. 
                   
+                        var mergeTrees = function(root1, root2) {
+                              if(!root1 || !root2)                                        //if one branch is null, we return the other branch that is NOT null
+                                  return root1 || root2;
+                          
+                              let node = new TreeNode(root1.val + root2.val);              //with every recursive call, we save a reference to this node
+                          
+                              node.left = mergeTrees(root1.left, root2.left)
+                              node.right = mergeTrees(root1.right, root2.right);
+                          
+                              return node;
+                          };
 
 
 

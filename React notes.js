@@ -474,128 +474,10 @@ array.map((val, i) => {
  
  
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
 
 
 
-
-
-//========================================================== ERROR BOUNDARIES =================================================
- // Error Boundaries are basically class components that will catch any errors that are thrown in any child component
- // The idea is to wrap your entire application with these Error Boundaries and it will automatically detect any errors thrown from the child
- // keep in mind that the try catch block will only work with vanilla JS, look at the example below
- 
- // 1) ------  this is completely fine, this will catch any errors thrown by the server
- function App() {
-        const [state, setState] = useState({});
-         
-         useEffect(() => {
-              try{                                              
-                 fetch('url')
-                      .then(response => response.json())
-                      .then(results => setState(results))
-              }   
-              catch(error){
-                console.log(error, 'AN ERROR HAS OCCURED');
-              }
-         }, [])
-         
-         return(
-                 <>
-                   {state}
-                </>
-         )
- }
-  
-// 2) ------- however, this is NOT fine because the catch block will not catch any errors thrown by the component
-function Publications() {
-          try {
-               return (<SomeComponent/>)                      //any errors thrown here will NOT be caught by the catch block below
-            ))
-          } catch (error) {
-                 return (<> 'AN ERROR HAS OCCURED' </>)        
-          }
-}
-
-
- // 3) ------- one way to use error boundaries is in the following code
- // keep in mind that the <ErrorBoundary/> will automatically catch errors in the components nested within
- 
- import ErrorBoundary from './ErrorBoundary.js';
- 
- function App() {
-       return (                 {/* ErrorBoundary will not catch errors from event handlers, Asynchronous code*/}
-            <>  
-              <ErrorBoundary>                 
-                    {/* the rest of your application */}
-              </ErrorBoundary/>
-            </>
-  )
-}
-  
-// ./ErrorBoundary.js
- class ErrorBoundary extends Component {
-         constructor(props) {
-            super(props);
-            this.state = { error: false, errorMessage: '' };
-         }
-         
-         static getDerivedStateFromError(error) {
-            // Updating state (this method will automatically catch errors in the child component)
-            return { error: true, errorMessage: error.toString() };
-          }
-
-          componentDidCatch(error, errorInfo) {
-            // Log error to an error reporting service like Sentry
-            console.log({ error, errorInfo });
-          }
-
-          render() {
-            const { error, errorMessage } = this.state;
-            const { children } = this.props;
-
-            return error ? <ErrorFallbackUI {...{ error, errorMessage }} /> : children;
-          }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
  
  
  
@@ -682,7 +564,11 @@ X   componentWillUnmount() {                                //lifecycle method t
 }
  
 
-//----------------------------------------------------------- PURE COMPONENTS---------------------------------------------------------
+
+
+
+
+//========================================================== PURE COMPONENTS ==========================================================
 //Pure Components are class components that extends Pure.Component
 //These components do NOT rely on variables/objects defined outside of its scope
 //Passing the same argument to these components will always return the same result
@@ -707,6 +593,82 @@ class PercentageStat extends React.PureComponent {
   }
 
 }
+
+
+
+
+
+
+
+
+//========================================================== ERROR BOUNDARIES =================================================
+ // Error Boundaries are basically class components that will catch any errors that are thrown in any child component
+ // The idea is to wrap your entire application with these Error Boundaries and it will automatically detect any errors thrown from the child
+ // keep in mind that the try catch block will only work with vanilla JS, look at the example below
+ 
+ // keep in mind that the <ErrorBoundary/> will automatically catch errors in the components nested within
+ 
+ import ErrorBoundary from './ErrorBoundary.js';
+ 
+ function App() {
+       return (                 {/* ErrorBoundary will not catch errors from event handlers, Asynchronous code*/}
+            <>  
+              <ErrorBoundary>                 
+                    <MyComponent/>
+              </ErrorBoundary/>
+            </>
+          )
+}
+  
+// ./ErrorBoundary.js
+ class ErrorBoundary extends Component {
+         constructor(props) {
+            super(props);
+            this.state = { error: false, message: '' };
+         }
+         
+         static getDerivedStateFromError(error) {
+            return { 
+                    error: true, 
+                    message: error.toString()                        // Updating state (this method will automatically catch errors in the child component)
+                  };            
+          }
+
+          render() {
+            const { error, message } = this.state;
+            const { children } = this.props;
+
+            return error ? 
+                        <div> 
+                            {message} 
+                        </div>  : 
+                        children;
+          }
+}
+
+
+//MyComponent.js
+ class MyComponent extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = { data: null };
+          }
+        
+          componentDidMount() {
+            fetch("https://invalid.url")                // This will throw an error because the URL is invalid
+              .then((response) => response.json())
+              .then((data) => this.setState({ data }));
+          }
+        
+          render() {
+             return <div>{this.state.data.length}</div>;       // This will also throw an error if data is null
+          }
+        }
+
+
+
+
+
 
 
 
@@ -1428,68 +1390,7 @@ const ChildComponent = forwardRef((props, ref) => {
     
     
     
-    
-    
-    
-    
-    
-
-    
-    
-//============================================================ CHANGING THEMES ========================================================================
-//you can use css variables to change the styling of elements from one theme to another
-    
- // styles.css
- 
- :root{
-     --loading-light: grey;
-     --loading-dark: purple;
- }
- 
-        
-        
- 
- // changeTheme.js
-        
- const lightTheme = [
-    "--bg-color: white",
-    "--text-color: black",
-    "--box-shadow: red",
-    "--loading-theme: var(--loading-light)"                             //you can also use var() to assign other variables 
-  ];
   
- const darkTheme = [
-    "--bg-color: black",
-    "--text-color: white",
-    "--box-shadow: purple",
-    "--loading-theme: var(--loading-dark)"
-];
-  
-    
-    
-function ChangeTheme(turnSwitch) {
-    const root = document.getElementsByTagName("html")[0];
-    let theme;
-
-    if(turnSwitch)
-        theme = darkTheme
-    else
-        theme = lightTheme;
-
-    root.style.cssText += theme.join(";");                              //cssText lets you re-assign the values of css variables
-        
-}
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
 
 
 
@@ -1702,58 +1603,6 @@ function AboutUs() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//--------------------------------------------- REACT-RESPONSIVE---------------------------------------------------
-import {useMediaQuery} from 'react-responsive';
-import MediaQuery from 'react-responsive';
-
-function MediaQueries() {
-      const mobile = useMediaQuery({query: "(max-width: 600px)"});
-      
-      return({mobile ? <>'you are on mobile' <> 
-                      : <>'you are NOT on mobile'</>;
-      )
-}
-
-
-function MediaQueriesWithComponents{
-        
-        return(
-                <MediaQuery maxWidth={1224}>
-                        <> 'You are on desktop'</>
-                </MediaQuery>
-                <MediaQuery minWidth={800}>
-                        <> 'You are on mobile'</>        
-                </MediaQuery>
-                )
-
-}
 
 
 

@@ -1085,8 +1085,8 @@
                                       if(level === 1)
                                           console.log(next.val)
                                       else if(level > 1){
-                                          currentLevel(nextNode.left, level - 1);
-                                          currentLevel(nextNode.right, level - 1);            
+                                          currentLevel(next.left, level - 1);
+                                          currentLevel(next.right, level - 1);            
                                       }
                                  }  
                                  

@@ -1910,9 +1910,46 @@ document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC; path='/'
 document.cookie = "username= ; expires=Thu, 09 Dec 1970 00:00:00 UTC; path='/'"     //to delete a cookie, just put the expiration date before today, also you should include the path="/" because some browsers might need it
 
 
+
+//adding another cookie to document.cookie
+
+function cookieExists(key) {
+	var cookies = document.cookie;
+
+	// Check if the cookie name is present in the string
+	if (cookies.indexOf("user=") >= 0) 
+	    return true
+	else 
+	    return false
+	
+}
+
+function addCookie(key, value) {
+	document.cookie = key + '=' value;
+}
+
+function updateCookie(key, newValue) {
+  let oldCookieValue = '';
+  key = key + "=";
+  let allCookies = document.cookie.split(';');					//we split the cookie string into an array
+	
+  for(let i = 0; i < allCookies.length; i++) {
+	    let cookie = allCookies[i];
+	    while (cookie.charAt(0) === ' ') 
+	      cookie = cookie.substring(1);
+	    
+	    if (cookie.indexOf(key) == 0) 
+	      oldCookieValue = cookie.substring(key.length, cookie.length);
+	    
+  }
+  let newCookieValue = oldCookieValue + ','+  newValue;
+  document.cookie = key + "=" + newCookieValue;
+	
+}
+
 //using .cookie twice wont overwrite the previous value assigned to .cookie
 document.cookie = "usename=HotStuff69";
-document.cookie = "password=cobra69";                                               //console.log() will display 'username=usename=HotStuff69 password=cobra69'
+document.cookie = "password=cobra69";                                               //console.log() will display 'username=usename=HotStuff69;password=cobra69'
    
 
 //it is strongly recommended that you use npm install js-cookies for the set and get methods for cookies, 

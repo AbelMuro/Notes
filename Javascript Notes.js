@@ -1911,11 +1911,9 @@ document.cookie = "username= ; expires=Thu, 09 Dec 1970 00:00:00 UTC; path='/'" 
 
 
 
-//adding another cookie to document.cookie
-
 function cookieExists(key) {
 	var cookies = document.cookie;
-
+	
 	// Check if the cookie name is present in the string
 	if (cookies.indexOf("user=") >= 0) 
 	    return true
@@ -1938,13 +1936,18 @@ function updateCookie(key, newValue) {
 	    while (cookie.charAt(0) === ' ') 
 	      cookie = cookie.substring(1);
 	    
-	    if (cookie.indexOf(key) == 0) 
+	    if (cookie.indexOf(key) === 0) 
 	      oldCookieValue = cookie.substring(key.length, cookie.length);
 	    
   }
-  let newCookieValue = oldCookieValue + ','+  newValue;
+  //if you want to get the previous value of a cookie,
+  let newCookieValue = oldCookieValue + newValue;
   document.cookie = key + "=" + newCookieValue;
-	
+
+
+  //if you want to add new data to a cookie
+  let prevValue = JSON.parse(newCookieValue);	//at this point, you have either an object or an array, you can append data to these objects
+
 }
 
 //using .cookie twice wont overwrite the previous value assigned to .cookie

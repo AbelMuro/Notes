@@ -24,18 +24,20 @@
 
 //newPercentage will be a number between 0 and 100
 function ProgressBar({newPercentage}) {
-    const [percentage, setPercentage] = useState('1000');                        //1000 represents 0%            500 represents 50%          0 represents 100% 
+    const radius = 159;
+    const circumference = 2 * Math.PI * radius;
+    const [percentage, setPercentage] = useState(circumference);                        //0 represents 100%         circumference reprensents 0%
 
     useEffect(() => {
-          setPercentage(1000 - (newPercentage * 10))                            //if newPercentage = 25, then we multiply it by 10 and get 250, then we subtract the result from 1000 and get 750,     so 750 is 25% of 100%
+          setPercentage(newPercentage/100) * circumference);                            // if newPercentage is 25%, then we get 25% of circumference
     }, [newPercentage])
 
     return(
-        <svg 
-            className={styles.progressBar} 
-            xmlns='https://www.w3.org/2000/svg' 
-            version='1.1'>
-                <circle strokeDasharray='1000' strokeDashoffset={percentage}/>      //keep in mind that strokeDasharray MAY need to use a different value than 1000, depending on the size of the circle
+        <svg className={styles.progressBar}>
+                <circle 
+                      strokeDasharray={curcumference}                           
+                      strokeDashoffset={percentage} 
+                      r={radius}/>      
         </svg>  
     )
 }

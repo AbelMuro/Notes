@@ -588,22 +588,22 @@ const store = configureStore({
 
  // redux-thunk "teaches" dispatch how to accept functions, by intercepting the function and calling it instead of passing it on to the reducers
  // The function it intercepts is used to make AJAX calls and will instead call the dispatch function
+// The whole point of this library is to keep the store in sync with the app when making fetch requests to an API
 
- 
 
 
 function usingThunk(URL) {
-    return dispatch => {
-          dispatch({type: "isLoading", isLoading: true})                            //you can dispatch this action to a different reducer to simulate a loading screen
+    return (dispatch) => {
+          //dispatch({type: "isLoading", isLoading: true})                            //you can dispatch this action to a different reducer to simulate a loading screen
           fetch(URL)
                 .then(response => response.json())
                 .then((results) => {
                       dispatch({type: 'add', name: results.data});
-                      dispatch({type: "isLoading", isLoading: false})              //loading stops here
+                      //dispatch({type: "isLoading", isLoading: false})              //loading stops here
                  }) 
                 .catch((err) => {
                       console.log("error")
-                      dispatch({type: "isLoading", isLoading: false})
+                      //dispatch({type: "isLoading", isLoading: false})
                 })
     }
 }    
@@ -651,7 +651,7 @@ function ExampleWithThunk() {
 
 
 
-// store.js
+//1)   store.js
 import {configureStore} from '@reduxjs/toolkit';
 import promiseMiddleware from 'redux-promise';
 import rootReducer from './reducers';
@@ -665,7 +665,7 @@ export default store;
 
 
 
-// action-creators.js
+// 2)    action-creators.js
 export function usingReduxPromise(URL) {
   const somePromise = fetch(URL);
 

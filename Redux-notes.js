@@ -586,35 +586,36 @@ const store = configureStore({
  //========================================================REDUX THUNK =======================================================
  // configureStore() automatically comes with redux-thunk
 
- // redux-thunk "teaches" dispatch how to accept functions, by intercepting the function and calling it instead of passing it on to the reducers
+ // redux-thunk "teaches" dispatch how to accept functions, 
+//   by intercepting the function and calling it instead of passing it on to the reducers
  // The function it intercepts is used to make AJAX calls and will instead call the dispatch function
-// The whole point of this library is to keep the store in sync with the app when making fetch requests to an API
 
 
+//  1)
+const usingReduxThunk = (URL) => {
+     return async dispatch => {
+          dispatch({type: 'FETCH_PENDING'});
+          try {
+            const response = await fetch(URL);
+            const posts = await response.json();
 
-function usingThunk(URL) {
-    return (dispatch) => {
-          //dispatch({type: "isLoading", isLoading: true})                            //you can dispatch this action to a different reducer to simulate a loading screen
-          fetch(URL)
-                .then(response => response.json())
-                .then((results) => {
-                      dispatch({type: 'add', name: results.data});
-                      //dispatch({type: "isLoading", isLoading: false})              //loading stops here
-                 }) 
-                .catch((err) => {
-                      console.log("error")
-                      //dispatch({type: "isLoading", isLoading: false})
-                })
+            dispatch({type: 'FETCH_SUCCESS', payload: posts};
+         } catch (error) {
+            dispatch({type: 'FETCH_FAILURE', payload: error});
     }
-}    
+  };
+};
 
+
+
+//   2)
 function ExampleWithThunk() {
     const dispatch = useDispatch()
     
     const handleClick = () => {
             dispatch(usingThunk("https://jsonplaceholder.typicode.com/todos/1"));           //remember that 'thunk' is just an action creator that makes an AJAX call 
-                .then((response) => response.json())                                        // (OPTIONAL) redux-thunk can also control what is being returned from the dispatch function
-                .then((results) => results)                                                 // it can make the dispatch function return a promise
+                .then((response) => response.json())                                        // (OPTIONAL) it can make the dispatch function return a promise
+                .then((results) => results)                                                
     }
     
     return(
@@ -626,6 +627,21 @@ function ExampleWithThunk() {
 
 
 
+
+//    3)  
+function reducer(state = {}, action) {
+  switch (action.type) {
+    case 'FETCH_PENDING':
+            return {...state, loading: true}
+    case 'FETCH_SUCCESS'
+            return {...state, loading: false, posts: action.payload}
+    case 'FETCH_FAILURE'
+            return {...state, loading: false, error: 'error message'}
+                          
+    default:
+      return state;
+  }
+}
 
 
 
@@ -646,8 +662,9 @@ function ExampleWithThunk() {
 //================================================ REDUX PROMISE (ASYNC ACTION CREATOR)================================================
 // npm install redux-promise
 
-// redux-promise "teaches" dispatch how to accept promises, 
-// by intercepting the promise and dispatching actions when the promise resolves or rejects.
+// redux-promise "teaches" dispatch function how to accept actions that have a promise
+// by intercepting the promise and dispatching another action of the same type 
+
 
 
 
@@ -665,24 +682,19 @@ export default store;
 
 
 
-// 2)    action-creators.js
-export function usingReduxPromise(URL) {
-  const somePromise = fetch(URL);
 
-  return {                                         //this action will be returned when the promise is resolved
-    type: 'fetch posts',
-    payload: somePromise
-  };
-}
+// 2)   app.js
+const usingReduxPromise = (URL) => {               
+       return {
+           type: 'FETCH',
+           payload: fetch(URL).then(response => response.json())                    //remember that response.json() returns a promise
+       };
+};
 
-
-//app.js
-import {usingReduxPromise} from './action-creators.js';
-import {useDispatch} from 'react-redux';
 
 function App() {
        const dispatch = useDispatch();
-
+            
        const handleClick = () => {
             dispatch(usingReduxPromise('https://someApi/'))        //usingReduxPromise() will return a promise, and redux promise will intercept the promise and return a new action when the promise resolves
        }     
@@ -696,6 +708,23 @@ function App() {
 
 
 
+//  3)    reducer.js
+
+function reducer(state = {}, action) {
+  switch (action.type) {
+    case 'FETCH':
+         if (action.error)                                                 //if promise has an error property, then the promise has been rejected
+           return { ...state, error: action.payload };
+      
+         else if (action.payload instanceof Promise)                       // If the action payload is a promise, it means the promise is pending
+           return { ...state, loading: true };
+
+        else
+           return { ...state, loading: false, user: action.payload };        // Otherwise, the promise was resolved and the payload is the user data
+    default:
+      return state;
+  }
+}
 
 
 

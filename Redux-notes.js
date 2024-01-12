@@ -281,6 +281,148 @@ store.subscribe(() => {console.log(store.getState())})//subscribe will call the 
 
 
 
+//================================================ UPDATING THE STORE/ACCESSING THE STORE =================================================
+
+
+// 1)   DISPATCHING ACTIONS TO THE STORE
+const ADD_TODO = 'ADD_TODO';
+
+const addTodo = text => {
+  return {
+    type: ADD_TODO,
+    text
+  };
+};
+
+const store = Redux.configureStore(reducer);
+//Dispatch an action to the store
+store.dispatch(addTodo('Buy milk.'));
+
+
+
+
+
+
+
+// 2)    ACCESSING THE STATE FROM THE STORE
+const state = store.getState();                                              //gets the complete state from the store
+const todos = store.getState(state => state.todos)                           //accessing a slice from the state
+
+
+
+
+// 3)   SUBSCRIBING TO THE STATE CHANGES IN THE STORE
+
+function myComponent() {            
+      return(<></>)
+}
+
+store.subscribe(myComponent);                                              //this will render myComponent everytime there is a change in state in the store
+
+
+
+// 4)    SUBSCRIBING TO A SLICE OF THE STATE IN THE STORE
+
+// custom hook checking if component is still mounted
+// you should not set state if component is unmounted
+const useIsMounted = () => {
+  const isMounted = useRef(false);
+            
+  useEffect ( () => {
+    isMounted.current = true;
+              
+    return () => (isMounted.current = false);
+  }, []);
+            
+  return isMounted;
+};
+
+
+
+const refCompare = (a, b) => a === b;
+
+const useSelector = (selectFn, compareFn = refCompare) => {
+     const [state, setState] = useState(() =>
+       selectFn(store.getState())                                          //returns a slice of the state
+     );     
+     const mounted = useIsMounted();
+            
+     useEffect (() => {
+       const unsubscribe = store.subscribe (() => {                        //store.subscribe() returns an unsubscribe function
+            const currentStoreState = selectFn(store.getState());
+            
+            if (!mounted.current) return;
+            setState((prevState) =>
+                compareFn(prevState, currentStoreState) ? prevState : currentStoreState
+            );
+       });
+       return unsubscribe;
+              
+     }, [compareFn, mounted, selectFn]);
+            
+     return state;
+};
+
+//--------------------------------------------------- REDUX HOOKS ---------------------------------------------------
+
+
+
+//USE DISPATCH HOOK (you can use the useDispatch hook to dispatch actions to the reducer)
+
+import {useDispatch} from 'react-redux';
+
+function ChildComponent() {
+    const dispatch = useDispatch();
+    
+    const handleClick = (e) => {
+        const newItem = e.target.value;
+        dispatch({type: "add item", item: newItem})      //dispatching an action object to the reducer
+    }
+    return (
+        <><button onClick={handleClick}> Click Me</button></>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------- USE SELECTOR HOOK ---------------------------------------------------
+// you can use useSelector() hook to access the state object
+// keep in mind that every component that has useSelector() 
+// will be re-rendered when the state object changes
+// useSelector() will automatically have the new state every time
+
+import {useSelector, shallowEqual} from 'react-redux';             //must be used within a component to cause a re-render when state changes
+import {createSelector} from '@reduxjs/toolkit';     //createSelectors enable us to manipulate how the state properties will be viewed        
+
+
+//the createSelector below was designed for Apps that only have one reducer
+const selectList = createSelector(
+    (state) => state.list,                          //first callback must return a property from the state
+    (list) => list                                  //second callback can be used to manipulate the property that was pass down from the first callback
+)
+
+//the createSelector below was designed for Apps that have more than one reducer
+const selectCounter = createSelector(
+    (state) => state.CounterReducer,                 //first callback must return one of the names of the reducer
+    (CounterReducer) => CounterReducer.counter       //second callback you can access the actual property
+
+)
+
+function SomeComponent() {
+    //different ways to access state
+    const selectOne = useSelector(state => state.list)     //useSelector will return the property list from the state object      
+    const selectTwo = useSelector(state => state.list.array, shallowEqual)  //if you are selecting an object from the state, you MUST pass shallowEqual, this will make useSelector compare every property in the object, if any property is different then a rerender happens
+    const selectThree = useSelector(selectCounter);             //useSelector will return the property list after we manipulated it
+}
+
 
 
 
@@ -366,92 +508,6 @@ const counterReducer = createReducer(initialState, (builder) => {       //builde
     })
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//===================================================== REDUX HOOKS =====================================================
-
-
-
-//--------------------------------------------------- USE DISPATCH HOOK ---------------------------------------------------
-// you can use the useDispatch hook to dispatch actions to the reducer
-
-import {useDispatch} from 'react-redux';
-
-function ChildComponent() {
-    const dispatch = useDispatch();
-    
-    const handleClick = (e) => {
-        const newItem = e.target.value;
-        dispatch({type: "add item", item: newItem})      //dispatching an action object to the reducer
-    }
-    return (
-        <><button onClick={handleClick}> Click Me</button></>
-    )
-}
-
-
-
-
-
-
-
-
-
-
-
-//--------------------------------------------------- USE SELECTOR HOOK ---------------------------------------------------
-// you can use useSelector() hook to access the state object
-// keep in mind that every component that has useSelector() 
-// will be re-rendered when the state object changes
-// useSelector() will automatically have the new state every time
-
-import {useSelector, shallowEqual} from 'react-redux';             //must be used within a component to cause a re-render when state changes
-import {createSelector} from '@reduxjs/toolkit';     //createSelectors enable us to manipulate how the state properties will be viewed        
-
-
-//the createSelector below was designed for Apps that only have one reducer
-const selectList = createSelector(
-    (state) => state.list,                          //first callback must return a property from the state
-    (list) => list                                  //second callback can be used to manipulate the property that was pass down from the first callback
-)
-
-//the createSelector below was designed for Apps that have more than one reducer
-const selectCounter = createSelector(
-    (state) => state.CounterReducer,                 //first callback must return one of the names of the reducer
-    (CounterReducer) => CounterReducer.counter       //second callback you can access the actual property
-
-)
-
-function SomeComponent() {
-    //different ways to access state
-    const selectOne = useSelector(state => state.list)     //useSelector will return the property list from the state object      
-    const selectTwo = useSelector(state => state.list.array, shallowEqual)  //if you are selecting an object from the state, you MUST pass shallowEqual, this will make useSelector compare every property in the object, if any property is different then a rerender happens
-    const selectThree = useSelector(selectCounter);             //useSelector will return the property list after we manipulated it
-}
 
 
 

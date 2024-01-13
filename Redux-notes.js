@@ -591,20 +591,31 @@ const store = configureStore({
  // The function it intercepts is used to make AJAX calls and will instead call the dispatch function
 
 
-//  1)
+//  1)   this function DOESN'T make the dispath method return a promise
 const usingReduxThunk = (URL) => {
-     return async dispatch => {
+     return async (dispatch) => {
           dispatch({type: 'FETCH_PENDING'});
           try {
             const response = await fetch(URL);
             const posts = await response.json();
-
+                      
             dispatch({type: 'FETCH_SUCCESS', payload: posts};
          } catch (error) {
             dispatch({type: 'FETCH_FAILURE', payload: error});
     }
   };
 };
+
+
+// 1.5) this function makes the dispatch method return a promise
+ function fetchPosts(subreddit) {
+     return function(dispatch) {
+          dispatch(requestPosts(subreddit));
+          return fetch(`https://www.reddit.com/r/${subreddit}.json`)
+                 .then(response => response.json())
+                 .then(json => dispatch(receivePosts(subreddit, json)));
+  };
+}
 
 
 
@@ -615,7 +626,7 @@ function ExampleWithThunk() {
     const handleClick = () => {
             dispatch(usingThunk("https://jsonplaceholder.typicode.com/todos/1"));           //remember that 'thunk' is just an action creator that makes an AJAX call 
                 .then((response) => response.json())                                        // (OPTIONAL) it can make the dispatch function return a promise
-                .then((results) => results)                                                
+                .then((results) => results)                                                 // keep in mind that usingThunk() must return
     }
     
     return(

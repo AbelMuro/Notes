@@ -268,16 +268,6 @@ root.render(
 
 
 
-//some built in functions to use for debugging or testing
-store.getState()                                    //will return the current state in the store
-store.dispatch({type: "action"})                    //will dispatch an action object to the reducer
-store.subscribe(() => {console.log(store.getState())})//subscribe will call the callback everytime there is a change in the state
-
-
-
-
-
-
 
 
 
@@ -382,12 +372,6 @@ function ChildComponent() {
         <><button onClick={handleClick}> Click Me</button></>
     )
 }
-
-
-
-
-
-
 
 
 
@@ -520,8 +504,39 @@ const counterReducer = createReducer(initialState, (builder) => {       //builde
 
 
 
+//============================================= CONNECT(),  mapStateToProps(), mapDispatchToProps() ==============================
 
 
+
+function Counter({count, increment, decrement}) {
+  return (
+    <div>
+      <h1>Counter: {props.count}</h1>
+      <button onClick={props.increment}>+</button>
+      <button onClick={props.decrement}>-</button>
+    </div>
+  );
+}
+
+// mapStateToProps() maps the state.count to the props.count
+function mapStateToProps(state) {
+  return {
+    count: state.count
+  };
+}
+
+// mapDispatchToProps() accepts the dispatch method from the global store and MAPS them to these action creators
+function mapDispatchToProps(dispatch) {
+  return {
+    increment: () => dispatch(increment()),
+    decrement: () => dispatch(decrement())
+  };
+}
+
+
+
+// using the connect function to connect the Counter component with mapStateToProps() and mapDispatchToProps()
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
 
 
 

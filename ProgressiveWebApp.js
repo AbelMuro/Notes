@@ -3,7 +3,7 @@
 
 /* 
 
-  1) create a file called ServiceWorkers.js
+  1) create a file called ServiceWorkers.js and place it inside the PUBLIC folder of project
                                       SERVICE WORKERS
 
   Service Workers are programs that enable your app to work even when there is no internet connection.  
@@ -41,7 +41,7 @@ workbox.routing.registerRoute(
 
 
 /* 
-    2) create a file called manifest.json
+    2) create a file called manifest.json and place it inside the PUBLIC folder of project
 
                                 MANIFEST FILE
   
@@ -93,7 +93,7 @@ workbox.routing.registerRoute(
   }
 
 
-// 3)  You will need to also have this script in either the index.html file
+// 3)  You will need to also have this script in the index.html file
 //     This will register the service workers in your app
 
     <script>

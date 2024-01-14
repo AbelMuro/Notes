@@ -142,15 +142,6 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
 
 
-
-
-
-
-
-
-
-
-
 //================================================== REDUCER ==============================================
 //The reducer is a function that uses action objects to mutate state data
 //reducer must be a pure function, meaning it must not change the state directly 
@@ -413,6 +404,48 @@ function SomeComponent() {
 
 
 
+//============================================= CONNECT() ==================================================
+//The Connect() function accepts two callbacks, mapStateToProps() and mapDispatchToProps()
+//mapStateToProps() accepts the global state and returns an object that will be the props for a component
+//mapDispatchToProps() accepts the dispatch method and returns an object with methods that call the dispatch method
+//Connect() will also subscribe the component to the changes in the store
+
+import { connect } from 'react-redux';
+
+function Counter({count, increment, decrement}) {
+  return (
+    <div>
+      <h1>Counter: {props.count}</h1>
+      <button onClick={props.increment}>+</button>
+      <button onClick={props.decrement}>-</button>
+    </div>
+  );
+}
+
+// mapStateToProps() also allows you to subscribe to a specific part of the state
+function mapStateToProps(state) {
+  return {
+    count: state.count
+  };
+}
+
+// mapDispatchToProps() accepts the dispatch method from the global store and MAPS them to these action creators
+function mapDispatchToProps(dispatch) {
+  return {
+    increment: () => dispatch({type: 'INCREMENT'}),
+    decrement: () => dispatch(({type: 'DECREMENT'})
+  };
+}
+
+
+
+// using the connect function to connect the Counter component with mapStateToProps() and mapDispatchToProps()
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+
+
+
+
+
 
 
 
@@ -500,45 +533,6 @@ const counterReducer = createReducer(initialState, (builder) => {       //builde
 
 
 
-
-
-
-
-//============================================= CONNECT() ==================================================
-//The Connect() function accepts two callbacks, mapStateToProps() and mapDispatchToProps()
-//mapStateToProps() accepts the global state and returns an object that will be the props for a component
-//mapDispatchToProps() accepts the dispatch method and returns an object with methods that call the dispatch method
-//Connect() will also subscribe the component to the changes in the store
-
-function Counter({count, increment, decrement}) {
-  return (
-    <div>
-      <h1>Counter: {props.count}</h1>
-      <button onClick={props.increment}>+</button>
-      <button onClick={props.decrement}>-</button>
-    </div>
-  );
-}
-
-// mapStateToProps() maps the state.count to the props.count
-function mapStateToProps(state) {
-  return {
-    count: state.count
-  };
-}
-
-// mapDispatchToProps() accepts the dispatch method from the global store and MAPS them to these action creators
-function mapDispatchToProps(dispatch) {
-  return {
-    increment: () => dispatch({type: 'INCREMENT'}),
-    decrement: () => dispatch(({type: 'DECREMENT'})
-  };
-}
-
-
-
-// using the connect function to connect the Counter component with mapStateToProps() and mapDispatchToProps()
-export default connect(mapStateToProps, mapDispatchToProps)(Counter);
 
 
 

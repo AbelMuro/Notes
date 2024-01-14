@@ -266,16 +266,16 @@ root.render(
 
 
 // 1)   DISPATCHING ACTIONS TO THE STORE
-const ADD_TODO = 'ADD_TODO';
+import {configureStore} from '@reduxjs/toolkit';
 
-const addTodo = text => {
+const addTodo = (data) => {
   return {
-    type: ADD_TODO,
-    text
+    type: 'ADD_TODO',
+    payload: data
   };
 };
 
-const store = Redux.configureStore(reducer);
+const store = configureStore({reducer: myReducer});
 store.dispatch(addTodo('Buy milk.'));                                       //Dispatch an action to the store
 
 

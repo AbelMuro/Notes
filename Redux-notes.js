@@ -276,11 +276,7 @@ const addTodo = text => {
 };
 
 const store = Redux.configureStore(reducer);
-//Dispatch an action to the store
-store.dispatch(addTodo('Buy milk.'));
-
-
-
+store.dispatch(addTodo('Buy milk.'));                                       //Dispatch an action to the store
 
 
 
@@ -346,8 +342,6 @@ const useSelector = (selectFn, compareFn = refCompare) => {
 
 //--------------------------------------------------- REDUX HOOKS ---------------------------------------------------
 
-
-
 //USE DISPATCH HOOK (you can use the useDispatch hook to dispatch actions to the reducer)
 
 import {useDispatch} from 'react-redux';
@@ -366,25 +360,20 @@ function ChildComponent() {
 
 
 
-
-
-//--------------------------------------------------- USE SELECTOR HOOK ---------------------------------------------------
-// you can use useSelector() hook to access the state object
-// keep in mind that every component that has useSelector() 
-// will be re-rendered when the state object changes
-// useSelector() will automatically have the new state every time
+// USE SELECTOR HOOK (you can use useSelector() hook to access specific parts of the global state)
+// component will be re-rendered when the state object changes
 
 import {useSelector, shallowEqual} from 'react-redux';             //must be used within a component to cause a re-render when state changes
 import {createSelector} from '@reduxjs/toolkit';     //createSelectors enable us to manipulate how the state properties will be viewed        
 
 
-//the createSelector below was designed for Apps that only have one reducer
+            //the createSelector below was designed for Apps that only have one reducer
 const selectList = createSelector(
     (state) => state.list,                          //first callback must return a property from the state
     (list) => list                                  //second callback can be used to manipulate the property that was pass down from the first callback
 )
 
-//the createSelector below was designed for Apps that have more than one reducer
+            //the createSelector below was designed for Apps that have more than one reducer
 const selectCounter = createSelector(
     (state) => state.CounterReducer,                 //first callback must return one of the names of the reducer
     (CounterReducer) => CounterReducer.counter       //second callback you can access the actual property

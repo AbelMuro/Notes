@@ -504,9 +504,11 @@ const counterReducer = createReducer(initialState, (builder) => {       //builde
 
 
 
-//============================================= CONNECT(),  mapStateToProps(), mapDispatchToProps() ==============================
-
-
+//============================================= CONNECT() ==================================================
+//The Connect() function accepts two callbacks, mapStateToProps() and mapDispatchToProps()
+//mapStateToProps() accepts the global state and returns an object that will be the props for a component
+//mapDispatchToProps() accepts the dispatch method and returns an object with methods that call the dispatch method
+//Connect() will also subscribe the component to the changes in the store
 
 function Counter({count, increment, decrement}) {
   return (
@@ -528,8 +530,8 @@ function mapStateToProps(state) {
 // mapDispatchToProps() accepts the dispatch method from the global store and MAPS them to these action creators
 function mapDispatchToProps(dispatch) {
   return {
-    increment: () => dispatch(increment()),
-    decrement: () => dispatch(decrement())
+    increment: () => dispatch({type: 'INCREMENT'}),
+    decrement: () => dispatch(({type: 'DECREMENT'})
   };
 }
 

@@ -826,37 +826,32 @@ import {takeEvery,                                          // takeEvery allows 
         all, 
         call, 
         put} from 'redux-saga/effects';   
-import {getPosts, addPost} from './fetchFunctions.js'         // assume that getPosts and addPost is a regular function that is making a fetch request (remember that the last .then() MUST return the results! )
 
+// define a function that returns a promise
+function fetchData() {
+  return fetch('https://example.com/api/data')
+    .then(response => response.json())
+}
 
-1) function* getPostsSaga() {
-     try{
-            const data = yield call(getPosts);                     //you must use call() to make a call to a regular function in saga
-            yield put({type: 'get post success', payload: data})   //dispatching an action to the reducer     
-     }
-     catch(err) {
-            yield put({type: 'get posts failed', error: err});
-     }
+// define a generator function that uses the 'call' effect to invoke the fetchData function
+// and the 'put' effect to dispatch an action with the data
+function* fetchSaga() {
+  try {
+        const data = yield call(fetchData)
+        yield put({ type: 'FETCH_SUCCESS', payload: data })                        //dispatching actions to the reducers
+  } 
+  catch (error) {
+        yield put({ type: 'FETCH_FAILURE', payload: error })                       //dispatching actions to the reducers
+  }
 }
-2) function* addPostSaga(action) {
-       try{
-          const data = yield call(addPost, action.payload)      //second argument will be used as an argument for addPost function
-          yield put({type: 'add post success', payload: data})  //dispatching an action to the reducer 
-       }
-        catch(error){
-             yield put({type: 'add posts failed', error: err});
-        }
-}
-3) function* getPostsWatcher() {                              
-     yield takeEvery('get posts', getPostsSaga)              //this will call getPostsSaga everytime an action with type: 'get posts' is dispatched
-}                                                            
-4) function* addPostWatcher(){
-     yield takeLeading('add post', addPostSaga)               //this will call addPostSaga everytime an action with type: 'add posts' is dispatched
-}                                                            
 
-5) export default function* rootSaga(){
-      yield all([getPostsWatcher(), addPostWatcher()])       //this will run all of our watchers in parallel
+// use the takeEvery effect to intercept all actions with type 'FETCH_REQUEST'
+function* rootSaga() {
+  yield takeEvery('FETCH_REQUEST', fetchSaga)
 }
+
+// export the root saga
+export default rootSaga
 
 
 
@@ -865,24 +860,15 @@ import {sagaMiddleware} from './store.js';
 
 function App() {
       const dispatch = useDispatch()     
-            
-      const handleGetPosts = () => {
-            dispatch({type: 'get posts'})                                                       //action will be intercepted by redux-saga
-      }
-                                                                                                //to my future self: if redux saga isnt working, try to create a function that returns an action for dispatch()
-      const handleAddPost = () => {
-            dispatch({type: 'add post', payload: {post: 'whatever'}})                            //callback will be intercepted by redux-saga
+                                                                        //to my future self: if redux saga isnt working, try to create a function that returns an action for dispatch()
+      const handleFetch = () => {
+            dispatch({type: 'FETCH_REQUEST'})                        // will be intercepted by redux-saga
       }
 
       return(
-          <> 
-             <button onClick={handleGetPosts}>
-                 'get all posts'
-             </button>
-             <button onClick={handleAddPost}>
-                  'add post'
-             </button>                  
-          </>
+             <button onClick={handleFetch}>
+                 'Click me'
+             </button>                
      )
 }
 

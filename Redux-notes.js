@@ -340,10 +340,16 @@ const useSelector = (selectFn, compareFn = refCompare) => {
      return state;
 };
 
+
+
+
+
+
 //--------------------------------------------------- REDUX HOOKS ---------------------------------------------------
 
-//USE DISPATCH HOOK (you can use the useDispatch hook to dispatch actions to the reducer)
 
+
+//USE DISPATCH HOOK (you can use the useDispatch hook to dispatch actions to the reducer)
 import {useDispatch} from 'react-redux';
 
 function ChildComponent() {
@@ -436,11 +442,37 @@ export default connect(mapStateToProps, mapDispatchToProps)(Counter);
 
 
 
+//==================================================== bindActionCreators() ===========================================================
+// bindActionCreators() is used to bind a dispatch function to action creators. 
+// Everytime the action creators are called, the dispatch method will also be called
+// keep in mind that this function was designed to be used with the connect() function
+
+
+import { bindActionCreators } from 'redux';
+import * as actions from './actions';                                   //this file has the 'increment' action creator and 'decrement' action creator
+
+
+function Counter({count, increment, decrement}) {
+            
+      return(<button onClick={increment()}> increment</button>)         // just by calling the action creator 'increment' , you are automatically dispatching the action   
+}
 
 
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actions, dispatch);
+}
+
+// mapStateToProps() also allows you to subscribe to a specific part of the state
+function mapStateToProps(state) {
+  return {
+    count: state.count
+  };
+}
 
 
+// using the connect function to connect the Counter component with mapStateToProps() and mapDispatchToProps()
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
 
 
 

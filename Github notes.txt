@@ -43,6 +43,35 @@ PULL REQUEST: You can request to merge a specific side branch to the main branch
 Which must be approved by a lead developer or the owner of an organization
 
 
+----If you are a collaborator in a repository
+1) Clone the repository using HTTPS
+
+2) Make your changes to the cloned repository and commit the changes to your local clone
+
+3) If the owner of the repository has rules set that requires a pull request 
+   for a clone to be merged with the original... 
+	then you must create a pull request in visual studio
+   if not...
+        then simply push the changes to the original
+
+
+
+-----If you want to make a pull request to some random repository that you DONT own
+1) Fork the repository by clicking on the 'fork' button in the repository page
+
+2) Make your changes to the forked repository and commit them to the main branch
+
+3) You can create a pull request in Visual studio and submit it. 
+   If accepted, then your forked repository will be merged with the 
+   original repository
+
+
+
+
+
+
+
+
 
 
 

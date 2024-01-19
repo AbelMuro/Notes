@@ -503,7 +503,8 @@ array.map((val, i) => {
 class ClassComponent extends React.Component {
 
     constructor(props) {
-        super(props);                                        //we should always call the parent constructor of a class component because it will let us use the variables declared in the parent constructor (props)
+        super(props);                                        //we should always call the parent constructor of a class component because we can use this.props
+        console.log(this.props, props)                              //if we never called the super(), then this.props will be undefined, but you can still use props to access the props
         this.state = {value: 0};                             //state is an object that stores data that should only be changed by this component
         this.handleClick = this.handleClick.bind(this);      //you should always bind(this) with event handlers because 'this' gets lost in the event handlers
         this.handleChange = this.handleChange.bind(this);

@@ -1839,11 +1839,27 @@ printSquared(4);
 
 
 
+//MICROTASK vs MACROTASK
+/* 
+	microtask: task that will complete straightaway after the code block is exectued
+ 	macrotask: task that will complete AFTER the browser completes all of its tasks(microtasks) in the queue FIRST
+
+*/
+
+	setTimeout(() => {console.log('task 1')})				//macrotask
+
+	let promiseTask = new Promise((resolve, rejected) => {			//microtask
+		resolve();
+	})
+	promiseTask.then(() => {console.log('task 2')})
+
+	console.log('task 3')
 
 
-
-
-
+	// order of console logs
+	1) 'task 3'
+	2) 'task 2'
+	3) 'task 1'
 
 
 

@@ -223,7 +223,22 @@
 
 
 
+//Two pointers that utilize a for loop and a local incrementer
 
+              var isLongPressedName = function(name, typed) {  
+                  let j = 0;
+              
+                  for (let i = 0; i < typed.length; i++) {
+                      if(typed[i] === name[j])                             //the idea here is to only incremement j when a certain condition is met
+                          j++;
+                      else if (typed[i] === name[j - 1]) 
+                          continue;
+                      else 
+                          return false;
+                      
+                  }
+                  return j === name.length;
+              };
 
 
 

@@ -186,7 +186,7 @@
 //Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
 //The time complexity for this algorithm is O(n)
 
-1)          //Two pointer that is used for a single array
+1)          //Two pointer that is used for a single sorted array
             EX:
               
               let A = [1,2,3,4,5,6,7,8,9,10];
@@ -204,7 +204,7 @@
               }
     
 
-2)            // Two pointer that is used for two arrays 
+2)            // Two pointer that is used for two sorted arrays 
               // EX: look for a MINIMUM common value in both arrays
                   let i = 0;
                   let j = 0;
@@ -223,22 +223,20 @@
 
 
 
-//Two pointers that utilize a for loop and a local incrementer
+3)           //Two pointers that will change the order of the values based on a condition
+              //EX: move all the zeroes to the left side and non-zeroes to the right side of array
 
-              var isLongPressedName = function(name, typed) {  
-                  let j = 0;
-              
-                  for (let i = 0; i < typed.length; i++) {
-                      if(typed[i] === name[j])                             //the idea here is to only incremement j when a certain condition is met
-                          j++;
-                      else if (typed[i] === name[j - 1]) 
-                          continue;
-                      else 
-                          return false;
-                      
-                  }
-                  return j === name.length;
-              };
+            let l = 0;
+            let r = nums.length - 1;
+
+            while (l < r){
+                while(l < r && nums[l] === 0)
+                  l++;
+                while(l < r && nums[r] !== 0)
+                  r--;
+                [nums[l], nums[r]] = [nums[r], nums[l]];
+            }
+            
 
 
 

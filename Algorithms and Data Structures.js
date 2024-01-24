@@ -41,14 +41,10 @@
                         l = middle + 1;
                 }
             
-                while(l < nums.length){                                      //this loop will count all values equal to the target 
-                    if(nums[l] === target){
-                        answers.push(l);
-                        l++;
-                    }
-                    else
-                        break;
-                }
+                while(nums[left] === target){
+                    answers.push(left++);
+                }     
+                
                 return answers;
             };
 

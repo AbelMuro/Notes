@@ -1154,37 +1154,38 @@ function expensiveCalculation() {
 // The component below will have an input and will have a long list of employee names displayed below it
 // The component below basically has the logic that the <input/> updates are going to have priority over the <ListItems> update
 
-import React, {useTransition} from 'react'
+import {useState, useTransition} from 'react';
 
-function FilterList({ names }) {
-  const [query, setQuery] = useState("");
-  const [highlight, setHighlight] = useState("");
-  const [isPending, startTransition] = useTransition();
+function SearchBar() {
+    const [search, setSearch] = useState('');
+    const [results, setResults] = useState([])
+    const [isPending, startTransition] = useTransition();
 
-  const changeHandler = (e) => {
-    setQuery(e.target.value);                                         // setQuery() function will be marked as urgent
-    startTransition(() => setHighlight(e.target.value));              // setHighlight() function will be marked as non-urgent
-  };
+    const handleQuery = (e) => {
+        setQuery(e.target.value);
+        startTransition(() => {
+            fetch('url')
+                .then(response => response.json())
+                .then(results => setResults(results))
+        })
+    }
 
-  return (
-    <div>
-      <input onChange={changeHandler} value={query} type="text" />.    //the re-rending of this element has high priority
-      {names.map((name, i) => (
-         <ListItem key={i} name={name} highlight={highlight} />        //the re-rending of this element has low priority
-      ))}
-    </div>
-  );
+
+    return(
+        <fieldset className={styles.inputContainer}>
+            <input 
+                type='text' 
+                className={styles.searchBar} 
+                value={query}
+                onChange={handleQuery}
+                placeholder='Search for movies or TV series'
+             />
+             {isPending && <span> 'Loading..' </span>}
+          -----------------------------------
+        </fieldset--------------------------------------------------
+
+    )
 }
-
-function ListItem({ name, highlight }) {                                //to optimize this component more, you should memoize this
-       /*     
-           name is a string, and highlight is a string
-           This component will compare the characters between name and highlight
-           we will change the color of the characters in name that match the characters in highlight
-       */
-}
-
-
 
 
 //--------------------------------------------- USE DEFERRED VALUE HOOK---------------------------------------------------

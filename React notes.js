@@ -61,23 +61,6 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                
                4) parcel will install babel for you
                
-               
-               
-               
-         Alot of the times, you will use icons for your applicatons, here are the steps to install Font Awesome
-         
-                1) npm install @fortawesome/fontawesome-svg-core    @fortawesome/free-solid-svg-icons    @fortawesome/react-fontawesome
-               
-                1.5) npm install   @fortawesome/free-brands-svg-icons                           this package includes icons for social media
-               
-                2) import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-                   import {faHouse, faMagnifyingGlass, faCartShopping, faUser, faX} from '@fortawesome/free-solid-svg-icons'; 
-                                
-               2.5) import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';             for social media icons
-                   import {faTiktok, faTwitter} from '@fortawesome/free-brands-svg-icons'
-               
-               
-                3) <FontAwesomeIcon icon={faMagnifyingGlass} className={myClass}/>
 */      
 
 
@@ -130,14 +113,9 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                               
                     To use legacy mode:             (index.js)
                                 const rootEl = document.getElementById('root')
-                                ReactDOM.render(<App />, rootEl)
-                                
-                                
-                                
-                                
-                                
-                                
-                                           CLIENT SIDE RENDERING
+                                ReactDOM.render(<App />, rootEl)                                                                
+                                          
+                                                               CLIENT SIDE RENDERING
                       Client side rendering is the process of rendering your application on your browser           
                       
                                1. First, we load the JavaScript to the client. When that has finished we can…
@@ -147,10 +125,8 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                                3. We render the react components in the DOM… When that has finished we can…
 
                                4. We can use the application. — see the content on the page, click on things etc.
-                     
-                     
-                                        
-                                           SERVER SIDE RENDERING
+                                                           
+                                                                  SERVER SIDE RENDERING
                        Server side rendering is the process of rendering your application on the server and sending 
                        it to the client as fully rendered HTML pages
                        

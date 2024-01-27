@@ -106,14 +106,14 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                     To solve this problem, concurrent mode was introduced in React as an experimental feature.
                     Concurrency just means we can have two tasks on hand and can switch between them depending on the priority.
                     
-                    - To enable concurrent mode:    (index.js)
-                                const rootEl = document.getElementById("root")
-                                const root = ReactDOM.createRoot(rootEl);
-                                root.render(<App/>);
-                              
-                    - To use legacy mode:             (index.js)
-                                const rootEl = document.getElementById('root')
-                                ReactDOM.render(<App />, rootEl)                                                                
+                            - To enable concurrent mode:    (index.js)
+                                        const rootEl = document.getElementById("root")
+                                        const root = ReactDOM.createRoot(rootEl);
+                                        root.render(<App/>);
+                                      
+                            - To use legacy mode:             (index.js)
+                                        const rootEl = document.getElementById('root')
+                                        ReactDOM.render(<App />, rootEl)                                                                
                                           
                                                                CLIENT SIDE RENDERING
                       Client side rendering is the process of rendering your application on your browser           
@@ -136,13 +136,34 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 
                                 3. Load javascript to the client for the entire application
 
-                                4. Then Hydrate the page for the entire application (rendering components and attaching event handlers)
-                        
-                                                             
-*/
+                                4. Then Hydrate the page for the entire application (rendering components and attaching event handlers)  */
 
+                               // In React 18, suspense on the server (server-side rendering) is implemented by using the 'renderToPipeableStream' API
+                               // renderToPipeableStream() is a new API that allows you to render a React tree to a pipeable Node.js stream, 
+                               // which can improve the performance and user experience of server-side rendering
 
-
+                          function App() {
+                                  return (
+                                       <div>
+                                          <h1>Hello, world!</h1>
+                                       </div>
+                                  );
+                           }
+                                                     
+                           function renderApp() {
+                                  const { pipe, abort } = renderToPipeableStream(<App />, {                    
+                                            bootstrapScripts: ['/index.js'],                                // Specify the bootstrap script that calls hydrateRoot on the client                                   
+                                            onShellReady() {                                                 // Specify a callback that fires when the shell is ready                                     
+                                              response.setHeader('content-type', 'text/html');               // Set the content type header                                    
+                                              pipe(response);                                                // Pipe the stream to the response
+                                            },                                  
+                                            onError(error) {                                                 // Specify a callback that fires when there is an error                                      
+                                              abort();                                                        // Abort the rendering                                   
+                                              console.error(error);                                           // Handle the error
+                                              response.status(500).send('Something went wrong');
+                                            },
+                                  });
+                                }
 
 
 

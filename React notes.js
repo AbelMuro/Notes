@@ -106,12 +106,12 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                     To solve this problem, concurrent mode was introduced in React as an experimental feature.
                     Concurrency just means we can have two tasks on hand and can switch between them depending on the priority.
                     
-                    To enable concurrent mode:    (index.js)
+                    - To enable concurrent mode:    (index.js)
                                 const rootEl = document.getElementById("root")
                                 const root = ReactDOM.createRoot(rootEl);
                                 root.render(<App/>);
                               
-                    To use legacy mode:             (index.js)
+                    - To use legacy mode:             (index.js)
                                 const rootEl = document.getElementById('root')
                                 ReactDOM.render(<App />, rootEl)                                                                
                                           
@@ -126,7 +126,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 
                                4. We can use the application. — see the content on the page, click on things etc.
                                                            
-                                                                  SERVER SIDE RENDERING
+                                                                SERVER SIDE RENDERING
                        Server side rendering is the process of rendering your application on the server and sending 
                        it to the client as fully rendered HTML pages
                        
@@ -234,16 +234,19 @@ function DynamicImport {
 //this can greatly improve loading time for a website
 
 import {lazy} from 'react';
-
-const ProjectSection = lazy(() => import('./ProjectSection'));          //you pass a callback and you wrap arround the directory of the folder with import()
-
+const ProjectSection = lazy(() => import('./ProjectSection'));          // you pass a callback and you wrap arround the directory of the folder with import()
+                                                                        
+function App() {
+        return (
+           <main>
+                <ProjectSection/>                                       // this component will be lazily loaded  
+           </main>
+        )
+}
 
 //-------------------------------------------- SUSPENSE ------------------------------------------------------
 // Suspense lets you specify a loading screen for a part of the component tree if it’s not yet ready to be displayed
 // Before React 18, <Suspense/> was designed to display a loading screen when a component was being lazy loaded.
-// But now with React 18, you can use <Suspense/> to display a loading screen for components that fetch data inside
-// an application that has been rendered on the server
-
 
 import { Suspense } from 'react';
 
@@ -251,14 +254,27 @@ function App() {
   return (
     <div>                                                       //<Suspense/> will display a fallback UI while <MyComponent/> is being rendered
       <Suspense fallback={<div>Loading...</div>}>               
-        <Lazyloaded />
+        <Lazyloaded />                                          //thi
       </Suspense>
     </div>
   );
 }
 
 
+// But now with React 18, you can use <Suspense/> to display a loading screen for components that fetch data inside
+// an application that has been rendered on the server
 
+import { Suspense } from 'react';
+
+function App() {
+  return (
+    <div>                                                       //<Suspense/> will display a fallback UI while <MyComponent/> is being rendered
+      <Suspense fallback={<div>Loading...</div>}>               
+        <MakesFetchRequest/>
+      </Suspense>
+    </div>
+  );
+}
 
 
 

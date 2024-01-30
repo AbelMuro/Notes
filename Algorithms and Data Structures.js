@@ -691,7 +691,9 @@
                                   |   link2    |         |   link2    |
                                   |   link1    |         |   link1    |
                                    -------------          ------------                                               
-                                   
+
+    
+      
 */
 
 1)   //find the next greater element to the right for every index i, if there is no greater element, return -1;
@@ -724,16 +726,16 @@
 
                 //FIFO: first in first out... 
                 
-                       push()                                              
-                 ________________________                         
-                |                        |                        
-               link 4              |     v    |              |          |  
-                                   |  link3   |              |  link4   |               
+                                             
+                            
+                                  
+                                   |          |              |          |  
+                                   |  link3   |              |          |               
                                    |  link2   |              |  link3   |
                                    |  link1   |              |  link2   |
-                                    ----------                ----------
-                                                                   |           pop()          
-                                                                    ----------------------- > link 1
+                link 1              ----------                ----------
+                  |      push()         |                         |           pop()          
+                   ----------------------                         ----------------------- > link 1
   */
                    
 

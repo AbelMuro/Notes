@@ -718,7 +718,7 @@
     from one side of the list called rear, and the elements can be deleted 
     only from the other side called the front. The queue data structure 
     follows the FIFO (First In First Out) principle, 
-    i.e. the element inserted at first in the list, 
+    i.e. the element inserted first in the list, 
     is the first element to be removed from the list.
 
 

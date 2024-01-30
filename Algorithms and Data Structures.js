@@ -694,6 +694,21 @@
                                    
 */
 
+1)   //find the next greater element to the right for every index i, if there is no greater element, return -1;
+
+  function nextGreaterElement(nums) {
+     let map = [];
+     let stack = [];
+
+     for(let i = 0; i < nums.length; i++){
+         while(stack.length && stack[stack.length - 1] < nums[i])
+             map[stack.pop()] = nums[i];                         //we map a value in nums array with the next greatest element
+         stack.push(nums[i]);
+     }
+
+    return nums.map((num) => map[num] || -1 );
+  }
+  
 
 
 /*

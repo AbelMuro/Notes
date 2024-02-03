@@ -395,34 +395,27 @@ function outerMost() {                       //outerMost has a declaration for x
 
 //====================================================================== PROTOTYPE ===================================================================
 // Prototype is basically the mechanism that allows objects to inherit methods and properties from another object
+// Keep in mind that prototype is an object that contains methods and properties that are inherited by another object
+
 // All objects in javascript have two default properties, __proto__ and prototype
 // Prototype is used to add new methods and properties to an object after its declaration and initialization
 // _proto_ is used to look up methods and properties that have been inherited by other objects
 
-let myObject = new Object();
-let myObject = {whatever: 3};                                //remember that this is the same as 'new Object' (Object is a constructor function that has its own methods)
-myObject.toString();                                              //these methods belong to the Object constructor
-myObject.hasOwnProperty();                                        //these methods belong to the Object constructor
-myObject.valueOf();                                               //these methods belong to the Object constructor
 
-// even though myObject does not have the methods .toString(), hasOwnProperty(), valueOf() defined inside the {}. it can still use the methods
-// because it has a built in property called _proto_ which points to those methods.
+function Constructor(){
+      this.name = "abel";
+      this.last = "muro";
+      this.age = 678;
+}
 
+Constructor.prototype.birthplace = "san francisco";
+Constructor.prototype.getName = function() {		    //you can also add new methods to constructors like this
+      return this.name
+}                                  
+ 
 
-//-------------------------------------------------------------------prototype inheritance---------------------------------------------
-// If we take for example Arrays, since Arrays are also objects in javascript. They also share the prototype property that points to the methods
-// in the Object constructor while also maintaining its own set of methods
-
-let myArray = new Array();
-let myArray = [1,2,3];                                       //remember that this is the same as 'new Array()' (Array is a constructor that has its own methods)
-
-myArray.push(5);                                                  //these methods belong to the Array constructor
-myArray.pop();                                                    //these methods belong to the Array constructor
-myArray.forEach(() => {})                                         //these methods belong to the Array constructor
-
-myArray.toString();                                               //these methods belong to the Object constructor
-myArray.hasOwnProperty();                                         //these methods belong to the Object constructor
-myArray.valueOf();                                                //these methods belong to the Object constructor
+let myObject = new Constructor();                           //everytime you use constructor, the object will also have the new property birthplace
+object.getName();    
 
 
 
@@ -432,33 +425,18 @@ myArray.valueOf();                                                //these method
 // let myArray = new Array([1,2,3])                               
 //       |
 //       |   
-//       -> myArray -> [[prototype]]: Array  -> pop() 
-//                                           -> forEach()
-//                                           -> push()
+//       -> [[prototype]]: -> pop() 
+//                         -> forEach()
+//                         -> push()
+//                         -> ...
+//                         -> [[prototype]]: -> toString()
+//                                           -> hasOwnProperty()
+//                                           -> valueOf()
 //                                           -> ...
-//                                           -> [[prototype]]: Object --------------------> toString()
-//                                                                                        -> hasOwnProperty()
-//                                                                                        -> valueOf()
-//                                                                                        -> ...
+//					     -> [[Prorotype]]: null	
+      
 
 
-//you can also use prototype to add new methods or properties to constructors
-
-function constructor(){
-      this.name = "abel";
-      this.last = "muro";
-      this.age = 678;
-}
-
-constructor.prototype.birthplace = "san francisco";
-constructor.prototype = {                                  //you can also add new methods to constructors like this
-      getName() {
-          return this.name
-      }
-} 
-
-let myObject = new constructor();                           //everytime you use constructor, the object will also have the new property birthplace
-object.birthplace;                 
 
 
 //----------------------------------------------------- setPrototypeOf() and getPrototypeOf()--------------------------------------------------------

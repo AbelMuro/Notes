@@ -87,7 +87,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 
                                                              FEATURES OF REACT
 
-                                                                VIRTUAL DOM
+                                                       VIRTUAL DOM and RECONCILIATION
                     The virtual DOM is an exact copy of the REAL DOM, but it is used by React developers to 'mutate' the real DOM 
                     in the most efficient way possible. Everytime we update the virtual DOM, what happens is that React will generate
                     ANOTHER virtual DOM with the changes that we made, and will compare the new virtual DOM with the old virtual DOM,
@@ -114,9 +114,12 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                             - To use legacy mode:             (index.js)
                                         const rootEl = document.getElementById('root')
                                         ReactDOM.render(<App />, rootEl)                                                                
+
+
+
                                           
                                                                CLIENT SIDE RENDERING
-                      Client side rendering is the process of rendering your application on your browser           
+                      Client side rendering is the process of rendering your application on your browser (React does this by default)           
                       
                                1. First, we load the JavaScript to the client. When that has finished we can…
                         
@@ -152,16 +155,16 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                                                      
                            function renderApp() {
                                   const { pipe, abort } = renderToPipeableStream(<App />, {                    
-                                            bootstrapScripts: ['/index.js'],                                // Specify the bootstrap script that calls hydrateRoot on the client                                   
-                                            onShellReady() {                                                 // Specify a callback that fires when the shell is ready                                     
-                                              response.setHeader('content-type', 'text/html');               // Set the content type header                                    
-                                              pipe(response);                                                // Pipe the stream to the response
-                                            },                                  
-                                            onError(error) {                                                 // Specify a callback that fires when there is an error                                      
-                                              abort();                                                        // Abort the rendering                                   
-                                              console.error(error);                                           // Handle the error
-                                              response.status(500).send('Something went wrong');
-                                            },
+                                                                    bootstrapScripts: ['/index.js'],                                // Specify the bootstrap script that calls hydrateRoot on the client                                   
+                                                                    onShellReady() {                                                 // Specify a callback that fires when the shell is ready                                     
+                                                                      response.setHeader('content-type', 'text/html');               // Set the content type header                                    
+                                                                      pipe(response);                                                // Pipe the stream to the response
+                                                                    },                                  
+                                                                    onError(error) {                                                 // Specify a callback that fires when there is an error                                      
+                                                                      abort();                                                        // Abort the rendering                                   
+                                                                      console.error(error);                                           // Handle the error
+                                                                      response.status(500).send('Something went wrong');
+                                                                    },
                                   });
                                 }
 
@@ -193,9 +196,6 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
          
          Code Splitting is also the idea of breaking down the UI into different components
 */
-
-
-
 
 //--------------------------------------------DEFAULT IMPORT------------------------------------------------
 //each file can only have ONE export default

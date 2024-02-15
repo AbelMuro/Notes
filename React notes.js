@@ -139,35 +139,75 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 
                                 3. Load javascript to the client for the entire application
 
-                                4. Then Hydrate the page for the entire application (rendering components and attaching event handlers)  */
+                                4. Then Hydrate the page for the entire application (rendering components and attaching event handlers)  
+                                
 
-                               // In React 18, suspense on the server (server-side rendering) is implemented by using the 'renderToPipeableStream' API
-                               // renderToPipeableStream() is a new API that allows you to render a React tree to a pipeable Node.js stream, 
-                               // which can improve the performance and user experience of server-side rendering
 
-                          function App() {
-                                  return (
-                                       <div>
-                                          <h1>Hello, world!</h1>
-                                       </div>
-                                  );
-                           }
-                                                     
-                           function renderApp() {
-                                  const { pipe, abort } = renderToPipeableStream(<App />, {                    
-                                                                    bootstrapScripts: ['/index.js'],                                // Specify the bootstrap script that calls hydrateRoot on the client                                   
-                                                                    onShellReady() {                                                 // Specify a callback that fires when the shell is ready                                     
-                                                                      response.setHeader('content-type', 'text/html');               // Set the content type header                                    
-                                                                      pipe(response);                                                // Pipe the stream to the response
-                                                                    },                                  
-                                                                    onError(error) {                                                 // Specify a callback that fires when there is an error                                      
-                                                                      abort();                                                        // Abort the rendering                                   
-                                                                      console.error(error);                                           // Handle the error
-                                                                      response.status(500).send('Something went wrong');
-                                                                    },
-                                  });
-                                }
 
+                                                                SUSPENSE ON THE SERVER
+                                        
+                        In React 18, suspense on the server (server-side rendering) is implemented by using the 'renderToPipeableStream' API
+                        renderToPipeableStream() is a new API that allows you to render a React tree to a pipeable Node.js stream, 
+                        which can improve the performance and user experience of server-side rendering          
+                                
+                        
+
+*/
+
+
+import React, { Suspense } from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { createFetch, createFromFetch } from 'react-fetch';
+import App from './App';
+import express from 'express';
+
+const server = express();
+const fetch = createFetch();
+
+server.use(express.static('build'));                                // Serve the static files from the build folder
+
+
+server.get('*', async (req, res) => {                                // Handle all requests with a wildcard
+  const suspenseFetch = createFromFetch(fetch, req);
+        
+  const stream = ReactDOMServer.renderToPipeableStream(
+    <Suspense fallback={<div>Loading...</div>}>
+      <App fetch={suspenseFetch} />
+    </Suspense>
+  );
+
+  // Send the HTML response with the stream
+  res.write(`
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <title>React SSR with Suspense Example</title>
+      </head>
+      <body>
+        <div id="root">
+  `);
+
+  stream.pipe(
+    res,
+    { end: false }
+  );
+
+  stream.on('end', () => {
+    res.write(`
+        </div>
+        <script src="/bundle.js"></script>
+      </body>
+    </html>
+    `);
+    res.end();
+  });
+});
+
+// Start the server on port 3000
+server.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
 
 
 

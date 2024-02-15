@@ -576,7 +576,16 @@
                                 if(currentMonth < 0 || currentMonth > 12 || userInput.length > 2)
                                     return;
                                 setMonth(userInput);
-                            }                       
+                            }   
+
+
+                        YOU CAN ALSO USE THE FUNCTION BELOW TO PREVENT THE USER FROM INPUTING A SPECIFIC CHARACTER
+                        THIS IS FOR THE onKeyDown event
+                
+                            const handleNumber = (e) => {
+                                if(e.key === 'e' || e.key === '.')
+                                    return e.preventDefault() 
+                            }
                 --> 
                 
 

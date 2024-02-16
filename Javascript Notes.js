@@ -1783,7 +1783,7 @@ function printSquare(n){                        | squared()      |              
 printSquared(4);
 
 
-//using asynchronous operations with the call stack, keep in mind that when JS encounters an asynchronous line of code, 
+// using asynchronous operations with the call stack, keep in mind that when JS encounters an asynchronous line of code, 
 // it is removed from the stack and placed in the webAPI thread, even though JS is single threaded, we can still call concurrent
 // code because the browsers have these API's that are essentially another thread.
                         
@@ -1795,7 +1795,7 @@ printSquared(4);
                                                 //EVENT LOOP
   console.log("ho");
                         
-            //stack                                                                    //webAPI's
+            //call stack                                                                    //webAPI's
                                                                     
        |                   |                                                        |               |
        | console.log("ho") |  //setTimeout() will be removed from the stack         |               |     //once setTimeout() finishes its delay, 
@@ -1813,25 +1813,29 @@ printSquared(4);
             |                           | 
             |    setTimeout()           |
             |___________________________|
-            //keep in mind that the setTimeout() will only be placed in the stack ONCE THE STACK IS EMPTY
+            //keep in mind that the setTimeout() will only be placed in the call stack ONCE THE STACK IS EMPTY
 
 
 
 //MICROTASK vs MACROTASK
 /* 
-	microtask: task that will complete straightaway after the code block is exectued
+	microtask: task that will complete straightaway after the code block is executed
  	macrotask: task that will complete AFTER the browser completes all of its tasks(microtasks) in the queue FIRST
 
+  	Microtask has a higher priority compared to the Macrotask
+   	Remember that we have two queues in the event loop
+	Microtask queue and Macrotask queue
+ 	JS will first execute all tasks in the Microtask queue and then it will execute all tasks in the Macrotask queue
 */
 
-	setTimeout(() => {console.log('task 1')})				//macrotask
+		//macrotask (asynchronous)
+	setTimeout(() => {console.log('task 1')}, 0)				
 
-	let promiseTask = new Promise((resolve, rejected) => {			//microtask
-		resolve();
-	})
-	promiseTask.then(() => {console.log('task 2')})
+		//microtask (asynchronous)
+	Promise.resolve(3).then((num) => {console.log('task ' + num)})
 
-	console.log('task 3')
+		//synchronous
+	console.log('task 3')							
 
 
 	// order of console logs

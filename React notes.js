@@ -262,7 +262,7 @@ export const number = 34;
 import {Home} from './HomePage.js';                         //this will work
 import {HomeComponent} from './HomePage.js'                 //this will NOT work because HomePage.js is not exporting HomeComponent
 import {number as myNumber} from './HomePage.js'            //this will work
-
+Import * as objectName from'./HomePage.js';                //this will import ALL of the named exports into an object
 
 //--------------------------------------------- DYNAMIC IMPORT ----------------------------------------------
 //instead of importing a moduleA with the import statement, you can dynamically load a module at runtime with the module() function

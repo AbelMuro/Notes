@@ -1056,7 +1056,24 @@
 };
 
 
+10) // Deleting the Nth node from the end of a linked list
 
+var removeNthFromEnd = function(head, n) {
+    let fast = head;
+    let slow = head;
+    
+    for(let i = 0; i < n; i++)         //we make sure that fast pointer will point to the node BEFORE the Nth node
+        fast = fast.next;
+
+    if(!fast) return head.next;        //If fast points to null, then there is only one node in the list, so we return null
+
+    while(fast.next) {
+        fast = fast.next;              //eventually, slow will point to the node that fast initially points too
+        slow = slow.next
+    }
+    slow.next = slow.next.next          // we disconnect the Nth node of the list
+    return head;
+};
 
 
 

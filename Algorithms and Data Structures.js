@@ -1110,17 +1110,15 @@ var removeNthFromEnd = function(head, n) {
    branch. Once you find the height of the biggest branch, you will use the height to traverse each level in the binary tree . */
 
 
-                             function findHeight(nextNode) {
-                                    if(!nextNode)
-                                        return 0;                                                 //the moment that this return statement is returned, we start to backtrack
-                                    else{
-                                        let lheight = findHeight(nextNode.left);
-                                        let rheight = findHeight(nextNode.right);
-
-                                        return  Math.max(lheight, rheight) + 1;                //when we backtrack, we will continue adding 1 to the previous height everytime 
-                                    }
-                              }
-                              let height = findHeight(root);
+                              var maxDepth = function(root, depth = 1) {
+                                    if(!root)
+                                        return depth - 1;
+                                
+                                    let depthOne = maxDepth(root.left, depth + 1);      
+                                    let depthTwo = maxDepth(root.right, depth + 1);     
+                                    return Math.max(depthOne, depthTwo);
+                                };
+                              let depth = maxDepth(root);
 
 
                              function currentLevel(next, level) {         
@@ -1134,7 +1132,7 @@ var removeNthFromEnd = function(head, n) {
                                       }
                                  }  
                                  
-                              for(let i = 1; i <= height; i++)                //we use the height to calculate how many levels to iterate in binary tree
+                              for(let i = 1; i <= depth; i++)                //we use the height to calculate how many levels to iterate in binary tree
                                    currentLevel(root, i);
 
 

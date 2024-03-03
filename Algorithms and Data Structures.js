@@ -1110,6 +1110,7 @@ var removeNthFromEnd = function(head, n) {
    branch. Once you find the height of the biggest branch, you will use the height to traverse each level in the binary tree . */
 
 
+              // RECURSIVELY
                               var maxDepth = function(root, depth = 1) {
                                     if(!root)
                                         return depth - 1;
@@ -1134,6 +1135,24 @@ var removeNthFromEnd = function(head, n) {
                                  
                               for(let i = 1; i <= depth; i++)                //we use the height to calculate how many levels to iterate in binary tree
                                    currentLevel(root, i);
+
+
+
+                  // ITERAVELY
+                            let nodes = [root];
+      
+                            while(nodes.length) {  
+                              let stack = [];                               //this stack will contain ALL of the left and right nodes of the root node
+                      
+                              while(nodes.length){
+                                  let current = nodes.shift();
+                                  if(current.left) stack.push(current.left);
+                                  if(current.right) stack.push(current.right);
+                                  console.log(current.val)
+                              }
+                              nodes = stack;
+                          }
+
 
 
 

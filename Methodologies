@@ -1,0 +1,77 @@
+Methodologies are methods that are used by modern web development teams to develop and maintain web applications
+
+
+1)    AGILE (customer/client is a key player in the development process)
+
+      This is a TIME oriented methodology where a project is created over time. 
+      This process includes 'sprints', which is a set amount of time (one to four weeks) 
+      that is used to finish a task or a portion of a project.
+
+      Before each sprint, the customer/client describes their needs for the website/app. 
+      The development team then meets these needs in a 'sprint'.
+
+      After each sprint, the development team then analysizes and makes assessments 
+      where changes can be made. New ideas can be introduced ahead of the next sprint.
+
+      This methodology is best suited for LONG and large projects, 
+      or projects that don't have a clearly defined end goal.
+
+
+2)    SCRUM  (customer/client has minimal involvement)
+
+      This methodology gives most of the responsibility to the development team.
+      The customer/client only states what they want from the website/web app 
+      without specifying too much detail, and then the team goes to work.
+
+      With this methodology, there is a 'Scrum Master' who serves as the overseer
+      for the project, and there is a 'Product Owner' who is the representative from
+      the client's side. The product owner is responsible for ensuring that the website/app
+      is developed to their liking.
+
+      Just like Agile, this methodology uses 'sprints' to complete a task. After each sprint, the team 
+      gathers to perform revisions and discusses how to make the next sprint more efficient.
+
+      This methodology gives more flexibility to web development teams to use their own methods 
+      to deliver results. It's also useful for client's who dont want too much involvement 
+      in the development process.
+
+
+3)     WATERFALL
+  
+       The most traditional methodology that involves all the objectives, features and ideas being laid out
+       in the very beginning of the project. The team then uses these objectives to develop the website/app 
+       in a very linear fashion.
+
+       It's extremely important to plan out the entire project before the team goes to work. Each team member
+       must stick to the plan as closely as possible.
+
+       This methodology works best for small projects that have minimal risk of change. It's not well suited for
+       long, on-going projects. 
+
+
+4)     KANBAN
+
+       This methodology involves the visualization of tasks in a project. The team utilizes a 'kanban board' 
+       to keep track of each task in the project from start to finish. The board is regularly updated by 
+       the team, and it helps keep everyone in the team up to date and aware of the current progress 
+       of the project overall
+
+       The board displays the tasks that have been completed, and the tasks that have yet to be done.
+       Task are completed continuously, and changes to the tasks can be made at any point during the process
+
+       This methodology works best for projects that are likely to undergo quick changes as they proceed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

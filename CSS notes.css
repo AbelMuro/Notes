@@ -201,10 +201,15 @@
     (this will work if background-size: 200px 300px, the other values will have no effect)
     */
     background-attachment: scroll, fixed;                       /* determining if the image will scroll with the page or stay fixed to one location */
-    background-clip: padding-box, border-box, content-box;      /* padding-box: image will extend to cover the padding and content, 
+    background-clip: padding-box, border-box, content-box, text; /* padding-box: image will extend to cover the padding and content, 
         border-box: image will extend to cover the border, padding and content, 
         content-box: image will extend to cover the only the content
-        
+        text: color or image will wrap around the text inside the element (make sure you have the following properties)
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+    
+    
         KEEP IN MIND: background-clip also applies to background-color, not just image
     */
     background-origin: padding-box, border-box, content-box;    /* padding-box: image will be positioned from upperleft corner of padding, 

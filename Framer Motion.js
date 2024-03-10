@@ -18,9 +18,7 @@
 
 
 
-//==================================== DECLARATIVE ANIMATIONS:  <motion/> component =========================================================
-
-
+//======================================================== DECLARATIVE ANIMATIONS:  <motion/> component ================================================================================================
 import {motion} from 'framer-motion';
 
 // INITIAL AND ANIMATE: this will animate the circle from opacity: 1 to opacity: 2
@@ -56,18 +54,6 @@ function Circle () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 // ARRAYS ANIMATION: this will animate through the values of an array
 function Circle
     return(
@@ -92,6 +78,147 @@ function Circle
 
 
 
+//============================================================== useCycle() =======================================================================================
+//useCycle() works similarly to useState(), it can be used to toggle between two different sets of styles
+//in the example below, we will have a button that will display a circle and a square when it is clicked on
+
+
+
+const variantsForCircle = {                                    //we will toggle between these two objects with useCycle
+      open: {
+          opacity: 1,
+          backgroundColor: 'green'
+      },
+      closed: {
+          opacity: 0,
+          backgroundColor: 'transparent'
+      }
+   }
+
+const variantsForSquare = {                                    //we will toggle between these two objects with useCycle
+      open: {
+          opacity: 0.5,
+          backgroundColor: 'red'
+      },
+      closed: {
+          opacity: 0,
+          backgroundColor: 'transparent'
+      }
+   }
+
+function App() {
+    const [isOpen, toggleOpen] = useCycle(false, true);              //isOpen will have either true or false as the values, toggleOpen() is a function used to toggle between true and false
+
+    const handleClick = () => {
+        toggleOpen();
+    }
+
+    return(
+        <>
+            <motion.div
+                className={'circle'}
+                initial={false}
+                animate={isOpen ? 'open' : 'closed'}                    //animate property will toggle between the 'open' styles and the 'closed' styles
+                variants={variantsForCircle}>                           //you must pass an object that has the two properties 'open' and 'closed'
+                  
+                  <motion.div                                            //by clicking on the button below, this child element will also have its styles toggle between 'open' and 'closed'
+                      className={'square'}                              //but it MUST have a variants prop
+                      variants={variantsForSquare}                       //you must pass an object that has the two properties 'open' and 'closed', it doesnt have to be the same object that you pass to the parent component
+                      />    
+                        
+            </motion.div>    
+
+            <button onClick={handleClick}>                              //clicking on this button will toggle between the 'open' styles and the 'closed' styles
+                click me
+            </button>    
+        </>
+
+    )
+}
+
+
+
+
+
+
+//============================================================================== useAnimate() ==================================================================================
+//useAnimate() works in the same way as <motion/> component
+//the difference here is that useAnimate() allows for a more complex way of handling animations
+
+import {useAnimate} from 'framer-motion';
+
+function App() {
+    const [ref, animate] = useAnimate();        //ref is an object that must be assigned to the element we want to animate
+
+    useEffect(() => {
+        const animation = async () => {
+          const animating = await animate(ref.current, { x: 0 }, {duration: 0.5})            //second object is the css properties
+          await animate(ref.current, { x: 100}, {duration: 0.5, delay: 2})                   //third object is the transition properties
+          await animate(ref.current, { x: 20}, {duration: 0.5})
+          await animate('div', {y: 45}, {duration: 0.4})                                    //you can use a tag selector to animate a group of elements
+        }
+        
+        animation();
+
+      return () =>  {animating.stop;}                     //when the component is unmounted, it will call the stop() function to clean up the animation
+      }, [])
+
+    return(    
+        <div className={'box'} ref={ref}></div>
+    )
+}
+
+
+
+
+
+//====================================================================== useAnimationControls() =======================================================================================
+// With this hook, you have better control on when the animations can start or end
+
+function Animate() {
+    const controls = useAnimationControls();  
+    const [data, setData] = useState();
+
+    const handleClick = () => {
+          setData('new data')               
+    }
+
+    useEffect(() => {
+        //if you want sequential animation, then use async function
+        const animation = async () => {
+            await controls.set({backgroundColor: red});                                    //instantly sets a property and skips the animation
+            await controls.start({ scale: 2 , transition: {type: 'spring'}})                //you can trigger any animation like this
+            await controls.start('variant');                                                 //you can trigger a variant animation like this    
+            await controls.start(custom => ({                                                //you can use a custom prop to pass data to this callback
+                 scale: custom * 3       
+            }))
+        }
+        animation();
+            
+        return () => controls.stop();               //you can stop any animation with stop()
+    }, [data])
+
+    return (
+            <div custom='123' initial='hidden' animate={controls}>
+                 <button onClick={handleClick} variants={myVariantsObject}> 
+                     click me
+                 </button>
+                 <button onClick={handleClick} variants={myVariantsObject}> 
+                    click me
+                 </button>                
+            </div>
+
+    )
+
+
+const myVariantsObject = {
+      hidden: {
+            opacity: 0
+            }
+      show: {
+        opacity: 1
+      }
+}
 
 
 
@@ -99,6 +226,8 @@ function Circle
 
 
 
+
+//=======================================================================  VARIANTS ===================================================================================================
 //VARIANTS: you can use the variants prop to create animations in child components
 //Keep in mind that if you use variants for a child component, and the animation is triggered throught the parent component
 // you should not have use any animation for the child components through the initial and animate prop
@@ -139,13 +268,7 @@ function AnimateList() {
 }
 
 
-
-
-
-
-
 //DYNAMIC VARIANTS: variants can be a function that can use its parameters to dynamically style a css property
-
 const variants = {
   visible: i => ({
       opacity: 1,
@@ -173,6 +296,10 @@ function VariantsWithFunctions() {
 
 
 
+
+
+
+//============================================================================= EXIT ANIMATIONS ====================================================================================
 
 //EXIT ANIMATIONS: before an element is removed from the dom, you can use the exit prop to apply some animation before the element is removed
 const variants = {
@@ -222,14 +349,7 @@ function App() {
 
 
 
-
-
-
-
-
-
-
-//========================================== DRAGGABLE COMPONENTS ===============================
+//================================================================================= DRAGGABLE COMPONENTS ========================================================================================================
 
 //the circle below can only be dragged 50px to the top, 50 px to the left, etc..
 function Circle() {
@@ -310,7 +430,7 @@ function DragControls () {
 
 
 
-//============================================== GESTURES =============================================
+//======================================================================================= GESTURES =======================================================================================
 // Gestures are similar to click events, focus, events, hover events, etc
 
 function Circle() {
@@ -339,7 +459,6 @@ function Circle() {
       />          
     )
 }
-
 
 
 //GESTURES WITH VARIANTS: you can propagate changes to the child components with variants through gestures
@@ -377,11 +496,11 @@ function Circle() {
 
 
 
-//================================================= SCROLLING ANIMATION ====================================================
+//==================================================================================== SCROLLING ANIMATION =========================================================================================================
 //you can animate an element based on the scroll position of the user
 
 function Circle() {
-    const {scrollYProgress} = useScroll();        //we get the current value of the scroll position on the y-axis
+    const {scrollYProgress, scrollXProgress } = useScroll();        //we get the current value of the scroll position on the y-axis
   
     return(
           <motion.div 
@@ -455,7 +574,7 @@ function Circle() {
 
 
 
-//============================================== LAYOUTS ===================================================
+//========================================================================================= LAYOUTS ==============================================================================================
 // The layout prop in the motion component can add animation to a grid or flex box
 // Layout animations are triggered when a component re-renders and its layout has changed (items are removed, re-arranged, or added)
 // keep in mind, sometimes the child components will have distortion that occurs when the animation occurs
@@ -564,7 +683,7 @@ function App() {
 
 
 
-//=============================================== HOOKS =========================================================
+//========================================================================================== HOOKS ======================================================================================
 const x = useMotionValue();              // motion values are objects that are assigned to the style attribute of elements
                                          // they are used to keep track of a specific css property
                                          //in this case, x will keep track of the elements position on the x-axis
@@ -615,61 +734,6 @@ const [x, cycle] = useCycle({x : -100}, {x: 120});            //hook that lets y
 
 
 
-
-
-
-
-
-              
-//------------------------------------------- useAnimate() ----------------------------------------------------
-//useAnimate() works in the same way as <motion/> component
-//the difference here is that useAnimate() allows for a more complex way of handling animations
-
-import {useAnimate} from 'framer-motion';
-
-function App() {
-    const [ref, animate] = useAnimate();        //ref is an object that must be assigned to the element we want to animate
-
-    useEffect(() => {
-        const animation = async () => {
-          const animating = await animate(scope.current, { x: 0 }, {duration: 0.5})            //second object is the css properties
-          await animate(scope.current, { x: 100}, {duration: 0.5, delay: 2})                   //third object is the transition properties
-          await animate(scope.current, { x: 20}, {duration: 0.5})
-          await animate('div', {y: 45}, {duration: 0.4})                                       //you can use a tag selector to animate a group of elements
-        }
-        
-        animation();
-
-      return () =>  {animating.stop;}                     //when the component is unmounted, it will call the stop() function to clean up the animation
-      }, [])
-
-    return(    
-        <div className={'box'} ref={ref}></div>
-    )
-}
-
-
-
-
-
-//MOTION VALUES: you can use the motionValue() hook with the useAnimateHook() and useTransform()
-//the example below will animate through 0 and 100
-function App() {
-    const [,animate] = useAnimate();
-    const count = useMotionValue(0);                                       //we essentially return an object that has a reference to 0
-    const rounded = useTransform(count, latest => Math.round(latest));      
-    
-    useEffect(() => {
-      const controls = animate(count, 100)                                 //we animate the motion value from 0 to 100
-      
-      return controls.stop
-    }, [])
-    
-    return <motion.div>
-            {rounded}
-        </motion.div>
-  
-}
 
 
 
@@ -798,68 +862,6 @@ function TransformWithFunctions() {
 
 
 
-
-
-//=========================================== useCycle() =======================================================================================
-//useCycle() works similarly to useState(), it can be used to toggle between two different sets of styles
-//in the example below, we will have a button that will display a circle and a square when it is clicked on
-
-
-
-const variantsForCircle = {                                    //we will toggle between these two objects with useCycle
-      open: {
-          opacity: 1,
-          backgroundColor: 'green'
-      },
-      closed: {
-          opacity: 0,
-          backgroundColor: 'transparent'
-      }
-   }
-
-const variantsForSquare = {                                    //we will toggle between these two objects with useCycle
-      open: {
-          opacity: 0.5,
-          backgroundColor: 'red'
-      },
-      closed: {
-          opacity: 0,
-          backgroundColor: 'transparent'
-      }
-   }
-
-function App() {
-    const [isOpen, toggleOpen] = useCycle(false, true);              //isOpen will have either true or false as the values, toggleOpen() is a function used to toggle between true and false
-
-    const handleClick = () => {
-        toggleOpen();
-    }
-
-    return(
-        <>
-            <motion.div
-                className={'circle'}
-                initial={false}
-                animate={isOpen ? 'open' : 'closed'}                    //animate property will toggle between the 'open' styles and the 'closed' styles
-                variants={variantsForCircle}>                           //you must pass an object that has the two properties 'open' and 'closed'
-                  
-                  <motion.div                                            //by clicking on the button below, this child element will also have its styles toggle between 'open' and 'closed'
-                      className={'square'}                              //but it MUST have a variants prop
-                      variants={variantsForSquare}                       //you must pass an object that has the two properties 'open' and 'closed', it doesnt have to be the same object that you pass to the parent component
-                      />    
-                        
-            </motion.div>    
-
-            <button onClick={handleClick}>                              //clicking on this button will toggle between the 'open' styles and the 'closed' styles
-                click me
-            </button>    
-        </>
-
-    )
-}
-
-
-//==============================================
 
 
 

@@ -1,14 +1,33 @@
 //React Native is a library used to develop mobile apps on android and iOS
-
+// REMEMBER, react native does NOT use className
 
 /*    
-      NATIVE COMPONENTS:  In Android development, we use Kotlin or java to write components
+                                          NATIVE COMPONENTS:  
+                                          
+                          In Android development, we use Kotlin or java to write components
                           In iOS development, we use Swift or Objective-C to write components
                           React Native will create a corresponding component for android and iOS
                           and invoke them by using Native Components (View, Text, Image, ScrollView, TextInput)
+                          
+
+                                                INSTALLING REACT NATIVE
+
+                       1) run the command     npx create-expo-app name-of-project
+
+                       2) install the Expo Go app on your phone
+
+                       3) npm start (expo start) will create a QR code. 
+                          You will need to scan the QR code with your phones' camera, 
+                          and the Expo Go app will automatically open the dev server
+
+
+
+
+
+
+
+
 */
-
-
 
 
 

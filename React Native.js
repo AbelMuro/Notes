@@ -20,8 +20,21 @@
                           You will need to scan the QR code with your phones' camera, 
                           and the Expo Go app will automatically open the dev server
 
+                        4) 
+                           4.1) To install font files in you react native app, 
+                           you will need to first create an assets folder that contains the font files.
 
+                           4.2) Then create a react-native.config.js file in the root directory and copy the following code
 
+                                     module.exports = {
+                                        project: {
+                                          ios: {},
+                                          android: {},
+                                        },
+                                        assets: ['./assets/fonts'],
+                                      };
+                            
+                            4.3)  Then run the command           npx react-native-asset
 
 
 
@@ -148,7 +161,23 @@ const App = () => {
 }
 
   
+//------------------------- PRESSABLE ------------------------------
+//PRESSABLE is a button component
 
+import {Pressable} from 'react-native';
+
+const App = () => {
+
+  const handlePress = () => {
+    console.log('Hello World')
+  }
+  
+  return (
+    <Pressable onPress={handlePress}>
+      <Text> CLick ME!</Text>
+    </Pressable>
+  )
+}
 
 
 
@@ -180,16 +209,32 @@ export default App;
 //IMAGE is a component that can be used to upload an image
 
 import {Image, View} from 'react-native';
+import icons from './icons';
 
 const App = () => {
     return (
       <View>
           <Image source={{uri: 'url goes here', width: 64, height: 64}} />
+          <Image source={icons['logo']} style={{width: '64px', height: '64px'}} />
       </View>
     )
 }
 
 
+
+//------------------------ BACKGROUND IMAGE ---------------------------
+
+
+import {ImageBackground} from 'react-native';
+import images from './images';
+
+const App = () => {
+  return (
+        <ImageBackground source={images['background']} resizeMode='cover' style={{width: '100px', height: '100px'}}>
+  
+        </ImageBackground>
+    )
+}
 
 
 
@@ -285,6 +330,32 @@ Platform
 
 
 
+//===================================================== STYLED COMPONENTS =============================================
+// styled components is a library that simplifies implementing css in a react native app
+// the syntax for the properties and values resemble css
+
+import styled from 'styled-components/native';
 
 
+const MyImage = styles.Image`
+    width: 100px;
+    height: 100px;
+`
+
+export const Box = styled.View `
+    width: 100%;
+    height: 80px;
+    border: 1px solid transparent;
+    padding: 24px;
+    background-color: white;
+
+    &: hover {                            //you can apply hover states like this
+      background-color: red;
+    }
+    
+    > ${MyImage} {                       //you can apply descendent selectors with interpolation
+    color: blue;
+    }
+    
+`
 

@@ -95,6 +95,7 @@ export default App;
 //-------------------------- FLAT LIST ------------------------------
 // FLAT LIST is a component that displays a long list of data,
 // the content only renders when it is currently on the screen
+// you must use the contentContainerStyle prop to organize the list as a flex box
 
 import {Text, View} from 'react-native';
 
@@ -113,6 +114,7 @@ const App = () => {
           <FlatList 
               data={['my', 'name', 'is', 'dude']} 
               renderItem={renderItem}
+              contentContainerStyle={{justifyContent: 'center', alignItems: 'center', gap: '45px'}}
             />    
       </View>
   )
@@ -123,7 +125,8 @@ const App = () => {
 
 
 //----------------------- SECTION LIST --------------------------
-//SECTION LIST is a component that displays a large list of data divided into sections
+// SECTION LIST is a component that displays a large list of data divided into sections
+// you must use the contentContainerStyle prop to organize the list as a flex box
 
 import {SectionList, View, Text} from 'react-native';
 
@@ -154,7 +157,7 @@ const App = () => {
                   ]}
                   renderItem={renderItem}
                   renderSectionHeader={renderSectionHeader}
-                  contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
+                  contentContainerStyle={{justifyContent: 'center', alignItems: 'center', gap: '45px'}}
                   keyExtractor={item => `basicListEntry-${item}`}
               /> 
           </View>

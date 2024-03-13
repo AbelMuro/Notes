@@ -154,6 +154,7 @@ const App = () => {
                   ]}
                   renderItem={renderItem}
                   renderSectionHeader={renderSectionHeader}
+                  contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
                   keyExtractor={item => `basicListEntry-${item}`}
               /> 
           </View>

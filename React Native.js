@@ -113,6 +113,7 @@ const App = () => {
       <View> 
           <FlatList 
               data={['my', 'name', 'is', 'dude']} 
+              horizontal                                  //by default, FlatList is a vertical list, but you can make a horizonal list with this prop
               renderItem={renderItem}
               contentContainerStyle={{justifyContent: 'center', alignItems: 'center', gap: '45px'}}
             />    
@@ -157,6 +158,7 @@ const App = () => {
                   ]}
                   renderItem={renderItem}
                   renderSectionHeader={renderSectionHeader}
+                  horizontal                                  //by default, FlatList is a vertical list, but you can make a horizonal list with this prop
                   contentContainerStyle={{justifyContent: 'center', alignItems: 'center', gap: '45px'}}
                   keyExtractor={item => `basicListEntry-${item}`}
               /> 

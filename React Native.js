@@ -148,6 +148,14 @@ const App = () => {
               </Text>
         )
       }
+
+      const itemSeparator = () => {
+          return 'separator between EVERY item';
+      }
+
+      const sectionSeparator = () => {
+        return 'separator between every section'
+      }
       
       return(
           <View>
@@ -160,6 +168,8 @@ const App = () => {
                   renderSectionHeader={renderSectionHeader}
                   horizontal                                  //by default, FlatList is a vertical list, but you can make a horizonal list with this prop
                   contentContainerStyle={{justifyContent: 'center', alignItems: 'center', gap: '45px'}}
+                  ItemSeparatorComponent={itemSeparator}    
+                  SectionSeparatorComponent={sectionSeparator}
                   keyExtractor={item => `basicListEntry-${item}`}
               /> 
           </View>

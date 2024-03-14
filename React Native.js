@@ -193,17 +193,46 @@ const App = () => {
 //--------------------------- TEXT ----------------------------------
 //TEXT is a component that can be used to display text onto the screen
 
-import {Text, View} from 'react-native';
+import {Text, View, Linking} from 'react-native';
 
 const App = () => {
+    
     return (
-      <View>            
+      <View>             
           <Text> Hello World</Text>       
       </View>
     );
 };
 
 export default App;
+
+
+
+
+
+
+
+
+//--------------------------- LINKING -------------------------------
+
+import {Text, Linking} from 'react-native';
+
+const App = () => {
+
+    const handlePress = () => {
+        Linking.openURL('http://google.com');                  //you can open up a new link with this module
+    };
+    
+    return (
+        <View onPress={handlePress}>             
+            <Text> Hello World</Text>       
+        </View>
+    );
+};
+
+export default App;
+
+
 
 
 

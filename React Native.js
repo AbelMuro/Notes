@@ -11,30 +11,16 @@
                           
 
                                                 INSTALLING REACT NATIVE
+                      1) Make sure to install the following packages
+                         brew install node
+                         brew install watchman
+                         sudo gem install cocoapods
 
-                       1) run the command     npx create-expo-app name-of-project
+                      2) Make sure to install xCode on your pc
 
-                       2) install the Expo Go app on your phone
-
-                       3) npm start (expo start) will create a QR code. 
-                          You will need to scan the QR code with your phones' camera, 
-                          and the Expo Go app will automatically open the dev server
-
-                        4) 
-                           4.1) To install font files in you react native app, 
-                           you will need to first create an assets folder that contains the font files.
-
-                           4.2) Then create a react-native.config.js file in the root directory and copy the following code
-
-                                     module.exports = {
-                                        project: {
-                                          ios: {},
-                                          android: {},
-                                        },
-                                        assets: ['./assets/fonts'],
-                                      };
-                            
-                            4.3)  Then run the command           npx react-native-asset
+                      3) Run the command npx react-native init NameOfProject
+  
+                                                
 
 
 

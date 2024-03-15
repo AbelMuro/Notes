@@ -10,21 +10,23 @@
                           and invoke them by using Native Components (View, Text, Image, ScrollView, TextInput)
                           
 
-                                                INSTALLING REACT NATIVE
-                      1) Make sure to install the following packages
-                         brew install node
-                         brew install watchman
-                         sudo gem install cocoapods
+                                                INSTALLING REACT NATIVE FOR MAC
+                      1) Watch this video if you are setting up the developers environment (https://www.youtube.com/watch?v=MJEcookWYUI&t=10s) (install the dependencies with brew ONLY)
 
-                      2) Make sure to install xCode on your pc
-
-                      3) Run the command npx react-native init NameOfProject
+                      2) npx react-native init NameOfProject
   
-                                                
+                      3) npm run ios or npm run start                          
 
 
+                                            INSTALLING REACT NATIVE FOR WINDOWS
 
+                      1) Watch this video if you are setting up the developers environment (https://www.youtube.com/watch?v=8l691BQ-RGc&t=370s)
 
+                      2) You will first need to open up a simulator from Android Studio
+
+                      3) npx react-native init NameOfProject
+
+                      4) npm run android or num run start
 
 */
 

@@ -93,7 +93,25 @@
                     10) Create an android folder in the root directory and copy ALL the files from the android folder in the AdviceGeneratorApp repository
 
                     11) Create an ios folder in the root directory and copy ALL the files from the ios folder in the AdviceGeneratorApp repository
-  
+
+                    12) To install fonts into your react-native project 
+
+                    12.1) create the assets folder and then the fonts folder, then put the font files inside the folder
+                          Make sure you name the font files appropriately
+
+                    12.2) create the react-native.config.js file with the following content
+
+                        module.exports = {
+                              project: {
+                                  ios: {},
+                                  android: {},
+                                },
+                              assets: ['./assets/fonts'],
+                        };
+                        
+                    12.3) npx react-native-asset  (this will automatically link the font files in your project)
+
+                    keep in mind that the name of the font files will be the name of the font family
 */
 
 

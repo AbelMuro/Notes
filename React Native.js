@@ -83,9 +83,9 @@
                           
                           export default App;
 
-                    9) Create an android folder in the root directory and copy ALL the files from the android repository
+                    9) Create an android folder in the root directory and copy ALL the files from the android folder in the AdviceGeneratorApp repository
 
-                    10) Create an ios folder in the root directory and copy ALL the files from the ios repository
+                    10) Create an ios folder in the root directory and copy ALL the files from the ios folder in the AdviceGeneratorApp repository
   
 */
 

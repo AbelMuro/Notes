@@ -20,14 +20,73 @@
 
                                             INSTALLING REACT NATIVE FOR WINDOWS
 
-                      1) Watch this video if you are setting up the developers environment (https://www.youtube.com/watch?v=8l691BQ-RGc&t=370s)
+                      Watch this video if you are setting up the developers environment (https://www.youtube.com/watch?v=MJEcookWYUI&t=10s) (install the dependencies with brew ONLY)       
 
-                      2) You will first need to open up a simulator from Android Studio
+                                            
+                      1) npm init -y
 
-                      3) npx react-native init NameOfProject
+                      2) npm install react react-native
+                         npm install @babel/core -D
+                         npm install @babel/preset-env -D
+                         npm install @babel/runtime -D
+                         npm install @react-native/babel-preset -D
+                         npm install @react-native/metro-config -D
 
-                      4) npm run android or num run start
+                      3) Use the following scripts
 
+                          "scripts": {
+                              "android": "react-native run-android",
+                              "ios": "react-native run-ios",
+                              "start": "react-native start",
+                            },
+
+
+                       4) Create the metro.config.js file in the root directory
+
+                              const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+                              
+                              const config = {};                         
+                              module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+
+
+                       5) Create the index.js file in the root directory
+
+                            import {AppRegistry} from 'react-native';
+                            import App from './src/App.js';
+                            import {name as appName} from './src/app.json';
+                            
+                            AppRegistry.registerComponent(appName, () => App);
+
+                       6) Create a src folder in the root directory
+
+                       7) Create an app.json file in the src folder
+
+                                   {
+                                      "name": "AdviceGeneratorApp",
+                                      "displayName": "AdviceGeneratorApp"
+                                  }
+
+                      8) Create an app.js file in the src folder
+
+                          import React from 'react';
+                          import {View, Text} from 'react-native';
+                          
+                          function App() {
+                              return(
+                                  <View>
+                                      <Text>
+                                          Hello World
+                                      </Text>
+                                  </View>
+                                )
+                          }
+                          
+                          export default App;
+
+                    9) Create an android folder in the root directory and copy ALL the files from the android repository
+
+                    10) Create an ios folder in the root directory and copy ALL the files from the ios repository
+  
 */
 
 

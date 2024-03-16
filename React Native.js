@@ -34,11 +34,11 @@
 
                       3) Use the following scripts
 
-                          "scripts": {
-                              "android": "react-native run-android",
-                              "ios": "react-native run-ios",
-                              "start": "react-native start",
-                            },
+                              "scripts": {
+                                  "android": "react-native run-android",
+                                  "ios": "react-native run-ios",
+                                  "start": "react-native start",
+                                },
 
 
                        4) Create the metro.config.js file in the root directory
@@ -51,41 +51,48 @@
 
                        5) Create the index.js file in the root directory
 
-                            import {AppRegistry} from 'react-native';
-                            import App from './src/App.js';
-                            import {name as appName} from './src/app.json';
-                            
-                            AppRegistry.registerComponent(appName, () => App);
+                                import {AppRegistry} from 'react-native';
+                                import App from './src/App.js';
+                                import {name as appName} from './src/app.json';
+                                
+                                AppRegistry.registerComponent(appName, () => App);
 
-                       6) Create a src folder in the root directory
+                       6) Create a babel.config.js file in the root directory
 
-                       7) Create an app.json file in the src folder
+                             module.exports = {
+                                  presets: ['module:@react-native/babel-preset'],
+                              };
+
+
+                       7) Create a src folder in the root directory
+
+                       8) Create an app.json file in the src folder
 
                                    {
                                       "name": "AdviceGeneratorApp",
                                       "displayName": "AdviceGeneratorApp"
                                   }
 
-                      8) Create an app.js file in the src folder
+                      9) Create an app.js file in the src folder
 
-                          import React from 'react';
-                          import {View, Text} from 'react-native';
-                          
-                          function App() {
-                              return(
-                                  <View>
-                                      <Text>
-                                          Hello World
-                                      </Text>
-                                  </View>
-                                )
-                          }
-                          
-                          export default App;
+                            import React from 'react';
+                            import {View, Text} from 'react-native';
+                            
+                            function App() {
+                                return(
+                                    <View>
+                                        <Text>
+                                            Hello World
+                                        </Text>
+                                    </View>
+                                  )
+                            }
+                            
+                            export default App;
 
-                    9) Create an android folder in the root directory and copy ALL the files from the android folder in the AdviceGeneratorApp repository
+                    10) Create an android folder in the root directory and copy ALL the files from the android folder in the AdviceGeneratorApp repository
 
-                    10) Create an ios folder in the root directory and copy ALL the files from the ios folder in the AdviceGeneratorApp repository
+                    11) Create an ios folder in the root directory and copy ALL the files from the ios folder in the AdviceGeneratorApp repository
   
 */
 

@@ -111,7 +111,73 @@
                         
                     12.3) npx react-native-asset  (this will automatically link the font files in your project)
 
-                    keep in mind that the name of the font files will be the name of the font family
+                          keep in mind that the name of the font files will be the name of the font family
+
+
+
+                    DEPLOYING ANDROID APP WITH REACT NATIVE
+
+                    1) Open up terminal and change directory to "C:\Program Files\jdk-21.0.2\bin"
+
+                    2) type in the following line
+
+                        keytool -genkeypair -v -storetype PKCS12 -keystore CUSTOMNAME.keystore -alias CUSTOMNAME -keyalg RSA -keysize 2048 -validity 10000
+
+                    3) The terminal will ask you for a password and will give you a set of questions that you must answer
+                       REMEMBER THE PASSWORD YOU USED HERE
+
+                    4) Then a .keystore file will be generated in the "C:\Program Files\jdk-21.0.2\bin" folder
+
+                    5) Go to the android/app folder and put the .keystore file in that folder
+
+                    6) Open up the gradle.properties file in android folder, and insert the following lines of code
+                    
+                              MYAPP_UPLOAD_STORE_FILE=CUSTOMNAME.keystore
+                              MYAPP_UPLOAD_KEY_ALIAS=CUSTOMNAME
+                              MYAPP_UPLOAD_STORE_PASSWORD=put_password_here
+                              MYAPP_UPLOAD_KEY_PASSWORD=put_password_here
+
+                    7)  Go to the android/app folder and open the build.gradle file and insert the following lines of code
+                        Leave everything else as it is.
+                        
+                              android {
+                                  ...
+                                  defaultConfig { ... }
+                                  signingConfigs {
+                                      release {
+                                          if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                                              storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                                              storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                                              keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                                              keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+                                          }
+                                      }
+                                  }
+                                  buildTypes {
+                                      release {
+                                          ...
+                                          signingConfig signingConfigs.release
+                                      }
+                                  }
+                                  splits {
+                                      abi {
+                                          reset()
+                                          enable true
+                                          universalApk false
+                                          include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                                      }
+                                  }
+                              }
+                            }
+
+                    8) Next, run the following commands in the terminal
+                          cd android 
+                          ./gradlew bundleRelease
+
+                    9) The command above will generate a .aab file that can be used to deploy the react-native app to the play store
+
+                        android/app/build/outputs/bundle/release/app-release.aab
+                    
 */
 
 

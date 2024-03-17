@@ -1389,7 +1389,7 @@ fetch("/somePath", {
       'Content-Type': 'application/json' 						//data will be formatted into json...... another option is   application/x-www-form-urlencoded
       'apikey' : 'YOUR_API_KEY'							 	//if api keys are not included in the URL, then it should be included here
     },
-    	destination: 'data',								//some api's may require that you put custom properties like this
+    destination: 'data',								//some api's may require that you put custom properties like this
     redirect: 'follow', // manual, *follow, error
     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
 })

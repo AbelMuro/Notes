@@ -10,19 +10,9 @@
                           and invoke them by using Native Components (View, Text, Image, ScrollView, TextInput)
                           
 
-                                                INSTALLING REACT NATIVE FOR MAC
-                      1) Watch this video if you are setting up the developers environment (https://www.youtube.com/watch?v=MJEcookWYUI&t=10s) (install the dependencies with brew ONLY)
-
-                      2) npx react-native init NameOfProject
-  
-                      3) npm run ios or npm run start                          
-
-
-                                            INSTALLING REACT NATIVE FOR WINDOWS
-
-                      Watch this video if you are setting up the developers environment (https://www.youtube.com/watch?v=MJEcookWYUI&t=10s) (install the dependencies with brew ONLY)       
-
-                                            
+                      --------------------------INSTALLING REACT NATIVE--------------------------
+                      0) npx react-native init NameOfProject
+                                 
                       1) npm init -y
 
                       2) npm install react react-native
@@ -33,7 +23,6 @@
                          npm install @react-native/metro-config -D
 
                       3) Use the following scripts
-
                               "scripts": {
                                   "android": "react-native run-android",
                                   "ios": "react-native run-ios",
@@ -42,7 +31,6 @@
 
 
                        4) Create the metro.config.js file in the root directory
-
                               const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
                               
                               const config = {};                         
@@ -50,7 +38,6 @@
 
 
                        5) Create the index.js file in the root directory
-
                                 import {AppRegistry} from 'react-native';
                                 import App from './src/App.js';
                                 import {name as appName} from './src/app.json';
@@ -58,7 +45,6 @@
                                 AppRegistry.registerComponent(appName, () => App);
 
                        6) Create a babel.config.js file in the root directory
-
                              module.exports = {
                                   presets: ['module:@react-native/babel-preset'],
                               };
@@ -90,32 +76,49 @@
                             
                             export default App;
 
-                    10) Create an android folder in the root directory and copy ALL the files from the android folder in the AdviceGeneratorApp repository
+                      10) create an android folder and an ios folder
 
-                    11) Create an ios folder in the root directory and copy ALL the files from the ios folder in the AdviceGeneratorApp repository
 
-                    12) To install fonts into your react-native project 
+                      ----------------------- NEXT STEPS FOR IOS APP------------------------
 
-                    12.1) create the assets folder and then the fonts folder, then put the font files inside the folder
-                          Make sure you name the font files appropriately
+                      1) 
+  
+                      2) npm run ios or npm run start                          
 
-                    12.2) create the react-native.config.js file with the following content
 
-                        module.exports = {
-                              project: {
-                                  ios: {},
-                                  android: {},
-                                },
-                              assets: ['./assets/fonts'],
-                        };
-                        
-                    12.3) npx react-native-asset  (this will automatically link the font files in your project)
+                    --------------------------NEXT STEPS FOR ANDROID APP----------------------
+                                      
 
-                          keep in mind that the name of the font files will be the name of the font family
+                    1) Create an android folder in the root directory and copy ALL the files from the android folder in the AdviceGeneratorApp repository
+
+                    2) npm install android or npm run start
 
 
 
-                    DEPLOYING ANDROID APP WITH REACT NATIVE
+
+                     ----------------------INSTALLING FONTS INTO PROJECT---------------------------
+                    1) To install fonts into your react-native project 
+
+                        1.1) create the assets folder and then the fonts folder, then put the font files inside the folder
+                              Make sure you name the font files appropriately
+    
+                        1.2) create the react-native.config.js file with the following content
+    
+                            module.exports = {
+                                  project: {
+                                      ios: {},
+                                      android: {},
+                                    },
+                                  assets: ['./assets/fonts'],
+                            };
+                            
+                        1.3) npx react-native-asset  (this will automatically link the font files in your project)
+    
+                              keep in mind that the name of the font files will be the name of the font family
+
+
+
+                    ------------------DEPLOYING ANDROID APP WITH REACT NATIVE----------------
 
                     1) Open up terminal and change directory to "C:\Program Files\jdk-21.0.2\bin"
 
@@ -177,6 +180,18 @@
                     9) The command above will generate a .aab file that can be used to deploy the react-native app to the play store
 
                         android/app/build/outputs/bundle/release/app-release.aab
+
+
+                  ---------------------- DEPLOY IOS APP WITH REACT NATIVE ---------------------------------
+
+                  1) Open up Xcode and open up the .xcodeproj file in the ios folder of your project
+
+                  2) Click on Product -> Sceme -> Edit Scheme -> Run
+                     Change Build Configuration to Release
+
+                  3) Then click on Product -> build
+                      
+                  
                     
 */
 

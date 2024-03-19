@@ -191,7 +191,9 @@
 
                   3) Then click on Product -> build
                       
-                  
+                  4) Then close Xcode and open up PROJECTNAME.xcworkspace in ios folder
+
+                  5) Then Product -> Archive
                     
 */
 

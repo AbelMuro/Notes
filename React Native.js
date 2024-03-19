@@ -89,7 +89,7 @@
                     --------------------------NEXT STEPS FOR ANDROID APP----------------------
                                       
 
-                    1) Create an android folder in the root directory and copy ALL the files from the android folder in the AdviceGeneratorApp repository
+                    1) 
 
                     2) npm install android or npm run start
 

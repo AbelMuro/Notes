@@ -11,89 +11,9 @@
                           
 
                       --------------------------INSTALLING REACT NATIVE--------------------------
-                      0) npx react-native init NameOfProject
-                                 
-                      1) npm init -y
-
-                      2) npm install react react-native
-                         npm install @babel/core -D
-                         npm install @babel/preset-env -D
-                         npm install @babel/runtime -D
-                         npm install @react-native/babel-preset -D
-                         npm install @react-native/metro-config -D
-
-                      3) Use the following scripts
-                              "scripts": {
-                                  "android": "react-native run-android",
-                                  "ios": "react-native run-ios",
-                                  "start": "react-native start",
-                                },
-
-
-                       4) Create the metro.config.js file in the root directory
-                              const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
-                              
-                              const config = {};                         
-                              module.exports = mergeConfig(getDefaultConfig(__dirname), config);
-
-
-                       5) Create the index.js file in the root directory
-                                import {AppRegistry} from 'react-native';
-                                import App from './src/App.js';
-                                import {name as appName} from './src/app.json';
-                                
-                                AppRegistry.registerComponent(appName, () => App);
-
-                       6) Create a babel.config.js file in the root directory
-                             module.exports = {
-                                  presets: ['module:@react-native/babel-preset'],
-                              };
-
-
-                       7) Create a src folder in the root directory
-
-                       8) Create an app.json file in the src folder
-
-                                   {
-                                      "name": "AdviceGeneratorApp",
-                                      "displayName": "AdviceGeneratorApp"
-                                  }
-
-                      9) Create an app.js file in the src folder
-
-                            import React from 'react';
-                            import {View, Text} from 'react-native';
-                            
-                            function App() {
-                                return(
-                                    <View>
-                                        <Text>
-                                            Hello World
-                                        </Text>
-                                    </View>
-                                  )
-                            }
-                            
-                            export default App;
-
-                      10) create an android folder and an ios folder
-
-
-                      ----------------------- NEXT STEPS FOR IOS APP------------------------
-
-                      1) 
-  
-                      2) npm run ios or npm run start                          
-
-
-                    --------------------------NEXT STEPS FOR ANDROID APP----------------------
-                                      
-
-                    1) 
-
-                    2) npm install android or npm run start
-
-
+                      1) npx react-native init NameOfProject
+                                     
+                      2) npm run start                          
 
 
                      ----------------------INSTALLING FONTS INTO PROJECT---------------------------
@@ -182,23 +102,44 @@
                         android/app/build/outputs/bundle/release/app-release.aab
 
 
+
+
+
+
+
+
+
                   ---------------------- DEPLOY IOS APP WITH REACT NATIVE ---------------------------------
+                  1) Open up Xcode and oepn up the .xcworkspace file in the ios folder of your project
 
-                  1) Open up Xcode and open up the .xcodeproj file in the ios folder of your project
+                  2) Click on the Images file/folder and upload the icons needed for the app 
+                      (make sure the 1024 x 1024 icon is exported without an alpha channel in the preview app)
 
-                  2) Click on Product -> Sceme -> Edit Scheme -> Run
+                  3) Close xCode
+
+                  4) Open up Xcode and open up the .xcodeproj file in the ios folder of your project
+
+                  5) Click on Product -> Sceme -> Edit Scheme -> Run
                      Change Build Configuration to Release
 
-                  3) Then click on Product -> build
-                      
-                  4) Then close Xcode and open up PROJECTNAME.xcworkspace in ios folder
+                  6) Then click on Product -> build
 
-                  4.1) At this point, you will need an Apple Developers Account.
+                  7) This will build the .xcodeproj file
+                      
+                  7) Then close Xcode and open up PROJECTNAME.xcworkspace in ios folder
+
+                  8.1) At this point, you will need an Apple Developers Account.
                        make sure to have a device registered in Certificates, Identifiers & Profiles -> Devices
 
-                  5) Then Product -> Archive 
+                  9) Then Product -> Archive 
 
-                  7) 
+                  10) It will start to build the .xcworkspace file
+
+                  11) At some point in the build process, Xcode will ask you for your mac password.
+
+                  12) Then Click on Distribute App
+
+                  13) The App will then be uploaded to the apple store connect
                     
 */
 

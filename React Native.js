@@ -193,7 +193,12 @@
                       
                   4) Then close Xcode and open up PROJECTNAME.xcworkspace in ios folder
 
-                  5) Then Product -> Archive
+                  4.1) At this point, you will need an Apple Developers Account.
+                       make sure to have a device registered in Certificates, Identifiers & Profiles -> Devices
+
+                  5) Then Product -> Archive 
+
+                  7) 
                     
 */
 

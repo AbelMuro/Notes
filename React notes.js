@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 
 /* 
         steps to initialize React in your application
+
+            0) npx create-react-app my-app
             
             1) npm init -y                                                          //creates package.json
 

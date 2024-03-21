@@ -140,6 +140,12 @@
                   12) Then Click on Distribute App
 
                   13) The App will then be uploaded to the apple store connect
+
+                  14) Log into your Apple developers account and go to Apple Store Connect -> Apps -> NameOfApp (Prepare for submission)
+
+                  15) Enter all the necessary information for the app, including screenshots of the app
+
+                  16) Click on submit for review
                     
 */
 

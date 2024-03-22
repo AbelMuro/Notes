@@ -459,7 +459,7 @@ const App = () => {
 
 import {Alert} from 'react-native';
 
-function App = () => {
+const App = () => {
     const handleAlert = () => {
       Alert.alert('Alert Title', 'My Alert Msg', [
         {                                                            //buttons
@@ -476,7 +476,24 @@ function App = () => {
 
 
 
+//---------------------------- CLIPBOARD ----------------------------
+import Clipboard from '@react-native-clipboard/clipboard';
+import {Pressable} from 'react-native';
 
+const App = () => {
+
+    const handleClipboard = () => {
+        Clipboard.setString('Hello World');
+    }
+
+  return (
+    <Pressable onPress={handleClipboard}>
+      Click me
+    </Pressable>
+  )
+
+  
+}
 
 //========================================================================== MODULES ===============================================================
 //you can use the platform module to apply certain styles to elements based on the current OS

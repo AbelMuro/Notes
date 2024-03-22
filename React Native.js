@@ -454,6 +454,30 @@ const App = () => {
 }
 
 
+
+//---------------------------------- ALERT ------------------------------
+
+import {Alert} from 'react-native';
+
+function App = () => {
+    const handleAlert = () => {
+      Alert.alert('Alert Title', 'My Alert Msg', [
+        {                                                            //buttons
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+    }
+
+    return(<View onPress={handleAlert}> Hello World! </View>)
+} 
+
+
+
+
+
 //========================================================================== MODULES ===============================================================
 //you can use the platform module to apply certain styles to elements based on the current OS
 

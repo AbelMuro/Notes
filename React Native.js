@@ -146,6 +146,12 @@
                   15) Enter all the necessary information for the app, including screenshots of the app
 
                   16) Click on submit for review
+
+                  17) You may need to wait a day or two until Apple reviews the app for any inconsistencies
+
+                  18) When the app is ready for distribution, go to Pricing and Availability -> App Distribution Methods -> select public
+
+                  19) App should be available on the apple store now
                     
 */
 

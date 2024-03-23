@@ -101,7 +101,19 @@
 
                         android/app/build/outputs/bundle/release/app-release.aab
 
+        
+                    10) Open up Google Play console -> Home -> Create app
 
+                    11) Complete the steps necessary in the 'Finish setting up your app' section
+
+                    12) Next you will need to setup the app for Closed Testing. 
+                        Go to the 'Closed Testing' section and then complete the necessary steps
+                        At some point, you will need to upload the .aab file that was generated after building your app
+                        This will be your App Bundle
+
+                    13) Once you complete the steps for the closed testing, you must submit your changes in the 'publishing overview' section
+
+                    14) Once you submit, you will have to wait until Google reviews and approves the closed testing changes that you made
 
 
 

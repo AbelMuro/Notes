@@ -543,6 +543,9 @@ Platform
 
 
 //=================================================== REACT NATIVE SVG ===============================================
+//npm install react-native-svg
+//npm install react-native-svg-transformer -D
+
 import { SvgXml } from 'react-native-svg';
 
 function App () {

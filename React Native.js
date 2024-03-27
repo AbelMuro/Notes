@@ -541,6 +541,21 @@ Platform
 
 
 
+
+//=================================================== REACT NATIVE SVG ===============================================
+import { SvgXml } from 'react-native-svg';
+
+function App () {
+    return(<SvgXml xml={'<svg><svg>'} width='295px' height='16px'/>)
+}
+
+export default App;
+
+
+
+
+
+
 //===================================================== STYLED COMPONENTS =============================================
 // styled components is a library that simplifies implementing css in a react native app
 // the syntax for the properties and values resemble css

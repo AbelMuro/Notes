@@ -543,11 +543,11 @@ Platform
 
 
 //=================================================== REACT NATIVE SVG ===============================================
-//npm install react-native-svg
-//npm install react-native-svg-transformer -D
-//you may need to run the following commands if you are getting an error
-// cd ios
-// pod install
+//  npm install react-native-svg
+//  npm install react-native-svg-transformer -D
+//  you may need to run the following commands if you are getting an error
+//  cd ios
+//  pod install
 
 import { SvgXml } from 'react-native-svg';
 
@@ -559,6 +559,36 @@ export default App;
 
 
 
+
+
+
+
+
+
+
+//================================================= REACT NATIVE VIDEOS ===============================================
+//npm install react-native-video
+//npx pod-install -> ios
+
+import Video from 'react-native-video';
+import videoFile from './test-video.mp4';
+
+function App() {
+    return(
+          <Video
+                source={{ url: 'http://link-to-your-video.mp4'}}                  // the video file
+                paused={false}                                                    // make it start    
+                style={{width: '200px', height: '300px'}}                         // any style you want
+                repeat={true} 
+        />
+    )
+}
+
+
+
+
+
+                  
 
 
 

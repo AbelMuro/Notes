@@ -542,6 +542,106 @@ Platform
 
 
 
+
+
+
+//======================================== REACT NATIVE ROUTER FLUX =================================
+/* 
+      1)  npm install react-native-router-flux
+          npm install @react-native-community/masked-view
+          npm install @react-navigation/native
+          npm install @react-navigation/stack
+          npm install react-native-gesture-handler
+          npm install react-native-reanimated
+          npm install react-native-safe-area-context
+          npm install deprecated-react-native-prop-types
+          npm install patch-package
+          FOR IOS:     npx pod-install ios
+
+        2) go to node_modules -> react-native -> index.js, then go to line 382 and replace it with
+                get ColorPropType(): $FlowFixMe {
+                  return require('deprecated-react-native-prop-types').ColorPropType;
+                },
+                get EdgeInsetsPropType(): $FlowFixMe {
+                  return require('deprecated-react-native-prop-types').EdgeInsetsPropType;
+                },
+                get PointPropType(): $FlowFixMe {
+                  return require('deprecated-react-native-prop-types').PointPropType;
+                },
+                get ViewPropTypes(): $FlowFixMe {
+                  return require('deprecated-react-native-prop-types').ViewPropTypes;
+                },
+              };
+
+      
+         3)   "scripts": {
+                "postinstall": "patch-package"
+              }
+
+         4) npx patch-package react-native
+
+
+
+        This package is similar to react-routers, but it was designed for a react-native app 
+        Each webpage is called a 'scene' and every scene must be wrapped around a 'root' scene
+        Every scene MUST have a unique key
+*/
+
+import { Router, Scene } from 'react-native-router-flux';
+import PageOne from './PageOne.js';
+import PageTwo from './PageTwo.js';
+
+function App {
+    return (
+      <Router>
+        <Scene key="root">
+          <Scene key="pageOne" component={PageOne} title="PageOne" initial={true} />
+          <Scene key="pageTwo" component={PageTwo} title="PageTwo" />
+        </Scene>
+      </Router>
+    )
+}
+
+
+
+//----------------------------------------- NAVIGATING TO DIFFERENT PAGES -----------------------------
+/* 
+    You can use the Actions module to nagivate to different pages in react-native 
+    You must use the key of the scene that you want to navigate to
+*/
+import { Actions } from 'react-native-router-flux';
+
+Actions.pop();                                                        //you can go back 1 page by calling this function
+Actions.refresh({newData: 'whateer'});                                              //you can also refresh the current scene with new props
+
+function PageOne {
+  
+    const handleNavigate = () => {
+      Actions.pageTwo({text: 'hello world'});                          //you can pass objects to a different webpage like this 
+    }
+  
+    return (
+      <View>
+        <Text onPress={handleNavigate}>This is PageOne!</Text>
+      </View>
+    )
+}
+
+
+
+function PageTwo({text}){
+  //pageTwo has access to {text: 'hello world'}
+}
+
+
+
+
+
+
+
+
+
+
 //=================================================== REACT NATIVE SVG ===============================================
 //  npm install react-native-svg
 //  npm install react-native-svg-transformer -D

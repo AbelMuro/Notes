@@ -595,7 +595,7 @@ function App {
     return (
       <Router>
         <Scene key="root">
-          <Scene key="pageOne" component={PageOne} title="PageOne" initial={true} />
+          <Scene key="pageOne" component={PageOne} title="PageOne" initial  hideNavBar/>              //Scene component will have a default nav bar on the top, you can remove it by using the hideNavbar prop
           <Scene key="pageTwo" component={PageTwo} title="PageTwo" />
         </Scene>
       </Router>

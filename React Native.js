@@ -668,7 +668,7 @@ export default App;
 
 //================================================= REACT NATIVE VIDEOS ===============================================
 //npm install react-native-video
-//npx pod-install -> ios
+//npx pod-install     for ios only
 
 import Video from 'react-native-video';
 import videoFile from './test-video.mp4';
@@ -680,6 +680,7 @@ function App() {
                 paused={false}                                                    // make it start    
                 style={{width: '200px', height: '300px'}}                         // any style you want
                 repeat={true} 
+                resizeMode='cover'                                                //contain, cover and stretch
         />
     )
 }

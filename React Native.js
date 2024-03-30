@@ -676,11 +676,13 @@ import videoFile from './test-video.mp4';
 function App() {
     return(
           <Video
-                source={{ url: 'http://link-to-your-video.mp4'}}                  // the video file
+                source={{ uri: 'http://link-to-your-video.mp4'}}                  // the video file
+                resizeMode='cover'                                                // contain, cover and stretch
+                poster="https://baconmockup.com/300/200/"                         // url of the thumbnail
+                posterResizeMode='cover'                                          // contain, cover and stretch
                 paused={false}                                                    // make it start    
                 style={{width: '200px', height: '300px'}}                         // any style you want
                 repeat={true} 
-                resizeMode='cover'                                                //contain, cover and stretch
         />
     )
 }

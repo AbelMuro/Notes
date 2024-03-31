@@ -745,20 +745,19 @@ function App() {
 
 
   /*
-        1) npm install babel-plugin-transform-inline-environment-variables --save-dev
+        1) npm install -D react-native-dotenv
     
-        2) update .babelrc file
+        2) update babel.config.js
 
-            {
-            "presets" : ["react-native"],
-            "plugins": [
-                ["transform-inline-environment-variables"]
-              ]
-            }
+              module.exports = {
+                plugins: [
+                  ['module:react-native-dotenv']
+                ]
+              };
 
          3) create your .env file with your variables
 
-         4) const apiKey = process.env['API_KEY'];
+         4) const apiKey = process.env.API_KEY
   
   */
                   

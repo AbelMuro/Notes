@@ -741,7 +741,28 @@ function App() {
 
 
 
+//==================================================== ENVIRONMENT VARIABLES ===================================
 
+
+  /*
+        1) npm install babel-plugin-transform-inline-environment-variables --save-dev
+    
+        2) update .babelrc file
+
+            {
+            "presets" : ["react-native"],
+            "plugins": [
+                ["transform-inline-environment-variables", {
+                  "include": [
+                    "NODE_ENV"
+                  ]
+                }]
+              ]
+            }
+
+         3) create your .env file with your variables
+  
+  */
                   
 
 

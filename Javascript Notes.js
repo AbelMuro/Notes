@@ -82,6 +82,47 @@ window.addEventListener('scroll', () => {})
 
 
 
+	
+
+
+//================================================= MODULES ==============================================================
+/* 
+	Modules are a way of breaking down code into smaller parts
+*/
+
+
+// Module.js
+export const func1 = () => {}
+export const func2 = () => {}
+export default {myData: 34};
+
+
+
+// Index.js
+import data, {func1, func2} from './Module.js';
+
+func1();
+func2();
+
+
+
+
+
+
+
+//=============================================== NAMESPACE ===============================================================
+/* 
+	Namespaces group together a bunch of variables, objects, and functions under one roof
+*/
+
+let obj = {};
+
+obj.name = 'abel';
+obj.method = function(){
+	console.log('hi');
+}
+
+
 
 
 

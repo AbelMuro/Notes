@@ -752,11 +752,7 @@ function App() {
             {
             "presets" : ["react-native"],
             "plugins": [
-                ["transform-inline-environment-variables", {
-                  "include": [
-                    "NODE_ENV"
-                  ]
-                }]
+                ["transform-inline-environment-variables"]
               ]
             }
 

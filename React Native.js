@@ -761,6 +761,8 @@ function App() {
             }
 
          3) create your .env file with your variables
+
+         4) const apiKey = process.env['API_KEY'];
   
   */
                   

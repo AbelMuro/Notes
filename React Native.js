@@ -410,6 +410,9 @@ const App = () => {
 
 
 
+
+
+
 //---------------------------- INPUT ---------------------------------
 //INPUT is a component that can be used to receive user input
 
@@ -417,18 +420,51 @@ import {TextInput, View} from 'react-native';
 
 const App = () => {
     const [text, setText] = useState('');
+    const [error, setError] = useState(false);
+
+    const styles = {
+       input: {
+           width: 100,
+           height: 90,
+           borderColor: error ? 'red' : 'grey',              //you can change the styles of the input with the error state
+           borderStyle: 'solid',
+           borderRadius: 5,
+       }
+    }
 
     const handleText = (newText) => {
         setText(newText)
     }
+
+    const handleBlur = () => {
+        if(text === '')                                   //we can't use 'e.target.validity' in react-native, so we have to validate the state ourselves
+          setError(true)  
+        else if(text.includes('a'))
+          setError(true)
+    }
+
+    const handleSubmit = () => {
+        if(text === '' && text.includes('a')) return;
+        //submit to server
+    }
+
+    useEffect(() => {
+        setError(false)
+    }, [Text])
   
     return (
         <View>
             <TextInput
                 placeholder='Type here'
-                defaultValue={text}
+                placeholderTextColor={error ? 'red' : 'grey'}
+                value={text}
                 onChangeText={handleChange}                //we dont use onChange event handler here
+                onBlur={handleBlur}
+                style={styles.input}
             />
+              <Pressable onPress={handleSubmit}> 
+                  <Text> Submit </Text>
+              </Pressable>
         <View>
     )
 }
@@ -506,6 +542,21 @@ const App = () => {
 
   
 }
+
+
+
+//---------------------------------------------- e.NativeEvent------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 //========================================================================== MODULES ===============================================================
 //you can use the platform module to apply certain styles to elements based on the current OS

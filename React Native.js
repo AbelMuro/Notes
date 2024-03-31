@@ -212,8 +212,14 @@ const App = () => {
 export default App;
 
 
+// there will be times where you will need to dynamically load data with scroll view
+// you will need to do the following...
 
+import {Dimensions} from 'react-native';            //this component lets you access the width and height of the device you are using
 
+<ScrollView style={{maxHeight: Dimensions.get('window').height, minHeight: 200 }}>    //the scroll view will recalculate its height based on the devices screen
+    // dynamic content
+</ScrollView>
 
 
 

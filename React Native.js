@@ -477,6 +477,18 @@ const App = () => {
 
 
 
+//-------------------------- CIRCULAR PROGRESS BAR -----------------------
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+
+function App() {
+  return(
+    <ActivityIndicator size="small" color="#0000ff" />
+  )
+}
+
+
+
+
 
 
 

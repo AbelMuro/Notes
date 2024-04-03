@@ -609,7 +609,65 @@ Platform
 
 
 
+//======================================== FORMIK =====================================================
+//npm install formik
+import { Formik, Field } from 'formik';
 
+
+const validateForm = (values) => {
+    const errors = {};
+    if(!values.email)
+          errors.email = "Can't be empty";
+    if(!values.password)
+          errors.password = "Can't be empty";
+
+    return errors;
+}
+
+const handleSubmit = (values) => {
+        console.log(values)
+}
+
+  
+<Formik
+    initialValues={{email: '', password: ''}}                              //state of the form
+    onSubmit={handleSubmit}
+    validate={validateForm}>
+     {
+       ({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (    //you can use error object and touched object to determing which field to apply error styles
+                <View>
+                    <Field
+                       name='email'
+                       type='email'>
+                          {({field}) => (
+                                <TextInput 
+                                    {...field} 
+                                    onChangeText={handleChange('email')} 
+                                    onBlur={handleBlur('email')} 
+                                  />
+                              )}
+                      </Field>
+                      <Field
+                         name='password'
+                         type='password'>
+                            {({field}) => (
+                                  <TextInput
+                                      {...field} 
+                                      onChangeText={handleChange('password')} 
+                                      onBlur={handleBlur('password')} 
+                                    />
+                               )}
+                       </Field>
+                       <Pressable onPress={handleSubmit}>
+                            <Text> Submit </Text>
+                       </Pressable>                  
+                   </View>
+                    )
+                } 
+ </Formik>
+  
+
+  
 
 
 

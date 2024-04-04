@@ -40,9 +40,16 @@
 import firestore from '@react-native-firebase/firestore';
 
 
-function App() {
 
+//traverseing through the document of a collection
+function App() {
+  const collectionRef = firebase.firestore().collection('developers/allVideos/UserVideos');
   
+  collectionRef.get().then((snapshot) => {      //snapshot is an array like object that has the documents
+      snapshot.forEach((doc) => {
+          console.log(doc.id, doc.data());      //data() converts the document object into a js object
+      });
+  });
 }
 
 

@@ -36,12 +36,13 @@
 
 ///========================================================= FIRESTORE ==========================================================
 //npm install @react-native-firebase/firestore
+// for ios only..         cd ios ->  pod install
 
 import firestore from '@react-native-firebase/firestore';
 
 
 
-//traverseing through the document of a collection
+//Traverseing through the document of a collection
 function App() {
   const collectionRef = firebase.firestore().collection('developers/allVideos/UserVideos');
   
@@ -54,7 +55,76 @@ function App() {
 
 
 
+//Subscribing to live changes in a collection
+firestore()
+    .collection(`${video.userID}/${video.videoID}/commentSection`)
+    .onSnapshot((snapshot) => {       
+          snapshot.forEach((doc) => {
+            //this function will be called everytime there is a change in the collection
+            //you will need to gather the documents again here and store them inside a state array
+      });   
 
+
+
+//======================================================== AUTHENTICATION ==========================================================
+//npm install @react-native-firebase/auth
+// for ios only..         cd ios ->  pod install
+
+
+import auth from '@react-native-firebase/auth';
+
+
+function App() {
+
+    const handleSignOut = () => {
+      auth().signOut().then(() => Alert.alert('You have signed out!'));  
+    }
+
+    const handleGoogleLogin = async () => {
+        GoogleSignin.configure({
+            webClientId: '400279370588-hlaf463h74nf6b5mnp3jbb7ovthatogq.apps.googleusercontent.com'            // -> go to android/app/google-services.json and copy the client_id with client_type 3
+        });
+
+        try{
+           await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });                        // check if your device supports google play
+           const {idToken} = await GoogleSignin.signIn();                                                     // sign in with google and get users id token
+           const googleCredential = auth.GoogleAuthProvider.credential(idToken);                              // create credential with users id token
+           await auth().signInWithCredential(googleCredential);                                               // register credential
+        }
+        catch(error){
+            alert("Can't sign in with Google")
+        }
+    }
+  
+    const onAuthStateChanged = (user) => {
+        if(!user) {
+            console.log('user is not logged in');
+          return;
+        }
+        let userData = {                            //user returns an object with all the data from their account
+            userName: user.displayName,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            userImage: user.photoURL,
+            uid: user.uid
+        }
+    }
+
+    useEffect(() => {
+        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);        //when the state of the users account changed between logged in or logged out, onAuthStateChange() will call its function
+        return subscriber;
+    }, [])
+
+
+    return(
+      <View>
+        <Pressable onPress={handleSignOut}> 'Sign Out' </Pressable>
+        <Pressable onPress={handleGoogleSignInt}> 'Sign in with google'</Pressable>      
+      </View>
+
+    )
+  
+}
 
 
 

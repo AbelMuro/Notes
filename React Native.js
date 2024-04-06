@@ -665,9 +665,51 @@ const handleSubmit = (values) => {
                     )
                 } 
  </Formik>
-  
+
+//---------------------------- useField() --------------------------------------------------
+//useField() hook lets you create a field for formik and each field has its own independent event handlers (onChange, onBlur, validate function, etc...)
+
+
+function Form(){
+      return(
+            <Formik
+                initialValues={{email: '', password: ''}}
+                onSubmit={handleSubmit}>
+                {
+                    ({handleSubmit}) => (
+                        <View>
+                            <TextField name='email'/>
+                            <TextField name='password'/>
+                            <LoginButton onPress={handleSubmit}>
+                                  'Log In'
+                            </LoginButton>                  
+                        </View>
+                    )
+                }
+            </Formik>   
+        )
+}
+
+
+function TextField({name}) {
+    const validate = (value) => value ? '' : "Can't be empty";              //you can have an individual validate function for each field with this hook
+    const [field, meta, helpers] = useField({name, validate})
+
+    return(
+        <TextInput 
+            name='password'                                                  //this prop is ESSENTIAL
+            onChangeText={helpers.setValue}
+            onBlur={helpers.setTouched}
+            placeholder={meta.error ? "Can't be empty" : 'Enter Password'}
+        />
+    )
+}
 
   
+
+
+
+
 
 
 

@@ -80,6 +80,18 @@ function App() {
       auth().signOut().then(() => Alert.alert('You have signed out!'));  
     }
 
+    //Sign in with email and password
+    const handleSignInEmailPassword = async (email, password) => {
+        try{
+            const user = await auth().signInWithEmailAndPassword(email, password);
+        }
+        catch(error) {
+            
+        }
+    }
+
+  
+    //Sign in with Google
     const handleGoogleLogin = async () => {
         GoogleSignin.configure({
             webClientId: '400279370588-hlaf463h74nf6b5mnp3jbb7ovthatogq.apps.googleusercontent.com'            // -> go to android/app/google-services.json and copy the client_id with client_type 3
@@ -95,13 +107,28 @@ function App() {
             alert("Can't sign in with Google")
         }
     }
+
+    //Create account with email and passsword
+   const createAccount = (email, password) => {
+        try {
+            await auth().createUserWithEmailAndPassword(email, password);
+        }
+        catch(error){
+            if(error.code === 'auth/email-already-in-use')
+                setError('Email is already registered')
+            else if(error.code === 'auth/invalid-email')
+                setError('Invalid Email');
+        }
+   }
   
+
+    //called everytime there is a change in the state
     const onAuthStateChanged = (user) => {
         if(!user) {
             console.log('user is not logged in');
           return;
         }
-        let userData = {                            //user returns an object with all the data from their account
+        let userData = {                           
             userName: user.displayName,
             email: user.email,
             emailVerified: user.emailVerified,

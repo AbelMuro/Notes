@@ -781,7 +781,8 @@ function App {
 import { Actions } from 'react-native-router-flux';
 
 Actions.pop();                                                        //you can go back 1 page by calling this function
-Actions.refresh({newData: 'whateer'});                                              //you can also refresh the current scene with new props
+Actions.refresh({newData: 'whateer'});                                //you can also refresh the current scene with new props
+Actions.currentScene;                                                 //returns the key of the currentScene 
 
 function PageOne {
   

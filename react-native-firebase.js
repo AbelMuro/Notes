@@ -80,7 +80,7 @@ function App() {
       auth().signOut().then(() => Alert.alert('You have signed out!'));  
     }
 
-    //Sign in with email and password
+    // 1)  Sign in with email and password
     const handleSignInEmailPassword = async (email, password) => {
         try{
             const user = await auth().signInWithEmailAndPassword(email, password);
@@ -91,7 +91,7 @@ function App() {
     }
 
   
-    //Sign in with Google
+    // 2)  Sign in with Google
     const handleGoogleLogin = async () => {
         GoogleSignin.configure({
             webClientId: '400279370588-hlaf463h74nf6b5mnp3jbb7ovthatogq.apps.googleusercontent.com'            // -> go to android/app/google-services.json and copy the client_id with client_type 3
@@ -108,7 +108,7 @@ function App() {
         }
     }
 
-    //Create account with email and passsword
+    // 3) Create account with email and passsword
    const createAccount = (email, password) => {
         try {
             await auth().createUserWithEmailAndPassword(email, password);
@@ -120,6 +120,15 @@ function App() {
                 setError('Invalid Email');
         }
    }
+
+
+  // 4) Update account info 
+  const updateAccount = (username, photoURL) => {
+        auth().currentUser.updateProfile({
+              displayName: username,
+              photoURL: photoURL,
+          })
+  }
   
 
     //called everytime there is a change in the state

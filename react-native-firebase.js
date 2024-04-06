@@ -34,6 +34,20 @@
 */
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ///========================================================= FIRESTORE ==========================================================
 //npm install @react-native-firebase/firestore
 // for ios only..         cd ios ->  pod install
@@ -66,6 +80,23 @@ firestore()
 
 
 
+await firestore().collection(`my collection`).doc('userInfo')           //references a doc 'userInfo'
+let userInfo = await firestore().collection(`my collection`).doc('userInfo').get();    //will return an JS object with all the properties in the document
+await firestore().collection(`my collection`).doc('userInfo').set({});  //will create or replace a document with the collection
+userInfo.exists;                                                        //this will return true if the document exists or false if it doesn't
+
+
+
+
+
+
+
+
+
+
+
+
+      
 //======================================================== AUTHENTICATION ==========================================================
 //npm install @react-native-firebase/auth
 // for ios only..         cd ios ->  pod install

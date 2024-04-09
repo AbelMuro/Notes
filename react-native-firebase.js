@@ -66,10 +66,10 @@
               2) Next open your Podfile in ios/Podfile and modify the following code
 
                   target 'WorldViewApp' do
-                      //...
-                      use_frameworks! :linkage => :static            //add this
-                      $RNFirebaseAsStaticFramework = true            //add this
                     
+                      use_frameworks! :linkage => :static            //add this to the top
+                      $RNFirebaseAsStaticFramework = true            //add this to the top
+                      
                       use_react_native!(
                           :flipper_configuration => flipper_config    //remove this line of code
                       

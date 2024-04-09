@@ -49,12 +49,12 @@
                               WorldViewApp/WorldViewApp/googleService-Info.plist
                           A pop up window will appear, make sure to select all targets and check 'Copy if needed'
 
-                    1.3) Go to AppDelegate.mm and paste the following code
+                    1.3) Go to AppDelegate.mm and modify the following code
 
                         #import <Firebase.h>              //this must be after #import "AppDelegate.h";
         
                         - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-                              [FIRApp configure];          //add this to the top of the functions scope (this function already exists in the file)
+                              [FIRApp configure];          //add this to the top of the functions scope
                               // ...
                             }
                     1.4) Then you will need to install the firebase-sdk into your .xcodeworkspace file
@@ -63,19 +63,19 @@
                           
                     1.5)  Create the project in firebase console
 
-              2) Next open your Podfile in ios/Podfile and paste the following code
+              2) Next open your Podfile in ios/Podfile and modify the following code
 
                   target 'WorldViewApp' do
                       //...
-                      use_frameworks! :linkage => :static            //make sure this is pasted before user_react_native
-                      $RNFirebaseAsStaticFramework = true
+                      use_frameworks! :linkage => :static            //add this
+                      $RNFirebaseAsStaticFramework = true            //add this
                     
                       use_react_native!(
                       //..
 
-            3) Then install pods by doing 
-                cd ios 
-                pod install --repo-update
+              3) Then install pods by doing 
+                  cd ios 
+                  pod install --repo-update
 */
 
 

@@ -71,6 +71,8 @@
                       $RNFirebaseAsStaticFramework = true            //add this
                     
                       use_react_native!(
+                          :flipper_configuration => flipper_config    //remove this line of code
+                      
                       //..
 
               3) Then install pods by doing 

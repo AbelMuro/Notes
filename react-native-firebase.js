@@ -30,7 +30,52 @@
                           apply plugin: 'com.google.gms.google-services'            <- Add this line
 
                     5) Now you can start using any sdk from react-native-firebase
+
+
+
+
+            IOS STEPS
+
+                1) Go to the firebase console and either create or select a iOS app
+
+                    1.1) Open your .xcworkspace file in xCode and go to general tab -> identity -> bundle ID
+                          Use this ID for the 'Apple bundle ID'
+
+                          the other inputs don't matter for now.
+
+                    1.2) Download the GoogleService-Info.plist
+                          Go to project navigator on the left hand side
+                          Put the file in this directory...
+                              WorldViewApp/WorldViewApp/googleService-Info.plist
+                          A pop up window will appear, make sure to select all targets and check 'Copy if needed'
+
+                    1.3) Go to AppDelegate.mm and paste the following code
+
+                        #import <Firebase.h>              //this must be after #import "AppDelegate.h";
+        
+                        - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+                              [FIRApp configure];          //add this to the top of the functions scope (this function already exists in the file)
+                              // ...
+                            }
+                    1.4) Then you will need to install the firebase-sdk into your .xcodeworkspace file
+
+                          file -> Add Packages -> type in 'https://github.com/firebase/firebase-ios-sdk' and install the package
+                          
+                    1.5)  Create the project in firebase console
+
+              2) Next open your Podfile in ios/Podfile and paste the following code
+
+                  target 'WorldViewApp' do
+                      //...
+                      use_frameworks! :linkage => :static            //make sure this is pasted before user_react_native
+                      $RNFirebaseAsStaticFramework = true
                     
+                      use_react_native!(
+                      //..
+
+            3) Then install pods by doing 
+                cd ios 
+                pod install --repo-update
 */
 
 

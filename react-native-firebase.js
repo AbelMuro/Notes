@@ -75,7 +75,7 @@
 
               3) Then install pods by doing 
                   cd ios 
-                  pod install --repo-update
+                  pod install --repo-update   (this may take a while)
 */
 
 

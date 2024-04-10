@@ -243,6 +243,7 @@ function App() {
 
 
 //---------- sign in with Apple -----------
+// 0) Make sure you enable apple sign-in in the firebase console
 // 1) npm install @invertase/react-native-apple-authentication
 // 2) cd ios
 // 3) pod install

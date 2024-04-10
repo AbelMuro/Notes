@@ -242,6 +242,51 @@ function App() {
 
 
 
+//---------- sign in with Apple -----------
+// 1) npm install @invertase/react-native-apple-authentication
+// 2) cd ios
+// 3) pod install
+// 4) Open the .xcworkspace file in xCode
+// 5) go to Signing & Capabilities tab
+// 6) click on '+ Capability' and add 'Sign in with Apple'
+// 7) Select 'abel muro' for the Team (you will need to create an apple developers account);
+// 8) Go to your Apple Developers account -> Certificates, Identifiers & Profiles -> Identifiers -> Select your project
+// 9) Make sure that 'Sign in with Apple' is checked
+// 10) Click on 'edit' and select 'Enable as a primary app ID' option, then select the app in 'Primary App ID'
+// 11) Then go to the keys tab and create a new key, create a name for the key
+// 12) while creating the key, select 'Sign in with apple' and then click configure, then select the 'Primary app id' of the app that will use apple sign in
+// 13) click on continue, then click on register
+// 14) Download the key
+
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { AppleButton, appleAuth} from '@invertase/react-native-apple-authentication';
+import auth from '@react-native-firebase/auth';
+
+function SignInWithApple() {
+          try{
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGIN,
+                requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+            });
+            
+            // Ensure Apple returned a user identityToken
+            if (!appleAuthRequestResponse.identityToken) {
+                throw new Error('Apple Sign-In failed - no identify token returned');
+            }
+            
+            // Create a Firebase credential from the response
+            const { identityToken, nonce } = appleAuthRequestResponse;
+            const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+            
+            // Sign the user in with the credential
+            return auth().signInWithCredential(appleCredential);            
+        }
+        catch(error){
+            console.log(error);
+        }
+}
+
+
 
 
 

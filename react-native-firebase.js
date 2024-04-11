@@ -127,10 +127,16 @@ firestore()
 
 
 
-await firestore().collection(`my collection`).doc('userInfo')           //references a doc 'userInfo'
-let userInfo = await firestore().collection(`my collection`).doc('userInfo').get();    //will return an JS object with all the properties in the document
-await firestore().collection(`my collection`).doc('userInfo').set({});  //will create or replace a document with the collection
-userInfo.exists;                                                        //this will return true if the document exists or false if it doesn't
+let userInfo = await firestore().collection(`my collection`).doc('userInfo').get();   //will return an JS object with all the properties in the document      
+await firestore().collection(`my collection`).doc('userInfo')                         //references a doc 'userInfo'
+await firestore().collection(`my collection`).doc('userInfo').set({});                //will create or replace a document with the collection
+await firestore().collection(`my collection`).doc('userInfo').update(            //will update properties in the document but will leave everything else alone
+  {
+    username: newUserName,
+    aboutMe: newAboutMe
+  }
+);
+userInfo.exists;                                                                      //this will return true if the document exists or false if it doesn't
 
 
 

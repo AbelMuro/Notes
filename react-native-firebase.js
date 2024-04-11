@@ -295,8 +295,12 @@ function SignInWithApple() {
 
 
 
+//====================================== STORAGE ====================================
+//npm install @react-native-firebase/storage --force
+import storage from '@react-native-firebase/storage';
 
-
+const reference = storage().ref('black-t-shirt-sm.png');    
+const reference = storage().ref('/images/t-shirts/black-t-shirt-sm.png');
 
 
 

@@ -297,14 +297,38 @@ function SignInWithApple() {
 
 //====================================== STORAGE ====================================
 //npm install @react-native-firebase/storage --force
+// cd ios  -> pod install
+      
 import storage from '@react-native-firebase/storage';
 
+//different ways of selecting a reference in storage
 const reference = storage().ref('black-t-shirt-sm.png');    
 const reference = storage().ref('/images/t-shirts/black-t-shirt-sm.png');
 
+function App() {
 
-
-
+  const handleUpload = () => {
+    try{
+        let image = await launchImageLibrary({
+              mediaType: 'photo',
+          }); 
+        if(image.didCancel) return;                    //in case the user does not select an image
+        let imageObject = image.assets[0];             //getting the object that represents the image     
+        const imageRef = storage().ref(`images/${imageObject.fileName}`);      
+        await imageRef.putFile(newImage.uri);           //using the uri to upload the image to storage  
+    }
+    catch(error){
+        if(error === 'permission')
+              Alert.alert("App doesn't have permission to access images");
+    }
+  }
+  
+  return(
+      <Pressable onPress={handleUpload}>
+          'Upload image'
+      <Pressable>
+    )
+}
 
 
 

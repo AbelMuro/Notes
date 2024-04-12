@@ -322,6 +322,15 @@ function App() {
               Alert.alert("App doesn't have permission to access images");
     }
   }
+
+  const getDownloadUrl = () => {
+    try{
+         let url = await storage().ref('images/dog.png').getDownloadURL();       //you can use url and add it to a source prop in an Image component
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
   
   return(
       <Pressable onPress={handleUpload}>

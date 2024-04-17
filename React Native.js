@@ -806,6 +806,33 @@ function PageTwo({text}){
 
 
 
+
+
+
+
+
+
+//============================================ REACT NATIVE IMAGE TO BASE 64 ==============================
+//npm install react-native-image-base64
+
+import ImgToBase64 from 'react-native-image-base64';
+
+ImgToBase64.getBase64String('file://your_file_url')
+  .then(base64String => {
+    // Do something with the base64String
+  })
+  .catch(err => {
+    // Handle any errors
+  });
+
+
+
+
+
+
+
+
+
 //============================================== REACT NATIVE IMAGE PICKER ================================
 // you can upload images with this package
 // npm install react-native-image-picker

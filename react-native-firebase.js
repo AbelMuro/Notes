@@ -307,7 +307,7 @@ const reference = storage().ref('/images/t-shirts/black-t-shirt-sm.png');
 
 function App() {
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     try{
         let image = await launchImageLibrary({
               mediaType: 'photo',
@@ -323,6 +323,22 @@ function App() {
     }
   }
 
+
+  const handleUpload = () => {
+
+    const task = reference.putFile(pathToFile);
+
+    task.on('state_changed', taskSnapshot => {          //you can use these event listeners to detect the current progress of upload
+      console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
+    });
+    
+    task.then(() => {                                  //this function will automatically be called when the upload is complete
+      console.log('Image uploaded to the bucket!');
+    });
+  }
+
+
+  
   const getDownloadUrl = () => {
     try{
          let url = await storage().ref('images/dog.png').getDownloadURL();       //you can use url and add it to a source prop in an Image component

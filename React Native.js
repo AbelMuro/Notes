@@ -990,6 +990,48 @@ function App() {
 
 
 
+
+
+//=========================================== REACT NATIVE CREATE THUMBNAIL ===========================
+//npm install react-native-create-thumbnail
+                  
+
+                  
+import { createThumbnail } from "react-native-create-thumbnail";
+
+
+        async function getThumbnail() {
+            try{
+                const { path, width, height } = await createThumbnail({
+                    url: 'path to video file',
+                    timeStamp: 100,
+                  })  
+                           
+            }
+            catch(error){
+                console.log(error);
+            }
+ 
+                 
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  
+
+
+
 //============================================ ENVIRONMENT VARIABLES ===================================
 
 

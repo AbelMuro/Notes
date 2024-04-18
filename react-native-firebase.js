@@ -315,7 +315,7 @@ function App() {
         if(image.didCancel) return;                    //in case the user does not select an image
         let imageObject = image.assets[0];             //getting the object that represents the image     
         const imageRef = storage().ref(`images/${imageObject.fileName}`);      
-        await imageRef.putFile(newImage.uri);           //using the uri to upload the image to storage  
+        await imageRef.putFile(imageObject.uri);           //using the uri to upload the image to storage  
     }
     catch(error){
         if(error === 'permission')

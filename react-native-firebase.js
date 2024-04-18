@@ -127,7 +127,8 @@ firestore()
 
 
 
-let userInfo = await firestore().collection(`my collection`).doc('userInfo').get();   //will return an JS object with all the properties in the document      
+let collectionRef = firestore().collection('myCollection').orderBy('age', 'desc');                        //will return a reference to a collection that has been sorted in ascending or descending order, property must be an integer
+let userInfo = await firestore().collection(`my collection`).doc('userInfo').get();   //will return an JS object with all the properties in the document 
 await firestore().collection(`my collection`).doc('userInfo')                         //references a doc 'userInfo'
 await firestore().collection(`my collection`).doc('userInfo').set({});                //will create or replace a document with the collection
 await firestore().collection(`my collection`).doc('userInfo').update(            //will update properties in the document but will leave everything else alone

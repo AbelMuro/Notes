@@ -1022,7 +1022,21 @@ function App() {
 
 //=========================================== REACT NATIVE CREATE THUMBNAIL ===========================
 //npm install react-native-create-thumbnail
-                  
+/* 
+    For Android:
+
+          go to android/app/src/debug/AndroidManifest.xml
+
+          <manifest xmlns:android='https//....'> 
+              <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+              <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+          </manifest>
+
+      for ios: 
+
+          cd ios
+          pod install
+*/                  
 
                   
 import { createThumbnail } from "react-native-create-thumbnail";

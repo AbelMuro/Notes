@@ -466,6 +466,7 @@ const App = () => {
                 value={text}
                 onChangeText={handleChange}                //we dont use onChange event handler here
                 onBlur={handleBlur}
+                 multiline={true}
                 style={styles.input}
             />
               <Pressable onPress={handleSubmit}> 

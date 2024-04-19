@@ -1009,7 +1009,7 @@ function App() {
                 poster="https://baconmockup.com/300/200/"                         // url of the thumbnail
                 posterResizeMode='cover'                                          // contain, cover and stretch
                 paused={false}                                                    // make it start    
-                style={{width: '200px', height: '300px'}}                         // any style you want
+                style={{width: '200px', aspectRatio: 1}}                         // make sure to use 'aspectRatio' to maintain the aspect ratio of the video
                 repeat={true} 
         />
     )

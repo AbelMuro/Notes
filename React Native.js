@@ -135,30 +135,23 @@
 
 
                   ---------------------- DEPLOY IOS APP WITH REACT NATIVE ---------------------------------
-                  1) Open up Xcode and oepn up the .xcworkspace file in the ios folder of your project
+                  1) Open up Xcode and open up the .xcworkspace file in the ios folder of your project
 
-                  2) Click on the Images file/folder and upload the icons needed for the app 
+                  2) Go to {project name}/Images and upload the icons needed for the app 
                       (make sure the 1024 x 1024 icon is exported without an alpha channel in the preview app)
 
-                  3) Close xCode
+                      2.5)  you can check if an image has an alpha channel by opening up the preview app, 
+                            file -> duplicate -> then save -> a popup will appear and you want to uncheck alpha
 
-                  4) Open up Xcode and open up the .xcodeproj file in the ios folder of your project
-
-                  5) Click on Product -> Sceme -> Edit Scheme -> Run
+                  3) Click on Product -> Sceme -> Edit Scheme -> Run
                      Change Build Configuration to Release
 
-                  6) Then click on Product -> build
+                  4) Then click on Product -> build  (this may take some time)
 
-                  7) This will build the .xcodeproj file
-                      
-                  7) Then close Xcode and open up PROJECTNAME.xcworkspace in ios folder
+                    4.5) At this point, you will need an Apple Developers Account.
+                         make sure to have a device registered in Certificates, IDs & Profiles -> Devices
 
-                  8.1) At this point, you will need an Apple Developers Account.
-                       make sure to have a device registered in Certificates, Identifiers & Profiles -> Devices
-
-                  9) Then Product -> Archive 
-
-                  10) It will start to build the .xcworkspace file
+                  5) Then Product -> Archive 
 
                   11) At some point in the build process, Xcode will ask you for your mac password.
 

@@ -38,6 +38,19 @@
 
 
 
+                    ---------------------- REMOVING FONTS FROM YOUR PROJECT---------------
+    
+                    1) First delete the font file from the assets/fonts folder
+
+                    2) For android, go to android/app/src/main/assets and delete the font file there
+
+                    3) For iOS, open up xCode and go to the Info.plist and delete the font file there
+                       then go to the 'build phases tab' and go to the 'copy bundle resources' section
+                        delete the font files within that section
+
+
+                    
+
                     ------------------DEPLOYING ANDROID APP WITH REACT NATIVE----------------
 
                     1) Open up terminal and change directory to "C:\Program Files\jdk-21.0.2\bin"

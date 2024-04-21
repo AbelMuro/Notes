@@ -391,7 +391,11 @@ const App = () => {
     return (
       <View>
           <Image source={{uri: 'url goes here', width: 64, height: 64}} />
-          <Image source={icons['logo']} style={{width: '64px', height: '64px'}} />
+          <Image 
+                source={icons['logo']} style={{width: '64px', height: '64px'}} 
+                onError={({nativeEvent: {error}}) => {                            //this function is called when there is an error in loading the image
+                        console.log(error)
+                    }}/>
       </View>
     )
 }

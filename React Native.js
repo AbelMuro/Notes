@@ -153,23 +153,26 @@
 
                   5) Then Product -> Archive 
 
-                  11) At some point in the build process, Xcode will ask you for your mac password.
+                  6) At some point in the build process, Xcode will ask you for your mac password.
 
-                  12) Then Click on Distribute App
+                  7) Then Click on Distribute App
 
-                  13) The App will then be uploaded to the apple store connect
+                  8) The App will then be uploaded to the apple store connect
 
-                  14) Log into your Apple developers account and go to Apple Store Connect -> Apps -> NameOfApp (Prepare for submission)
+                  9) Log into your Apple developers account and go to Apple Store Connect -> Apps -> NameOfApp (Prepare for submission)
 
-                  15) Enter all the necessary information for the app, including screenshots of the app
+                  10) Enter all the necessary information for the app, including screenshots of the app
 
-                  16) Click on submit for review
+                    10.5) In the case that you submit multiple builds, you can go to TestFlight -> Builds -> iOS 
+                          and then you can modify the builds so that they appear in Distribution
 
-                  17) You may need to wait a day or two until Apple reviews the app for any inconsistencies
+                  11) Click on submit for review
 
-                  18) When the app is ready for distribution, go to Pricing and Availability -> App Distribution Methods -> select public
+                  12) You may need to wait a day or two until Apple reviews the app for any inconsistencies
 
-                  19) App should be available on the apple store now
+                  13) When the app is ready for distribution, go to Pricing and Availability -> App Distribution Methods -> select public
+
+                  14) App should be available on the apple store now
                     
 */
 

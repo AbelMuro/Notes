@@ -103,7 +103,7 @@ import firestore from '@react-native-firebase/firestore';
 
 
 
-//Traverseing through the document of a collection
+// 1) Traverseing through the document of a collection
 function App() {
   const collectionRef = firebase.firestore().collection('developers/allVideos/UserVideos');
   
@@ -116,7 +116,7 @@ function App() {
 
 
 
-//Subscribing to live changes in a collection
+// 2) Subscribing to live changes in a collection
 firestore()
     .collection(`${video.userID}/${video.videoID}/commentSection`)
     .onSnapshot((snapshot) => {       
@@ -125,13 +125,21 @@ firestore()
             //you will need to gather the documents again here and store them inside a state array
       });   
 
+// 3) deleting all documents in a collections
+let allVideos = await firestore().collection('my videos').get();
+      allVideos.forEach((video) => {
+            video.ref.delete();
+      });
 
 
-let collectionRef = firestore().collection('myCollection').orderBy('age', 'desc');                        //will return a reference to a collection that has been sorted in ascending or descending order, property must be an integer
+
+
+// 4)  Different ways of getting documents and collections      
+let collectionRef = firestore().collection('myCollection').orderBy('age', 'desc');    //will return a reference to a collection that has been sorted in ascending or descending order, property must be an integer
 let userInfo = await firestore().collection(`my collection`).doc('userInfo').get();   //will return an JS object with all the properties in the document 
 await firestore().collection(`my collection`).doc('userInfo')                         //references a doc 'userInfo'
 await firestore().collection(`my collection`).doc('userInfo').set({});                //will create or replace a document with the collection
-await firestore().collection(`my collection`).doc('userInfo').update(            //will update properties in the document but will leave everything else alone
+await firestore().collection(`my collection`).doc('userInfo').update(                 //will update properties in the document but will leave everything else alone
   {
     username: newUserName,
     aboutMe: newAboutMe
@@ -213,6 +221,13 @@ function App() {
               displayName: username,
               photoURL: photoURL,
           })
+  }
+
+  //5) Deleting account in firebase
+  const deleteAccount = async () => {
+        let user = auth().currentUser;
+        let uid = user.uid;
+        await user.delete(); 
   }
   
 
@@ -308,6 +323,7 @@ const reference = storage().ref('/images/t-shirts/black-t-shirt-sm.png');
 
 function App() {
 
+  //1) uploading a file into the storage
   const handleUpload = async () => {
     try{
         let image = await launchImageLibrary({
@@ -324,7 +340,7 @@ function App() {
     }
   }
 
-
+  //2) uploading a file with event listeners
   const handleUpload = () => {
 
     const task = reference.putFile(pathToFile);
@@ -336,6 +352,15 @@ function App() {
     task.then(() => {                                  //this function will automatically be called when the upload is complete
       console.log('Image uploaded to the bucket!');
     });
+  }
+
+  //3) Deleting all files in a folder in storage
+  const handleDelete = async () => {
+        let filesRef = storage().ref(uid);
+        let files = await filesRef.listAll();
+        files.items.forEach((file) => {
+              file.delete();
+        })
   }
 
 

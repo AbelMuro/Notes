@@ -153,8 +153,10 @@
 
                   5) Then Product -> Archive 
 
-                  6) At some point in the build process, Xcode will ask you for your mac password.
-
+                    5.5) At some point in the build process, Xcode will ask you for your mac password.
+                    
+                  6) If a popup doesn't appear, go to Window -> Organizer and then select on the newest archive.
+              
                   7) Then Click on Distribute App
 
                   8) The App will then be uploaded to the apple store connect

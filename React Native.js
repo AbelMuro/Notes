@@ -13,7 +13,15 @@
                       --------------------------INSTALLING REACT NATIVE--------------------------
                       1) npx react-native init NameOfProject
                                      
-                      2) npm run start                          
+                      2) npm run start              
+
+                        keep in mind that if you have issues with initializing your react-native app
+                        you may want to run the following lines of code to reset the cache
+
+                            cd android
+                            ./gradlew clean
+                            cd ..
+                            npm start --reset-cache
 
 
                      ----------------------INSTALLING FONTS INTO PROJECT---------------------------

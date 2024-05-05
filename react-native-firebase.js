@@ -6,17 +6,17 @@
 
                     1) Go to firebase console and either create or select a project for your android app
                        
-                       1.1) If you are using a project that already exists, then go to Project Settings -> General -> Add app
+                       1.1) Project Settings -> General -> Add app
 
-                       1.2) Go to /android/app/build.gradle and find the manifest property and put that value in the 'Android package name'
+                       1.2) Go to /android/app/build.gradle and find the applicationId and put that value in the 'Android package name'
 
                        1.3) cd android   ->    ./gradlew signingReport         this will generate the 'SHA-1' key
 
-                       1.4) Create android app in firebase
+                       1.4) Create android app in firebase2
 
                     2) Next download the google-services.json file and place it in /android/app/google-services.json
 
-                    3) Go to /android/build.gradle and modify the following lines of code
+                    3) Go to /android/build.gradle and add the following line of code
 
                         buildscript {
                             dependencies {

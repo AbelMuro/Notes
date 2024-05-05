@@ -23,7 +23,8 @@
                             cd ..
                             npm start --reset-cache
 
-
+                      ALSO, don't move the files around!
+                      
                      ----------------------INSTALLING FONTS INTO PROJECT---------------------------
                     1) To install fonts into your react-native project 
 

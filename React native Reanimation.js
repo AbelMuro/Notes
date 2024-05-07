@@ -27,7 +27,7 @@
 //==================================================== ANIMATED component ====================================================
 //Animated is an component that has access to ALL the react-native components (View, FlatList, Text, etc...);
 
-import Animated, {FadeIn, FadeOut, FadeInLeft, FadeInRight} from 'react-native-reanimated';
+import Animated, {FadeIn, FadeOut, FadeInLeft, FadeInRight, BounceIn, BounceOut} from 'react-native-reanimated';
 
 function App() {
     return(
@@ -64,7 +64,6 @@ import Animated, { useSharedValue, WitTiming, Easing } from 'react-native-reanim
 function App() {
     const width = useSharedValue(0);              // 0 is the initial value for the width
     const [open, setOpen] = useState(false);
-
 
     const handleOpen = () => {
         setOpen(!open);

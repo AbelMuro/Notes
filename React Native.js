@@ -764,8 +764,7 @@ function TextField({name}) {
                 },
                 get ViewPropTypes(): $FlowFixMe {
                   return require('deprecated-react-native-prop-types').ViewPropTypes;
-                },
-              };
+                }
 
       
          3)   "scripts": {

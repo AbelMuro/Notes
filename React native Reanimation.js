@@ -60,14 +60,29 @@ export default App;
 import Animated, { useSharedValue, WitTiming, Easing } from 'react-native-reanimated';
 
 function App() {
-  const width = useSharedValue(0);              // 0 is the initial value for the width
+    const width = useSharedValue(0);              // 0 is the initial value for the width
+    const [open, setOpen] = useState(false);
 
-  const handleShared = () => {                 
-      width.value = WithTiming(100, {           // width will have its value changed to 100, an linear animation will occur
-        duration: 200,                          // in milliseconds
-        easing: Easing.linear
-      });
-  }
+
+    const handleOpen = () => {
+        setOpen(!open);
+    }
+
+    useEffect(() => {
+        if(open){
+            width.value = withTiming(500, {           // width will have its value changed to 100, an linear animation will occur
+                duration: 200,                          // in milliseconds
+                easing: Easing.linear
+            });
+        }
+        else{
+            width.value = withTiming(0, {           // width will have its value changed to 100, an linear animation will occur
+                duration: 200,                          // in milliseconds
+                easing: Easing.linear
+            });
+        }
+    }, [open])
+
   
   return (
       <Animated.Text

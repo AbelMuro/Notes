@@ -27,11 +27,13 @@
 //==================================================== ANIMATED component ====================================================
 //Animated is an component that has access to ALL the react-native components (View, FlatList, Text, etc...);
 
-import Animated from 'react-native-reanimated';
+import Animated, {FadeIn, FadeOut, FadeInLeft, FadeInRight} from 'react-native-reanimated';
 
 function App() {
     return(
         <Animated.View
+          entering={FadeIn}                                //initial animations that occur when the component is first rendered
+          exiting={FadeOut}                                //animations that occur when the componets is unmounted
           style={{
             width: 100,
             height: 100,

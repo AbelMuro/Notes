@@ -765,7 +765,7 @@ function TextField({name}) {
 
         This package is similar to react-routers, but it was designed for a react-native app 
 */
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
@@ -775,14 +775,44 @@ function App() {
         <NavigationContainer>
             <Stack.Navigator initialRouteName="home">
                 <Stack.Screen 
-                    name='home'                   //key
+                    name='home'                           //key
                     component={Home}
                     options={{ headerShown: false }}      //removes the default navigation bar for the page
                       />
+                 <Stack.Screen name='aboutus' component={AboutUs} />
             </Stack.Navigator>
         </NavigationContainer>
     );
 }
+
+
+function Home({navigation}) {          //every stack component will have access to the navigation prop which can be used to navigate to different pages
+  
+    const handleNavigate = () => {
+       navigation.navigate('aboutus'); 
+    }
+  
+    return(<></>)
+  
+}
+
+
+function AboutUs() {
+    const navigation = useNavigation();    //you can use the useNavigation() hook to navigate through different pages
+
+    const handlePress = () => {
+      navigation.navigate('home')
+    }
+  
+    return(<Button></Button>)
+  
+}
+
+
+
+
+
+
 
 
 

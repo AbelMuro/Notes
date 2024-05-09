@@ -50,20 +50,63 @@
 import MapView from 'react-native-maps';
 
 function App() {
-  return(            
-        <MapView
-            style={{width: '100%', height: 200}}
-            initialRegion={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
-            />  )
+	const map = useRef();
+        map.current.animateToRegion({			// you can move the center of the map with this function
+            latitude: usersLocation.lat,
+            longitude: usersLocation.lon,
+        })
+	
+	return(            
+	        <MapView
+		    ref={map}
+	            style={{width: '100%', height: 200}}
+	            initialRegion={{
+	                    latitude: 37.78825,
+	                    longitude: -122.4324,
+	                    latitudeDelta: 0.0922,
+	                    longitudeDelta: 0.0421,
+	                }}>
+			<Marker
+			    image={icons['green']}		//you can load an image like this
+	                    coordinate={{
+	                        latitude: 37.78825,
+	                        longitude: -122.4324,
+	                    }}> 
+	                    <Image 				//or by using a child Image component
+	                        source={icons['green']} 
+	                        style={{width: 35, height: 35}}
+	                        resizeMode='contain'/>
+	                </Marker>		
+		</MapView>
+	)
 }
 
 
 
+//================================================ GEOCODING =======================================
+/*
+	Geocoding is the process of converting a physical address (1950 21st ST san pablo), 
+ 	to latitude and longitude.
+
+  	Latitude and longitude are two numbers that google maps can use to pinpoint a location
+*/
+
+	
+	//address to lat/long
+    const geocode = async (address) => {
+        try{
+            let response = await fetch(`https://geocode.maps.co/search?q=${address}&api_key=API_KEY`);
+            let results = await response.json();
+            let latlong = results[0];
+            return {lat: latlong.lat, lon: latlong.lon};            
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+
+    let latlong = 
 
 
 

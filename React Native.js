@@ -24,6 +24,14 @@
                             npm start --reset-cache
 
                       ALSO, don't move the files around!
+
+
+                      if you want to regenerate the android or ios folder, follow these steps
+
+                      npm install react-native-eject
+                      npm install @react-native-community/cli
+
+                      react-native eject
                       
                      ----------------------INSTALLING FONTS INTO PROJECT---------------------------
                     1) To install fonts into your react-native project 

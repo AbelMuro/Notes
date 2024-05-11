@@ -64,7 +64,7 @@ function App() {
 	return(            
 	        <MapView
 		    region={region}				//You can use a state to change the center of the map
-		    ref={map}
+		    ref={map}					//you can directly reference the google maps and call specific functions
 	            style={{width: '100%', height: 200}}
 	            initialRegion={{				//you will not need this prop if you have region prop set
 	                    latitude: 37.78825,
@@ -72,17 +72,21 @@ function App() {
 	                    latitudeDelta: 0.0922,
 	                    longitudeDelta: 0.0421,
 	                }}>
+			<Marker					//you can load a custom icon with your marker by using an Image component as a child
+	                    coordinate={{
+	                        latitude: 37.78825,
+	                        longitude: -122.4324}}> 
+	                    <Image 				
+	                        source={icons['green']} 
+	                        style={{width: 35, height: 35}}
+	                        resizeMode='contain'/>
+	                </Marker>	
 			<Marker
 			    image={icons['green']}		//you can load an image like this
 	                    coordinate={{
 	                        latitude: 37.78825,
 	                        longitude: -122.4324,
-	                    }}> 
-	                    <Image 				//OR by using a child Image component
-	                        source={icons['green']} 
-	                        style={{width: 35, height: 35}}
-	                        resizeMode='contain'/>
-	                </Marker>		
+	                    }}/>
 		</MapView>
 	)
 }
@@ -114,6 +118,11 @@ function App() {
     }
 
 
+
+
+
+
+
 //=============================================== PLACES API ===========================================
 /* 
 	The places API can be used to search for restaurants, museums, stores, etc..
@@ -140,6 +149,61 @@ function App() {
           source={{uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${'photo_reference'}&sensor=false&maxheight=1600&maxwidth=1600&key=${'API_KEY'}`}} 
           style={{width: '100%', height: 100}}
            />
+
+
+
+
+
+
+		   
+//=============================================== ROUTES API =================================================
+
+/* 
+	You can use this api to draw a line between two locations in google maps
+
+*/
+
+import MapViewDirections from 'react-native-maps-directions';
+
+
+function App() {
+
+	return(            
+		<MapView
+	            style={{width: '100%', height: 200}}
+	            initialRegion={{				
+	                    latitude: 37.78825,
+	                    longitude: -122.4324,
+	                    latitudeDelta: 0.0922,
+	                    longitudeDelta: 0.0421,
+	                }}>
+			<MapViewDirections				//this will automatically draw a line in the google maps
+			    origin={{
+	                        latitude: 12.453,
+	                        longitude: -23.4533,
+	                    }}
+	                    destination={{
+	                        latitude: 34.5432,
+	                        longitude: -54.3421
+	                    }}
+	                    apikey={'api_key'}
+	                    strokeWidth={3}
+	                    strokeColor='green'
+			    />	
+		</MapView>
+	)
+	
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

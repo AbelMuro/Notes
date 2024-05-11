@@ -797,7 +797,9 @@ function App() {
 function Home({navigation}) {          //every stack component will have access to the navigation prop which can be used to navigate to different pages
   
     const handleNavigate = () => {
-       navigation.navigate('aboutus'); 
+       navigation.navigate('aboutus', { //you can pass any data to another web page like this
+         someParams: 'whatever'
+       }); 
     }
   
     return(<></>)
@@ -805,8 +807,9 @@ function Home({navigation}) {          //every stack component will have access 
 }
 
 
-function AboutUs() {
+function AboutUs({route}) {
     const navigation = useNavigation();    //you can use the useNavigation() hook to navigate through different pages
+    const {someParams} = route.params;     //you can receive data from another web page like this
 
     const handlePress = () => {
       navigation.navigate('home')

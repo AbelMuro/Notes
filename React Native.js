@@ -853,6 +853,10 @@ ImgToBase64.getBase64String('file://your_file_url')
 
 
 
+
+
+
+
 //============================================== REACT NATIVE IMAGE PICKER ================================
 // you can upload images with this package
 // npm install react-native-image-picker
@@ -914,6 +918,17 @@ function App() {
   )
 }
 
+
+
+
+
+
+
+
+
+
+
+
 //================================================= REACT NATIVE DIALOG ============================================
 //npm install react-native-dialog
 import Dialog from "react-native-dialog";
@@ -943,6 +958,16 @@ function App() {
 
 
 
+
+
+
+
+
+
+
+
+
+
 //=================================================== REACT NATIVE SVG ===============================================
 //  npm install react-native-svg
 //  npm install react-native-svg-transformer -D
@@ -957,6 +982,17 @@ function App () {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1063,19 +1099,54 @@ function App() {
             id: 'Sports',
             label: 'Sports',
             value: 'Sports',
-        }4
+        }
     ]
+
   
     return(
           <RadioGroup 
               radioButtons={categories} 
-              onPress={setCategory}
+              onPress={setCategory}              //setCategory will automatically select the value prop of the radio button
               selectedId={category}
         /> )
 }
 
 
 
+
+
+
+
+
+
+
+
+//============================================= REACT NATIVE CHECKBOX =============================================
+// npm install react-native-check-box
+
+import CheckBox from 'react-native-check-box';
+
+
+function Ingredient({label}) {
+    const [checked, setChecked] = useState(false);
+
+    const handleChecked = () => {
+        setChecked(!checked);
+    }
+
+
+    return(
+        <CheckBox
+            style={{height: 20}}                        //style applied to the container of the checkbox
+            onClick={handleChecked}                     
+            isChecked={checked}
+            rightText={'text goes here'}                //prop that will display text on the right side of the checkbox
+            rightTextStyle={{color: 'black'}}           //style for the right sided text
+            checkedImage={ <Image source={icons['checkmark']} style={{width: 20, height: 20}}/>}    
+            unCheckedImage={<Image source={icons['emptymark']} style={{width: 20, height: 20}}/>}
+        />
+    )
+}
 
 
 

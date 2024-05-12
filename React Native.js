@@ -1124,6 +1124,12 @@ function App() {
 //============================================= REACT NATIVE CHECKBOX =============================================
 // npm install react-native-check-box
 
+/* 
+  Keep in mind that this component will only display one checkbox at a time,
+  you will need to traverse through an array and return a new checkbox component 
+  after every iteration
+*/
+
 import CheckBox from 'react-native-check-box';
 
 

@@ -814,6 +814,10 @@ function AboutUs({route}) {
     const handlePress = () => {
       navigation.navigate('home')
     }
+
+    const handleGoBack = () => {
+      navigation.goBack();                //you can go to the previous page with this function
+    }
   
     return(<Button></Button>)
   

@@ -95,6 +95,21 @@ function App() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //================================================ GEOCODING =======================================
 /*
 	Geocoding is the process of converting a physical address (1950 21st ST san pablo), 
@@ -104,7 +119,7 @@ function App() {
 */
 
 	
-	//address to lat/long
+	// address to lat/long
     const geocode = async (address) => {
         try{
             let response = await fetch(`https://geocode.maps.co/search?q=${address}&api_key=API_KEY`);
@@ -119,6 +134,29 @@ function App() {
 
 
 
+	// lat/long to address
+    const reverseGeocode = async (latlng) => {
+        try{
+            let response = await fetch(`https://geocode.maps.co/reverse?lat=${-24.3423}&lon=${12.3423}&api_key=API_KEY`);
+            let results = await response.json();
+            return results.address;
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -129,15 +167,35 @@ function App() {
 
 //============================================== GEOLOCATING ===========================================
 /*
+	This package will automatically get the lat and long coordinates of the users current location
 
-	    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
-    	    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+		1)  npm install @react-native-community/geolocation
+
+   		2) FOR ANDROID (android/app/src/main/AndroidManifest.xml) 
+     			add the following lines of code at the top
+
+			    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
+		    	    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    		3) FOR IOS
+      			cd ios 
+	 		pod install
+
+       			ios/<project-name>/Info.plist	
+	  		add the following lines of code to the file
+	  			<key>NSLocationWhenInUseUsageDescription</key>
+				<string>We use your location to provide the closest restaurant that you can use to order from</string>
 */
 
 
+import Geolocation from '@react-native-community/geolocation';
 
-
-
+ Geolocation.getCurrentPosition((position) => {
+            let latlng = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            }
+        })     
 
 
 

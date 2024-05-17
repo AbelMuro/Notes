@@ -123,6 +123,36 @@ function App() {
 
 
 
+
+
+	    
+
+//============================================== GEOLOCATING ===========================================
+/*
+
+	    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
+    	    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //=============================================== PLACES API ===========================================
 /* 
 	The places API can be used to search for restaurants, museums, stores, etc..

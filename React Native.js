@@ -1112,6 +1112,9 @@ function App() {
               radioButtons={categories} 
               onPress={setCategory}              //setCategory will automatically select the value prop of the radio button
               selectedId={category}
+              containerStyle={{                  //you can use this prop to align the radio buttons in their container
+                    alignItems: 'start'
+                }}
         /> )
 }
 

@@ -674,7 +674,7 @@ const handleSubmit = (values) => {
                        type='email'>
                           {({field}) => (
                                 <TextInput 
-                                    {...field} 
+                                    {...field}                                     //if you get an error about handleChange() you may want to remove {...field}
                                     onChangeText={handleChange('email')} 
                                     onBlur={handleBlur('email')} 
                                   />

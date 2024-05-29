@@ -645,9 +645,12 @@ Platform
 //======================================== FORMIK =====================================================
 //npm install formik
 import { Formik, Field } from 'formik';
+import { useFormikContext } from 'formik';
 
 
-const validateForm = (values) => {
+const formik = useFormikContext();                //you can set errors programmatically, call any event handlers with this object
+
+const validateForm = (values) => {  
     const errors = {};
     if(!values.email)
           errors.email = "Can't be empty";
@@ -659,6 +662,10 @@ const validateForm = (values) => {
 
 const handleSubmit = (values) => {
         console.log(values)
+}
+
+const customHandleBlur = (e) => {
+       formik.handleBlur(e);
 }
 
   
@@ -687,7 +694,7 @@ const handleSubmit = (values) => {
                                   <TextInput
                                       {...field} 
                                       onChangeText={handleChange('password')} 
-                                      onBlur={handleBlur('password')} 
+                                      onBlur={customHandleBlur}                     //you can define your own blur function
                                     />
                                )}
                        </Field>

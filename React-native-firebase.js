@@ -214,6 +214,20 @@ function App() {
         }
    }
 
+  /* 
+      Sign in with phone number
+  
+     1) Go to firebase console -> Project Settings -> Your Apps -> copy Encoded App ID
+
+     2) Open up Xcode with project-name.xcworkspace
+
+     3) go to info tab -> URL types, then click on the + sign and in the URL Shemes paste the encoded App ID
+  */
+  const signInWithPhoneNumber = (phone) => {                        
+    const isValid = await auth().verifyPhoneNumber(value);
+  }
+
+  
 
   // 4) Update account info 
   const updateAccount = (username, photoURL) => {

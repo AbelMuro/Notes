@@ -216,12 +216,26 @@ function App() {
 
   /* 
       Sign in with phone number
-  
+    
      1) Go to firebase console -> Project Settings -> Your Apps -> copy Encoded App ID
-
      2) Open up Xcode with project-name.xcworkspace
-
      3) go to info tab -> URL types, then click on the + sign and in the URL Shemes paste the encoded App ID
+
+     FOR ANDROID:
+
+     1) Go to android/app/build.gradle and add the following dependencies
+
+         dependencies {
+            implementation(platform("com.google.firebase:firebase-bom:33.1.0"))      //add this
+            implementation("com.google.firebase:firebase-auth")                      //add this
+        }  
+
+    2) make sure you get the correct SHA1 and SHA256 keys by using the following command
+
+          keytool -list -v -keystore ./android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android
+      go to firebase -> Project settings -> General -> update the SHA keys
+
+      
   */
   const signInWithPhoneNumber = (phone) => {                        
     const isValid = await auth().verifyPhoneNumber(value);

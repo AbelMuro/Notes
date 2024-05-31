@@ -875,7 +875,7 @@ ImgToBase64.getBase64String('file://your_file_url')
 /*     
       IOS
           1) cd ios  ->  pod install 
-          2) go to ios/{project name}/info.plist and add the following lines of code
+          2) go to ios/{project name}/info.plist and add the following lines of code AT THE TOP
 
               	<key>NSPhotoLibraryUsageDescription</key>
               	<string>Select image/video from photos</string>

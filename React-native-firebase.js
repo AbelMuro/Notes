@@ -237,48 +237,35 @@ function App() {
 
       
   */
-  const signInWithPhoneNumber = (phone) => {                        
-    const isValid = await auth().verifyPhoneNumber(value);
-  }
-
-  function Register() {
-    const [loading, setLoading] = useState(false);
-    const navigation = useNavigation();
+  function LoginWithPhone() {
+    const [code, setCode] = useState('');
     const [confirm, setConfirm] = useState(null);
 
     const handleCode = (text) => {
         setCode(text);
     }
-
+    
     const handleLogin = async (values) => {
         try{
             const confirmation = await auth().signInWithPhoneNumber('+15106196086');  
-            setConfirm(confirmation);                        //you will want
+            setConfirm(confirmation);                      
         } 
         catch(error){
             console.log(error);
         }
     }    
 
-
     const handleCodeSubmit = async () => {
-      if(!confirm)                                        //we need to make sure the user clicked on login first
-          return;
-      
+        if(!confirm)                                        //we need to make sure the user clicked on login first
+            return;
         try{
-            await confirm.confirm(code);                    //now i need to store email and zip in the auth object somehow 
-            setOpen(false);
-            navigation.navigate('account');        
+            await confirm.confirm(code);                    //once you call confirm, you will be logged in  
         }
         catch(error){
             console.log(error);
         }
-
     }
-
-
-
-
+    
     return(
         <>
               <Button onPress={handleLogin}>                  

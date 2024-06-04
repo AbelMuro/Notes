@@ -216,10 +216,23 @@ function App() {
 
   /* 
       Sign in with phone number
-    
+
+
+     FOR IOS:
+     
      1) Go to firebase console -> Project Settings -> Your Apps -> copy Encoded App ID
      2) Open up Xcode with project-name.xcworkspace
      3) go to info tab -> URL types, then click on the + sign and in the URL Shemes paste the encoded App ID
+     
+     4) Then go to Apple Developer Account and then Certificates, IDs & Profiles -> keys
+     5) Click on the + button and create a new key, create a name for the key and check on Apple Notifications Service
+     6) Click on register and save a copy of the file and the Key ID.
+     7) Go to firebase console -> Project Settings -> Cloud Messaging Tab -> Apple app configuration
+     8) Add a new key with the file that you uploaded with the 
+         -team ID (you can find this in membership tab in apple developer account)
+           and the...
+          -Key ID (you can find this in Keys tab in Certificates, IDs & Profiles in Apple Developer account)
+
 
      FOR ANDROID:
 

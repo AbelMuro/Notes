@@ -832,6 +832,12 @@ function AboutUs({route}) {
 }
 
 
+// how to get the current route
+import { useRoute } from '@react-navigation/native';
+
+const route = useRoute();
+console.log(route.name);
+
 
 
 

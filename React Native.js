@@ -451,7 +451,7 @@ const App = () => {
 
 
 
-//---------------------------- INPUT ---------------------------------
+//---------------------------- TEXT-INPUT ---------------------------------
 //INPUT is a component that can be used to receive user input
 
 import {TextInput, View} from 'react-native';
@@ -495,6 +495,7 @@ const App = () => {
             <TextInput
                 placeholder='Type here'
                 placeholderTextColor={error ? 'red' : 'grey'}
+                secureTextEntry={true}                      //hides input, useful for password
                 value={text}
                 onChangeText={handleChange}                //we dont use onChange event handler here
                 onBlur={handleBlur}

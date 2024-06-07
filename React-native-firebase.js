@@ -222,7 +222,7 @@ function App() {
      
      1) Go to firebase console -> Project Settings -> Your Apps -> copy Encoded App ID
      2) Open up Xcode with project-name.xcworkspace
-     3) go to info tab -> URL types, then click on the + sign and in the URL Shemes paste the encoded App ID
+     3) go to Target section -> info tab -> URL types, then click on the + sign and in the URL Shemes paste the encoded App ID
      
      4) Then go to Apple Developer Account and then Certificates, IDs & Profiles -> keys
      5) Click on the + button and create a new key, create a name for the key and check on Apple Notifications Service

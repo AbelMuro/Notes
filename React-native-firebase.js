@@ -10,7 +10,7 @@
 
                        1.2) Go to /android/app/build.gradle and find the applicationId and put that value in the 'Android package name'
 
-                       1.3) cd android   ->              keytool -list -v -keystore ./android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android            //this will generate the 'SHA-1' key
+                       1.3) cd android   ->             ./gradlew signInReport            //this will generate the 'SHA-1' and 'SHA-256' key
                                                                                                           
 
                        1.4) Create android app in firebase2

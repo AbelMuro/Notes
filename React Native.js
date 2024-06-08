@@ -791,33 +791,32 @@ function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="home">
-                <Stack.Screen 
-                    name='home'                           //key
-                    component={Home}
-                    options={{ headerShown: false }}      //removes the default navigation bar for the page
-                      />
+                    <Stack.Screen 
+                        name='home'                           //key
+                        component={Home}
+                        options={{ headerShown: false }}      //removes the default navigation bar for the page
+                          />
                  <Stack.Screen name='aboutus' component={AboutUs} />
             </Stack.Navigator>
         </NavigationContainer>
     );
 }
 
+// 1)  every stack component will have access to the navigation prop which can be used to navigate to different pages
+function Home({navigation}) {          
 
-function Home({navigation}) {          //every stack component will have access to the navigation prop which can be used to navigate to different pages
-  
     const handleNavigate = () => {
-       navigation.navigate('aboutus', { //you can pass any data to another web page like this
+       navigation.navigate('aboutus', {       //you can pass any data to another web page like this
          someParams: 'whatever'
        }); 
     }
   
     return(<></>)
-  
 }
 
-
+//2) you can use the useNavigation() hook to navigate through different pages
 function AboutUs({route}) {
-    const navigation = useNavigation();    //you can use the useNavigation() hook to navigate through different pages
+    const navigation = useNavigation();   
     const {someParams} = route.params;     //you can receive data from another web page like this
 
     const handlePress = () => {
@@ -833,7 +832,7 @@ function AboutUs({route}) {
 }
 
 
-// how to get the current route
+// 3) how to get the current route WITHIN a screen component
 import { useRoute } from '@react-navigation/native';
 
 const route = useRoute();
@@ -842,8 +841,25 @@ console.log(route.name);
 
 
 
+//4) how to get the current route OUTSIDE a screen component
+
+function App() {
+    const navigationRef = useRef();
+
+    return (
+        <Provider store={store}>
+            <NavigationContainer ref={navigationRef}>
+                    <MyComponent navigate={navigationRef}/>             //you will need to pass the ref object to the child component 
+            </NavigationContainer>     
+        </Provider>
+    );
+}
 
 
+function MyComponent({navigate}){
+  const route = navigate.current?.getCurrentRoute();
+  route.name;                                                            //you can get the name of the current route like this
+}
 
 
 

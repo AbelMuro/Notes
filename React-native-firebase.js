@@ -132,8 +132,14 @@ let allVideos = await firestore().collection('my videos').get();
             video.ref.delete();
       });
 
-
-
+// 3) Subcribing to live changes in a document
+import {onSnapshot} from '@react-native-firebase/firestore';
+      
+const docRef = firestore().collection('myAccount').doc('userInfo');
+const unsubscribe = onSnapshot(docRef, (snapshot) => {
+                        snapshot.data();
+                    })
+      
 
 // 4)  Different ways of getting documents and collections      
 let collectionRef = firestore().collection('myCollection').orderBy('age', 'desc');    //will return a reference to a collection that has been sorted in ascending or descending order, property must be an integer

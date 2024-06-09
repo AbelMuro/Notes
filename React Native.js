@@ -954,6 +954,12 @@ function App() {
 }
 
 
+//=============================================== REACT NATIVE UUID =============================================
+//npm install react-native-uuid
+
+
+import uuid from 'react-native-uuid';
+uuid.v4();               //this will generate a random unique ID
 
 
 

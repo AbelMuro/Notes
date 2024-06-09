@@ -450,6 +450,12 @@ function App() {
   }
 
 
+  //4) Deleting a single file
+  const handleDelete = async () => {
+        const fileRef = storage().ref('path/to/your/file');
+        await fileRef.delete();    
+  } 
+
   
   const getDownloadUrl = () => {
     try{

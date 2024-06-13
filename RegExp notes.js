@@ -11,9 +11,15 @@
 //   
 
 //BE CAREFUL WITH THE SPACES IN BETWEEN THE EXPRESSION BELOW
+// you will need to use ^ and $ if you want to start a pattern with strings
 
 / [a-zA-Z] /         //Find a letter character
 / [^a-zA-Z] /        //Find a character that is NOT a letter
+/ ^[0-9] /           //Looks for digits at the START of the string
+/ [0-9]$ /           //Looks for digits at the END of the string
+/ n? /               //you can use ? to check if a pattern exists or not
+/ (.\d \s)? /        // you can group together a pattern like this as well
+/ /[0-9]{2,3} /      // finds 2 to 3 digits in the string
 / \w /	             //Find an alphanumeric character (letter and number)  [^a-zA-Z0-9_]
 / \W /	             //Find an non-alphanumeric character (letter and number) [^a-zA-Z0-9_]
 / \d /	             //Find a digit
@@ -27,11 +33,12 @@
 / \f /	             //Find a form feed character
 / \t /	             //Find a tab character
 / \v /	             //Find a vertical tab character
-/ \n+ /              //Find a string that contains at least one n
+/ \n+ /              //Find a string that contains at least one n or more
 / \^n /              //Find a string that contains n at the beginning of it
 / [^n]/              //find any character that is NOT n
 / \n$ /              //Find a string with n at the end of it
 / \a* /              //find zero or more of `a`
+/ ^\d+ (.\d{1,2})?$ /
 / . /                //will find all single characters from the string (its basically like splitting the string into an array)
 
 

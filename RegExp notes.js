@@ -17,7 +17,7 @@
 / [^a-zA-Z] /        //Find a character that is NOT a letter
 / ^[0-9] /           //Looks for digits at the START of the string
 / [0-9]$ /           //Looks for digits at the END of the string
-/ n? /               //you can use ? to check if a pattern exists or not
+/ n? /               //This is a conditional pattern, a pattern may or may not have n and still be valid
 / (.\d \s)? /        // you can group together a pattern like this as well
 / /[0-9]{2,3} /      // finds 2 to 3 digits in the string
 / \w /	             //Find an alphanumeric character (letter and number)  [^a-zA-Z0-9_]
@@ -38,7 +38,6 @@
 / [^n]/              //find any character that is NOT n
 / \n$ /              //Find a string with n at the end of it
 / \a* /              //find zero or more of `a`
-/ ^\d+ (.\d{1,2})?$ /
 / . /                //will find all single characters from the string (its basically like splitting the string into an array)
 
 

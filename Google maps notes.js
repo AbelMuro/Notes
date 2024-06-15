@@ -224,6 +224,7 @@ const searchNearbyRestaurants = () => {
 //you will need to geocode the users input into latitude and longitude 
 //before using the function below
 
+//by adding the map state to the Marker constructor, the marker will automatically appear on the map
 function createMarkers() {
     let marker = new google.maps.Marker({                                   //creating a marker with the Marker() constructor
         position: {lat: 44, lng: -10},                                      //this constructor only accepts an object with latitude and longitude

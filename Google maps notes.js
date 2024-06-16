@@ -7,7 +7,7 @@
 // npm install @react-google-maps/api
 
 import React, {useCallback, useState} from 'react';
-import {GoogleMap, useLoadScript, Marker} from '@react-google-maps/api';
+import {GoogleMap, useLoadScript, Marker, DirectionsRenderer} from '@react-google-maps/api';
 
 
 const center = {                            //if you are going to pass an object to panTo or setCenter

@@ -303,13 +303,13 @@ function getLocationDetails() {
             
                 {/* These are all the child components for GoogleMap*/}
                 <Marker icon={{
-                        url: "image to replace default marker",
+                        url: "http://maps.gstatic.com/mapfiles/markers2/icon_green.png",
                         scaledSize: new google.maps.Size(50,50),    //setting the size of the new marker
                         anchor: new google.maps.Point(5,5)           //not sure what this property does
                     }} position={{lat: 44, lng: -80}}/>             {/* Marker will position a marker on the map based on the position property*/}
 
-                {directionsResponse != null && 
-/*2*/          <DirectionsRenderer directions={directionsResponse}/> } {/* Directions Renderer is used to calculate routes*/}
+                {directions && 
+/*2*/                  <DirectionsRenderer directions={directionsResponse}/> } {/* Directions Renderer is used to calculate routes*/}
         </GoogleMap>         
         </>
 

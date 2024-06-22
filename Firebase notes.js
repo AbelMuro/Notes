@@ -268,8 +268,8 @@ function SignInWithPhoneNumber() {
     return(
         <form className={styles.form}>
             {confirm ? 
-                <fieldset className={styles.container}>
-                    <h1 className={styles.title}>
+                <fieldset>
+                    <h1>
                         We sent you a code, please enter the code
                     </h1>
                     <input value={code} onChange={handleCode} />

@@ -478,7 +478,7 @@ function Upload() {
 
 
 //-------------------------------------------------------- FIRESTORE --------------------------------------------------------------------------------
-import {collection, addDoc, setDoc, doc, updateDoc, increment, decrement, arrayUnion, deleteDoc} from 'firebase/firestore'
+import {collection, addDoc, setDoc, doc, updateDoc, increment, decrement, arrayUnion, deleteDoc, onSnapshot} from 'firebase/firestore'
 
 //in Firestore, data is organized in documents, which are then organized into collections
 //keep in mind that doc() and collection() can also create nested collections or doc
@@ -614,6 +614,16 @@ async function getAllDocumentsFromCollection() {
     }
 
 }
+
+
+async function detectingChangesInADocument() {
+    const docRef = doc(db, `MyAccount/userInfo`);
+    const unsubscribe = onSnapshot(docRef,  (doc) => {                    //everytime there is a change in the document. onSnapshot() will be called
+        doc.data();
+        doc.id;
+    })
+}
+
 
 
 

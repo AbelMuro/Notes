@@ -231,6 +231,63 @@ async function LoginWithFacebook(){
 
 
 
+function SignInWithPhoneNumber() {
+    const [confirm, setConfirm] = useState(null);
+    const [code, setCode] = useState('');
+
+    const handleSubmit = async () => {
+        try{
+            const confirmationResult = await signInWithPhoneNumber(auth, '+5106196086', window.recaptchaVerifier);
+            setConfirm(confirmationResult);
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+    const handleCode = (e) => {
+        setCode(e.target.value);
+    }
+
+    const submitCode = async() => {
+        const result = await confirm.confirm(code);
+        //user is now logged in!
+    }
+
+    useEffect(() => {
+        auth.languageCode = 'it'; 
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {            // 'sign-in-button' is an ID of a button that calls 'signInWithPhoneNumber()'
+            'size': 'invisible',
+            'callback': (response) => {
+                console.log(response);
+            }
+        });
+    }, [])
+
+
+    return(
+        <form className={styles.form}>
+            {confirm ? 
+                <fieldset className={styles.container}>
+                    <h1 className={styles.title}>
+                        We sent you a code, please enter the code
+                    </h1>
+                    <input value={code} onChange={handleCode} />
+                    <button onClick={submitCode}>
+                        Submit Code
+                    </button>
+                </fieldset> : 
+                <fieldset>
+                    <button id='sign-in-button' onClick={handleSubmit}>
+                        Register
+                    </button>            
+                </fieldset>
+            }
+        </form>
+    )
+}
+
+
 
 
 

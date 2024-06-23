@@ -401,7 +401,7 @@ function AuthStateChangeHook() {
 //REMEMEBER, YOU MUST SET THE RULES OF THE STORAGE TO ALLOW PEOPLE TO ACCESS YOUR STORAGE.
 //https://console.firebase.google.com/u/0/project/insta-messaging-app/storage/insta-messaging-app.appspot.com/rules
 
-import {ref as refSB, uploadBytes} from "firebase/storage";                     //some modules have the same function names, such as ref
+import {ref as refSB, uploadBytes, listAll} from "firebase/storage";                     //some modules have the same function names, such as ref
 import {storage} from './firebase-config';
 
 
@@ -419,6 +419,20 @@ async function downloadImagesFromStorage(fileName){
     //you can then select an img element and assign the url to the src attribute
 }
 
+
+async function TraversingThroughTheFilesInAFolder() {
+    const imagesRef = ref(storage, 'myImages');
+    const results = await listAll(imagesRef);
+    results.items.forEach((ref) => {
+            ref.name;
+            ref;                        //ref is a file reference, you will need to use getDownloadURL() to get the url for the file
+    })
+}
+
+async function deleteFile() {
+    const imageRef = ref(storage, 'myImages/funny-cat.jpg');
+    await deleteObject(imageRef);
+}
 
 
 //-------------------------------------------------------- FIREBASE STORAGE REACT HOOKS -----------------------------------------------------------

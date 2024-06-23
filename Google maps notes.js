@@ -309,7 +309,7 @@ function getLocationDetails() {
                     }} position={{lat: 44, lng: -80}}/>             {/* Marker will position a marker on the map based on the position property*/}
 
                 {directions && 
-/*2*/                  <DirectionsRenderer directions={directionsResponse}/> } {/* Directions Renderer is used to calculate routes*/}
+/*2*/                  <DirectionsRenderer directions={directions}/> } {/* Directions Renderer is used to calculate routes*/}
         </GoogleMap>         
         </>
 

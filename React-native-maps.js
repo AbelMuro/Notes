@@ -139,7 +139,7 @@ function App() {
         try{
             let response = await fetch(`https://geocode.maps.co/reverse?lat=${-24.3423}&lon=${12.3423}&api_key=API_KEY`);
             let results = await response.json();
-            return results.address;
+            return results.display_name;
         }
         catch(error){
             console.log(error);

@@ -111,7 +111,7 @@ function createNewNode(newData){
 //also keep in mind that when you are trying to load an image photo from google or microsoft, its always a good idea to use referrerPolicy="no-referrer" on your image tags
 
 
-import { createUserWithEmailAndPassword, updateProfile, signOut, sendEmailVerification, sendSignInLinkToEmail} from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile, signOut, sendEmailVerification, sendSignInLinkToEmail, deleteUser} from 'firebase/auth';
 import { GoogleAuthProvider, OAuthProvider, FacebookAuthProvider, signInWithPopup} from 'firebase/auth'
 import {auth} from './firebase-config';
 
@@ -289,6 +289,10 @@ function SignInWithPhoneNumber() {
 
 
 
+
+async function deleteAccount() {
+    await deleteUser(auth.currentUser);
+}
 
 
 //this function will get called everytime there is a change in the auth state, as the name implies.

@@ -113,6 +113,51 @@ function MyGoogleMap() {
 
 
 
+    
+
+//================================================ GEOCODING API =======================================
+/*
+	You can use this api for geocoding purposes
+*/
+
+	
+	// address to lat/long
+    const geocode = async (address) => {
+        try{
+            let response = await fetch(`https://geocode.maps.co/search?q=${address}&api_key=API_KEY`);
+            let results = await response.json();
+            let latlong = results[0];
+            return {lat: latlong.lat, lon: latlong.lon};            
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+
+
+	// lat/long to address
+    const reverseGeocode = async (latlng) => {
+        try{
+            let response = await fetch(`https://geocode.maps.co/reverse?lat=${-24.3423}&lon=${12.3423}&api_key=API_KEY`);
+            let results = await response.json();
+            return results.display_name;
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+
+
+
+
+
+
+    
+    
+
+
 
 //---------------------------------------------- (2) CALCULATING ROUTE BETWEEN TWO LOCATIONS --------------------------------------------------------------------
     //CALCULATING THE ROUTE BETWEEN TWO LOCATIONS

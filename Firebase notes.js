@@ -250,8 +250,15 @@ function SignInWithPhoneNumber() {
     }
 
     const submitCode = async() => {
-        const result = await confirm.confirm(code);
-        //user is now logged in!
+        try{
+            const result = await confirm.confirm(code);
+            //user is now logged in!
+        }
+        catch(error){
+            if(error.code === 'auth/invalid-verification-code')
+                //display an error message to the user
+        }
+        
     }
 
     useEffect(() => {
@@ -291,7 +298,13 @@ function SignInWithPhoneNumber() {
 
 
 async function deleteAccount() {
-    await deleteUser(auth.currentUser);
+    try{
+        await deleteUser(auth.currentUser);
+    }
+    catch(error){
+        if(error.code === 'auth/requires-recent-login')
+            // find a way to let user log in again
+    }
 }
 
 

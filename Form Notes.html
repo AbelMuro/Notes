@@ -523,13 +523,29 @@
 
 
                 HOW TO MAKE A CONTROLLED COMPONENT WITH INPUT TYPE FILE
+                
+                    function SelectImage() {
+                        const [image, setImage] = useState();
+                    
+                        const handleImage = (e) => {
+                            setImage(e.target.files[0]);
+                        }
+                    
+                        return(
+                            <>
+                                <input type='file' onChange={handleImage} name='image'/> 
+                                {image && <img src={URL.createObjectURL(image)}/>}
+                            </>
+                        )
+                    }
 
-                <input 
-                    type="file" 
-                    accept="image/png" 
-                    onChange={(e) => {setFile(e.target.files[0])}}/>
 
+                INSIDE ONSUBMIT EVENT HANDLER
 
+                    const handleSubmit = (e) => {
+                        e.preventDefault();
+                        const image = e.target.elements.image.files;            //you will need to use the files property to get the image object
+                    }   
                 
             -->
 

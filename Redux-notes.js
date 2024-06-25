@@ -955,12 +955,15 @@ function App() {
 // The only difference below is that there is one extra step we do before we create a persisted reducer
 // npm install redux-deep-persist
 
+//you can persist properties of the state like this,
+//   state.prop1    state.prop1.prop2  ....
+
 import { getPersistConfig } from 'redux-deep-persist';
 
 1) const config = getPersistConfig({
     key: 'root',
     storage,
-    whitelist: ['theme'],                                          // we will only persist the theme state in the local storage
+    whitelist: ['theme', 'theme.color', 'theme.color.saturation'],  
     rootReducer: Reducer
 });
                                

@@ -262,7 +262,7 @@ function SignInWithPhoneNumber() {
     }
 
     useEffect(() => {
-        auth.languageCode = 'it'; 
+        auth.languageCode = 'en'; 
         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {            // 'sign-in-button' is an ID of a button that calls 'signInWithPhoneNumber()'
             'size': 'invisible',
             'callback': (response) => {

@@ -240,6 +240,32 @@ function App() {
            and the...
           -Key ID (you can find this in Keys tab in Certificates, IDs & Profiles in Apple Developer account)
 
+      9) Then go to your Apple Developer Account again and then Certificates, Identifiers & Profiles -> Identifiers -> click on name of app
+
+      10) Scroll down to Push Notifications and click on edit
+
+            10.1) to create a certificate, open up Keychain Access app on macbook and then Certificate Assistant -> create a certificate from a certificate authority
+
+            10.2) enter email, any common name, and select saved to disk, leave CA email address blank,
+                  Then click on continue, and you should have a .cer file
+                  
+            10.3) you will need to create 2 separate .cer files. One for Development SSL Certificate and another for Production SSL Certificate
+
+      11) Upload the files on the apple dev account
+
+      12) Next go to firebase console -> project settings -> cloud messaging -> APNs Certificates
+
+      13) you will need to upload both .cer files in .p12 format
+
+            13.1) open up keychain access and open up the .cer files
+  
+            13.2) go to My Certificates and right click on the .cer files
+  
+            13.3) Click on export and make sure that .p12 is selected in the file format (remember where you save it)
+
+      14) upload the .p12 file on firebase console 'APNs Certificates'
+
+      
 
      FOR ANDROID:
 

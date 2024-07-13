@@ -321,7 +321,7 @@ function App() {
         <AnimatePresence>
             {remove ? <></> : 
             <motion.div                      //before this element is removed, it will run some animation
-                key='1'                      //key prop is required for img tags
+                key='1'                      //key prop is required for img tags or any element that has a img as a child
                 className={'box'} 
                 variants={variants} 
                 exit='exit'                  //the exit prop will use the exit property from the object in variants

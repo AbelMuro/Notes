@@ -168,7 +168,7 @@ const reducer = (state = {list: []}, action) => {       //you can initialize sta
         case "add item": 
             return {list: [...stateList, action.item] };
         case "remove item":
-            return {list: stateList.filter((item)=>{return item != action.item})}
+            return {list: stateList.filter((item) => {return item != action.item})}
         default:
             return state;
     }
@@ -180,37 +180,7 @@ const reducer = (state = {list: []}, action) => {       //you can initialize sta
 // in other words, one reducer should handle only ONE property of the state
 // it should not access the property of the state that is 'owned' by another reducer
 
-//../reducer/ListReducer
-const ListReducer = (state = {list: []}, action) => {
-    let list = state.list;
-    switch(action.type) {
-        case "add item":
-            return {list: [...list, action.item] };
-        case "remove item":
-            return {list: list.filter((item) => {return item != action.item})}
-        default:
-            return state;
-    }
-}
-export default ListReducer;
 
-
-//../reducer/CounterReducer
-const CounterReducer = ((state = {counter: 0}, action) => {
-    let currentCounter = state.counter;
-    switch(action.type) {
-        case "increment":
-            return {counter: currentCounter++ }
-        case: "decrement":
-            return {counter: currentCounter-- }
-        default:
-            return state;
-    }
-})
-export default CounterReducer;
-
-
-//../reducer/index.js
 import {combineReducers} from 'redux';
 import ListReducer from './ListReducer';
 import CounterReducer from './CounterReducer';
@@ -293,7 +263,7 @@ store.dispatch(addTodo('Buy milk.'));                                       //Di
 
 
 
-// 2)    ACCESSING THE STATE FROM THE STORE
+// 2)    ACCESSING THE STATE FROM THE STORE (this doesn't cause a re-render)
 const state = store.getState();                                              //gets the complete state from the store
 const todos = store.getState(state => state.todos)                           //accessing a slice from the state
 
@@ -307,50 +277,6 @@ function myComponent() {
 }
 
 store.subscribe(myComponent);                                              //this will render myComponent everytime there is a change in state in the store
-
-
-
-// 4)    SUBSCRIBING TO A SLICE OF THE STATE IN THE STORE
-
-// custom hook checking if component is still mounted
-// you should not set state if component is unmounted
-const useIsMounted = () => {
-  const isMounted = useRef(false);
-            
-  useEffect ( () => {
-    isMounted.current = true;
-              
-    return () => (isMounted.current = false);
-  }, []);
-            
-  return isMounted;
-};
-
-
-
-const refCompare = (a, b) => a === b;
-
-const useSelector = (selectFn, compareFn = refCompare) => {
-     const [state, setState] = useState(() =>
-       selectFn(store.getState())                                          //returns a slice of the state
-     );     
-     const mounted = useIsMounted();
-            
-     useEffect (() => {
-       const unsubscribe = store.subscribe (() => {                        //store.subscribe() returns an unsubscribe function
-            const currentStoreState = selectFn(store.getState());
-            
-            if (!mounted.current) return;
-            setState((prevState) =>
-                compareFn(prevState, currentStoreState) ? prevState : currentStoreState
-            );
-       });
-       return unsubscribe;
-              
-     }, [compareFn, mounted, selectFn]);
-            
-     return state;
-};
 
 
 
@@ -406,7 +332,49 @@ function SomeComponent() {
 }
 
 
+/* 
+            USE-SELECTOR source code
 
+
+            const useIsMounted = () => {
+              const isMounted = useRef(false);
+                        
+              useEffect ( () => {
+                isMounted.current = true;
+                          
+                return () => (isMounted.current = false);
+              }, []);
+                        
+              return isMounted;
+            };
+            
+            
+            
+            const refCompare = (a, b) => a === b;
+            
+            const useSelector = (selectFn, compareFn = refCompare) => {
+                 const [state, setState] = useState(() =>
+                   selectFn(store.getState())                                          //returns a slice of the state
+                 );     
+                 const mounted = useIsMounted();
+                        
+                 useEffect (() => {
+                   const unsubscribe = store.subscribe (() => {                        //store.subscribe() returns an unsubscribe function
+                        const currentStoreState = selectFn(store.getState());
+                        
+                        if (!mounted.current) return;
+                        setState((prevState) =>
+                            compareFn(prevState, currentStoreState) ? prevState : currentStoreState
+                        );
+                   });
+                   return unsubscribe;
+                          
+                 }, [compareFn, mounted, selectFn]);
+                        
+                 return state;
+            };
+
+*/
 
 
 

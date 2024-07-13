@@ -103,16 +103,28 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 //
 //      4) Reducers.js will have the following boilerplate code
 //      
-            export default function Reducer(state = {conditionColor: "white"}, action){
-                    switch(action.type){
-                       case "set":
-                            return {conditionColor: action.color};
-                       case "get":
-                            return state;
-                       default: 
-                            return state;
-                }
-            }
+            import { createAction, createReducer } from '@reduxjs/toolkit'
+            
+            const increment = createAction('counter/increment')
+            const decrement = createAction('counter/decrement')
+            const incrementByAmount = createAction('counter/incrementByAmount')
+            const initialState = { value: 0 }
+            
+            const counterReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
+              builder
+                .addCase(increment, (state, action) => {                            //the 'case'
+                  state.value++
+                })
+                .addCase(decrement, (state, action) => {
+                  state.value--                         
+                })
+                .addCase(incrementByAmount, (state, action) => {
+                  state.value += action.payload
+                })
+            })
+
+            export default counterReducer;
+
 //
 //       5) Go to your app.js and import the following
 //

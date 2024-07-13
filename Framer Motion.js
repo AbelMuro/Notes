@@ -318,7 +318,7 @@ function App() {
 
 
     return(
-        <AnimatePresence>
+        <AnimatePresence initial={false}>  //you can set initial to false to skip the first initial animation
             {remove ? <></> : 
             <motion.div                      //before this element is removed, it will run some animation
                 key='1'                      //key prop is required for img tags or any element that has a img as a child

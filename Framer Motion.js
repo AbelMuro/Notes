@@ -28,6 +28,7 @@ function Circle () {
     <> 
        <motion.div 
           className='circle' 
+          
           initial={{opacity: 0, scale: 0.5}}                    //you can set false to this attribute and the animation will cancel automatically 
           animate={{opacity: 1, scale: 1.2}}                    //if you set null to one of the css properties, it will use the default value for the property
           transition={{

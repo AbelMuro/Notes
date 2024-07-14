@@ -2,6 +2,10 @@
 
 
 /* 
+  REMEMBER, in your html index file, when you include the manifest file and the ServiceWorkers.js file 
+            it will automatically look for those files WITHIN the public folder, 
+            you dont have to type in public in the directory
+
 
   1) create a file called ServiceWorkers.js and place it inside the PUBLIC folder of project
                                       SERVICE WORKERS

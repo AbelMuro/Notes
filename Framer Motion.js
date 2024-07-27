@@ -259,7 +259,7 @@ function AnimateList() {
         <motion.ul
           initial="hidden"                    //this MUST be either visible or hidden
           animate="visible"                   //this MUST be either visible or hidden
-          variants={list}
+          variants={list}                     //you can remove this if you dont want the parent element to be animated, the children will still be animated
         >
           <motion.li variants={item} />      //variant prop here MUST have visible or hidden properties in the object
           <motion.li variants={item} />

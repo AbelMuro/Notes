@@ -1427,7 +1427,7 @@ fetch("/somePath", {
     cache: 'no-cache', 									// *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin',								// include, *same-origin, omit     (used for including credentials such as cookies)
     headers: {
-      'Content-Type': 'application/json' 						//data will be formatted into json...... another option is   application/x-www-form-urlencoded
+      'Content-Type': 'application/json' 						//data will be formatted into json...... another option is multipart/form-data, thhis is necessary for file uploads
       'apikey' : 'YOUR_API_KEY'							 	//if api keys are not included in the URL, then it should be included here
     },
     destination: 'data',								//some api's may require that you put custom properties like this

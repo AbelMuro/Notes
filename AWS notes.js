@@ -129,6 +129,8 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             signatureVersion: 'v4'
         })
 
+KEEP IN MIND, that if you want to put an object inside a folder, you can pass 'myFolder/objectName' as an argument to the functions below
+
     1) This function will create a URL that can be used in a fetch request to store data into the s3 bucket
     
             export async function generateUploadURL(objectName) {                 //objectName is the name of object that will be stored in S3 bucket
@@ -228,7 +230,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
                 //2)
                 const getRequest = async () => {
-                        const url = await S3.generateDownloadURL('name of object');
+                        const url = await S3.generateDownloadURL('myfolder/name of object');
                         const response = await fetch(url, {
                             method: 'GET',
                         })
@@ -247,7 +249,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
                 //5)
                 const getFileRequest = () => {
-                        const signedUrl = S3.generateSignedURL('my image.png');
+                        const signedUrl = S3.generateSignedURL('myImages/my image.png');
                         const response = await fetch(signedUrl,{
                             method: 'GET'
                         })

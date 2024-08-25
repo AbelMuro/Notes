@@ -66,7 +66,8 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     
 6) Go back to Permissions -> Bucket Policy -> edit -> paste the policy and then click Save
 
-7) Then go to Permissions and then scroll down to CORS and paste the following.... (this will set up the bucket as an API)
+7) Then go to Permissions and then scroll down to CORS and paste the following.... 
+    (this will allow any/specific origin to make ajax calls to s3
     
         [
             {
@@ -85,7 +86,36 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             }
         ]
 
-8) Create a file 'S3.js' with the following lines of code...
+
+8) Now you need to create or use an 'IAM' user that has an 'access key id' and a 'secret access key' 
+    and also a policy that allows that user to access the S3 bucket
+
+9) You can either select an policy that already exists and gives full access to ALL s3 buckets, if so, skip to step 10
+     if you want a policy that has limited access to some s3 buckets, then proceed to the next step
+
+    9.a) Go to 'IAM console' and then click 'Policies', then click on 'Create Policy', then set the following options...
+    
+        --select S3
+        --click on Write and select PutObject (this action lets the user put objects into the database)
+        --click on Read and select GetObject (this action lets the user get objects from the database)
+        --Go To resources, Then click on Add ARN 
+            --Then type in the ARN of the s3 bucket and click on 'Any object name'
+        Then click on 'Add ARN'
+        
+    9.b) Give a name to the policy and create it (remember the name of the policy)
+
+10) Now you need to assign that policy to the IAM user, To do this, go back to 'IAM console' and click on 'Users'
+
+11) Select the user, and then click on 'Add Permissions', then click on 'Attack policies directly' and search for the policy that you just created
+
+12) finally, click on next and then on Add Permissions
+
+13) Your IAM user is now ready to access the S3 bucket
+
+
+14) Create a file 'S3.js' with the following lines of code...
+
+
     //npm install aws-sdk
     //s3.js
         import aws from 'aws-sdk';
@@ -96,61 +126,113 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             secretAccessKey: '',
             signatureVersion: 'v4'
         })
-        
-        export function generateUploadURL(objectName) {                        //objectName = 'myImage'
+
+    1) This function will create a URL that can be used in a fetch request to store data into the s3 bucket
     
-            const params = ({
-                Bucket: 'bucket name goes here',
-                Key: objectName,
+            export async function generateUploadURL(objectName) {                 //objectName is the name of object that will be stored in S3 bucket
+                const params = {
+                    Bucket: 'bucket name goes here',
+                    Key: objectName,
+                    Expires: 60
+                };
+                const uploadURL = await s3.getSignedUrlPromise('putObject', params);
+                return uploadURL;                                               
+            }
+
+    2) This function will create a URL that can be used in a fetch request to retrieve data from the s3 bucket
+    
+            export async function generateDownloadURL(objectName){
+                const params = {
+                    Bucket: 'bucket name goes here',
+                    Key: objectName,
+                    Expires: 60
+                }
+    
+                const downloadURL = await s3.getSignedUrlPromise('getObject', params);
+                return downloadURL;
+            }
+
+    3) This function will create a URL that can be used in a fetch request to delete objects from the s3 bucket
+    
+            export async function generateDeleteURL(objectName){
+                const params = ({
+                    Bucket: 'contact-form-data',
+                    Key: objectName,
+                    Expires: 60
+                });
+            
+                const deleteURL = await s3.getSignedUrlPromise('deleteObject', params);
+                return deleteURL;   
+            }
+                    
+
+    4) not sure yet
+
+        export function generatePresignedURL(objectName) {
+            const params = {
+                Bucket: 'contact-form-data',
+                Fields: {
+                  Key: objectName
+                },
+                Conditions: [
+                    ["content-length-range", 0, 1048576],
+                  ],
                 Expires: 60
-            });
-        
-            const uploadURL = await s3.getSignedUrlPromise('putObject', params);
-        
-            return uploadURL;                                                    //remember, that this is a promise object
+            };
+              
+              const {fields, url} = s3.createPresignedPost(params);
+              return {fields, url};
         }
+
+
 
     //app.js
         import S3 from './s3.js'
 
         function App() {
+            const {url, fields} = S3.generatePresignedURL('not sure yet');
 
-        const url = await S3.generateUploadURL();                //remember that generateUploadURL() returns a promise
-        const handleClick = async () => {
+            const putRequest = async () => {
+                const url = await S3.generateUploadURL('name of object');        
                 await fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: 'first piece owwwww!',
-                })
+                        method: 'PUT',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({data: 'data'}),
+                    })   
+             } 
+
+            const getRequest = async () => {
+                    const url = await S3.generateDownloadURL('name of object');
+                    const response = await fetch(url, {
+                        method: 'GET',
+                    })
+                    const data = await response.json();
+                    console.log(data)
             }
 
-                return(<button onClick={handleClick}> Click here!</button>)
+            const deleteRequest = async () => {
+                    const url = await S3.generateDeleteURL('name of object');
+                    await fetch(url, {
+                        method: 'DELETE',
+                    })
+                    console.log('data has been deleted');
             }
-        
 
-9) Now you need to create or use an 'IAM' user that has an 'access key id' and a 'secret access key' 
-    and also a policy that allows that user to access the S3 bucket
 
-10) Go to 'IAM console' and then click 'Policies', then click on 'Create Policy', then set the following options...
-
-    --select S3
-    --click on Write and select PutObject (this action lets the user put objects into the database)
-    --click on Read and select GetObject (this action lets the user get objects from the database)
-    --Go To resources, Then click on Add ARN 
-        --Then type in the ARN of the s3 bucket and click on 'Any object name'
-    Then click on 'Add ARN'
-        
-11) Give a name to the policy and create it (remember the name of the policy)
-
-12) Now you need to assign that policy to the IAM user, To do this, go back to 'IAM console' and click on 'Users'
-
-13) Select the user, and then click on 'Add Permissions', then click on 'Attack policies directly' and search for the policy that you just created
-
-14) finally, click on next and then on Add Permissions
-
-15) Your IAM user is now ready to access the S3 bucket
+                return(        //not sure yet
+                    <form action={url} encType="multipart/form-data" method='post'}>                           
+                        <input type="hidden" name="key" value={'image'}/>
+                        <input type="hidden" name="X-Amz-Algorithm" value={fields["X-Amz-Algorithm"]}/>
+                        <input type="hidden" name="X-Amz-Credential" value={fields["X-Amz-Credential"]}/>
+                        <input type="hidden" name="X-Amz-Date" value={fields["X-Amz-Date"]}/>
+                        <input type="hidden" name="X-Amz-Signature" value={fields['X-Amz-Signature']}/>
+                        <input type="hidden" name="policy" value={fields.Policy}/>            
+                        <input type='file' name='file'/>
+                    </form>)
+            }
+    
 
 
     

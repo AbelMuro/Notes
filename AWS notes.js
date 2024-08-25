@@ -117,7 +117,9 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
 
     //npm install aws-sdk
-    //s3.js
+
+    
+    //---------------------------------------------s3.js
         import aws from 'aws-sdk';
         
         const s3 = new aws.S3({
@@ -156,7 +158,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     
             export async function generateDeleteURL(objectName){
                 const params = ({
-                    Bucket: 'contact-form-data',
+                    Bucket: 'bucket name goes here',
                     Key: objectName,
                     Expires: 60
                 });
@@ -166,13 +168,13 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             }
                     
 
-    4) not sure yet
+    4) This function will create a URL that can be used within a form to upload files into the s3 bucket
 
-        export function generatePresignedURL(objectName) {
+        export function generatePresignedURL(fileName) {
             const params = {
-                Bucket: 'contact-form-data',
+                Bucket: 'bucket name goes here',
                 Fields: {
-                  Key: objectName
+                  Key: fileName
                 },
                 Conditions: [
                     ["content-length-range", 0, 1048576],
@@ -185,56 +187,123 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
         }
 
 
+    5) This function will create a URL that can be used to download files from the s3 bucket
+    
+            export function generateSignedURL(fileName){
+                const params = {
+                    Bucket: 'contact-form-data',
+                    Key: fileName,
+                    Expires: 60
+                };
+            
+                const url = s3.getSignedUrl('getObject', params);
+                return url;
+            }
 
-    //app.js
+
+
+
+
+
+
+
+
+    //------------------------------------------app.js
         import S3 from './s3.js'
 
+    // 1) this is how you get, put, and delete objects from the s3 bucket
         function App() {
-            const {url, fields} = S3.generatePresignedURL('not sure yet');
 
-            const putRequest = async () => {
-                const url = await S3.generateUploadURL('name of object');        
-                await fetch(url, {
-                        method: 'PUT',
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({data: 'data'}),
-                    })   
-             } 
-
-            const getRequest = async () => {
-                    const url = await S3.generateDownloadURL('name of object');
-                    const response = await fetch(url, {
-                        method: 'GET',
-                    })
-                    const data = await response.json();
-                    console.log(data)
-            }
-
-            const deleteRequest = async () => {
-                    const url = await S3.generateDeleteURL('name of object');
+                //1)
+                const putRequest = async () => {
+                    const url = await S3.generateUploadURL('name of object');        
                     await fetch(url, {
-                        method: 'DELETE',
-                    })
-                    console.log('data has been deleted');
+                            method: 'PUT',
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({data: 'data'}),
+                        })   
+                 } 
+
+                //2)
+                const getRequest = async () => {
+                        const url = await S3.generateDownloadURL('name of object');
+                        const response = await fetch(url, {
+                            method: 'GET',
+                        })
+                        const data = await response.json();
+                        console.log(data);
+                }
+
+                //3)
+                const deleteRequest = async () => {
+                        const url = await S3.generateDeleteURL('name of object');
+                        await fetch(url, {
+                            method: 'DELETE',
+                        })
+                        console.log('data has been deleted');
+                }
+
+                //5)
+                const getFileRequest = () => {
+                        const signedUrl = S3.generateSignedURL('my image.png');
+                        const response = await fetch(signedUrl,{
+                            method: 'GET'
+                        })
+                        const fileURL = response.url;
+                        console.log(fileURL)                            //url of the file, put this in a
+                }
+
+                return(        
+                   <></>)
             }
 
 
-                return(        //not sure yet
-                    <form action={url} encType="multipart/form-data" method='post'}>                           
-                        <input type="hidden" name="key" value={'image'}/>
-                        <input type="hidden" name="X-Amz-Algorithm" value={fields["X-Amz-Algorithm"]}/>
-                        <input type="hidden" name="X-Amz-Credential" value={fields["X-Amz-Credential"]}/>
-                        <input type="hidden" name="X-Amz-Date" value={fields["X-Amz-Date"]}/>
-                        <input type="hidden" name="X-Amz-Signature" value={fields['X-Amz-Signature']}/>
-                        <input type="hidden" name="policy" value={fields.Policy}/>            
-                        <input type='file' name='file'/>
-                    </form>)
-            }
+
+
     
+    // 2) this is how you upload files into the s3 bucket
+        function App() {
+            const {url, fields} = S3.generatePresignedURL('name of file');            //4)
+
+            return(        
+                <form action={url} encType="multipart/form-data" method='post'}>                           
+                    <input type="hidden" name="key" value={'name of file'}/>
+                    <input type="hidden" name="X-Amz-Algorithm" value={fields["X-Amz-Algorithm"]}/>
+                    <input type="hidden" name="X-Amz-Credential" value={fields["X-Amz-Credential"]}/>
+                    <input type="hidden" name="X-Amz-Date" value={fields["X-Amz-Date"]}/>
+                    <input type="hidden" name="X-Amz-Signature" value={fields['X-Amz-Signature']}/>
+                    <input type="hidden" name="policy" value={fields['Policy']}/>            
+                    <input type='file' name='file'/>
+                </form>
+            )
+            
+        }
 
 
+
+
+
+
+    //NOT RECOMMENDED, but if you want to make a fetch request with the presignedURL and upload a file....
+            const fetchRequest = () => {
+                    const response = await fetch(icons['successMark']);                //converting a file into a blob object
+                    const blob = await response.blob();
+        
+                    const {url, fields} = S3.generatePresignedURL('new-image');
+                    
+                    const formData = new FormData();
+                    Object.entries(fields).forEach(([key, value]) => {
+                        formData.append(key, value);
+                      });
+                    formData.append('file', blob);                                    //first argument MUST be 'file'
+            
+                    await fetch(url, {
+                        method: 'POST',
+                        body: formData
+                    })
+            }
     
 
 --------------------------------------------HOW TO MANUALLY DEPLOY A WEBSITE WITH S3----------------------------------------------------------------------

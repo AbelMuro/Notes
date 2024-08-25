@@ -129,13 +129,11 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             signatureVersion: 'v4'
         })
 
-KEEP IN MIND, that if you want to put an object inside a folder, you can pass 'myFolder/objectName' as an argument to the functions below
-
     1) This function will create a URL that can be used in a fetch request to store data into the s3 bucket
     
             export async function generateUploadURL(objectName) {                 //objectName is the name of object that will be stored in S3 bucket
                 const params = {
-                    Bucket: 'bucket name goes here',
+                    Bucket: 'your-bucket-name',
                     Key: objectName,
                     Expires: 60
                 };
@@ -147,7 +145,7 @@ KEEP IN MIND, that if you want to put an object inside a folder, you can pass 'm
     
             export async function generateDownloadURL(objectName){
                 const params = {
-                    Bucket: 'bucket name goes here',
+                    Bucket: 'your-bucket-name',
                     Key: objectName,
                     Expires: 60
                 }
@@ -160,7 +158,7 @@ KEEP IN MIND, that if you want to put an object inside a folder, you can pass 'm
     
             export async function generateDeleteURL(objectName){
                 const params = ({
-                    Bucket: 'bucket name goes here',
+                    Bucket: 'your-bucket-name',
                     Key: objectName,
                     Expires: 60
                 });
@@ -174,7 +172,7 @@ KEEP IN MIND, that if you want to put an object inside a folder, you can pass 'm
 
         export function generatePresignedURL(fileName) {
             const params = {
-                Bucket: 'bucket name goes here',
+                Bucket: 'your-bucket-name',
                 Fields: {
                   Key: fileName
                 },
@@ -193,22 +191,109 @@ KEEP IN MIND, that if you want to put an object inside a folder, you can pass 'm
     
             export function generateSignedURL(fileName){
                 const params = {
-                    Bucket: 'contact-form-data',
+                    Bucket: 'your-bucket-name',
                     Key: fileName,
                     Expires: 60
                 };
             
                 const url = s3.getSignedUrl('getObject', params);
-                return url;
+                return url;                            //use this url in the src attribute of an img tag
             }
 
 
+    6) This function will automatically store data into the s3 bucket
 
+            export function PutObject (objectName, data) {
+                const params = {
+                      Bucket: 'your-bucket-name',
+                      Key: objectName,                    //you must use JSON.stringify() if objectName is indeed an object
+                      Body: data
+                };
+                
+                s3.putObject(params, (err, data) => {
+                });                
+            }
 
+    7) This function will automatically upload a file into the s3 bucket
 
+            export function UploadFile (file) {        //file must be from <input type='file'>
+                
+                const params = {
+                  Bucket: 'your-bucket-name',
+                  Key: file.name,
+                  Body: file
+                };
+                
+                s3.upload(params, (err, data) => {
+                });
+            }
 
+    8) This function will automatically retrieve data from the s3 bucket
 
+            export function GetObject (objectName) {
+                const params = {
+                      Bucket: 'your-bucket-name',
+                      Key: objectName
+                    };
+                
+                s3.getObject(params, (err, data) => {
+                        if(err) return;
 
+                        // if we are getting objects
+                            const response = data.Body.toString();
+                            console.log(JSON.parse(response));
+                            
+                        // if we are downloading files       
+                            const imageData = data.Body;
+                            console.log(imageData.toString('base64'));       //this can be used in the src attribute of an img tag
+                });
+            }
+
+    9) This function will automatically retrieve ALL data from the s3 bucket
+
+            export function GetAllObjects (bucketName)  {
+                const params = {
+                      Bucket: bucketName
+                };
+                
+                s3.listObjectsV2(params, (err, data) => {
+                    if(err) return;
+                    
+                    console.log(data.Contents);            //Contents is an array
+                });
+            }
+
+    10) This function will automatically delete an object from the s3 bucket
+
+            export function DeleteObject (objectName) {
+                const params = {
+                      Bucket: 'your-bucket-name',
+                      Key: objectName
+                };
+                
+                s3.deleteObject(params, (err, data) => {
+                });
+            }
+
+    11) This function will automatically delete multiple objects from the s3 bucket
+
+         export function DeleteAllObjects  ()  {
+         
+                 const params = {
+                      Bucket: 'your-bucket-name',
+                      Delete: {
+                        Objects: [
+                          { Key: 'example1.txt' },
+                          { Key: 'example2.txt' }
+                        ]
+                      }
+                    };
+                    
+                s3.deleteObjects(params, (err, data) => {
+                });
+         }    
+
+        
 
     //------------------------------------------app.js
         import S3 from './s3.js'

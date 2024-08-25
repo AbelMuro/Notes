@@ -470,7 +470,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     these IAM users is to enable other people within an organization to use the same AWS account and its services. As the organization grows, 
     you can put IAM users within IAM groups that have the same permissions, thereby simplifying the permissions being delegated.
     
-    By default, an IAM user doesnt have any permissions. The root user will have to assign a 'policy' that describes 
+    By default, an IAM user doesnt have any permissions. The root user will have to assign a 'policy' that lists 
     the permissions to the IAM user. Once the IAM user has the policy, they can access the AWS resources. Policies are basically JSON files
     
     Policies can also be assigned to Roles. Roles were designed to give temporary access to an IAM user to a resource that they 
@@ -481,6 +481,16 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     When you create a AWS account, you are given a 'root' user account that has ALL administrative access. However, 
     it is strongly recommended to not use this root account for everyday tasks for security reasons. The Root user should 
     only be used for actions that require the root user. For other trivial actions, an IAM account should be used
+
+
+
+    RECAP:
+
+        Policies: are a list of permissions (access to S3, EC2, etc...)
+
+        Roles: are a list of policies that can be assigned to a user
+
+        User Groups: are a group of users that share policies
 
  */
 
@@ -509,6 +519,14 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     6) Choose a name and description for the role
 
     7) then click Create Role 
+
+    8) To add users to the role, first go to Roles -> select the role -> Trust Relationships -> Edit trust policy
+        //remove any other property within the "Principal" property except "AWS"
+            
+        "Principal": {
+            "AWS": ["arn:aws:iam::{ACCOUNT_ID_WITHOUT_HYPHENS}:user/Abel-Muro"]                    //you can add as many users as you want like this
+        },    
+                    
 
 */
 

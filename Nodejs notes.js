@@ -18,6 +18,37 @@
 
 
 
+/* 
+    How to create a server with node.js
+
+	1) Create a folder and then a file server.js
+
+	2) npm init -y
+
+ 	3) npm install express
+
+  	4) Copy the following lines of code
+
+		const express = require('express');
+		const app = express();                                        //creating an object that represents the main app
+		const port = 6000;
+		
+		app.get('/', (req, res) => {
+		    res.send('hello world')
+		})
+		
+		app.listen(port, (error) => {
+		    if(error){
+		        console.log(error, 'error occured');
+		        return;
+		    }
+		    console.log(`Server is running on port ${port}`);
+		});                                         
+
+	5) run the command - node server.js
+
+ 	6) The server should be running on localhost:6000
+*/
 
 
 
@@ -40,15 +71,13 @@
 
 
 
-//=========================================================HTTP MODULE=========================================================
-// HYPER TEXT TRANSFER PROTOCOL -> all about requests and responses that are done between clients and servers
-// http module is the most used module in node.js, it uses http to receive requests and send responses to the client
-// below is how you will create a server
+//=============================================================== EXPRESS WEB FRAMEWORK =================================================================
+//middleware, a function that does something between the server receiving a request and sending a response 
 
 // if you are using parcel in the client side...
 // 1) npm install -D http-proxy-middleware
 // 2) create a .proxyrc configuration file and type in the following json
-/* 3) every request made from the client will be proxied to port: 5000
+/* 3) 
     {
         "/": {
             "target": "http://localhost:5000"                    //every request sent by the client will be 
@@ -58,6 +87,82 @@
 
 // if you are using webpack in the client side...
 // 1) configure webpack.config file with the following
+//  
+//        module.exports = {
+//            ...
+//            devServer: { 
+//                port: 3000,
+//                proxy: {
+//                    '/' : {
+//                        target: 'http://localhost:3000',
+//                        router: () => 'http://localhost: 5000'         //all requests will be forwarded to this port                                     
+//                   }
+//               }
+//           }
+//       }
+ 
+
+const express = require('express');
+const app = express();                                        //creating an object that represents the main app
+const bodyParser = require('body-parser');                    //npm install body-parser, this will parse all incoming fetch() requests
+const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
+
+app.use(bodyParser.json());
+app.use(cookieParser());
+
+fetch('/login', {
+    method: "POST, GET, PUT, DELETE",                             // these requests correspond to the requests below, app.post(), app.get(), etc...
+})
+
+// 'get' requests
+app.get('/login', (req, res) => {                                 // .get() is for handleling 'get' requests from the client
+    res.send('data has been sent');                                 
+})
+
+// 'post' request
+app.post('/login', (req, res) => {
+    //do something with req.body (if request came from a fetch())
+    //or use formidable module to get user input from forms
+    res.send('data has been received')
+})
+
+// 'put' request is similar to 'post', but the main difference is that calling the same 'put' request will produce the same result, but calling the same 'post' request will create the same resource over and over again
+app.put('/login', (req, res) => {
+    //do something with req.body (if request came from a fetch())
+    //or use formidable module to get user input from forms
+    res.send('data has been received')
+    
+})
+
+// 'delete' request
+app.delete('/login', (req, res) => {
+    //do something with req.body (if request came from a fetch())
+    //or use formidable module to get user input from forms
+    res.send('data has been deleted')
+})
+
+
+
+// app.use will bind a middleware for the path '/contantPage'
+app.use('/contactPage', () => {                              // .use() is a function that will 'use' the function on the second argument
+})                                                          // everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
+
+
+
+app.listen(5000);                                            //listens to port 5000
+
+
+
+
+
+
+//=========================================================HTTP MODULE=========================================================
+// HYPER TEXT TRANSFER PROTOCOL -> all about requests and responses that are done between clients and servers
+// http module is the most used module in node.js, it uses http to receive requests and send responses to the client
+// below is how you will create a server
+
+
+// configure webpack.config file with the following
 //  
 //        module.exports = {
 //            ...
@@ -284,87 +389,6 @@ uc.upperCase("hello world");
 
 
 
-
-
-//=============================================================== EXPRESS WEB FRAMEWORK =================================================================
-//middleware, a function that does something between the server receiving a request and sending a response 
-
-// if you are using parcel in the client side...
-// 1) npm install -D http-proxy-middleware
-// 2) create a .proxyrc configuration file and type in the following json
-/* 3) 
-    {
-        "/": {
-            "target": "http://localhost:5000"                    //every request sent by the client will be 
-        }                                                        //forwarded to this port
-    } 
-*/
-
-// if you are using webpack in the client side...
-// 1) configure webpack.config file with the following
-//  
-//        module.exports = {
-//            ...
-//            devServer: { 
-//                port: 3000,
-//                proxy: {
-//                    '/' : {
-//                        target: 'http://localhost:3000',
-//                        router: () => 'http://localhost: 5000'         //all requests will be forwarded to this port                                     
-//                   }
-//               }
-//           }
-//       }
- 
-
-const express = require('express');
-const app = express();                                        //creating an object that represents the main app
-const bodyParser = require('body-parser');                    //npm install body-parser, this will parse all incoming fetch() requests
-const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
-
-app.use(bodyParser.json());
-app.use(cookieParser());
-
-fetch('/login', {
-    method: "POST, GET, PUT, DELETE",                             // these requests correspond to the requests below, app.post(), app.get(), etc...
-})
-
-// 'get' requests
-app.get('/login', (req, res) => {                                 // .get() is for handleling 'get' requests from the client
-    res.send('data has been sent');                                 
-})
-
-// 'post' request
-app.post('/login', (req, res) => {
-    //do something with req.body (if request came from a fetch())
-    //or use formidable module to get user input from forms
-    res.send('data has been received')
-})
-
-// 'put' request is similar to 'post', but the main difference is that calling the same 'put' request will produce the same result, but calling the same 'post' request will create the same resource over and over again
-app.put('/login', (req, res) => {
-    //do something with req.body (if request came from a fetch())
-    //or use formidable module to get user input from forms
-    res.send('data has been received')
-    
-})
-
-// 'delete' request
-app.delete('/login', (req, res) => {
-    //do something with req.body (if request came from a fetch())
-    //or use formidable module to get user input from forms
-    res.send('data has been deleted')
-})
-
-
-
-// app.use will bind a middleware for the path '/contantPage'
-app.use('/contactPage', () => {                              // .use() is a function that will 'use' the function on the second argument
-})                                                          // everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
-
-
-
-app.listen(5000);                                            //listens to port 5000
 
 
 

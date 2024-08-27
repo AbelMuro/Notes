@@ -19,23 +19,19 @@
 
 
 /* 
-    How to create a server with node.js
+    How to create a server with node.js (keep in mind that some localhosts may not work in your browser)
 
 	1) Create a folder and then a file server.js
 
 	2) npm init -y
 
- 	3) npm install express
+ 	3) npm install express 
 
   	4) Copy the following lines of code
 
 		const express = require('express');
 		const app = express();                                        //creating an object that represents the main app
-		const port = 6000;
-		
-		app.get('/', (req, res) => {
-		    res.send('hello world')
-		})
+		const port = 4000;
 		
 		app.listen(port, (error) => {
 		    if(error){
@@ -47,9 +43,41 @@
 
 	5) run the command - node server.js
 
- 	6) The server should be running on localhost:6000
+ 	6) The server should be running on localhost:4000 and will display a Hello World Message
+
+  	7) If you want browsers of different origins to make fetch requests to the server, you must implement CORS
 */
 
+
+
+
+
+
+
+//============================================================== CORS ======================================================================
+/* 
+	CORS: Cross origin resource sharing
+
+ 	CORS is basically a way for servers to allow browsers of different origins to load resources
+   	If the browser is making a get-request from a different origin, the you will need cors
+    
+	//npm install cors
+
+    	const cors = require('cors');
+     	const corsOptions = {
+        	origin: 'http://example.com',						//Access-Control-Allow-Origin
+		methods: ['GET', 'POST'],
+		allowedHeaders: ['Content-Type', 'Authorization'],			//Access-Control-Allow-Headers
+		credentials: true,
+		maxAge: 3600,
+		optionsSuccessStatus: 200
+	}
+	app.use(cors(corsOptions));							// Enabling cors for all routes using app.use()
+
+	app.get('/', cors(corsOptions), (req, res) => { 				// Alternatively, we can enable cors for specific routes using app.get(), app.post(), etc.
+ 
+	});
+*/
 
 
 
@@ -74,19 +102,9 @@
 //=============================================================== EXPRESS WEB FRAMEWORK =================================================================
 //middleware, a function that does something between the server receiving a request and sending a response 
 
-// if you are using parcel in the client side...
-// 1) npm install -D http-proxy-middleware
-// 2) create a .proxyrc configuration file and type in the following json
-/* 3) 
-    {
-        "/": {
-            "target": "http://localhost:5000"                    //every request sent by the client will be 
-        }                                                        //forwarded to this port
-    } 
-*/
 
-// if you are using webpack in the client side...
-// 1) configure webpack.config file with the following
+
+// configure webpack.config file with the following
 //  
 //        module.exports = {
 //            ...
@@ -95,7 +113,7 @@
 //                proxy: {
 //                    '/' : {
 //                        target: 'http://localhost:3000',
-//                        router: () => 'http://localhost: 5000'         //all requests will be forwarded to this port                                     
+//                        router: () => 'http://localhost: 4000'         //all requests will be forwarded to this port                                     
 //                   }
 //               }
 //           }
@@ -171,7 +189,7 @@ app.listen(5000);                                            //listens to port 5
 //                proxy: {
 //                    '/' : {
 //                        target: 'http://localhost:3000',
-//                        router: () => 'http://localhost: 5000'         //all requests will be forwarded to this port                                     
+//                        router: () => 'http://localhost: 4000'         //all requests will be forwarded to this port                                     
 //                   }
 //               }
 //           }

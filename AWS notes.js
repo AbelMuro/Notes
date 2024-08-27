@@ -206,8 +206,8 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             export function PutObject (objectName, data) {
                 const params = {
                       Bucket: 'your-bucket-name',
-                      Key: objectName,                    //you must use JSON.stringify() if objectName is indeed an object
-                      Body: data
+                      Key: objectName,                   
+                      Body: JSON.stringify(data)
                 };
                 
                 s3.putObject(params, (err, data) => {

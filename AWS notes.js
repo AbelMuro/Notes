@@ -548,9 +548,16 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
               add a rule for type 'https' and destination for 'Anywhere IPv4'
               add a rule for type 'SSH' and destination for 'Anywhere IPv4'
 
-      14) Get the public IP or DNS of the instance by clicking on the instance, go to details tab and look for “Public IPv4 address”
+      14) Get the public IP or DNS of the instance by clicking on the instance, go to details tab and look for “Public IPv4 address” or "Public IPv4 DNS"
 
-      15) In the fetch request, make the request to this url 'http://your-ec2-public-ip-or-dns:your-port/your-endpoint'
+      15) In the fetch request, make the request to this url 'http://your-ec2-public-ip-or-dns/your-endpoint'
+
+              If you server is running on a port that is not one of the default values (80 for http, or 443 for https)
+              then the url should look like this url 'http://your-ec2-public-ip-or-dns:port/your-endpoint'
+
+              
+
+
 
 
 

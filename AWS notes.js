@@ -538,16 +538,32 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
         //Run node.js
             npm start
 
-      12) Keep in mind that npm start will start the server at a specific port, 
-          if you want to close the server in that port then run the following commands
+      12) To enable fetch request to the ec2 instance, you must configure the SecurityGroup for the instance
 
-          sudo lsof -i :4000        //get the process ID
-          sudo kill -9 <PID>        //replace <PID> with the process ID, this will terminate the process in the port
+      13) Click on the instance -> security tab -> security groups.
+          edit outbound rules
+              add a rule for type 'All traffic' and destination for 'Anywhere IPv4'
+          edit inbound rules
+              add a rule for type 'http' and destination for 'Anywhere IPv4'
+              add a rule for type 'https' and destination for 'Anywhere IPv4'
+              add a rule for type 'SSH' and destination for 'Anywhere IPv4'
 
-      13) If your server relies on env variables, then run the following commands
-        
-            touch .env               //creates the env file in current directory
-            apiKey=123456789         // enter the env variables, line per line
+      14) Get the public IP or DNS of the instance by clicking on the instance, go to details tab and look for “Public IPv4 address”
+
+      15) In the fetch request, make the request to this url 'http://your-ec2-public-ip-or-dns:your-port/your-endpoint'
+
+
+
+          a) Keep in mind that npm start will start the server at a specific port, 
+              if you want to close the server in that port then run the following commands
+    
+              sudo lsof -i :4000        //get the process ID
+              sudo kill -9 <PID>        //replace <PID> with the process ID, this will terminate the process in the port
+    
+          b) If your server relies on env variables, then run the following commands
+            
+                touch .env               //creates the env file in current directory
+                apiKey=123456789         // enter the env variables, line per line
 */    
 
 

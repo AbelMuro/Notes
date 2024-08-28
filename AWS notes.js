@@ -550,7 +550,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
       14) Get the public IP or DNS of the instance by clicking on the instance, go to details tab and look for “Public IPv4 address” or "Public IPv4 DNS"
 
-      15) In the fetch request, make the request to this url 'http://your-ec2-public-ip-or-dns/your-endpoint'
+      15) In the fetch request, make the request to this url 'http://<public-ip-or-dns>/your-endpoint'
 
               If you server is running on a port that is not one of the default values (80 for http, or 443 for https)
               then the url should look like this url 'http://your-ec2-public-ip-or-dns:port/your-endpoint'
@@ -569,8 +569,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     
           b) If your server relies on env variables, then run the following commands
             
-                touch .env               //creates the env file in current directory
-                apiKey=123456789         // enter the env variables, line per line
+                export accessKeyId=123456789 apiKey=987654321
 */    
 
 

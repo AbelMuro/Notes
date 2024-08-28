@@ -12,8 +12,6 @@
 // modules are like javascript libraries, a set of pre-built functions that you can use.
 // typically, you will use the require() function to access the functions in the modules
 
-// keep in mind that everything below the require() function must go inside the createServer() function
-
 
 
 
@@ -46,7 +44,23 @@
  	6) The server should be running on localhost:4000 and will display a Hello World Message
 
   	7) If you want browsers of different origins to make fetch requests to the server, you must implement CORS
+
+   	8) Now create a front end app that you can use to interact with the server
+
+    	9) You will need to use fetch requests to send requests and receive respponses from the server
+
+		const response = await fetch('http://localhost:4000/', {
+	            method: 'POST',
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            body: JSON.stringify({data: 'my data'})
+	        });
 */
+
+
+
+
 
 
 
@@ -83,6 +97,47 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+//=========================================================== MODULES ==================================================================
+/* 
+	MODULES are separate files with functions and classes that can be used(imported) in other files in node.js
+
+ 	1)   //add.js
+
+  	const add = (a, b) => a + b;
+	module.exports = add;
+
+    
+ 	2)   //server.js
+
+ 	const add = require('./add');			//you dont need the extension for ./add.js	
+  	add(1, 2);
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //========================================================= DNS (Domain Name System) =======================================================
 // (DNS is like a contacts list on your phone that contains a list of IP addresses that your computer has visited before)
 
@@ -99,38 +154,26 @@
 
 
 
+
+
+
+
+
+
+
 //=============================================================== EXPRESS WEB FRAMEWORK =================================================================
 //middleware, a function that does something between the server receiving a request and sending a response 
 
-
-
-// configure webpack.config file with the following
-//  
-//        module.exports = {
-//            ...
-//            devServer: { 
-//                port: 3000,
-//                proxy: {
-//                    '/' : {
-//                        target: 'http://localhost:3000',
-//                        router: () => 'http://localhost: 4000'         //all requests will be forwarded to this port                                     
-//                   }
-//               }
-//           }
-//       }
  
 
 const express = require('express');
 const app = express();                                        //creating an object that represents the main app
 const bodyParser = require('body-parser');                    //npm install body-parser, this will parse all incoming fetch() requests
 const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
+const port = 5000;
 
-app.use(bodyParser.json());
+app.use(bodyParser.json());					//you will need this if your server expects fetch requests with the body property
 app.use(cookieParser());
-
-fetch('/login', {
-    method: "POST, GET, PUT, DELETE",                             // these requests correspond to the requests below, app.post(), app.get(), etc...
-})
 
 // 'get' requests
 app.get('/login', (req, res) => {                                 // .get() is for handleling 'get' requests from the client
@@ -159,15 +202,39 @@ app.delete('/login', (req, res) => {
     res.send('data has been deleted')
 })
 
-
-
 // app.use will bind a middleware for the path '/contantPage'
 app.use('/contactPage', () => {                              // .use() is a function that will 'use' the function on the second argument
 })                                                          // everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
 
+//listens to port 5000
+app.listen(port, (error) => {
+	if(error)
+	    console.log('Internal Error')
+	else
+	    console.log(`Server is running on port ${port}`)
+});                                           
 
 
-app.listen(5000);                                            //listens to port 5000
+
+
+
+
+
+
+//======================================================== ENV variables ====================================================
+/* 
+
+	1) npm install dotenv
+
+	2) const { config } = require('dotenv');
+      	   config();
+	  
+	3) process.env.apiKey can only be used in the SAME file where you called config()
+
+*/
+
+
+
 
 
 

@@ -346,9 +346,6 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
                    <></>)
             }
 
-
-
-
     
     // 2) this is how you upload files into the s3 bucket
         function App() {
@@ -368,30 +365,6 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             
         }
 
-
-
-
-
-
-    //NOT RECOMMENDED, but if you want to make a fetch request with the presignedURL and upload a file....
-            const fetchRequest = () => {
-                    const response = await fetch(icons['successMark']);                //converting a file into a blob object
-                    const blob = await response.blob();
-        
-                    const {url, fields} = S3.generatePresignedURL('new-image');
-                    
-                    const formData = new FormData();
-                    Object.entries(fields).forEach(([key, value]) => {
-                        formData.append(key, value);
-                      });
-                    formData.append('file', blob);                                    //first argument MUST be 'file'
-            
-                    await fetch(url, {
-                        method: 'POST',
-                        body: formData
-                    })
-            }
-    
 
 --------------------------------------------HOW TO MANUALLY DEPLOY A WEBSITE WITH S3----------------------------------------------------------------------
 
@@ -508,36 +481,63 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 /* 
     Amazon EC2 instance is a service that launches/deploys virtual servers in the cloud. An instance is an individual server
     in the cloud.
+
+
+    1)  Go to EC2 dashboard and click on Launch Instance
+
+    2)  Create a name for the server
+        
+    3)  Select an Amazon Machine Image (template for software configuration for the machine that will run your server) 
+        
+    4)  Select instance type (template for hardware configuration for the machine that will run your server)
+        
+    5)  Create a key pair and save the file in desktop so that you can connect securely to the server
+          
+    6)  In Network settings, check 'Allow HTTPS traffic from the internet'
+        
+    7)  Configure Storage section (template for the physical storage needed for the server)
+
+    8)  Launch Instance
+
+    9)  Connect to the instance by clicking on connect
+
+    10) It will open up a terminal
+
+    11) run the following commands
+
+        // Install NVM (node version manager) first line takes you to the root directory, second installs NVM
+            sudo su -                                        
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+        // Activate NVM
+            . ~/.nvm/nvm.sh
+
+        // Install node
+            nvm install node
+
+        //Check if node is install correctly
+            node -v
+            npm -v
+
+        //Install git
+            sudo apt-get update -y                    //replace apt-get with yum for linux based AMI
+            sudo apt-get install git -y               //replace apt-get with yum for linux based AMI
+
+        //Verify git is installed
+            git version
+
+        //Clone the repository that has the server
+            git clone https://github.com/AbelMuro/Contact-form-server            //replace with actual repo
+
+        //Change into the directory of the repo
+            cd Contact-form-server
+
+        //Install dependencies
+            npm install
+
+        //Run node.js
+            npm start
 */
-
-
-//--------------------------------------------- HOW TO CREATE AN EC2 INSTANCE -------------------------------------------------------
-
-/* 
-    1) Go to the EC2 console
-    
-    2) in the Launch Instance section, click on Launch Instance button
-
-    3) on the next page, choose a name for your instance
-    
-    4) then choose the Amazon Machine Image (AMI), this is selecting the operating system for your instance
-    
-    5) then select the instance type, this will describe the storage capacity, speed, number of cpu cores, and network performance of your instance
-    
-    6) create a key pair name, this will be used to connect to your instance
-    
-    7) configure the network settings
-    
-    8) configure the storage capacity
-    
-    9) Click on Launch Instance button
-    
-    10) what this does is create a server on the cloud, you may need to wait a few minutes for the server to be online
-    
-    11) Once the server is online, you can connect to it. The server will take the form of a terminal
-
-*/
-
 
 
 

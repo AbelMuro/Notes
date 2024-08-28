@@ -537,7 +537,18 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
         //Run node.js
             npm start
-*/
+
+      12) Keep in mind that npm start will start the server at a specific port, 
+          if you want to close the server in that port then run the following commands
+
+          sudo lsof -i :4000        //get the process ID
+          sudo kill -9 <PID>        //replace <PID> with the process ID, this will terminate the process in the port
+
+      13) If your server relies on env variables, then run the following commands
+        
+            touch .env               //creates the env file in current directory
+            apiKey=123456789         // enter the env variables, line per line
+*/    
 
 
 

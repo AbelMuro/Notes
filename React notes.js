@@ -557,11 +557,10 @@ array.map((val, i) => {
  //so that means that ClassComponent can inherit the methods and properties from React.Component
 class ClassComponent extends React.Component {
 
-    constructor(props) {
-        super(props);                                        //we should always call the parent constructor of a class component because we can use this.props
-        console.log(this.props, props)                       //if we never called the super(), then this.props will be undefined, but you can still use props to access the props
+    constructor(props) {                                       //Keep in mind that props is only accessible in the constructor, it cannot be accessed outside yet
+        super(props);                                        //we should always call the parent constructor of a class component because it allows use to use this.props for the whole scope of this component
         this.state = {value: 0};                             //state is an object that stores data that should only be changed by this component
-        this.handleClick = this.handleClick.bind(this);      //you should always bind(this) with event handlers because 'this' gets lost when you pass down the event handler to the child components
+        this.handleClick = this.handleClick.bind(this);      //you should always bind(this) with event handlers because the value of 'this' gets lost when you pass down the event handler to the child components
         this.handleChange = this.handleChange.bind(this);
     }
  
@@ -608,8 +607,9 @@ X   componentWillUnmount() {                                //lifecycle method t
 
 
     render() {
-        //any data manipulation can go here
-        let currentState = this.state.value;            //accessing state object
+        const props = this.props;                        //because we called super(props), we can access the props outside the constructor     
+        const currentState = this.state.value;            //accessing state object
+            
         return (
             <div>
                 <h1> state object is: {currentState} </h1>

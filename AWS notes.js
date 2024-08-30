@@ -604,6 +604,11 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
         4.2) Enter github username
 
         4.3) Enter the repo in this format Abel-Muro/name-of-repo
+
+        4.4) Enter a github access token from your github account
+                go to settings of your github account
+                go to developer settings
+                then go to personal access token and create a token
     
         4.4) Enter the commit ID by running git log on the repository in visual studio, 
 

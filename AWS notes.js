@@ -603,7 +603,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
         4.2) Enter github username
 
-        4.3) Enter the repo in this format Abel-Muro/name-of-repo
+        4.3) Enter the repo in this format AbelMuro/name-of-repo
 
         4.4) Enter a github access token from your github account
                 go to settings of your github account
@@ -614,9 +614,10 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
         4.5) Click on create deployment
 
-    5) Go to your repositoty and create a directory .github/workflows/deploy.yml
-        and paste the following lines of code
+    5) Go to your repositoty and create a directory .github/workflows/deploy.yml and paste the following lines of code
         MAKE SURE TO REPLACE application-name, deployment group, and github token with the correct values
+        Keep in mind that github will not allow you to push secret tokens to a repo, 
+        so you will need to allow this by following a link that is given to you by 
 
             name: Deploy to EC2
 

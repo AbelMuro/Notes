@@ -464,7 +464,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
 
 
-//========================================= AMAZON CODEPIPELINE ================================================================
+//============================================== AMAZON CODEPIPELINE ================================================================
 
 
 
@@ -480,7 +480,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 //=============================================== AMAZON EC2 INSTANCE ==============================================================
 /* 
     Amazon EC2 instance is a service that launches/deploys virtual servers in the cloud. An instance is an individual server
-    in the cloud.
+    in the cloud. You can deploy node.js with EC2 instance
 
 
     1)  Go to EC2 dashboard and click on Launch Instance
@@ -570,6 +570,83 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
           b) If your server relies on env variables, then run the following commands
             
                 export accessKeyId=123456789 apiKey=987654321
+
+
+
+
+//------------------------------------------------ HOW TO CONNECT A GITHUB REPOSITORY TO AN EC2 INSTANCE -------------------------------------
+
+
+    1) First create your EC2 instance with the role that has the policy 'AmazonEC2RoleforAWSCodeDeploy'
+         If the instance has already been created, go to actions -> security -> modify IAM role
+
+    2) Create another role with the policy 'AWSCodeDeployRole'  (save the ARN of the role)
+    
+           If you dont have the role, you will need to create one in IAM
+           Go to IAM -> create roles -> in the service tab, select EC2 or CodeDeploy, and add the policies
+           
+    3)  Go to CodeDeploy and create an application
+        3.1) Choose a name for the app
+
+        3.2) for the platform, choose EC2
+
+        3.3) Then choose create deployment group
+
+        3.4) Choose a name for the group, and select the service role with 'AWSCodeDeployRole'
+
+        3.5) In Environment configuration, check Ec2 Instance and create a tag with Name as the key and the name of the instance as the value
+        
+        3.6) Then click on create deployment group
+
+    4) Click on Create deployment
+        4.1) In Revision type tab, select Github
+
+        4.2) Enter github username
+
+        4.3) Enter the repo in this format Abel-Muro/name-of-repo
+    
+        4.4) Enter the commit ID by running git log on the repository in visual studio, 
+
+        4.5) Click on create deployment
+
+    5) Go to your repositoty and create a directory .github/workflows/deploy.yml
+        and paste the following lines of code
+        MAKE SURE TO REPLACE application-name, deployment group, and github token with the correct values
+
+            name: Deploy to EC2
+
+            on:
+              push:
+                branches:
+                  - main
+            
+            jobs:
+              deploy:
+                runs-on: ubuntu-latest
+            
+                steps:
+                  - name: Checkout code
+                    uses: actions/checkout@v2
+            
+                  - name: Set up Node.js
+                    uses: actions/setup-node@v2
+                    with:
+                      node-version: '14'
+            
+                  - name: Install dependencies
+                    run: npm install
+            
+                  - name: Deploy to EC2
+                    uses: aws-actions/aws-code-deploy@v1
+                    with:
+                      application-name: <your-codedeploy-application-name>
+                      deployment-group: <your-deployment-group-name>
+                      deployment-config-name: CodeDeployDefault.OneAtATime
+                      github-token: ${{ secrets.GITHUB_TOKEN }}
+                      region: us-west-2
+
+
+
 */    
 
 

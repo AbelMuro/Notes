@@ -555,7 +555,12 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
               If you server is running on a port that is not one of the default values (80 for http, or 443 for https)
               then the url should look like this url 'http://your-ec2-public-ip-or-dns:port/your-endpoint'
 
-              
+        16) nginx installation
+
+         16.1)  sudo yum install -y nginx                //installs nginx                        in case you dont have nginx installed
+         16.2)  sudo systemctl start nginx               //starts nginx
+         16.3)  sudo systemctl enable nginx              //enables nginx to start on reboot
+          
 
 
 

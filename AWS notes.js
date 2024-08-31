@@ -561,7 +561,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
          16.2)  sudo systemctl start nginx                       //starts nginx
          16.3)  sudo systemctl enable nginx                      //enables nginx to start on reboot
          16.4)  sudo nano /etc/nginx/sites-available/default     //configuration file for nginx
-                    paste the following lines of code
+                    //paste the following lines of code
             
                 server {
                     listen 80;
@@ -614,90 +614,54 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
     
           b) If your server relies on env variables, then run the following commands
             
-                export accessKeyId=123456789 apiKey=987654321
+                nano .env            //creates an env file in current directory
+
+                apiKey=123456789     //start entering the env variables
 
 
 
 
-//------------------------------------------------ HOW TO CONNECT A GITHUB REPOSITORY TO AN EC2 INSTANCE -------------------------------------
+//------------------------------------------------ HOW TO MAKE EC2 INSTANCE DETECT CHANGES IN GITHUB REPOSITORY -------------------------------------
 
 
-    1) First create your EC2 instance with the role that has the policy 'AmazonEC2RoleforAWSCodeDeploy'
-         If the instance has already been created, go to actions -> security -> modify IAM role
+      1) Go to the github repository and click on settings
 
-    2) Create another role with the policy 'AWSCodeDeployRole'  (save the ARN of the role)
+      2) click on webhooks, then add webhook
+
+      3) for the payload url, set the url for the ec2 instance 
+
+            http://ec2-52-53-169-169.us-west-1.compute.amazonaws.com/webhook
+            
+      4) For the contect-type, set application/json
     
-           If you dont have the role, you will need to create one in IAM
-           Go to IAM -> create roles -> in the service tab, select EC2 or CodeDeploy, and add the policies
-           
-    3)  Go to CodeDeploy and create an application
-        3.1) Choose a name for the app
+      5) In your node.js server, add the following endpoint
 
-        3.2) for the platform, choose EC2
-
-        3.3) Then choose create deployment group
-
-        3.4) Choose a name for the group, and select the service role with 'AWSCodeDeployRole'
-
-        3.5) In Environment configuration, check Ec2 Instance and create a tag with Name as the key and the name of the instance as the value
-        
-        3.6) Then click on create deployment group
-
-    4) Click on Create deployment
-        4.1) In Revision type tab, select Github
-
-        4.2) Enter github username
-
-        4.3) Enter the repo in this format AbelMuro/name-of-repo
-
-        4.4) Enter a github access token from your github account
-                go to settings of your github account
-                go to developer settings
-                then go to personal access token and create a token
-    
-        4.4) Enter the commit ID by running git log on the repository in visual studio, 
-
-        4.5) Click on create deployment
-
-    5) Go to your repositoty and create a directory .github/workflows/deploy.yml and paste the following lines of code
-        MAKE SURE TO REPLACE application-name, deployment group, and github token with the correct values
-        Keep in mind that github will not allow you to push secret tokens to a repo, 
-        so you will need to allow this by following a link that is given to you by 
-
-            name: Deploy to EC2
-
-            on:
-              push:
-                branches:
-                  - main
+          app.post('/webhook', (req, res) => {
+                const payload = req.body;
             
-            jobs:
-              deploy:
-                runs-on: ubuntu-latest
-            
-                steps:
-                  - name: Checkout code
-                    uses: actions/checkout@v2
-            
-                  - name: Set up Node.js
-                    uses: actions/setup-node@v2
-                    with:
-                      node-version: '14'
-            
-                  - name: Install dependencies
-                    run: npm install
-            
-                  - name: Deploy to EC2
-                    uses: aws-actions/aws-code-deploy@v1
-                    with:
-                      application-name: <your-codedeploy-application-name>
-                      deployment-group: <your-deployment-group-name>
-                      deployment-config-name: CodeDeployDefault.OneAtATime
-                      github-token: ${{ secrets.GITHUB_TOKEN }}
-                      region: us-west-2
+                // Check if the event is a push event
+                if(payload.ref === 'refs/heads/main') {
+                    // Pull the latest changes from the repository
+                    exec('git pull', (error, stdout, stderr) => {           //pm2 restart all will restart your node.js app
+                        if(error) {
+                            console.error(`Error pulling changes: ${error.message}`);
+                            return res.status(500).send('Error pulling changes!');
+                        }
+                        console.log(`stdout: ${stdout}`);
+                        console.error(`stderr: ${stderr}`);
+                        console.log('Changes pulled successfully!');
+                        res.status(200).send('Changes pulled successfully');
+                    });
+                } 
+                else {
+                    console.log('Not a push event to the main branch!');
+                    res.status(200).send('Not a push event to the main branch');
+                }   
+            });
 
+        6) You will need to manually use git pull on the repository in ec2 instance to apply the changes first
 
-
+        7) You will need to restart your node.js app in ec2 instances for the changes to take effect
 */    
 
 

@@ -555,12 +555,52 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
               If you server is running on a port that is not one of the default values (80 for http, or 443 for https)
               then the url should look like this url 'http://your-ec2-public-ip-or-dns:port/your-endpoint'
 
-        16) nginx installation
+       16) To enable https requests to your ec2 instance, run the following commands
 
-         16.1)  sudo yum install -y nginx                //installs nginx                        in case you dont have nginx installed
-         16.2)  sudo systemctl start nginx               //starts nginx
-         16.3)  sudo systemctl enable nginx              //enables nginx to start on reboot
-          
+         16.1)  sudo yum install -y nginx                        //installs nginx                        in case you dont have nginx installed
+         16.2)  sudo systemctl start nginx                       //starts nginx
+         16.3)  sudo systemctl enable nginx                      //enables nginx to start on reboot
+         16.4)  sudo nano /etc/nginx/sites-available/default     //configuration file for nginx
+                    paste the following lines of code
+            
+                server {
+                    listen 80;
+                    server_name example.com;                    //you must have a domain name that points to the url of your ec2 instance (https://ec2-52-53-169-169.us-west-1.compute.amazonaws.com/)
+                
+                    location / {
+                        proxy_pass http://localhost:3000;        //make sure to replace 3000 with the actual port your node.js is running on
+                        proxy_set_header Host $host;
+                        proxy_set_header X-Real-IP $remote_addr;
+                    }
+                }
+
+        16.5) sudo apt install certbot python3-certbot-nginx        //installing certbot
+
+        16.6) sudo certbot --nginx -d example.com                   //creating SSL certificate, replace example.com with the domain that you created
+
+        16.7) Ensure that your nginx config file looks like this
+
+                server {
+                    listen 443 ssl;
+                    server_name example.com;
+                
+                    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+                    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+                
+                    location / {
+                        proxy_pass http://localhost:3000;
+                        proxy_set_header Host $host;
+                        proxy_set_header X-Real-IP $remote_addr;
+                    }
+                }
+                
+                server {
+                    listen 80;
+                    server_name example.com;
+                    return 301 https://$host$request_uri;
+                }
+    
+        16.8) sudo systemctl restart nginx                        //restart nginx to apply the changes
 
 
 

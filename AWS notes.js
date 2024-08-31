@@ -633,7 +633,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             http://ec2-52-53-169-169.us-west-1.compute.amazonaws.com/webhook
             
       4) For the contect-type, set application/json
-    
+      
       5) In your node.js server, add the following endpoint
 
           app.post('/webhook', (req, res) => {
@@ -661,7 +661,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
         6) You will need to manually use git pull on the repository in ec2 instance to apply the changes first
 
-        7) You will need to restart your node.js app in ec2 instances for the changes to take effect
+        7) You will need to restart your node.js app in ec2 instances for the changes to take effect after every push to the repo
 */    
 
 

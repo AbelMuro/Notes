@@ -139,8 +139,28 @@
 		
 		app.use(auth(config));
 
+	9) To enable users to log in with a password
+     	   Go to Auth0 dashboard -> Applications -> select your application -> settings -> advanced settings ->  Grant types -> Check password
+
+	10) Now you must create a Database that can be used to store the users account info
+	    Go to Auth0 dashboard -> Authentication -> database -> create database
+            Create a name for the database
+	    Check email 
+     	    Check password
+	    Click on create button
      
-	9) Create an endpoint for post in node.js
+  	 11) Now you must enable the database to connect to your Auth0 app
+             Go to Auth0 dashboard -> Authentication -> database -> select database -> Applications
+	     Check the app that you want to connect to this database
+
+ 	     Next go to Auth0 Dashboard -> Applications -> Select you application -> Connections
+       	     Check the database that you want to use
+
+      	     You may need to change the default connection for the apps in your dashboard to make this work
+	     Go to Auth0 Dashboard -> Settings -> Scroll down to API Authorization Settings
+             Add the name of the database that you want to set as default in 'Default Directory'
+     
+	 12) Create an endpoint for post in node.js
 
  		  app.post('/Login', (req, res) => {
 			  const {email, password} = req.body;
@@ -154,7 +174,8 @@
 			    scope: 'openid profile email',					//Permissions that the app is requesting
 			    client_id: 'YOUR_CLIENT_ID',					//GO to applications -> select your application -> settings -> Client id
 			    client_secret: 'YOUR_CLIENT_SECRET'					//Go to APplications -> select your application -> settings -> client secret
-			  };
+			    connection: 'Username-Password-Authentication'  			//enter the name of the database that will be used to store the accounts
+     			};
 			
 			  const response = await fetch(url, {
 			      method: 'POST',
@@ -164,16 +185,15 @@
 			      body: JSON.stringify(data)
 			    });
 
-       			    if (!response.ok) 
-			        throw new Error('Authentication failed');
-			    
-			    const data = await response.json();
-			    res.json({ access_token: data.access_token });
-       
-			    catch (error) {
-			    	res.status(401).json({ error: error.message });
-			  }
-			})
+       			    if (!response.ok) {
+	      			const error = await response.json()        		         //you may want to use either text() or json() here
+	       			res.status(401).json({ error: error.message });
+			    }
+			    else{
+	       			const {access_token} = await response.json();
+				res.status(200).json({ access_token });				// access_token can be used to determine if the user is logged in the front end
+			    }									// use the npm library jwt-decode to decode the token and get user information
+			})									// you can also use the access_token in a fetch request to obtain more user information
 
 
    		app.post('Register', () => {
@@ -196,8 +216,8 @@
 			      });
 			    
 			      if (!response.ok) {
-			        const error = await response.json();
-			        res.send('Error creating user:', error);
+			        const error = await response.json();				
+			        res.status(400).send(`Error creating user: ${error.message}`);
 			      } 
 			      else 
 			        res.send('User created Succesfully');

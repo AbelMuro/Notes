@@ -101,8 +101,110 @@
 
 
 
+//========================================================= AuthO =============================================================
+/* 
+	AuthO is a way to authenticate users in your node.js app
+ 	npm install express express-openid-connect --save
+
+ 	1) Log in to your AuthO account
+
+  	2) Go to applications section and then create an application
+
+   	3) Select the type of website/app that you are creating
+
+    	4) Select node.js as the technology you are using for the backend
+
+     	5) Select 'I want to integrate with my app'
+
+      	6) In the allowed callbacks, make sure to enter the correct endpoints for your app
+
+       		allowed urls for login
+	 		http://localhost:4000/login
+
+    		allowed urls for logout
+      			http://localhost:4000/logout
+
+  	 8) In the configure router section, copy and paste the code that is displayed
+
+		const { auth } = require('express-openid-connect');
+		
+		const config = {
+			  authRequired: false,
+			  auth0Logout: true,
+			  secret: 'a long, randomly-generated string stored in env',
+			  baseURL: 'http://localhost:4000',
+			  clientID: 'sgNcV9AT3y1V4uuzDYF1C3N9scV2qR9N',
+			  issuerBaseURL: 'https://dev-ippdgifey8kbsgtj.us.auth0.com'
+		};
+		
+		app.use(auth(config));
+
+     
+	9) Create an endpoint for post in node.js
+
+ 		  app.post('/Login', (req, res) => {
+			  const {email, password} = req.body;
+     
+	      		  const url = 'https://YOUR_AUTH0_DOMAIN/oauth/token';			//Go to Applications -> Select your application -> settings -> Domain
+			  const data = {
+			    grant_type: 'password',
+			    username: email,
+			    password: password,
+			    audience: 'YOUR_API_IDENTIFIER',					//Go to API -> Select API -> Look for Identifier field
+			    scope: 'openid profile email',					//Permissions that the app is requesting
+			    client_id: 'YOUR_CLIENT_ID',					//GO to applications -> select your application -> settings -> Client id
+			    client_secret: 'YOUR_CLIENT_SECRET'					//Go to APplications -> select your application -> settings -> client secret
+			  };
+			
+			  const response = await fetch(url, {
+			      method: 'POST',
+			      headers: {
+			        'Content-Type': 'application/json'
+			      },
+			      body: JSON.stringify(data)
+			    });
+
+       			    if (!response.ok) 
+			        throw new Error('Authentication failed');
+			    
+			    const data = await response.json();
+			    res.json({ access_token: data.access_token });
+       
+			    catch (error) {
+			    	res.status(401).json({ error: error.message });
+			  }
+			})
 
 
+   		app.post('Register', () => {
+     			    const formData = req.body;
+	    		    const email = formData.email;
+	   		    const password = formData.password;
+
+			    const url = 'https://YOUR_AUTH0_DOMAIN/api/v2/users';
+			    const response = await fetch(url, {
+			        method: 'POST',
+			        headers: {
+			          'Content-Type': 'application/json',
+			          'Authorization': "Bearer YOUR_MANAGEMENT_API_ACCESS_TOKEN"		//Applications -> Api -> AuthO management api -> API explorer app -> Token
+			        },
+			        body: JSON.stringify({
+			          email: email,
+			          password: password,
+			          connection: 'Username-Password-Authentication'
+			        })
+			      });
+			    
+			      if (!response.ok) {
+			        const error = await response.json();
+			        res.send('Error creating user:', error);
+			      } 
+			      else 
+			        res.send('User created Succesfully');
+			      
+		})
+
+*/
 
 
 

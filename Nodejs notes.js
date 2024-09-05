@@ -187,7 +187,7 @@
 
        			    if (!response.ok) {
 	      			const error = await response.json()        		         //you may want to use either text() or json() here
-	       			res.status(401).json({ error: error.message });
+	       			res.status(400).send(`Error loging in: ${error.message}`);
 			    }
 			    else{
 	       			const {access_token} = await response.json();
@@ -197,16 +197,32 @@
 
 
    		app.post('Register', () => {
-     			    const formData = req.body;
-	    		    const email = formData.email;
-	   		    const password = formData.password;
+     		       const formData = req.body;
+	    	       const email = formData.email;
+	   	       const password = formData.password;
+		
+		       const tokenResponse = await fetch('https://{yourDomain}/oauth/token', {  //domain must be from management-to-management app
+			    method: 'POST',
+			    headers: {
+			        'Content-Type': 'application/json'
+			    },
+		            body: JSON.stringify({
+			            client_id: "client_id",				// You will need to create a management to management app in auth0
+			            client_secret: "client_secret",			// Go to Auth0 dashboard -> Applications -> Create a machine to machine app -> API section ->  Select the Auth0 Management API
+			            audience: "https://{yourDomain}/api/v2/",		// Go to settings and get the client-id and the secret-id
+			            grant_type: "client_credentials"     		// grant_type stays with client_credentials       
+		              })
+		           });
+		
+		            const tokenData = await tokenResponse.json();
+		            const access_token = tokenData.access_token;
 
 			    const url = 'https://YOUR_AUTH0_DOMAIN/api/v2/users';
 			    const response = await fetch(url, {
 			        method: 'POST',
 			        headers: {
 			          'Content-Type': 'application/json',
-			          'Authorization': "Bearer YOUR_MANAGEMENT_API_ACCESS_TOKEN"		//Applications -> Api -> AuthO management api -> API explorer app -> Token
+			          'Authorization': `Bearer ${access_token}`	         
 			        },
 			        body: JSON.stringify({
 			          email: email,
@@ -220,9 +236,27 @@
 			        res.status(400).send(`Error creating user: ${error.message}`);
 			      } 
 			      else 
-			        res.send('User created Succesfully');
+			        res.status.(200).send('User created Succesfully');
 			      
 		})
+
+		app.get('/Logout', async (req, res) => {
+		    const auth0Domain = 'YOUR_AUTH0_DOMAIN';
+		    const clientId = 'CLIENT_ID';
+		    const returnTo = 'http://localhost:1234/'; 			// URL to redirect to after logout
+		      
+		    const logoutUrl = `https://${auth0Domain}/v2/logout?client_id=${clientId}&returnTo=${returnTo}`;
+		      
+		    try {
+		        await fetch(logoutUrl);
+		        res.status(200).redirect(returnTo);
+		    } catch (error) {
+		        console.error('Error logging out:', error);
+		        res.status(500).send('Error logging out');
+		    }
+		});
+
+  
 
 */
 

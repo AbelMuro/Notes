@@ -116,15 +116,9 @@
 
      	5) Select 'I want to integrate with my app'
 
-      	6) In the allowed callbacks, make sure to enter the correct endpoints for your app
-
-       		allowed urls for login
-	 		http://localhost:4000/login
-
-    		allowed urls for logout
-      			http://localhost:4000/logout
-
-  	 8) In the configure router section, copy and paste the code that is displayed
+      	6) In the allowed callbacks, leave everything as it is.
+       
+  	7) In the configure router section, copy and paste the code that is displayed
 
 		const { auth } = require('express-openid-connect');
 		
@@ -139,17 +133,17 @@
 		
 		app.use(auth(config));
 
-	9) To enable users to log in with a password
+	8) To enable users to log in with a password
      	   Go to Auth0 dashboard -> Applications -> select your application -> settings -> advanced settings ->  Grant types -> Check password
 
-	10) Now you must create a Database that can be used to store the users account info
+	9) Now you must create a Database that can be used to store the users account info
 	    Go to Auth0 dashboard -> Authentication -> database -> create database
             Create a name for the database
 	    Check email 
      	    Check password
 	    Click on create button
      
-  	 11) Now you must enable the database to connect to your Auth0 app
+  	 10) Now you must enable the database to connect to your Auth0 app
              Go to Auth0 dashboard -> Authentication -> database -> select database -> Applications
 	     Check the app that you want to connect to this database
 
@@ -160,7 +154,28 @@
 	     Go to Auth0 Dashboard -> Settings -> Scroll down to API Authorization Settings
              Add the name of the database that you want to set as default in 'Default Directory'
      
-	 12) Create an endpoint for post in node.js
+	 11) Create an endpoint for post in node.js
+
+  		let access_token;				//YOUR_MANAGEMENT_API_ACCESS_TOKEN, you will need this variable for the /Register and /Delete endpoints
+
+		app.listen(port, () => {
+  		       const tokenResponse = await fetch('https://{yourDomain}/oauth/token', {  //domain must be from management-to-management app
+			    method: 'POST',
+			    headers: {
+			        'Content-Type': 'application/json'
+			    },
+		            body: JSON.stringify({
+			            client_id: "client_id",				// You will need to create a management to management app in auth0
+			            client_secret: "client_secret",			// Go to Auth0 dashboard -> Applications -> Create a machine to machine app -> API section ->  Select the Auth0 Management API
+			            audience: "https://{yourDomain}/api/v2/",		// Go to settings and get the client-id and the secret-id
+			            grant_type: "client_credentials"     		// grant_type stays with client_credentials       
+		              })
+		           });
+		
+		            const tokenData = await tokenResponse.json();
+		            access_token = tokenData.access_token;
+		})
+  
 
  		  app.post('/Login', (req, res) => {
 			  const {email, password} = req.body;
@@ -200,61 +215,65 @@
      		       const formData = req.body;
 	    	       const email = formData.email;
 	   	       const password = formData.password;
-		
-		       const tokenResponse = await fetch('https://{yourDomain}/oauth/token', {  //domain must be from management-to-management app
-			    method: 'POST',
-			    headers: {
-			        'Content-Type': 'application/json'
-			    },
-		            body: JSON.stringify({
-			            client_id: "client_id",				// You will need to create a management to management app in auth0
-			            client_secret: "client_secret",			// Go to Auth0 dashboard -> Applications -> Create a machine to machine app -> API section ->  Select the Auth0 Management API
-			            audience: "https://{yourDomain}/api/v2/",		// Go to settings and get the client-id and the secret-id
-			            grant_type: "client_credentials"     		// grant_type stays with client_credentials       
-		              })
-		           });
-		
-		            const tokenData = await tokenResponse.json();
-		            const access_token = tokenData.access_token;
 
-			    const url = 'https://YOUR_AUTH0_DOMAIN/api/v2/users';
-			    const response = await fetch(url, {
-			        method: 'POST',
-			        headers: {
-			          'Content-Type': 'application/json',
-			          'Authorization': `Bearer ${access_token}`	         
-			        },
-			        body: JSON.stringify({
-			          email: email,
-			          password: password,
-			          connection: 'Username-Password-Authentication'
-			        })
-			      });
+			const response = await fetch('https://YOUR_AUTH0_DOMAIN/api/v2/users', {
+			method: 'POST',
+			headers: {
+			        'Content-Type': 'application/json',
+			        'Authorization': `Bearer ${YOUR_MANAGEMENT_API_ACCESS_TOKEN}`	         
+			},
+			body: JSON.stringify({
+			        email: email,
+			        password: password,
+			        connection: 'Username-Password-Authentication'
+			    })
+			});
 			    
-			      if (!response.ok) {
-			        const error = await response.json();				
-			        res.status(400).send(`Error creating user: ${error.message}`);
-			      } 
-			      else 
-			        res.status.(200).send('User created Succesfully');
-			      
+			if (!response.ok) {
+			    const error = await response.json();				
+			    res.status(400).send(`Error creating user: ${error.message}`);
+			} 
+			else 
+			    res.status.(200).send('User created Succesfully');	      
 		})
 
+  
+
 		app.get('/Logout', async (req, res) => {
-		    const auth0Domain = 'YOUR_AUTH0_DOMAIN';
 		    const clientId = 'CLIENT_ID';
 		    const returnTo = 'http://localhost:1234/'; 			// URL to redirect to after logout
-		      
-		    const logoutUrl = `https://${auth0Domain}/v2/logout?client_id=${clientId}&returnTo=${returnTo}`;
-		      
-		    try {
-		        await fetch(logoutUrl);
-		        res.status(200).redirect(returnTo);
-		    } catch (error) {
-		        console.error('Error logging out:', error);
-		        res.status(500).send('Error logging out');
-		    }
+	
+		    const response = await fetch(`https://${YOUR_AUTH0_DOMAIN}/v2/logout?client_id=${clientId}&returnTo=${returnTo}`);
+
+		    if(!response.ok){
+      			const error = await response.json();
+	     		res.status(500).send(`Error logging out: {error.message}`);
+		    }  
+	  	    else
+		        res.status(200).redirect(returnTo); 
 		});
+  
+  
+		app.delete('/Delete', async (req, res) => {
+		    const {token} = req.body;					//pass the user Json web token from the user
+		    const decodedToken = jwtDecode(token);			//npm install jwt-decode
+		    const userId = decodedToken.sub;
+		    
+		    const response = await fetch(`https://${YOUR_AUTH_DOMAIN}/api/v2/users/${userId}`, {
+		      method: 'DELETE',
+		      headers: {
+		        'Authorization': `Bearer ${YOUR_MANAGEMENT_API_ACCESS_TOKEN}`,
+		        'Content-Type': 'application/json'
+		      }
+		    });
+		
+		    if(response.ok)
+		        res.status(200).send('User has been deleted');
+		    else{
+		        const error = await response.json();
+		        res.status(400).send(`Error deleting user: ${error.message}`);
+		    }
+		})
 
   
 

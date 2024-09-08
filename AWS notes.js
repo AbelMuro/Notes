@@ -481,6 +481,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 /* 
     Amazon EC2 instance is a service that launches/deploys virtual servers in the cloud. An instance is an individual server
     in the cloud. You can deploy node.js with EC2 instance
+    
 
 
     1)  Go to EC2 dashboard and click on Launch Instance
@@ -555,7 +556,11 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
               If you server is running on a port that is not one of the default values (80 for http, or 443 for https)
               then the url should look like this url 'http://your-ec2-public-ip-or-dns:port/your-endpoint'
 
-       16) To enable https requests to your ec2 instance, run the following commands
+
+
+
+
+      16) To enable HTTPS requests to your ec2 instance, run the following commands
 
          16.1)  sudo yum install -y nginx                        //installs nginx                        in case you dont have nginx installed
          16.2)  sudo systemctl start nginx                       //starts nginx
@@ -617,6 +622,28 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
                 nano .env            //creates an env file in current directory
 
                 apiKey=123456789     //start entering the env variables
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------- PM2 ------------------------------------------------------------------------------------------
+ PM2 is a process manager that will enable you to easily manage different node.js apps with EC2
+
+            npm install pm2@latest -g
+            pm2 start server.js            //this will start the node.js app
+            
+
+
+
+
+
+
+
 
 
 

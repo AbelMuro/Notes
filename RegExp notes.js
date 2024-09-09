@@ -39,7 +39,10 @@
 / \n$ /              //Find a string with n at the end of it
 / \a* /              //find zero or more of `a`
 / . /                //will find all single characters from the string (its basically like splitting the string into an array)
-
+  
+/ (?=.* \d) /         //?=.* will create a requirement that the specified string MUST have the pattern, in this case, string must have a digit
+/ (?=.* [a-zA-Z]) /   //string must have a letter between a-z and A-Z
+/ (?=.* [@$!%*?&]) /  //string must have a symbol in the specified pattern
 
 //its a good idea to use String.match() to use a reg exp to check if the pattern exists in the string
 //match will return an array with the characters that match the pattern, 

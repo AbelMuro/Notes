@@ -127,8 +127,8 @@
 			  auth0Logout: true,
 			  secret: 'a long, randomly-generated string stored in env',
 			  baseURL: 'http://localhost:4000',
-			  clientID: 'sgNcV9AT3y1V4uuzDYF1C3N9scV2qR9N',
-			  issuerBaseURL: 'https://dev-ippdgifey8kbsgtj.us.auth0.com'
+			  clientID: 'clientID',
+			  issuerBaseURL: 'issuerBaseURL'
 		};
 		
 		app.use(auth(config));

@@ -122,8 +122,8 @@
 
 		const { auth } = require('express-openid-connect');
 		
-		const config = {
-			  authRequired: false,
+		const config = {							//keep in mind that this code will use the endpoint /login and /logout for auth0
+			  authRequired: false,					        //your node.js app will not be able to use those endpoints
 			  auth0Logout: true,
 			  secret: 'a long, randomly-generated string stored in env',
 			  baseURL: 'http://localhost:4000',

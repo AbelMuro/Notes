@@ -156,128 +156,69 @@
       	     You may need to change the default connection for the apps in your dashboard to make this work
 	     Go to Auth0 Dashboard -> Settings -> Scroll down to API Authorization Settings
              Add the name of the database that you want to set as default in 'Default Directory'
-     
-	 11) Create an endpoint for post in node.js
-
-  		let access_token;				//YOUR_MANAGEMENT_API_ACCESS_TOKEN, you will need this variable for the /Register and /Delete endpoints
-
-		app.listen(port, () => {
-  		       const tokenResponse = await fetch('https://{yourDomain}/oauth/token', {  //domain must be from management-to-management app
-			    method: 'POST',
-			    headers: {
-			        'Content-Type': 'application/json'
-			    },
-		            body: JSON.stringify({
-			            client_id: "client_id",				// You will need to create a management to management app in auth0
-			            client_secret: "client_secret",			// Go to Auth0 dashboard -> Applications -> Create a machine to machine app -> API section ->  Select the Auth0 Management API
-			            audience: "https://{yourDomain}/api/v2/",		// Go to settings and get the client-id and the secret-id
-			            grant_type: "client_credentials"     		// grant_type stays with client_credentials       
-		              })
-		           });
-		
-		            const tokenData = await tokenResponse.json();
-		            access_token = tokenData.access_token;
-		})
-  
-
- 		  app.post('/Login', (req, res) => {
-			  const {email, password} = req.body;
-     
-	      		  const url = 'https://YOUR_AUTH0_DOMAIN/oauth/token';			//Go to Applications -> Select your application -> settings -> Domain
-			  const data = {
-			    grant_type: 'password',
-			    username: email,
-			    password: password,
-			    audience: 'YOUR_API_IDENTIFIER',					//Go to API -> Select API -> Look for Identifier field
-			    scope: 'openid profile email',					//Permissions that the app is requesting
-			    client_id: 'YOUR_CLIENT_ID',					//GO to applications -> select your application -> settings -> Client id
-			    client_secret: 'YOUR_CLIENT_SECRET'					//Go to APplications -> select your application -> settings -> client secret
-			    connection: 'Username-Password-Authentication'  			//enter the name of the database that will be used to store the accounts
-     			};
-			
-			  const response = await fetch(url, {
-			      method: 'POST',
-			      headers: {
-			        'Content-Type': 'application/json'
-			      },
-			      body: JSON.stringify(data)
-			    });
-
-       			    if (!response.ok) {
-	      			const error = await response.json()        		         //you may want to use either text() or json() here
-	       			res.status(400).send(`Error loging in: ${error.message}`);
-			    }
-			    else{
-	       			const {access_token} = await response.json();
-				res.status(200).json({ access_token });				// access_token can be used to determine if the user is logged in the front end
-			    }									// use the npm library jwt-decode to decode the token and get user information
-			})									// you can also use the access_token in a fetch request to obtain more user information
 
 
-   		app.post('Register', () => {
-     		       const formData = req.body;
-	    	       const email = formData.email;
-	   	       const password = formData.password;
 
-			const response = await fetch('https://YOUR_AUTH0_DOMAIN/api/v2/users', {
-			method: 'POST',
-			headers: {
-			        'Content-Type': 'application/json',
-			        'Authorization': `Bearer ${YOUR_MANAGEMENT_API_ACCESS_TOKEN}`	         
-			},
-			body: JSON.stringify({
-			        email: email,
-			        password: password,
-			        connection: 'Username-Password-Authentication'
-			    })
+	 11) npm install auth0				//this will install the auth0 sdk
+  	     
+
+ 		11.1) const { AuthenticationClient } = require('auth0');
+
+ 		11.2) const auth0 = new AuthenticationClient({
+			    domain: process.env.AUTH0_DOMAIN,				// make sure to NOT include https://
+			    clientId: process.env.AUTH0_CLIENT_ID,			// you can find this in auth0 dashboard -> applications -> select your app -> settings
+			    clientSecret: process.env.AUTH0_CLIENT_SECRET,
 			});
-			    
-			if (!response.ok) {
-			    const error = await response.json();				
-			    res.status(400).send(`Error creating user: ${error.message}`);
-			} 
-			else 
-			    res.status.(200).send('User created Succesfully');	      
-		})
 
-  
 
-		app.get('/Logout', async (req, res) => {
-		    const clientId = 'CLIENT_ID';
-		    const returnTo = 'http://localhost:1234/'; 			// URL to redirect to after logout
+	     	11.3) app.post('/register', async (req, res) => {
+			    const {email, name, password} = req.body;
+			
+			    try{
+			        const user = await auth0.database.signUp({
+			            connection: 'finance-app-authentication-database',		//make sure you use the actual name of the authentication database
+			            email,
+			            password,
+			            user_metadata: {						//any additional data goes here
+			                name: name
+			            }
+			        });
+			
+			        res.status(200).json(user);
+			    }
+			    catch(error){
+			        res.status(400).json({error: error.message});
+			    }
+			})
+
+
+		  11.4) app.post('/login', async (req, res) => {
+			    const {email, password} = req.body;
+			
+			    try{
+			        const account = await auth0.oauth.passwordGrant({
+			            username: email,
+			            password: password,
+			            audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
+			            realm: process.env.AUTH0_REALM						//this is the name of the auth database that you are using
+			        });
+			        const accessToken = account.data.access_token;
+			
+			        res.cookie('access_token', accessToken, {					//You should store access-tokens with these http only cookies
+			            httpOnly: true,
+			            secure: process.env.NODE_ENV === 'production', 
+			            sameSite: 'Strict'
+			          });
+
+      				//req.cookies.access_token;							//this is how you access the access_token stored in cookies
+			
+			        res.status(200).send('Login Successfull');
+			    }
+			    catch(error){
+			        res.status(400).json({error: error.message});
+			    }
+			})
 	
-		    const response = await fetch(`https://${YOUR_AUTH0_DOMAIN}/v2/logout?client_id=${clientId}&returnTo=${returnTo}`);
-
-		    if(!response.ok){
-      			const error = await response.json();
-	     		res.status(500).send(`Error logging out: {error.message}`);
-		    }  
-	  	    else
-		        res.status(200).redirect(returnTo); 
-		});
-  
-  
-		app.delete('/Delete', async (req, res) => {
-		    const {token} = req.body;					//pass the user Json web token from the user
-		    const decodedToken = jwtDecode(token);			//npm install jwt-decode
-		    const userId = decodedToken.sub;
-		    
-		    const response = await fetch(`https://${YOUR_AUTH_DOMAIN}/api/v2/users/${userId}`, {
-		      method: 'DELETE',
-		      headers: {
-		        'Authorization': `Bearer ${YOUR_MANAGEMENT_API_ACCESS_TOKEN}`,
-		        'Content-Type': 'application/json'
-		      }
-		    });
-		
-		    if(response.ok)
-		        res.status(200).send('User has been deleted');
-		    else{
-		        const error = await response.json();
-		        res.status(400).send(`Error deleting user: ${error.message}`);
-		    }
-		})
-
   
 
 */

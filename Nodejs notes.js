@@ -108,7 +108,7 @@
 
  	1) Log in to your AuthO account
 
-  	2) Go to applications section and then create an application
+  	2) Go to applications section and then create an application, and then click on quickstart
 
    	3) Select the type of website/app that you are creating
 
@@ -132,6 +132,9 @@
 		};
 		
 		app.use(auth(config));
+
+
+  	-continue and apply the remaining steps in the quickstart section
 
 	8) To enable users to log in with a password
      	   Go to Auth0 dashboard -> Applications -> select your application -> settings -> advanced settings ->  Grant types -> Check password

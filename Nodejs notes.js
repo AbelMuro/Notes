@@ -158,8 +158,49 @@
              Add the name of the database that you want to set as default in 'Default Directory'
 
 
+	 11) To enable users to read data and write data into their account you must create a Machine to machine application
 
-	 11) npm install auth0				//this will install the auth0 sdk
+  		Auth0 dashboard -> Applications -> Create Application -> select Machine to Machine -> 
+    	        	Select Auth0 Management API -> specify the permissions 
+
+       	12) Then go to auth0 dashboard -> API -> selecte auth0 management api -> Machine to Machine Apps -> check the application that you want to use with this api
+
+
+  	13) In your server, you will need to use the ManagementClient API from the auth0 sdk
+
+   		13.1) const { ManagementClient } = require('auth0');
+
+     		13.2) const getManagementAccessToken = async () => {
+			    try{
+			        const response = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
+			            method: 'POST',
+			            headers: {
+			                'Content-Type' : 'application/json'
+			            },
+			            body: JSON.stringify({
+			                client_id: process.env.AUTH0_CLIENT_ID,
+			                client_secret: process.env.AUTH0_CLIENT_SECRET,
+			                audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
+			                grant_type: 'client_credentials'
+			            })
+			        });
+			
+			        const results = await response.json();
+			        return results.access_token        
+			    }
+			    catch(error){
+			        console.log(error);
+			    }
+			}
+
+  	      13.3) const managementAccessToken = await getManagementAccessToken();
+
+	      13.4) const management = new ManagementClient({
+	        	    domain: `https://${process.env.AUTH0_DOMAIN}`,
+	        	    token: managementAccessToken,
+	    		})
+
+	 14) npm install auth0				//this will install the auth0 sdk
   	     
 
  		11.1) const { AuthenticationClient } = require('auth0');

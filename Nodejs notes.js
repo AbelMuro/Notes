@@ -110,15 +110,9 @@
 
   	2) Go to applications section and then create an application, and then click on quickstart
 
-   	3) Select the type of website/app that you are creating
-
-    	4) Select node.js as the technology you are using for the backend
-
-     	5) Select 'I want to integrate with my app'
-
-      	6) In the allowed callbacks, leave everything as it is.
+	3) follow the prompts
        
-  	7) In the configure router section, copy and paste the code that is displayed
+  	4) In the configure router section, copy and paste the code that is displayed
 
 		const { auth } = require('express-openid-connect');
 		
@@ -134,19 +128,17 @@
 		app.use(auth(config));
 
 
-  	-continue and apply the remaining steps in the quickstart section
-
-	8) To enable users to log in with a password
+	5) To enable users to log in with a password
      	   Go to Auth0 dashboard -> Applications -> select your application -> settings -> advanced settings ->  Grant types -> Check password
 
-	9) Now you must create a Database that can be used to store the users account info
+	6) Now you must create a Database that can be used to store the users account info
 	    Go to Auth0 dashboard -> Authentication -> database -> create database
             Create a name for the database
 	    Check email 
      	    Check password
 	    Click on create button
      
-  	 10) Now you must enable the database to connect to your Auth0 app
+  	 7) Now you must enable the database to connect to your Auth0 app
              Go to Auth0 dashboard -> Authentication -> database -> select database -> Applications
 	     Check the app that you want to connect to this database
 
@@ -158,61 +150,36 @@
              Add the name of the database that you want to set as default in 'Default Directory'
 
 
-	 11) To enable users to read data and write data into their account you must create a Machine to machine application
+	 8) To enable users to read data and write data into their account you must create a Machine to machine application
 
-  		Auth0 dashboard -> Applications -> Create Application -> select Machine to Machine -> 
-    	        	Select Auth0 Management API -> specify the permissions 
+  		Auth0 dashboard -> Applications -> Create Application -> select Machine to Machine -> Select Auth0 Management API -> specify the permissions 
 
-       	12) Then go to auth0 dashboard -> API -> selecte auth0 management api -> Machine to Machine Apps -> check the application that you want to use with this api
+       	 9) Then go to auth0 dashboard -> API -> select auth0 management api -> Machine to Machine Apps -> check the name of the machine to machine app you just created
+
+ 		You will need the machine to machine app to use the ManagementClient class in the auth sdk
 
 
-  	13) In your server, you will need to use the ManagementClient API from the auth0 sdk
+   
 
-   		13.1) const { ManagementClient } = require('auth0');
-
-     		13.2) const getManagementAccessToken = async () => {
-			    try{
-			        const response = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
-			            method: 'POST',
-			            headers: {
-			                'Content-Type' : 'application/json'
-			            },
-			            body: JSON.stringify({
-			                client_id: process.env.AUTH0_CLIENT_ID,
-			                client_secret: process.env.AUTH0_CLIENT_SECRET,
-			                audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
-			                grant_type: 'client_credentials'
-			            })
-			        });
-			
-			        const results = await response.json();
-			        return results.access_token        
-			    }
-			    catch(error){
-			        console.log(error);
-			    }
-			}
-
-  	      13.3) const managementAccessToken = await getManagementAccessToken();
-
-	      13.4) const management = new ManagementClient({
-	        	    domain: `https://${process.env.AUTH0_DOMAIN}`,
-	        	    token: managementAccessToken,
-	    		})
-
-	 14) npm install auth0				//this will install the auth0 sdk
+	 10) npm install auth0				//this will install the auth0 sdk
   	     
 
- 		11.1) const { AuthenticationClient } = require('auth0');
+ 		10.1) const { AuthenticationClient, ManagementClient } = require('auth0');
 
- 		11.2) const auth0 = new AuthenticationClient({
+ 		10.2) const auth0 = new AuthenticationClient({
 			    domain: process.env.AUTH0_DOMAIN,				// make sure to NOT include https://
 			    clientId: process.env.AUTH0_CLIENT_ID,			// you can find this in auth0 dashboard -> applications -> select your app -> settings
 			    clientSecret: process.env.AUTH0_CLIENT_SECRET,
 			});
+   
+		10.3) const management = new ManagementClient({
+			    domain: process.env.MACHINE_DOMAIN,
+			    clientId: process.env.MACHINE_CLIENT_ID,			// you must use the client_id and client_secret for the machine to machine app
+			    clientSecret: process.env.MACHINE_CLIENT_SECRET
+			});
+   
 
-
-	     	11.3) app.post('/register', async (req, res) => {
+	     	10.4) app.post('/register', async (req, res) => {
 			    const {email, name, password} = req.body;
 			
 			    try{
@@ -233,7 +200,7 @@
 			})
 
 
-		  11.4) app.post('/login', async (req, res) => {
+		  10.5) app.post('/login', async (req, res) => {
 			    const {email, password} = req.body;
 			
 			    try{
@@ -242,24 +209,40 @@
 			            password: password,
 			            audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
 			            realm: process.env.AUTH0_REALM						//this is the name of the auth database that you are using
-			        });
+			            scope: 'openid profile email'
+	   			});
 			        const accessToken = account.data.access_token;
-			
-			        res.cookie('access_token', accessToken, {					//You should store access-tokens with these http only cookies
+        			const userId = jwt.decode(access_token).sub;					//you must install jsonwebtoken
+	   
+			        res.cookie('user_id', userId, {							//You should store access-tokens with these http only cookies
 			            httpOnly: true,
 			            secure: process.env.NODE_ENV === 'production', 
-			            sameSite: 'Strict'
+			            sameSite: 'Strict',
+				    maxAge: 1000 * 60 * 60
 			          });
 
-      				//req.cookies.access_token;							//this is how you access the access_token stored in cookies
+      				//req.cookies.user_id;								//this is how you access the access_token stored in cookies
 			
 			        res.status(200).send('Login Successfull');
 			    }
 			    catch(error){
 			        res.status(400).json({error: error.message});
 			    }
-			})
-	
+			});
+
+ 		10.6) app.get('/profile', async (req, res) => {
+			    const userId = req.cookies.userId;
+			
+			    try{
+			       const profile = await management.users.get({id: userId});
+			       res.status(200).json({profile}); 
+			    }
+			    catch(error){
+			        console.log(error);
+			        res.status(403).json({error});
+			    }
+			}) 
+
   
 
 */

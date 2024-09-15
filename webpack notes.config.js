@@ -14,7 +14,10 @@ module.exports = {
     entry: './src/index.js',                  //this is where webpack will start its dependency graph, and will automatically figure out with modules depend on this entry point                  
     output: {                                  //output is where our production code will be sent to               
         path: path.join(__dirname, '/dist'),  //__dirname represents the current directory, /dist is the folder that will contain our production code
-        filename: 'bundle.js'                 //the bundled js file
+        filename: 'bundle.js',                 //the bundled js file
+        publicPath: '/',
+        clean: true,
+        assetModuleFilename: '[name][ext]',
     },
     plugins: [                      
         new HtmlWebpackPlugin({               //this plugin will help us generate the production html file in our /dist

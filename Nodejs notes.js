@@ -243,6 +243,28 @@
 			    }
 			}) 
 
+
+   		10.7) app.post('/add_Data', async (req, res) => {		//you can use this method to update existing data or overwrite old data
+			    const newData = req.body;
+			    const userId = req.cookies.userId;
+			
+			    try{
+			        const user = await management.users.get({id: userId});
+			        const userData = user.data || {};
+			        const metadata = userData.user_metadata || {};
+			        const prevData = metadata.anyData || [];
+			
+			        await management.users.update({id: userId}, {		
+			            user_metadata: {budgets: [...prevData, newData]}
+			        });
+			        res.status(200).send('profile updated successfully');        
+			    }
+			    catch(error){
+			        res.status(403).send(`${error.message}`);
+			    }
+			})
+
+
   
 
 */

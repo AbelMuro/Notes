@@ -265,9 +265,44 @@
 			})
 
 
-  
+  		
 
-*/
+
+//======================================================== Sending files to a node.js endpoint ======================================
+
+
+// BACK-END
+
+	//npm install multer
+	const multer = require('multer')
+ 
+	const storage = multer.diskStorage({
+	    destination: './uploads/',
+	    filename: (req, file, cb) => {
+	        cb(null, `${Date.now()}-${file.originalname}`)				//second argument is the name of the file being uploaded to the ./uploads folder in your node.js app
+	    }
+	});
+	
+	const upload = multer({ storage });
+
+	app.post('/add_transaction', upload.single('image') ,async (req, res) => {		
+	    const fileData = req.file;
+	    console.log(fileData);
+	})
+
+
+ // FRONT-END
+ 
+	const image = document.querySelector('input[type='file']').files[0];
+	const formData = new FormData();						//you MUST use a FormData() to store all data, and send it to the server
+        formData.append('image', image);
+
+        const response = await fetch('http://localhost:4000/add_transaction', {		//file will be uploaded automatically
+            method: 'POST',
+            body: formData,
+        });
+
+
 
 
 

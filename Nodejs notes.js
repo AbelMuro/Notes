@@ -268,46 +268,81 @@
   		
 
 
-//======================================================== Sending files to a node.js endpoint ======================================
+//======================================================== SENDING FILES TO AN ENDPOINT IN NODE.JS ======================================
 
 
-// BACK-END
 
-	//npm install multer
-	const multer = require('multer')
+	1) The example below will send an image from an <input type='file'> to the server, the server will then get the file and store it in a folder './uploads'
  
-	const storage = multer.diskStorage({
-	    destination: './uploads/',
-	    filename: (req, file, cb) => {
-	        cb(null, `${Date.now()}-${file.originalname}`)				//second argument is the name of the file being uploaded to the ./uploads folder in your node.js app
-	    }
-	});
-	
-	const upload = multer({ storage });
+		// BACK-END
+		
+			//npm install multer
+			const multer = require('multer')
+		 
+			const storage = multer.diskStorage({
+			    destination: './uploads/',
+			    filename: (req, file, cb) => {
+			        cb(null, `${Date.now()}-${file.originalname}`)				//second argument is the name of the file being uploaded to the ./uploads folder in your node.js app
+			    }
+			});
+			
+			const upload = multer({ storage });
+		
+			app.post('/add_transaction', upload.single('image') ,async (req, res) => {		
+			    const fileData = req.file;
+       			    const formData = req.body;		    
+			})
+		
+		
+		 // FRONT-END
+		 
+			const image = document.querySelector('input[type='file']').files[0];
+			const formData = new FormData();						//you MUST use a FormData() to store all data, and send it to the server
+		        formData.append('image', image);
+		
+		        const response = await fetch('http://localhost:4000/add_transaction', {		//file will be uploaded automatically
+		            method: 'POST',
+		            body: formData,
+		        });
 
-	app.post('/add_transaction', upload.single('image') ,async (req, res) => {		
-	    const fileData = req.file;
-     	    const fileContent = fs.readFileSync(fileData.path);
-	    
-	})
 
+	2) The example below will send an image from an <input type='file'> to the server, the server will then upload the image to an s3 bucket
 
- // FRONT-END
- 
-	const image = document.querySelector('input[type='file']').files[0];
-	const formData = new FormData();						//you MUST use a FormData() to store all data, and send it to the server
-        formData.append('image', image);
+	//BACK END
+ 		//npm install @aws-sdk/client-s3
+		//npm install multer
+  		//npm install aws-sdk
+    
+		const s3 = new aws.S3({
+		    region: 'us-west-1',
+		    accessKeyId: process.env.ACCESS_KEY_ID,
+		    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+		    signatureVersion: process.env.SIGNATURE_VERSION,
+		});
+		
+		const upload = multer({
+		    storage: mutlerS3({
+		        s3: s3,
+		        bucket: 'personal-finance-app',
+		        key: (req, file, cb) => {
+		            cb(null, `${Date.now()}-${file.originalname}`);
+		        }
+		    })
+		});
 
-        const response = await fetch('http://localhost:4000/add_transaction', {		//file will be uploaded automatically
-            method: 'POST',
-            body: formData,
-        });
+  		app.post('/add_transaction', upload.single('image'), async (req, res) => {		//image upload happens automatically
+    			
+		})
 
-
-
-
-
-
+	//FRONT END
+ 		const image = document.querySelector('input[type='file']').files[0];
+		const formData = new FormData();							//you MUST use a FormData() to store all data, and send it to the server
+		formData.append('image', image);
+		
+		const response = await fetch('http://localhost:4000/add_transaction', {			//file will be uploaded automatically
+			method: 'POST',
+		        body: formData,
+		});
 
 
 

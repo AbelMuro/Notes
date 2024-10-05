@@ -287,7 +287,8 @@
 
 	app.post('/add_transaction', upload.single('image') ,async (req, res) => {		
 	    const fileData = req.file;
-	    console.log(fileData);
+     	    const fileContent = fs.readFileSync(fileData.path);
+	    
 	})
 
 

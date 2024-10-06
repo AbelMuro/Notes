@@ -288,10 +288,12 @@
 			
 			const upload = multer({ storage });
 		
-			app.post('/add_transaction', upload.single('image') ,async (req, res) => {		
-			    const fileData = req.file;
+			app.post('/add_transaction', upload.single('image') ,async (req, res) => {	
+        		    if(req.file){									//you can check if the user uploaded a file or not, mutlers3 will still work if the user never uploaded a file
+			    	const fileData = req.file;
+	      		    	const imageURL = req.file.location;
+	      		     }
        			    const formData = req.body;	
-	      		    const imageURL = req.file.location;
 			})
 		
 		
@@ -333,7 +335,8 @@
 			});
 	
 	  		app.post('/add_transaction', upload.single('image'), async (req, res) => {		//image upload happens automatically
-	    		    const imageURL = req.file.location;
+     			    if(req.file)									//you can check if the user uploaded a file or not
+	    		    	const imageURL = req.file.location;
 			})
 	
 		//FRONT END

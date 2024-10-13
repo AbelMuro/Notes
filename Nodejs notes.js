@@ -63,6 +63,60 @@
 */
 
 
+//=============================================================== EXPRESS WEB FRAMEWORK =================================================================
+//middleware, a function that does something between the server receiving a request and sending a response 
+
+ 
+
+const express = require('express');
+const app = express();                                        //creating an object that represents the main app
+const bodyParser = require('body-parser');                    //npm install body-parser, this will parse all incoming fetch() requests
+const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
+const port = 5000;
+
+app.use(bodyParser.json());					//you will need this if your server expects fetch requests with the body property
+app.use(cookieParser());
+
+// 'get' requests
+app.get('/login', (req, res) => {                                 // .get() is for handleling 'get' requests from the client
+    res.send('data has been sent');                                 
+})
+
+// 'post' request
+app.post('/login', (req, res) => {
+    //do something with req.body (if request came from a fetch())
+    //or use formidable module to get user input from forms
+    res.send('data has been received')
+})
+
+// 'put' request is similar to 'post', but the main difference is that calling the same 'put' request will produce the same result, but calling the same 'post' request will create the same resource over and over again
+app.put('/login', (req, res) => {
+    //do something with req.body (if request came from a fetch())
+    //or use formidable module to get user input from forms
+    res.send('data has been received')
+    
+})
+
+// 'delete' request
+app.delete('/login:id', (req, res) => {
+    //do something with req.body (if request came from a fetch())
+    //or use formidable module to get user input from forms
+    const id = req.params.id;						//you can use :id to send data to an endpoint like this http://localhost:4000/login/123456
+    res.send('data has been deleted')
+})
+
+// app.use will bind a middleware for the path '/contantPage'
+app.use('/contactPage', () => {                              // .use() is a function that will 'use' the function on the second argument
+})                                                          // everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
+
+//listens to port 5000
+app.listen(port, (error) => {
+	if(error)
+	    console.log('Internal Error')
+	else
+	    console.log(`Server is running on port ${port}`)
+});                                           
+
 
 
 
@@ -96,6 +150,39 @@
  
 	});
 */
+
+
+
+//========================================================= DNS (Domain Name System) =======================================================
+// (DNS is like a contacts list on your phone that contains a list of IP addresses that your computer has visited before)
+
+// Every time the user types in a URL into a browser, the browser must translate the URL into an ip address
+// First, the browser checks the DNS cache in the browser for the ip address of the URL
+// if its not found in DNS cache, then the browser will check the DNS servers (operating system) for the ip address of the URL,
+// if its not found in DNS servers, then the browser will make an HTTP request to the server for the ip address of the URL
+// Once the browser has the IP address, the browser establishes a TCP connection to the server, this allows for HTTP requests and responses
+
+
+
+
+
+
+
+
+
+//======================================================== ENV variables ====================================================
+/* 
+
+	1) npm install dotenv
+
+	2) const { config } = require('dotenv');
+      	   config();							//this should be called BEFORE using the env variables
+	  
+	3) process.env.apiKey can only be used in the SAME file where you called config()
+
+*/
+
+
 
 
 
@@ -158,12 +245,9 @@
 
  		You will need the machine to machine app to use the ManagementClient class in the auth sdk
 
-
-   
-
 	 10) npm install auth0				//this will install the auth0 sdk
   	     
-
+*/
  		10.1) const { AuthenticationClient, ManagementClient } = require('auth0');
 
  		10.2) const auth0 = new AuthenticationClient({
@@ -265,11 +349,33 @@
 			})
 
 
-  		
+  	
 
 
-//======================================================== SENDING FILES TO AN ENDPOINT IN NODE.JS ======================================
 
+
+//=========================================================== MODULES ==================================================================
+
+	//MODULES are separate files with functions and classes that can be used(imported) in other files in node.js
+
+ 	1)   //add.js
+
+  	const add = (a, b) => a + b;
+	module.exports = add;
+
+    
+ 	2)   //server.js
+
+ 	const add = require('./add');			//you dont need the extension for ./add.js	
+  	add(1, 2);
+
+
+
+
+
+//======================================================== MULTER MODULE ======================================
+
+//SENDING FILES TO AN ENDPOINT IN NODE.JS
 
 
 	1) The example below will send an image from an <input type='file'> to the server, the server will then get the file and store it in a folder './uploads'
@@ -309,7 +415,7 @@
 		        });
 
 
-	2) The example below will send an image from an <input type='file'> to the server, the server will then upload the image to an s3 bucket
+	//2) The example below will send an image from an <input type='file'> to the server, the server will then upload the image to an s3 bucket
 
 		//BACK END
   
@@ -350,187 +456,6 @@
 			        body: formData,
 			});
 
-
-
-
-
-//=========================================================== MODULES ==================================================================
-/* 
-	MODULES are separate files with functions and classes that can be used(imported) in other files in node.js
-
- 	1)   //add.js
-
-  	const add = (a, b) => a + b;
-	module.exports = add;
-
-    
- 	2)   //server.js
-
- 	const add = require('./add');			//you dont need the extension for ./add.js	
-  	add(1, 2);
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//========================================================= DNS (Domain Name System) =======================================================
-// (DNS is like a contacts list on your phone that contains a list of IP addresses that your computer has visited before)
-
-// Every time the user types in a URL into a browser, the browser must translate the URL into an ip address
-// First, the browser checks the DNS cache in the browser for the ip address of the URL
-// if its not found in DNS cache, then the browser will check the DNS servers (operating system) for the ip address of the URL,
-// if its not found in DNS servers, then the browser will make an HTTP request to the server for the ip address of the URL
-// Once the browser has the IP address, the browser establishes a TCP connection to the server, this allows for HTTP requests and responses
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=============================================================== EXPRESS WEB FRAMEWORK =================================================================
-//middleware, a function that does something between the server receiving a request and sending a response 
-
- 
-
-const express = require('express');
-const app = express();                                        //creating an object that represents the main app
-const bodyParser = require('body-parser');                    //npm install body-parser, this will parse all incoming fetch() requests
-const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
-const port = 5000;
-
-app.use(bodyParser.json());					//you will need this if your server expects fetch requests with the body property
-app.use(cookieParser());
-
-// 'get' requests
-app.get('/login', (req, res) => {                                 // .get() is for handleling 'get' requests from the client
-    res.send('data has been sent');                                 
-})
-
-// 'post' request
-app.post('/login', (req, res) => {
-    //do something with req.body (if request came from a fetch())
-    //or use formidable module to get user input from forms
-    res.send('data has been received')
-})
-
-// 'put' request is similar to 'post', but the main difference is that calling the same 'put' request will produce the same result, but calling the same 'post' request will create the same resource over and over again
-app.put('/login', (req, res) => {
-    //do something with req.body (if request came from a fetch())
-    //or use formidable module to get user input from forms
-    res.send('data has been received')
-    
-})
-
-// 'delete' request
-app.delete('/login', (req, res) => {
-    //do something with req.body (if request came from a fetch())
-    //or use formidable module to get user input from forms
-    res.send('data has been deleted')
-})
-
-// app.use will bind a middleware for the path '/contantPage'
-app.use('/contactPage', () => {                              // .use() is a function that will 'use' the function on the second argument
-})                                                          // everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
-
-//listens to port 5000
-app.listen(port, (error) => {
-	if(error)
-	    console.log('Internal Error')
-	else
-	    console.log(`Server is running on port ${port}`)
-});                                           
-
-
-
-
-
-
-
-
-//======================================================== ENV variables ====================================================
-/* 
-
-	1) npm install dotenv
-
-	2) const { config } = require('dotenv');
-      	   config();
-	  
-	3) process.env.apiKey can only be used in the SAME file where you called config()
-
-*/
-
-
-
-
-
-
-
-
-
-//=========================================================HTTP MODULE=========================================================
-// HYPER TEXT TRANSFER PROTOCOL -> all about requests and responses that are done between clients and servers
-// http module is the most used module in node.js, it uses http to receive requests and send responses to the client
-// below is how you will create a server
-
-
-// configure webpack.config file with the following
-//  
-//        module.exports = {
-//            ...
-//            devServer: { 
-//                port: 3000,
-//                proxy: {
-//                    '/' : {
-//                        target: 'http://localhost:3000',
-//                        router: () => 'http://localhost: 4000'         //all requests will be forwarded to this port                                     
-//                   }
-//               }
-//           }
-//       }
-        
-
-
-// req is the request object that is sent by the client
-// res is the response object that will be sent back to the client
-var http = require("http");
-var url = require("url");
-
-
-http.createServer(function (req, res) {
-    var q = url.parse(req.url, true);
-    var filename= "." + q.pathname;                         //remember that q.pathname = /nameOfFile.html
-
-    fs.readFile(filename, function(err, data) {
-        if(err) {
-            res.writeHead(404, {"Content-Type" : "text/html"}) //error handling
-            return res.end("404 Not Found")                
-        }
-        res.writeHead(200, {'Content-Type' : "text/html"});  //defines the content type that will be sent to the client.. 200 is a status code that means everything is ok, 404 is a status code that means something is wrong
-        res.write(data);
-        return res.end();                                    //we end the response here   
-    })
-
-}).listen(8080);                                             //the server listens on port '8080'                           
 
 
 

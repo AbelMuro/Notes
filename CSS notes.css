@@ -176,6 +176,9 @@
                                                                        |     ----             |
                                                                         ----------------------
                                                     */
+    overflow: hidden;                                /*  you can use these two properties together to display 3 dots next to a number that is overflowing its container*/
+    text-overflow: ellipsis;
+    width: 100%;                                    /* make sure to set a width for the container*/
 }
 
 

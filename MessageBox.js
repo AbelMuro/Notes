@@ -1,5 +1,7 @@
-/* 
-  The component below will display a message box when you hover over it */
+/*  The component below will display a message box when you hover over it  
+(be aware that using transition property from css will delay the movement of the messagebox
+also, make sure that the parent elements of the message box do NOT have position: relative or absolute)
+*/
 
       <MessageBox 
            message={'Hello World'}

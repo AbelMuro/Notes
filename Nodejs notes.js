@@ -19,7 +19,7 @@
 /* 
     How to create a server with node.js (keep in mind that some localhosts may not work in your browser)
 
-	1) Create a folder and then a file server.js
+	1) Create a folder and then a file index.js
 
 	2) npm init -y
 
@@ -43,7 +43,7 @@
 		    console.log(`Server is running on port ${port}`);
 		});                                         
 
-	5) run the command - node server.js
+	5) run the command - node index.js
 
  	6) The server should be running on localhost:4000 and will display a Hello World Message
 
@@ -53,13 +53,30 @@
 
     	9) You will need to use fetch requests to send requests and receive respponses from the server
 
-		const response = await fetch('http://localhost:4000/', {
+		const response = await fetch('http://localhost:4000/add-data', {
 	            method: 'POST',
 	            headers: {
 	                "Content-Type": "application/json"
 	            },
 	            body: JSON.stringify({data: 'my data'})
 	        });
+
+
+  	10) The folder structure for a node.js should look like this...
+
+   		--node_modules
+     		--src
+       		   --Config					//any technology that requires configuration goes here
+	           --Routes
+	    		--POST
+       			     /add-data.js
+       			--GET
+	  		     /get-data.js
+	  		--PUT
+     			    /update-data.js
+	           /index.js
+	        /.gitignore
+	        /package.json
 */
 
 
@@ -78,19 +95,18 @@ app.use(bodyParser.json());					//you will need this if your server expects fetc
 app.use(cookieParser());
 
 // 'get' requests
-app.get('/login', (req, res) => {                                 // .get() is for handleling 'get' requests from the client
+app.get('/account', (req, res) => {                             // .get() is for handleling 'get' requests from the client
     res.send('data has been sent');                                 
 })
 
 // 'post' request
 app.post('/login', (req, res) => {
-    //do something with req.body (if request came from a fetch())
-    //or use formidable module to get user input from forms
+    const body = req.body;
     res.send('data has been received')
 })
 
 // 'put' request is similar to 'post', but the main difference is that calling the same 'put' request will produce the same result, but calling the same 'post' request will create the same resource over and over again
-app.put('/login', (req, res) => {
+app.put('/update', (req, res) => {
     //do something with req.body (if request came from a fetch())
     //or use formidable module to get user input from forms
     res.send('data has been received')
@@ -98,7 +114,7 @@ app.put('/login', (req, res) => {
 })
 
 // 'delete' request
-app.delete('/login:id', (req, res) => {
+app.delete('/account:id', (req, res) => {
     //do something with req.body (if request came from a fetch())
     //or use formidable module to get user input from forms
     const id = req.params.id;						//you can use :id to send data to an endpoint like this http://localhost:4000/login/123456
@@ -116,7 +132,6 @@ app.listen(port, (error) => {
 	else
 	    console.log(`Server is running on port ${port}`)
 });                                           
-
 
 
 
@@ -153,14 +168,28 @@ app.listen(port, (error) => {
 
 
 
-//========================================================= DNS (Domain Name System) =======================================================
-// (DNS is like a contacts list on your phone that contains a list of IP addresses that your computer has visited before)
+//======================================================== HTTP only cookies ==============================================================
+//Cookies are a type of storage that is send with every request and response
+//HTTP-only cookies can only be viewed on the server
 
-// Every time the user types in a URL into a browser, the browser must translate the URL into an ip address
-// First, the browser checks the DNS cache in the browser for the ip address of the URL
-// if its not found in DNS cache, then the browser will check the DNS servers (operating system) for the ip address of the URL,
-// if its not found in DNS servers, then the browser will make an HTTP request to the server for the ip address of the URL
-// Once the browser has the IP address, the browser establishes a TCP connection to the server, this allows for HTTP requests and responses
+
+app.post('/login', (req, res) => {
+    	const {email, password} = req.body;
+	const access_token = 'access token';
+
+	res.cookie('accessToken', access_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',      // Use secure cookies in production
+            sameSite: 'Strict',
+            maxAge: 1000 * 60 * 60,
+        })
+});
+
+app.get('/account', () => {
+	const accessToken = req.cookies.accessToken;		//accessing the http only cookie
+	
+});
+
 
 
 
@@ -245,9 +274,9 @@ app.listen(port, (error) => {
 
  		You will need the machine to machine app to use the ManagementClient class in the auth sdk
 
-	 10) npm install auth0				//this will install the auth0 sdk
-  	     
-*/
+	 10) npm install auth0				//this will install the auth0 sdk  */
+
+
  		10.1) const { AuthenticationClient, ManagementClient } = require('auth0');
 
  		10.2) const auth0 = new AuthenticationClient({
@@ -358,16 +387,24 @@ app.listen(port, (error) => {
 
 	//MODULES are separate files with functions and classes that can be used(imported) in other files in node.js
 
- 	1)   //add.js
+ 	1)   //addBill.js
 
-  	const add = (a, b) => a + b;
-	module.exports = add;
+		const express = require('express');
+		const router = express.Router();
+		
+		router.post('/add_bill', async (req, res) => {
+		    //router logic goes here
+		});
 
-    
+		module.exports = router;			//module.exports = {router, ...}
+
  	2)   //server.js
 
- 	const add = require('./add');			//you dont need the extension for ./add.js	
-  	add(1, 2);
+	 	const addBill = require('./addBill.js');		
+	  	const express = require('express');
+		const app = express();
+	
+		app.use(addBill);
 
 
 

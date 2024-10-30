@@ -19,13 +19,27 @@
 /* 
     How to create a server with node.js (keep in mind that some localhosts may not work in your browser)
 
-	1) Create a folder and then a file index.js
+	1) Create a folder structure like this 
+
+   		--node_modules
+     		--src
+       		   --Config					//any technology that requires configuration goes here
+	           --Routes
+	    		--POST
+       			     /add-data.js
+       			--GET
+	  		     /get-data.js
+	  		--PUT
+     			    /update-data.js
+	           /index.js
+	        /.gitignore
+	        /package.json
 
 	2) npm init -y
 
  	3) npm install express 
 
-  	4) Copy the following lines of code
+  	4) Copy the following lines of code to the index.js
 
 		const express = require('express');
 		const app = express();                                        //creating an object that represents the main app
@@ -43,7 +57,9 @@
 		    console.log(`Server is running on port ${port}`);
 		});                                         
 
-	5) run the command - node index.js
+	5) run the command
+ 		
+   		node index.js
 
  	6) The server should be running on localhost:4000 and will display a Hello World Message
 

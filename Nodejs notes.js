@@ -103,6 +103,14 @@
 			    console.log(`Server is running on port ${port}`);
 			}); 
 
+   		4) KEEP IN MIND, when you make changes to your project, 
+     		   you will need to commit and push those changes to the remote repository on github 
+	  	   in order to reflect those changes on the deployed node.js app
+		   Then you can run the following command
+
+      			git push heroku main
+       	
+
 */
 
 
@@ -206,8 +214,8 @@ app.post('/login', (req, res) => {
 
 	res.cookie('accessToken', access_token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',      // Use secure cookies in production
-            sameSite: 'Strict',
+            secure: true,      					//http only cookies will only be used throught https 
+            sameSite: 'Strict',					//protects against cross-site request forgery (CSRF) attacks.
             maxAge: 1000 * 60 * 60,
         })
 });

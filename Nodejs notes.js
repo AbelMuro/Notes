@@ -80,6 +80,33 @@
 */
 
 
+/* 
+		HOW TO DEPLOY YOUR NODE.JS APP WITH HEROKU
+
+  		1) Install heroku cli    
+
+      		2) Go to your node.js project terminal and run the following commands below
+
+   			heroku login				//this command will open up the browser and enable you login
+ 			heroku create name-of-app		//this command will generate a url of your deployed node.js app
+			heroku git:remote -a name-of-app 	//this command will initialize the git repository for heroku
+   			git push heroku main			//this will push all the changes in your project to the git repo in heroku	
+      			heroku config:set VAR1=value1 VAR2=value2 VAR3=value3   //this will set the env variables if your app uses them
+
+		3) Make sure that you are not hard setting the port number, heroku uses an env variable to set the port number
+
+  			app.listen(process.env.PORT || port, (error) => {
+			    if(error){
+			        console.log(error, 'error occured');
+			        return;
+			    }
+			    console.log(`Server is running on port ${port}`);
+			}); 
+
+*/
+
+
+
 //=============================================================== EXPRESS WEB FRAMEWORK =================================================================
 //middleware, a function that does something between the server receiving a request and sending a response 
 

@@ -76,23 +76,6 @@
 	            },
 	            body: JSON.stringify({data: 'my data'})
 	        });
-
-
-  	10) The folder structure for a node.js should look like this...
-
-   		--node_modules
-     		--src
-       		   --Config					//any technology that requires configuration goes here
-	           --Routes
-	    		--POST
-       			     /add-data.js
-       			--GET
-	  		     /get-data.js
-	  		--PUT
-     			    /update-data.js
-	           /index.js
-	        /.gitignore
-	        /package.json
 */
 
 

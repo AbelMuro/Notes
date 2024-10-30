@@ -214,8 +214,8 @@ app.post('/login', (req, res) => {
 	res.cookie('accessToken', access_token, {
             httpOnly: true,
             secure: true,      					//http only cookies will only be used throught https 
-            sameSite: 'Strict',					//protects against cross-site request forgery (CSRF) attacks.
-            maxAge: 1000 * 60 * 60,
+            sameSite: 'Strict',					//Strict only allows sites from the same orgins to make requests, Lax allows cross-site requests
+            maxAge: 1000 * 60 * 60,				
         })
 });
 

@@ -214,7 +214,7 @@ app.post('/login', (req, res) => {
 	res.cookie('accessToken', access_token, {
             httpOnly: true,
             secure: true,      					//http only cookies will only be used throught https 
-            sameSite: 'Strict',					//Strict only allows sites from the same orgins to make requests, Lax allows cross-site requests
+            sameSite: 'Strict or None',				//Strict only allows sites from the same orgins to make requests, None allows cross-site requests
             maxAge: 1000 * 60 * 60,				
         })
 });

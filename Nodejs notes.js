@@ -37,6 +37,10 @@
 
 	2) npm init -y
 
+ 		in your package.json, create a script like this..
+
+   			"start" : "node index.js"
+
  	3) npm install express 
 
   	4) Copy the following lines of code to the index.js
@@ -59,7 +63,7 @@
 
 	5) run the command
  		
-   		node index.js
+   		npm start
 
  	6) The server should be running on localhost:4000 and will display a Hello World Message
 

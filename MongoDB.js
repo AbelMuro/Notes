@@ -57,7 +57,7 @@
 
 
                             const {connectDB} = require('./Database/db.js');
-                            const { ObjectId } = require('mongodb'
+                            const { ObjectId } = require('mongodb');
                     
                                 app.post('/register', async (req, res) => {
                                     const body = req.body;

@@ -65,7 +65,7 @@
                                     try{
                                         const db = await connectDB();
                                         const resultOne = await db.collection('users').insertOne({ name: "Jane", age: 25 });            //insertOne() will insert a new document in the collection
-                                        const resultTwo = await db.collection('users').insertMany(([{ name: "Jane", age: 25 }, { name: "Doe", age: 22 )
+                                        const resultTwo = await db.collection('users').insertMany(([{ name: "Jane", age: 25 }, { name: "Doe", age: 22 }]);
                                         console.log(resultOne, resultTwo);
                                         res.status(200).send('Successfully added user to database');        
                                     }

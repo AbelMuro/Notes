@@ -60,6 +60,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                             <meta name="description" content="Front-end quiz that will test your skills in HTML, CSS, Javascript and Accessibility!"/> 
                             <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F6FA" />                           //you can remove the media attribute if you just want ONE custom theme
                             <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#313E51" />
+                            <base href="/" />                                                                    //this will set the base url to '/'    this will force all relative urls to resolve to '/'     profile/overview will resolve to  /profile/overview
               
               9) generally, index.js will have..
               

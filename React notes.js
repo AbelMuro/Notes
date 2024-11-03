@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
             0) npx create-react-app my-app
             
             1) npm init -y                                                          //creates package.json
+                   make sure to add "homepage": ".",                                //this will ensure that all paths are relative to the CURRENT directory
 
             2) npm install react                                                    //installs the react library
                npm install react-dom                                                //installs the react dom library 

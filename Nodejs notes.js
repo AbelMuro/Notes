@@ -84,35 +84,55 @@
 
 
 /* 
-		HOW TO DEPLOY YOUR NODE.JS APP WITH HEROKU
+		HOW TO DEPLOY YOUR NODE.JS APP WITH HEROKU CLI
 
-  		1) Install heroku cli    
+	  		1) Install heroku cli    
+	
+	      		2) Go to your node.js project terminal and run the following commands below
+	
+	   			heroku login				//this command will open up the browser and enable you login
+	 			heroku create name-of-app		//this command will generate a url of your deployed node.js app
+				heroku git:remote -a name-of-app 	//this command will initialize the git repository for heroku
+	   			git push heroku main			//this will push all the changes in your project to the git repo in heroku	
+	      			heroku config:set VAR1=value1 VAR2=value2 VAR3=value3   //this will set the env variables if your app uses them
+	
+			3) Make sure that you are not hard setting the port number, heroku uses an env variable to set the port number
+	
+	  			app.listen(process.env.PORT || port, (error) => {
+				    if(error){
+				        console.log(error, 'error occured');
+				        return;
+				    }
+				    console.log(`Server is running on port ${port}`);
+				}); 
+	
+	   		4) KEEP IN MIND, when you make changes to your project, 
+	     		   you will need to commit and push those changes to the remote repository on github 
+		  	   in order to reflect those changes on the deployed node.js app
+			   Then you can run the following command
+	
+	      			git push heroku main
 
-      		2) Go to your node.js project terminal and run the following commands below
 
-   			heroku login				//this command will open up the browser and enable you login
- 			heroku create name-of-app		//this command will generate a url of your deployed node.js app
-			heroku git:remote -a name-of-app 	//this command will initialize the git repository for heroku
-   			git push heroku main			//this will push all the changes in your project to the git repo in heroku	
-      			heroku config:set VAR1=value1 VAR2=value2 VAR3=value3   //this will set the env variables if your app uses them
+   
 
-		3) Make sure that you are not hard setting the port number, heroku uses an env variable to set the port number
+		HOW TO DEPLOY YOUR NODE.JS APP WITH HEROKU/GITHUB
 
-  			app.listen(process.env.PORT || port, (error) => {
-			    if(error){
-			        console.log(error, 'error occured');
-			        return;
-			    }
-			    console.log(`Server is running on port ${port}`);
-			}); 
+  			1) Go to your apps page in heroku and click on New button to create a new app
 
-   		4) KEEP IN MIND, when you make changes to your project, 
-     		   you will need to commit and push those changes to the remote repository on github 
-	  	   in order to reflect those changes on the deployed node.js app
-		   Then you can run the following command
+     			2) Type in a name for the app and click on create
 
-      			git push heroku main
-       	
+ 			3) Open the app and go to Deploy tab -> Deployment method -> Connect with Github and find the github repo for your project
+
+    			4) Enable Automatic deploys and click on deploy branch
+
+       			5) On the top right corner, click on Open App
+
+   			6) KEEP IN MIND, make sure your listen route in node.js looks like the following
+
+			      app.listen(process.env.PORT || port, () => {
+				    console.log(`Server is running on this port ${port}`);
+			       });     
 
 */
 

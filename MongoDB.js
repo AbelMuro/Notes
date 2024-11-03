@@ -179,6 +179,139 @@
                                 })
 
 
+//=========================================================================== MONGOOSE ============================================================================
+/*
+        Mongoose is a library that uses mongoDB with schemas and models
+        -Schemas is like a template that we use to define how a document is going to look like
+        -Models are constructors that are used to construct documents based on a schema
+
+        Remember, you need to create a schema and a model in order to create a document
+*/
+
+
+                //1) npm install mongoose
+
+                //2) Write the following lines of code in ./Database/db.js
+
+                    const mongoose = require('mongoose');
+
+                    const url = `mongodb+srv://${username}:${password}@cluster0.5k5vu.mongodb.net/${name-of-database}?retryWrites=true&w=majority&appName=Cluster0`
+                    
+                    async function connectDB() {
+                        try{
+                          await mongoose.connect(url);
+                          console.log('You have connected to the database')
+                        }
+                        catch(error){
+                          console.log('error', error.message);
+                        }
+                    }
+                    
+                    module.exports = connectDB;
+
+            
+                    //3) Next write the following lines of code in ./Model/Model.js
+
+                        const mongoose = require('mongoose');
+                        const {Schema} = require('mongoose');
+                        
+                        const userSchema = new Schema({
+                            name: {type: String, required: true},
+                            age: {type: Number, required: true}
+                        })
+                        
+                        const User = mongoose.model('user', userSchema, 'name-of-collection')        //create a model that will be used to create documents
+                        
+                        module.exports = {
+                            User
+                        }
+
+
+                    //4) Now you can perform CRUD operations
+                            const mongoose = require('mongoose');
+                            const {connectDB, ObjectId} = require('./Database/db.js')
+                            const {User} = require('./Model/Model.js');
+                            const ObjectId = mongoose.Types.ObjectId;                            //new ObjectId('24 character id string goes here');
+
+
+
+                            app.post('/create_document', async (req, res) => {
+                                const body = req.body;
+                                const id = new ObjectId(id);
+                                
+                                try{
+                                    await connectDB();
+                                    const newUserOne = new User({name: 'Johnathan', age: 2223});
+                                    const newUserTwo = new User({_id: id});                        //you can create a document with a specified _id
+                                    await newUserOne.save();                                       //the save() method will create a new document in the collection
+                                    
+                                    const result = await User.insertMany([{name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}]);
+                                    
+                                }
+                                catch(error){
+                                    if(error.message.includes('E11000 duplicate key error collection'))
+                                        console.log('Document with the specified _id already exists')
+                                    else if(error.message.includes('user validation failed'))
+                                        console.log('Validation error, document is missing required properties')
+                                }     
+                            });
+
+                            app.get('/get_documents', async () => {
+                                const id = new ObjectId('24 character id string goes here');
+                                
+                                try{
+                                    await connectDB();
+                                    const user = await User.findOne({name: 'John'});                //looks for the first occurence of the document in the collection
+                                    const anotherUser = await User.findOne({_id: id});                //you can also look for a document with its _id
+                                    const users = await User.find({age: 22});                        //looks for ALL occurences of the document in the collection
+                                    if(!user)
+                                        console.log('document doesnt exist');
+                                }
+                                catch(error){
+                                    if(error.message.includes('user validation failed'))
+                                        console.log('Validation error, document is missing required properties')
+                                }
+                            
+                            })
+
+
+                            app.delete('/delete_document:id', async (req, res) => {
+                                const id = req.params.id;
+                                const idToDelete = new ObjectId(id);
+                                
+                                try{
+                                    await connectDB();
+                                    const resultOne = await User.deleteOne({_id: idToDelete});                //this will delete the first occurence of the specified document
+                                    const resultTwo = await User.deleteMany({name: 'Johnathan'});            //this will delete ALL occurences of the specified document
+                                    
+                                    if(resultOne.deletedCount === 0)
+                                        console.log('document doesnt exist');
+                                }
+                                catch(error){ 
+                                    if(error.message.includes('user validation failed'))
+                                        console.log('Validation error, document is missing required properties')
+                                }     
+                            })  
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

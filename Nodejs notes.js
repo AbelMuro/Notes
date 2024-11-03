@@ -133,7 +133,7 @@
 			      app.listen(process.env.PORT || port, () => {
 				    console.log(`Server is running on this port ${port}`);
 			       });     
-
+			7) To add env variables, go to Settings -> Config vars and add your env variables there
 */
 
 

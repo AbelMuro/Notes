@@ -233,20 +233,17 @@
                             const {User} = require('./Model/Model.js');
                             const ObjectId = mongoose.Types.ObjectId;                            //new ObjectId('24 character id string goes here');
 
-
+                            connectDB();
 
                             app.post('/create_document', async (req, res) => {
                                 const body = req.body;
                                 const id = new ObjectId(id);
                                 
                                 try{
-                                    await connectDB();
                                     const newUserOne = new User({name: 'Johnathan', age: 2223});
                                     const newUserTwo = new User({_id: id});                        //you can create a document with a specified _id
-                                    await newUserOne.save();                                       //the save() method will create a new document in the collection
-                                    
-                                    const result = await User.insertMany([{name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}]);
-                                    
+                                    const result = await User.insertMany([{name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}]);                                    
+                                    await newUserOne.save();                                       //the save() method will create a new document in the collection                                
                                 }
                                 catch(error){
                                     if(error.message.includes('E11000 duplicate key error collection'))
@@ -256,11 +253,26 @@
                                 }     
                             });
 
+                            app.put('/update_documents', async (req, res) => {
+                                const id = new ObjectId(id);
+                                
+                                try{
+                                    const resultOne = await User.updateOne( { name: 'Alice' }, { $set: { age: 29 } });      //keep in mind that you can only update the properties that are in the schema
+                                    const resultTwo = await User.updateOne( {_id: id}, { $set: { age: 45 }});                 //you can also look for a document with its _id
+                                    const resultThree = await User.updateMany( {name: 'Alice' }, { $set: { age: 56} });   //first object is the document that we look for, we update the properties with the second object
+        
+                                    if(resultOne.modifiedCount === 0)
+                                        console.log('Document doesnt exist')
+                                }
+                                catch(error){
+                                    console.log(error.message)
+                                }
+                            })
+
                             app.get('/get_documents', async () => {
                                 const id = new ObjectId('24 character id string goes here');
                                 
                                 try{
-                                    await connectDB();
                                     const user = await User.findOne({name: 'John'});                //looks for the first occurence of the document in the collection
                                     const anotherUser = await User.findOne({_id: id});                //you can also look for a document with its _id
                                     const users = await User.find({age: 22});                        //looks for ALL occurences of the document in the collection
@@ -280,8 +292,8 @@
                                 const idToDelete = new ObjectId(id);
                                 
                                 try{
-                                    await connectDB();
                                     const resultOne = await User.deleteOne({_id: idToDelete});                //this will delete the first occurence of the specified document
+                                    const resultTwo = await User.deleteOne({name: 'John'});
                                     const resultTwo = await User.deleteMany({name: 'Johnathan'});            //this will delete ALL occurences of the specified document
                                     
                                     if(resultOne.deletedCount === 0)

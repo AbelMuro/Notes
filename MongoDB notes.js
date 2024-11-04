@@ -57,7 +57,7 @@
                                       }
                                 }
                                 
-                                module.exports = {connectDB};
+                                module.exports = connectDB;
 
 
                         //3) Perform CRUD operations with the db object
@@ -71,7 +71,7 @@
                                 //deleteOne() will look for the first document that satisfies the query and delete it
                                 //deleteMany() will look for ALL documents that satisfies the query and delete them all
 
-                            const {connectDB} = require('./Database/db.js');
+                            const connectDB = require('./Database/db.js');
                             const { ObjectId } = require('mongodb');
 
 
@@ -195,7 +195,7 @@
 
                     const mongoose = require('mongoose');
 
-                    const url = `mongodb+srv://${username}:${password}@cluster0.5k5vu.mongodb.net/${name-of-database}?retryWrites=true&w=majority&appName=Cluster0`
+                    const url = `mongodb+srv://${accountname}:${password}@cluster0.5k5vu.mongodb.net/${name-of-database}?retryWrites=true&w=majority&appName=Cluster0`
                     
                     async function connectDB() {
                         try{

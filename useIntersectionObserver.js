@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'; 
 
 /* 
+    This hook will observe an element and will let the developer know if the element is within the viewport
+
+
     props:
 
     -callback = (entries) => {             //this callback will check all the elements being observed and will see if these elements are 'in view'

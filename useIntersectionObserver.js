@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from 'react';
                 if (entry.isIntersecting)  //keep in mind that as you scroll down a large element, 'intersectionRatio' will return a smaller and smaller number  0.123 -> 0.0123, this number MUST be greater than the threshold for .isIntersecting to return true 
                     setInView(true); 
                 else
-                    setInView(false);
+                    setInView(false);        entry = { intersectionRatio: 0.02134, isIntersecting: true, ....}
             }); 
         };
     

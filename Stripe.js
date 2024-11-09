@@ -84,8 +84,10 @@ function Form() {
 
 
 //------------------back end code
+//npm install stripe
 const router = express.Router();
-const {config} = require('dotenv');
+const Stripe = require('stripe'); 
+const stripe = Stripe('secret api key');
 
 router.post('/create_payment_intent', async (req, res) => {
     const { paymentMethodId } = req.body; 

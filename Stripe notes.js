@@ -18,9 +18,25 @@ The code below will display a dialog that the user can use to enter credit-card 
     once the user confirms their details, they will be charged when they click on the 'submit' button
 
 //--------Front end code
+/*
+    Error State messages for the handleChange()
+
+    CardNumberElement:
+        'Your card number is incomplete.'
+        'Your card number is invalid.'
+
+    CardExpiryElement:
+        "Your card's expiration date is incomplete."
+        "Your card's expiration year is in the past."
+
+    CardCvcExpiry
+        "Your card's security code is incomplete."
+*/
+
+
 import { loadStripe } from '@stripe/stripe-js'; 
 import { Elements } from '@stripe/react-stripe-js'
-import { CardElement, useStripe, useElements} from '@stripe/react-stripe-js'
+import { CardElement, CardCvcElement, CardExpiryElement, CardNumberElement, useStripe, useElements} from '@stripe/react-stripe-js'
 
 const stripePromise = loadStripe('secret api key');
 
@@ -36,13 +52,27 @@ function App() {
 function Form() {
     const stripe = useStripe();
     const elements = useElements();
+    const [error, setError] = useState('');
+
+    const handleChange = (e) => {
+        if(e.error){
+            const message = e.error.message;
+            setError(message);        
+        }
+        else if(e.empty){
+            setError('input is empty')
+        }
+    }   
 
     const handleSubmit = async () => {
         try{
-            const cardElement = elements.getElement(CardElement);
+            const cardNumberElement = elements.getElement(CardNumberElement);                    //you dont have to use .getElement() on all the stripe elements, just one will be enough
             const {error, paymentMethod} = await stripe.createPaymentMethod({
                 type: 'card',
-                card: cardElement
+                card: cardNumberElement,
+                billing_details: { 
+                    name: 'John Doe',                 
+                }, 
             })
             if(error) 
                 throw new Error(error);
@@ -70,8 +100,27 @@ function Form() {
     
     return(
         <form onSubmit={handleSubmit}>
-            <CardElement/>                                    //this will open up a dialog that the user can use to insert their credit card details
-             <button> 
+            <CardElement/>            // This will open up a dialog that the user can use to insert their credit card details
+            <CardExpiryElement/>      // The following elements will use a pre-built input that you can use to securely extract the credit card details
+            <CardCvcElement/>        
+            <CardNumberElement        // The options prop can be used to apply certain css properties (not all)
+                    options={{        
+                        style: {
+                            base: { 
+                                fontSize: '18px', 
+                                color: '#21092F', 
+                                fontFamily: 'SpaceGrotesk, Arial, sans-serif', 
+                                fontWeight: "500",
+                                '::placeholder': { 
+                                    color: '#21092f40', 
+                                    fontFamily: 'SpaceGrotesk, Arial, sans-serif',
+                                },
+                            }
+                    },
+                    placeholder: '1234 5678 9123 0000'
+                    onChange={handleChange}      // You can also use the handleChange to get the error state of the stripe element, there is no blur event or invalid event
+                }} 
+            <button> 
                 'Submit'
              </button>
         </form>
@@ -114,62 +163,6 @@ router.post('/create_payment_intent', async (req, res) => {
 
 
 
-
-
-//----------------------------------- STRIPE WITH REACT-------------------------
-
-import { CardNumberElement } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'; 
-import { Elements } from '@stripe/react-stripe-js'
-
-const stripePromise = loadStripe('secret api key');
-
-const options = {        //fonts have to be loaded through https
-    fonts: [
-        {family: 'SpaceGrotesk', 
-         src: 'url(https://db.onlinewebfonts.com/t/7f510d38d1c785c851d73882c0ca58c0.ttf)', 
-         style: 'normal', 
-         weight: "500", 
-         size: '18px'
-    }]
-}
-
-function Form(){
-
-    const handleSubmit = (e) => {
-        const cardNumber = elements.getElement(CardNumberElement)
-    }
-    
-    return(
-        <Elements stripe={stripePromise} options={options}>
-            <form onSubmmit={handleSubmit}>
-                <MyCustomInput>
-            </form>
-        </Elements>
-    )
-}
-
-
-function MyCustomInput() {
-        return(
-            <CardNumberElement                       
-                    options={{
-                        style: {
-                            base: { 
-                                fontSize: '18px',                                 //only a select few css properties are supported here
-                                color: '#21092F', 
-                                fontFamily: 'SpaceGrotesk, Arial, sans-serif', 
-                                fontWeight: "500",
-                                '::placeholder': { 
-                                    color: '#21092f40', 
-                                    fontFamily: 'SpaceGrotesk, Arial, sans-serif',
-                                },
-                            }
-                        },
-                        placeholder: '1234 5678 9123 0000'
-                }}/>
-        )
-}
 
 
 

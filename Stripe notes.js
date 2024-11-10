@@ -116,6 +116,63 @@ router.post('/create_payment_intent', async (req, res) => {
 
 
 
+//----------------------------------- STRIPE WITH REACT-------------------------
+
+import { CardNumberElement } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'; 
+import { Elements } from '@stripe/react-stripe-js'
+
+const stripePromise = loadStripe('secret api key');
+
+const options = {        //fonts have to be loaded through https
+    fonts: [
+        {family: 'SpaceGrotesk', 
+         src: 'url(https://db.onlinewebfonts.com/t/7f510d38d1c785c851d73882c0ca58c0.ttf)', 
+         style: 'normal', 
+         weight: "500", 
+         size: '18px'
+    }]
+}
+
+function Form(){
+
+    const handleSubmit = (e) => {
+        const cardNumber = elements.getElement(CardNumberElement)
+    }
+    
+    return(
+        <Elements stripe={stripePromise} options={options}>
+            <form onSubmmit={handleSubmit}>
+                <MyCustomInput>
+            </form>
+        </Elements>
+    )
+}
+
+
+function MyCustomInput() {
+        return(
+            <CardNumberElement                       
+                    options={{
+                        style: {
+                            base: { 
+                                fontSize: '18px',                                 //only a select few css properties are supported here
+                                color: '#21092F', 
+                                fontFamily: 'SpaceGrotesk, Arial, sans-serif', 
+                                fontWeight: "500",
+                                '::placeholder': { 
+                                    color: '#21092f40', 
+                                    fontFamily: 'SpaceGrotesk, Arial, sans-serif',
+                                },
+                            }
+                        },
+                        placeholder: '1234 5678 9123 0000'
+                }}/>
+        )
+}
+
+
+
 
 
 

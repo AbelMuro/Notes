@@ -214,8 +214,11 @@ function Form() {
             })
     
             if(response.status === 200){
-                const result = await response.text();
-                console.log(result);
+                const result = await response.json();
+                const verify = result.verify_with_microdeposits || {};
+                const verifyLink = verify.hosted_verification_url || {};
+                verifyLink && window.open(verifyLink);                                            //user will receive a 1 cent deposit, the user must get the 6 digit code and submit it in this link
+                console.log('User must verify bank account with link provided above');
             }
             else if(response.status === 400){
                 const message = await response.text();
@@ -257,7 +260,7 @@ router.post('/confirm_payment', async (req, res) => {
 
 
     try { 
-        await stripe.paymentIntents.create({                    //this will actually charge the user
+        const result = await stripe.paymentIntents.create({                    //this will actually charge the user
             amount: amount,                                     //amount in cents
             currency: 'usd', 
             payment_method: paymentMethodId, 
@@ -274,7 +277,7 @@ router.post('/confirm_payment', async (req, res) => {
             },
 
         }); 
-        res.status(200).send('Payment Confirmed'); 
+        res.status(200).json(result.next_action);  //next_action is an object that has a property 'hosted_verification_url', its a link where the user must verify their bank account by submitting a 6 digit code from a deposit by stripe 
     } 
     catch (error) { 
         const message = error.message;

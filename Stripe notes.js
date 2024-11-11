@@ -12,7 +12,7 @@
 */
 
 
-// PAYMENTS USING LINK
+// ======================================== HOW TO CHARGE THE USER USING THEIR CREDIT CARD ===================================================
 
 The code below will display a dialog that the user can use to enter credit-card information, 
     once the user confirms their details, they will be charged when they click on the 'submit' button
@@ -40,9 +40,13 @@ import { CardElement, CardCvcElement, CardExpiryElement, CardNumberElement, useS
 
 const stripePromise = loadStripe('secret api key');
 
+const options = {                        //font files can only be loaded through https
+    fonts: [{family: 'SpaceGrotesk', src: 'url(https://db.onlinewebfonts.com/t/7f510d38d1c785c851d73882c0ca58c0.ttf)', style: 'normal', weight: "500", size: '18px'}]
+}
+
 function App() {
     return(
-        <Elements stripe={stripePromise}>
+        <Elements stripe={stripePromise} options={options}>
             <Form/>
         </Elements>
     )
@@ -77,7 +81,7 @@ function Form() {
             if(error) 
                 throw new Error(error);
             
-            const response = await fetch('http://localhost:4000/create_payment_intent', {
+            const response = await fetch('http://localhost:4000/confirm_payment', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -94,7 +98,8 @@ function Form() {
             }
         }
         catch(error){
-            console.log(error.message);
+            const message = error.message;
+            console.log(message);
         }
     }
     
@@ -138,7 +143,7 @@ const router = express.Router();
 const Stripe = require('stripe'); 
 const stripe = Stripe('secret api key');
 
-router.post('/create_payment_intent', async (req, res) => {
+router.post('/confirm_payment', async (req, res) => {
     const { paymentMethodId } = req.body; 
     
     try { 
@@ -156,9 +161,160 @@ router.post('/create_payment_intent', async (req, res) => {
     } 
     
     catch (error) { 
-        res.status(500).send(`${error.message}`) 
+        const message = error.message;
+
+        if(message === 'Your card number is incorrect.')
+            res.status(400).send(message);
+        else if(message === "Your card's security code is incorrect.")        //this will also return true if the user has the incorrect exp date
+            res.status(400).send(message);
+        else 
+            res.status(500).send(message);
     };
 })
+
+
+
+
+//============================================ HOW TO CHARGE USERS USING THEIR BANK ACCOUNT INFO ==============================================
+
+
+
+
+
+
+//------------Front end code
+function Form() {
+    const stripe = useStripe();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try{
+            const {error, paymentMethod} = await stripe.createPaymentMethod({
+                type: 'us_bank_account',
+                us_bank_account: {
+                    account_holder_type: 'individual',
+                    account_number: '123456789',
+                    routing_number: '123456789',
+                },
+                billing_details: {
+                    name: 'customers name',
+                },
+            });
+
+            if(error)
+                throw new Error(error.message);
+
+            const response = await fetch('http://localhost:4000/confirm_payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({paymentMethodId: paymentMethod.id, amount: 150})
+            })
+    
+            if(response.status === 200){
+                const result = await response.text();
+                console.log(result);
+            }
+            else if(response.status === 400){
+                const message = await response.text();
+                console.log(message);
+            }
+            else{
+                const message = await response.text();
+                console.log(`Error from server: ${message}`);
+            }            
+        }
+        catch(error){
+            console.log(`Unknown error: ${error.message}`)
+        }
+    }
+
+
+    return (
+        <form className={styles.container} onSubmit={handleSubmit} id='card'>
+            //inputs that ask for the users account number and routing number
+        </form>  
+     )       
+}
+
+
+
+
+
+
+//----------------- Back end code
+
+
+const Stripe = require('stripe');
+const stripe = Stripe('api key')
+
+router.post('/confirm_payment', async (req, res) => {
+    const { paymentMethodId, amount} = req.body; 
+    const userAgent = req.headers['user-agent'];
+    const customerIpAddress = req.headers['x-forwarded-for'] || req.ip;
+
+
+    try { 
+        await stripe.paymentIntents.create({                    //this will actually charge the user
+            amount: amount,                                     //amount in cents
+            currency: 'usd', 
+            payment_method: paymentMethodId, 
+            payment_method_types: ['us_bank_account'],        //this is necessary for bank account charges
+            confirm: true,            
+            mandate_data: {                                    //this is a requirement
+                customer_acceptance: { 
+                    type: 'online', 
+                    online: { 
+                        ip_address: customerIpAddress,         //you must specify the ip_address
+                        user_agent: userAgent 
+                    }
+                }
+            },
+
+        }); 
+        res.status(200).send('Payment Confirmed'); 
+    } 
+    catch (error) { 
+        const message = error.message;
+
+        if(message === 'The payment details you provided are invalid.')
+            res.status(400).send(message);
+        else
+            res.status(500).send(message) 
+    };
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -28,6 +28,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 
                                 module: {
                                     rules: [
+                                       test: /\.css$/,
                                        use: [{loader: 'postcss-loader'}]    
                                     ]
                                 }

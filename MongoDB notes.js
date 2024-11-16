@@ -195,7 +195,7 @@
 
                     const mongoose = require('mongoose');
 
-                    const url = `mongodb+srv://${accountname}:${password}@cluster0.5k5vu.mongodb.net/${name-of-database}?retryWrites=true&w=majority&appName=Cluster0`
+                    const url = `mongodb+srv://${accountname}:${password}@cluster0.5k5vu.mongodb.net/${name-of-database}?retryWrites=true&w=majority&appName=Cluster0` //the account name and password can be found in the atlas, SECURITY -> quickstart -> create a user for the database and save the username and password
                     
                     async function connectDB() {
                         try{

@@ -271,8 +271,96 @@ app.get('/account', () => {
 
 
 
+//================================================== JSON WEB TOKENS ==========================================================
+/* 
+	json web tokens are a popular method for implementing authentication in a node.js/react.js app
+ 	The example below will use mongoDB and json web tokens to implement authentication
+*/
+
+// 1)   npm install mongoose bcryptjs jsonwebtoken
+
+	// bcrypt is a module that we can use to hash and encrypt a password for more security
+	// jsonwebtoken
+
+	const mongoose = require('mongoose');
+	const {Schema} = require('mongoose');
+	const bcrypt = require('bcryptjs');
+	
+	const userSchema = new Schema({
+	    email: {type: String, required: true, unique: true},    //remember to set the unique prop here to true
+	    password: {type: String, required: true}
+	});
+	
+	userSchema.pre('save', async function (next) {              //pre() is a middleware that will execute a function that will hash a password BEFORE the save method is called
+	    if(!this.isModified('password'))                        //if the password has NOT been modified
+	        return next();                                      //will execute the next middleware, if there are no more middlewares, then save() will be called
+	
+	    const salt = await bcrypt.genSalt(10);                  //generates a salt (a random value that is added to the password to enhance security) 
+	    this.password = await bcrypt.hash(this.password, salt); //we hash the password (convert the password into a random sequence of characters) 
+	    next();
+	});
+	
+	userSchema.methods.matchPassword = async function (enteredPassword) { 	//this will check the user's password to see if its correct
+	    return await bcrypt.compare(enteredPassword, this.password)
+	};
+	
+	const User = mongoose.model('user', userSchema, 'accounts')        //create a model that will be used to create documents
+	
+	module.exports = {
+	    User
+	}
 
 
+// 2) 
+
+	router.post('/register', async (req, res) => {
+	    const {email, password} = req.body;
+	
+	    try{
+	        const user = new User({email, password});
+	        await user.save();
+	
+	        res.status(200).send('User has created account');
+	    }
+	    catch(error){
+	        const message = error.message;
+	        if(message.includes('E11000 duplicate key error collection:'))
+	            res.status(401).send('Email already exists');
+	        else
+	            res.status(500).send(message);
+	    }
+	});
+
+
+	router.post('/login', async (req, res) => {
+	    const {email, password} = req.body;
+	    const JWT_SECRET = process.env.JWT_SECRET;    				//you will need to create your own secret key here
+	
+	    try{
+	        const user = await User.findOne({email});				//we look for the user based on their email
+	
+	        if(!user || !(await user.matchPassword(password))){			//we check if the email exists and/or if their password is correct
+	            res.status(401).send('Invalid Credentials');
+	            return;
+	        }
+	            
+	        const token = jwt.sign({id: user._id}, JWT_SECRET, {expiresIn: '1h'});	//create the json web token
+	
+	        res.cookie('accessToken', token, {					//using http only cookies to store the json web token
+	            httpOnly: true,
+	            secure: true,
+	            sameSite: 'None',
+	            maxAge: 1000 * 60 * 60
+	        });
+	
+	        res.status(200).send('User is logged in');
+	    }
+	    catch(error){
+	        const message = error.message;
+	        res.status(500).send(message);
+	    }
+	})
+	
 
 //========================================================= AuthO =============================================================
 /* 
@@ -331,7 +419,8 @@ app.get('/account', () => {
 
  		You will need the machine to machine app to use the ManagementClient class in the auth sdk
 
-	 10) npm install auth0				//this will install the auth0 sdk  */
+	 10) npm install auth0				//this will install the auth0 sdk  
+  */
 
 
  		10.1) const { AuthenticationClient, ManagementClient } = require('auth0');

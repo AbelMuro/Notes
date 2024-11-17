@@ -145,11 +145,10 @@
 
 const express = require('express');
 const app = express();                                        //creating an object that represents the main app
-const bodyParser = require('body-parser');                    //npm install body-parser, this will parse all incoming fetch() requests
 const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
 const port = 5000;
 
-app.use(bodyParser.json());					//you will need this if your server expects fetch requests with the body property
+app.use(express.json());					//this will parse all incoming fetch() requests, you will need this if your server expects fetch requests with the body property
 app.use(cookieParser());
 
 // 'get' requests

@@ -278,6 +278,9 @@
                                     const users = await User.find({age: 22});                        //looks for ALL occurences of the document in the collection
                                     if(!user)
                                         console.log('document doesnt exist');
+
+                                    user.email;
+                                    user.age;
                                 }
                                 catch(error){
                                     if(error.message.includes('user validation failed'))

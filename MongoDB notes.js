@@ -242,7 +242,7 @@
                                 try{
                                     const newUserOne = new User({name: 'Johnathan', age: 2223});
                                     const newUserTwo = new User({_id: id});                        //you can create a document with a specified _id
-                                    const result = await User.insertMany([{name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}]);                                    
+                                    const result = await User.insertMany([{name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}]);    //this will return an array of the documents(objects), these documents have already been saved into the database                                
                                     await newUserOne.save();                                       //the save() method will create a new document in the collection                                
                                 }
                                 catch(error){

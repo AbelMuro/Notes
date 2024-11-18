@@ -271,13 +271,64 @@ app.get('/account', () => {
 
 
 
+
+
+
+
+
+//================================================= CRYPTOGRAPHY ============================================================
+/* 
+	Cryptographic is the field of encryption, decryption, hashing, and digital signatures
+ 	More specifically, hashing is the process of obscuring a sequence of characters with a different set of characters
+  	A Password will be more secure if it has been hashed with a different set of characters
+
+	In Node.js, whenever you have authentication, its crucial to hash the passwords of the users account
+	You can use the BCRYPTJS and CRYPTO modules to do just that
+
+ 	key concepts:
+
+  	Hexadecimal string: a way of representing binary data using letters and numbers
+   		Binary: 01000101 0100111010 01001010 10011001 
+     		Hex: 48 65 62 3F
+       		English: Hello
+
+*/
+
+
+	//HASH FUNCTIONS: a function that takes input data and generates a fixed-sized string of characters
+			const message = 'Hello World'
+
+    			const hashedMessage = crypto.createHash('sha256').update(message).digest('hex');
+				// 1) we create a hash object (instance of the crypto.Hash() class) and specify the 'sha256' hashing algorithm
+    				// 2) we update the hash object with data we want to hash
+				// 3) we finalize the hashing process by converting the hash object into a HEX string
+				// 4) the message 'Hello World' will be displayed in Hexadecimal format after it has been hashed
+
+	//BUFFER: a temporary location in memory that has raw binary data
+			
+			const token = crypto.randomBytes(32).toString('hex');
+				// 1) we create a buffer that has 32 random bytes
+				// 2) We then convert the raw binary data into a HEX string
+
+
+	//SALTS: a random generated value that can be added to the data to ensure the hashed value is unique
+			const password = 'password123'
+
+			const salt = await bcrypt.genSalt(10);
+			const password = await bcrypt.hash(password, salt);
+				// 1) we create a salt of random generated values
+				// 2) the password is then hashed with the generated salt to ensure security and uniqueness.
+
+
+
+
 //================================================== JSON WEB TOKENS ==========================================================
 /* 
 	json web tokens are a popular method for implementing authentication in a node.js/react.js app
  	The example below will use mongoDB and json web tokens to implement authentication
 */
 
-// 1)   npm install mongoose bcryptjs jsonwebtoken
+// 1)   npm install mongoose bcryptjs jsonwebtoken crypto
 
 	// bcrypt is a module that we can use to hash and encrypt a password for more security
 	// jsonwebtoken
@@ -287,31 +338,46 @@ app.get('/account', () => {
 	const bcrypt = require('bcryptjs');
 	
 	const userSchema = new Schema({
-	    email: {type: String, required: true, unique: true},    //remember to set the unique prop here to true
-	    password: {type: String, required: true}
+	    email: {type: String, required: true, unique: true},    			//remember to set the unique property here to true
+	    password: {type: String, required: true},
+	    resetPasswordToken: {type: String},			   			//you will need this property for reseting passwords
+    	    resetPasswordExpires: {type: Date}
 	});
 	
-	userSchema.pre('save', async function (next) {              //pre() is a middleware that will execute a function that will hash a password BEFORE the save method is called
-	    if(!this.isModified('password'))                        //if the password has NOT been modified
-	        return next();                                      //will execute the next middleware, if there are no more middlewares, then save() will be called
+	userSchema.pre('save', async function (next) {              			//pre() is a middleware that will execute a function that will hash a password BEFORE the save method is called
+	    if(!this.isModified('password'))                        		        //if the password has NOT been modified
+	        return next();                                      			//will execute the next middleware, if there are no more middlewares, then save() will be called
 	
-	    const salt = await bcrypt.genSalt(10);                  //generates a salt (a random value that is added to the password to enhance security) 
-	    this.password = await bcrypt.hash(this.password, salt); //we hash the password (convert the password into a random sequence of characters) 
+	    const salt = await bcrypt.genSalt(10);                  			//generates a salt 
+	    this.password = await bcrypt.hash(this.password, salt); 			//we hash the password
 	    next();
 	});
 	
-	userSchema.methods.matchPassword = async function (enteredPassword) { 	//this will check the user's password to see if its correct
+	userSchema.methods.matchPassword = async function (enteredPassword) { 		//this will check the user's password to see if its correct
 	    return await bcrypt.compare(enteredPassword, this.password)
 	};
-	
-	const User = mongoose.model('user', userSchema, 'accounts')        //create a model that will be used to create documents
+
+	userSchema.methods.createPasswordResetToken = function() {       
+	    const resetToken = crypto.randomBytes(32).toString('hex'); 			// we generate 32 bytes of random binary data and return it as a 'buffer', then the buffer is converted into a HEX string
+	    this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');  // We hash the token with the sha256 algorithm and convert the token into a HEX string
+	    this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;                	// Token expires in 10 minutes
+	    return resetToken;
+	}  
+
+	const User = mongoose.model('user', userSchema, 'accounts')        		//create a model that will be used to create documents
 	
 	module.exports = {
 	    User
 	}
 
 
-// 2) 
+
+
+// ------------------------------2) 
+	const crypto = require('crypto');
+	const bcrypt = require('bcryptjs');
+	const {User} = require('../../Models/Models.js');
+
 
 	router.post('/register', async (req, res) => {
 	    const {email, password} = req.body;
@@ -359,6 +425,81 @@ app.get('/account', () => {
 	        const message = error.message;
 	        res.status(500).send(message);
 	    }
+	});
+
+
+	app.post('forgot_password', (req, res) => {
+	    const {email} = req.body;
+	
+	    try{
+	        const user = await User.findOne({email});				//we look for the user's account with their email
+	
+	        if(!user){
+	            res.status(404).send('Email is not registered');
+	            return;
+	        }
+	
+	        const resetToken = user.createPasswordResetToken();			//we call this method that will generate a random reset token, will hash the reset token and store it into the users account
+	        await user.save({ validateBeforeSave: false});			
+	        const resetPasswordLink = `http://localhost:3000/reset/${resetToken}`; //we create a link that has the hashed token in the url (in your react app, you will need to retrieve the token with the useLocation() hook)
+	
+	        const transporter = nodemailer.createTransport({			//nodemailer is a module we can use to send an email to the user
+	            service: 'Gmail',
+	            auth: {
+	                user: process.env.email,
+	                pass: process.env.app_password                          	//you must create an app password for an app in your gmail acount
+	            }
+	        })
+	
+	        const mailOptions = {
+	            from: process.env.email,
+	            to: email,
+	            subject: 'Reset Link for Note-taking app',
+	            text: `Please click on the following link to reset your password ${resetPasswordLink}`    //you can either use html or text here
+	        }
+	
+	        transporter.sendMail(mailOptions, (error, info) => {
+	            if(error){
+	                res.status(401).send(error.message);
+	                return;
+	            }
+	            
+	            res.status(200).send('Email sent successfully');
+	        })
+	
+	    }
+	    catch(error){
+	        const message = error.message;
+	        res.status(500).send(message);
+	    }
+	});
+
+
+	app.post('/reset_password', () => {
+		    const {token, password} = req.body;
+		
+		    try{
+		        const hashedToken = crypto.createHash('sha256').update(token).digest('hex');	//we hash the token
+		        const user = await User.findOne({
+		            resetPasswordToken: hashedToken,
+		            resetPasswordExpires: {$gt: Date.now()}	//$gt means greater than        //we check the current time and compare it to the time the hashedToken was initially placed in the users account
+		        });
+		
+		        if(!user){
+		            res.status(400).send('Token is invalid or has expired');			
+		            return;
+		        }
+		        user.password = password;
+		        user.resetPasswordToken = null;
+		        user.resetPasswordExpires = null;
+		        await user.save();
+			    
+		        res.status(200).send('Password changed successfully');
+		    }
+		    catch(error){
+		        const message = error.message;
+		        res.status(500).send(message);
+		    }
 	})
 	
 

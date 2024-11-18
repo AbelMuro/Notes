@@ -374,6 +374,7 @@ app.get('/account', () => {
 
 
 // ------------------------------2) 
+	const jwt = require('jsonwebtoken');
 	const crypto = require('crypto');
 	const bcrypt = require('bcryptjs');
 	const {User} = require('../../Models/Models.js');
@@ -410,7 +411,7 @@ app.get('/account', () => {
 	            return;
 	        }
 	            
-	        const token = jwt.sign({id: user._id}, JWT_SECRET, {expiresIn: '1h'});	//create the json web token
+	        const token = jwt.sign({id: user._id, email: email}, JWT_SECRET, {expiresIn: '1h'}); //create the json web token (you must add the data manually to the json web token)
 	
 	        res.cookie('accessToken', token, {					//using http only cookies to store the json web token
 	            httpOnly: true,
@@ -426,6 +427,30 @@ app.get('/account', () => {
 	        res.status(500).send(message);
 	    }
 	});
+
+
+	router.get('/account', async (req, res) => {
+	    const token = req.cookies.accessToken;			//access the json web token
+	    const JWT_SECRET = process.env.JWT_SECRET;
+	
+	    if(!token){
+	        res.status(401).send('User has been logged out');
+	        return;
+	    }
+	
+	    try{
+	        const decoded = jwt.verify(token, JWT_SECRET);		//decode the json web token
+	        const email = decoded.email;				//access account info through the decoded token
+	        const user = await User.findOne({email});
+	        res.status(200).json(user);
+	    }
+	    catch(error){
+	        const message = error.message;
+	        res.status(500).send(message);
+	    }
+	
+	
+	})
 
 
 	app.post('forgot_password', (req, res) => {

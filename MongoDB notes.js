@@ -276,6 +276,9 @@
                                     const user = await User.findOne({name: 'John'});                //looks for the first occurence of the document in the collection
                                     const anotherUser = await User.findOne({_id: id});                //you can also look for a document with its _id
                                     const users = await User.find({age: 22});                        //looks for ALL occurences of the document in the collection
+                                    user.email = 'new email'                                        //you can also update properties of the document in mongo like this
+                                    user.save();                                                    
+                                    
                                     if(!user)
                                         console.log('document doesnt exist');
 

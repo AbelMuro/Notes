@@ -1550,6 +1550,12 @@ function RouterStuff() {
                      <Route path="/ContactUs/call" element={<CallUs/>}/>            
                 </Route>
 
+                <Route path='/account/' element={<DisplayNotes/>}>                /* you can have default nested components that are displayed automatically when we get to a certain path  */
+                        <Route path='/account/' element={<EditNote/>}>            // when /account pathname is displayed, all the nested child elements will also be displayed initially
+                                <Route path='/account/' element={<SaveNote/>}>
+                        </Route>
+                </Route>
+
                 {/*(2) This Route will send a URL parameter to the Route below*/}
                 <Route path="/:repoName" element={<Whatever/>}>
                 <Route path="/DonateUs" element={<DonateUs />}/>                

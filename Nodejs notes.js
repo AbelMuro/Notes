@@ -171,11 +171,16 @@ app.put('/update', (req, res) => {
 })
 
 // 'delete' request
-app.delete('/account:id', (req, res) => {
+app.delete('/account/:id', (req, res) => {
     //do something with req.body (if request came from a fetch())
     //or use formidable module to get user input from forms
     const id = req.params.id;						//you can use :id to send data to an endpoint like this http://localhost:4000/login/123456
     res.send('data has been deleted')
+})
+
+app.delete('/account/:id/:type', (req, res) => {			//you can have as many params are you want
+	const id = req.params.id;
+	const type = req.params.type;
 })
 
 // app.use will bind a middleware for the path '/contantPage'

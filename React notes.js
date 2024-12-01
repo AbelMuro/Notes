@@ -1679,6 +1679,9 @@ function Home() {
         
         const handleClick = () => {
                 navigate("/aboutUs", {state: {data: "whatever"}});     //  will navigate to the '/aboutUs' component and pass {data: "whatever"} to another component
+                navigate('..');                                        // will navigate to the parent route of the current route
+                navigate(-1);                                          // will navigate to the previous route
+                navigate('contactUs')                                  // will add contactUs to the current pathname      (/account   ->    /account/contactUs)
         }
         
         return(

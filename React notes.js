@@ -1682,6 +1682,7 @@ function Home() {
                 navigate('..');                                        // will navigate to the parent route of the current route
                 navigate(-1);                                          // will navigate to the previous route
                 navigate('contactUs')                                  // will add contactUs to the current pathname      (/account   ->    /account/contactUs)
+                navigate('aboutUs');                                   // keep in mind that calling navigate like this again will only change the last parameter of the pathname  (/account/contactUs    ->     /account/aboutUs)
         }
         
         return(

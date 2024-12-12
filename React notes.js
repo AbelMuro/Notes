@@ -1530,6 +1530,7 @@ function RouterStuff() {
                         <Route path="/AboutUs" element={<AboutUs />}>           
                         <Route path="/Contact" element={<ContactUs />}>
                         <Route path="/DonateUs" element={<DonateUs />}>
+                        <Route path="/DonateThem" element={<DonateUs />}>        //you can use the same component for different paths
                 </Routes>
          </BrowserRouter>
             

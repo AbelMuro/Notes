@@ -878,7 +878,8 @@ useCustomHook(() => {      // getSnapshotBeforeUpdate()
 //unmounting phase
 
 useEffect(() => {
-    return () => {};       //componentWillUnmount
+    const unmount = () => {}; //function must be defined and declared inside the local scope of the useEffect
+    return unmount;       //componentWillUnmount
 })
 
 

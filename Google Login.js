@@ -5,11 +5,13 @@
 
     2) Then go to API & Services
 
-    3) Then go to Credentials and create a new 0Auth client-id and save it
+    3) Go to OAuth consent screen and click on publish
+    
+    4) Then go to Credentials and create a new 0Auth client-id and save it
 
-    4) Then go to the Google Auth platform and then Branding 
+        make sure you add the front end app's url to the authorized origins of the client-id
 
-    5) In the authorized domains, enter the domain of your app
+    5) ?
     
 
 */

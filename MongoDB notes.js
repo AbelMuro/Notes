@@ -231,6 +231,15 @@
                             const mongoose = require('mongoose');
                             const {connectDB, ObjectId} = require('./Database/db.js')
                             const {User} = require('./Model/Model.js');
+                            const user = new User({email: '', password: ''});
+                            const userData = user.save();
+                            /* 
+                                userData = {
+                                    email: '',
+                                    password: '',
+                                    _id: new ObjectId()
+                                }
+                            */
                             const ObjectId = mongoose.Types.ObjectId;              //new ObjectId('24 character id string goes here');     or       new ObjectId()
                             /*    when comparing two ObjectId, you must use     
                                     const idOne = new ObjectId();

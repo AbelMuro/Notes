@@ -11,81 +11,45 @@
 
         make sure you add the front end app's url to the authorized origins of the client-id
 
-    5) ?
+    5) npm install @react-oauth/google
     
 
 */
 
 
 
-
-//================================== react google login ===============================================
-
-
-function GoogleLogin() {
-       const handleCredentialResponse = (res) => {
-        console.log(res.credential);
-    }
-
-    const triggerGoogleSignIn = () => { 
-        google.accounts.id.prompt((notification) => { 
-            if(notification.isNotDisplayed()) 
-                console.log(notification.getNotDisplayedReason()); 
-            else if(notification.isSkippedMoment()) 
-                console.log(notification.getSkippedReason()); 
-            else if(notification.isDismissedMoment()) 
-                console.log(notification.getDismissedReason())
-            }); 
-    };
-
-
-    useEffect(() => {
-        google.accounts.id.initialize({ 
-            client_id: process.env.CLIENT_ID, 
-            callback: handleCredentialResponse, 
-        });
-    }, [])
-
-  return(
-      <button onClick={triggerGoogleSignIn}> 
-            'Google Sign in'
-      </button>
-  )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //=================================== @react-oauth/google ===================================================
 
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 
 function App() {
-
-  const handleSuccess = (response) => {
-    
-  }
-
-  const handleError = (error) => {
-    
-  }
   
   return(
      <GoogleOAuthProvider clientId={process.env.CLIENT_ID}>
-        <GoogleLogin onSuccess={handleSuccess} onError={handleError} className={'googleClass'}/>
+        <GoogleLoginButton/>
      </GoogleOAuthProvider>
   )
 }
+
+
+function GoogleLoginButton() {
+    const login = useGoogleLogin({
+        onSuccess: async (token) => {
+             console.log(token)
+        },
+        onError: async (error) => {
+            console.log(error)
+        }
+    })
+
+    const handleClick = () => {
+        login();
+    }
+
+    return(
+            <button onClick={handleClick}>
+                Google
+            </button>
+    )
+}
+

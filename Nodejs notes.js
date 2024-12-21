@@ -83,6 +83,10 @@
 */
 
 
+
+
+
+
 /* 
 		HOW TO DEPLOY YOUR NODE.JS APP WITH HEROKU CLI
 
@@ -136,6 +140,58 @@
 			7) To add env variables, go to Settings -> Config vars and add your env variables there
 */
 
+
+
+
+/* 
+	How to deploy node.js app with NETLIFY
+
+ 	1) create a functions folder
+
+  		node_modules
+    		src
+      		functions
+			/app.js
+		package.json
+  		...
+
+    	2) in the app.js file...
+
+	     	const serverless = require('serverless-http'); 
+		const app = require('../src/index.js'); 		//make sure you export the app module from the index.js
+		
+		const handler = serverless(app);  		        //if you are NOT using mongoose, you can just return serverless(app);
+		module.exports.handler = async (e, context) => {	//if you are using mongoose, you will need to use a callback
+		    const result = await handler(e, context);
+		    return result;
+		};
+
+  	3) Then create a netlify.toml file
+
+		[build]
+		    functions = "functions"
+		
+		[[redirects]] 
+		    from = "/*" 
+		    to = "/.netlify/functions/app/:splat" 
+		    status = 200 
+		    force = true
+
+      	4) npm install serverless-http
+       
+       		...if you haven't already, use npm install netlify-cli -g
+
+  	5) In your package.json file, use script
+   
+     		"scripts": {
+   			"build": "netlify deploy --prod"
+      		}
+	
+	6) In your .gitignore file...
+
+ 		.netlify
+
+*/
 
 
 //=============================================================== EXPRESS WEB FRAMEWORK =================================================================

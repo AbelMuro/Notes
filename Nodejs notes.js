@@ -191,6 +191,10 @@
 
  		.netlify
 
+	7) npm run build 
+ 		the command above will ask you a few questions, make sure the publish directory is set to .
+   		it will then generate a url that you can use to make fetch requests
+
 */
 
 

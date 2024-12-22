@@ -232,7 +232,7 @@
                             const {connectDB, ObjectId} = require('./Database/db.js')
                             const {User} = require('./Model/Model.js');
                             const user = new User({email: '', password: ''});
-                            const userData = user.save();
+                            const userData = await user.save();
                             /* 
                                 userData = {
                                     email: '',

@@ -39,7 +39,10 @@ function GoogleLoginButton() {
         },
         onError: async (error) => {
             console.log(error)
-        }
+        },
+        onNonOAuthError: (error) => {
+            console.log('Typically used when the user closes the popup and decides not to log in with google')
+        },
     })
 
     const handleClick = () => {

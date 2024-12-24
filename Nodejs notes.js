@@ -295,7 +295,18 @@ app.listen(port, (error) => {
 //======================================================== HTTP only cookies ==============================================================
 //Cookies are a type of storage that is send with every request and response
 //HTTP-only cookies can only be viewed on the server
+// KEEP IN MIND that every fetch request that sends cookies MUST have credentials: 'include'
+// this include the fetch requests that sets the cookies in the route as well as the requests that accesses the cookie in the route
 
+fetch('/login', {
+	method: 'POST',
+	credentials: 'include'
+})
+
+fetch('/account', {
+	method: 'GET',
+	credentials: 'include'
+})
 
 app.post('/login', (req, res) => {
     	const {email, password} = req.body;

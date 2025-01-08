@@ -297,6 +297,8 @@ app.listen(port, (error) => {
 //HTTP-only cookies can only be viewed on the server
 // KEEP IN MIND that every fetch request that sends cookies MUST have credentials: 'include'
 // this include the fetch requests that sets the cookies in the route as well as the requests that accesses the cookie in the route
+// you need to make sure that the user has third-party cookies enabled and cross-site tracking enabled in their browser
+
 
 fetch('/login', {
 	method: 'POST',

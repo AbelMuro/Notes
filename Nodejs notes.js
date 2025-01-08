@@ -296,9 +296,9 @@ app.listen(port, (error) => {
 //Cookies are a type of storage that is send with every request and response
 //HTTP-only cookies can only be viewed on the server
 // KEEP IN MIND that every fetch request that sends cookies MUST have credentials: 'include'
-// this include the fetch requests that sets the cookies in the route as well as the requests that accesses the cookie in the route
+// this includes the fetch requests that sets the cookies in the route as well as the requests that accesses the cookie in the route
 // you need to make sure that the user has third-party cookies enabled and cross-site tracking enabled in their browser
-
+// usually, its best if the front end has some timer that will automatically expire the http-only cookie and log the user out.
 
 fetch('/login', {
 	method: 'POST',
@@ -318,12 +318,15 @@ app.post('/login', (req, res) => {
             httpOnly: true,
             secure: true,      					//http only cookies will only be used throught https 
             sameSite: 'Strict or None',				//Strict only allows sites from the same orgins to make requests, None allows cross-site requests
-            maxAge: 1000 * 60 * 60,				
+            maxAge: 1000 * 60 * 60,				//you can have an expiration date for these cookies, but for auth, you shouldnt use this, instead let the front end handle the expiration for these cookies		
         })
 });
 
-app.get('/account', () => {
+app.get('/account', (req, res) => {
 	const accessToken = req.cookies.accessToken;		//accessing the http only cookie
+
+	if(!accessToken)
+		return res.status(401).send('User does not have third-party cookies enabled or cross-site tracking enabled');
 	
 });
 

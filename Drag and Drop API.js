@@ -91,3 +91,82 @@ function Card({card, setCard, itemId}) {
 }
 
 
+
+//==================================================================================================================
+
+
+function Squares({row, column}) {
+    const dispatch = useDispatch();
+    const currentSquare = useSelector(state => state.chess.board[row][column]);
+    const piece = currentSquare.piece;
+    
+    const [{handlerId}, drop] = useDrop({
+        accept: 'piece',
+        collect: (monitor) => ({
+            handlerId: monitor.getHandlerId()
+        }),
+        drop: (item, monitor) => {
+            dispatch({type: 'MOVE_PIECE', payload: {piece: item.piece}})
+        }
+
+    })
+
+
+    return(
+        <div ref={drop} data-handler-id={handlerId}> 
+                {piece.includes('pawn') && <Pawn/>}
+                {piece.includes('queen') && <Queen/>}
+                {piece.includes('rook') && <Rook />}
+                {piece.includes('knight') && <Knight/>}
+                {piece.includes('bishop') && <Bishop/>}
+                {piece.includes('king') && <King />}
+        </div> 
+    )
+}
+
+
+
+function Pawn({row, column}) {                                              
+    const dispatch = useDispatch();
+    const [{isDragging}, drag] = useDrag({
+        type: 'piece',
+        item: () => {
+            return {row, column};
+        },
+        isDragging: (monitor) => { 
+            const square = monitor.getItem();            
+            return row === square.row && column === square.column;         //this condition will set the value for 'isDragging'
+        },
+        canDrag: () => {                      
+            //some condition must be returned here to enable or prevent dragging          
+        },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging()   
+        }),
+        end: (item, monitor) => {                                            //this function will be called when the item is finally dropped
+            const itemDropped = monitor.didDrop();
+            if(itemDropped){
+                console.log('item dropped');
+            }
+        }
+    })
+
+
+    return(
+        <div style={isDragging ? {opacity: 0} : {opacity: 1}} ref={drag}>
+            <img className={styles.piece} src={icons[`${color}Pawn`]} />  
+        </div> 
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -51,7 +51,7 @@ function Card({card, setCard, itemId}) {
     const [{handlerId}, drop] = useDrop({      // by using this hook, the current component will be used as a container that will receive items being dragged
         accept: 'todo',                         
         collect: (monitor) => ({               // collect function will have access to the 'monitor', the monitor is an object that lets you access drag and drop states changes
-            handlerId: monitor.getHandlerId()  // handlerId is used to identify a container that receives draggable items
+            handlerId: monitor.getHandlerId()  // you must call these methods to get the value and the will be returned from the useDrop hook
         }),
         hover: (item, monitor) => {             // hover function will receive the item that is being dragged ON TOP of the container
             setItem(
@@ -75,7 +75,7 @@ function Card({card, setCard, itemId}) {
             return true;            
         }
         collect: (monitor) => ({
-            isDragging: monitor.isDragging()    //keep in mind that every property that is returned from the collect function can have its own method like isDragging above
+            isDragging: monitor.isDragging()    //isDragging is returned from the hook because the collect method returns an object with 'isDragging'
         })
     })
 

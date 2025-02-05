@@ -105,6 +105,9 @@ function Squares({row, column}) {
         collect: (monitor) => ({
             handlerId: monitor.getHandlerId()
         }),
+        canDrop: () => {
+            return //some condition goes here
+        },
         drop: (item, monitor) => {
             dispatch({type: 'MOVE_PIECE', payload: {piece: item.piece}})
         }
@@ -144,8 +147,9 @@ function Pawn({row, column}) {
             isDragging: monitor.isDragging()   
         }),
         end: (item, monitor) => {                                            //this function will be called when the item is finally dropped
-            const itemDropped = monitor.didDrop();
-            if(itemDropped){
+            const didDrop = monitor.didDrop();
+            const dropResult = monitor.getDropResult();
+            if(didDrop){
                 console.log('item dropped');
             }
         }

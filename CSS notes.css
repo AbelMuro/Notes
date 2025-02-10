@@ -1945,6 +1945,11 @@ p::selection{
     background-color:red;
 }
 
+
+
+
+/*             WebKit Browsers (Chrome, Safari, Edge)                     */
+
 /* ::-webkit-scrollbar will change the styling of the scroll bar's background*/
 ::-webkit-scrollbar{
     background-color: blue;                               /* keep in mind, ::-webkit-scrollbar must be styled BEFORE ::-webkit-scrollbar-thumb*/
@@ -1959,6 +1964,11 @@ p::selection{
 }
 
 
+/*         Firefox            */
+.container{
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1        /* first value is for the draggable part, the second value is for the background*/
+}
 
 
 

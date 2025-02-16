@@ -57,7 +57,7 @@
                                       }
                                 }
                                 
-                                module.exports = connectDB;
+                                module.exports = connectDB;                //make sure you call this function in the index.js
 
 
                         //3) Perform CRUD operations with the db object
@@ -195,8 +195,9 @@
 
                     const mongoose = require('mongoose');
 
-                    const url = `mongodb+srv://${accountname}:${password}@cluster0.5k5vu.mongodb.net/${name-of-database}?retryWrites=true&w=majority&appName=Cluster0` //the account name and password can be found in the atlas, SECURITY -> quickstart -> create a user for the database and save the username and password
-                    
+                     //the account name and password can be found in the atlas, SECURITY -> quickstart -> create a user for the database and save the username and password (if one already exists, just use that one)                
+                    const url = `mongodb+srv://${accountname}:${password}@cluster0.5k5vu.mongodb.net/${name-of-database}?retryWrites=true&w=majority&appName=${name-of-cluster}`
+
                     async function connectDB() {
                         try{
                           await mongoose.connect(url);
@@ -207,7 +208,7 @@
                         }
                     }
                     
-                    module.exports = connectDB;
+                    module.exports = connectDB;                            //make sure you call this function in the index.js
 
             
                     //3) Next write the following lines of code in ./Model/Model.js

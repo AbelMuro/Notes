@@ -160,6 +160,13 @@
                 <input type='password' id='password' pattern='[a-zA-Z0-9!@#$%^&*?]{6,}' name='password'/>                            <!-- any character entered in this input will be replaced by dots .........  -->                    
             </fieldset>
 
+            <!-- 
+                you can also use the following pattern value
+
+                pattern='(?=.*[a-zA-Z]) (?=.*\d) (?=.*[!@#$%^&*]).{8,}'            //remember to delete the spaces here
+
+                this will make sure that the user must enter a letter, a number and a symbol, and password must have a length of 8 characters
+            -->
 
 
 

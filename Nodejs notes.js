@@ -474,8 +474,13 @@ app.get('/account', (req, res) => {
 	    }
 	    catch(error){
 	        const message = error.message;
-	        if(message.includes('E11000 duplicate key error collection:'))
-	            res.status(401).send('Email already exists');
+	        if(message.includes('E11000 duplicate key error collection:')){
+			if(message.includes('email'))
+			    res.status(401).send('Email already exists');
+			else if(message.includes('username'))
+			     res.status(401).send('Username already exists')
+		}
+	            
 	        else
 	            res.status(500).send(message);
 	    }

@@ -468,7 +468,7 @@ app.get('/account', (req, res) => {
 	
 	    try{
 	        const user = new User({email, password});
-	        await user.save();
+	        const userData = await user.save();		//userData is a document that contains _id and other meta data about the users' account
 	
 	        res.status(200).send('User has created account');
 	    }

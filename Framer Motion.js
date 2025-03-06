@@ -639,6 +639,7 @@ function App() {                                           // with LayoutGroup, 
 //LAYOUT-ID: When a new component is added that has a layoutId prop that matches an existing component, 
 //it will automatically animate out from the old component.
 //MAKE SURE TO DISABLE TRANSITION CSS PROPERTY ON THE ELEMENTS THAT HAVE LAYOUTID
+//ALSO MAKE SURE TO USE THE KEY PROP ON THE MOTION COMPONENT WITH LAYOUTID THAT HAS A IMG ELEMENT AS A CHILD ELEMENT TO AVOID VISUAL BUGS
 
 /* 
      [ ________             ]        

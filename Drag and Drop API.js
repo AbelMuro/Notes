@@ -5,6 +5,7 @@
 //The example below will re-arrange a list of items
 //KEEP IN MIND, you should NOT use the transform property on items that are being dragged
 //doing so will create visual bugs on mobile and tablet devices
+//ALSO, use transform: translate(0,0) on the items being dragged to remove the background (sometimes items being dragged will drag the background of its parent element)
 
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -92,7 +93,7 @@ function Card({card, setCard, itemId}) {
 
 
 
-//==================================================================================================================
+//========================================================= CHESS EXAMPLE WITH DRAG AND DROP =========================================================
 
 
 function Squares({row, column}) {

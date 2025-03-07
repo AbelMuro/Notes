@@ -1948,28 +1948,24 @@ p::selection{
 
 
 
-/*             WebKit Browsers (Chrome, Safari, Edge)                     */
 
-/* ::-webkit-scrollbar will change the styling of the scroll bar's background*/
-::-webkit-scrollbar{
-    background-color: blue;                               /* keep in mind, ::-webkit-scrollbar must be styled BEFORE ::-webkit-scrollbar-thumb*/
-    width: 8px;                                             /* affects the vertical scrollbar*/
-    height: 6px;                                            /* affects the horizontal scrollbar*/
-}
-
-/* ::-webkit-scrollbar-thumb will change the styling of the thumb for the scroll bar*/
-::-webkit-scrollbar-thumb{
-    background-color: red;
-    border-radius: 14px;
-}
-
-
-/*         Firefox            */
-.container{
+/*                 Firefox      scrollbar styling       */
+.pieces{
+    overflow: scroll;
     scrollbar-width: thin;
-    scrollbar-color: #888 #f1f1f1        /* first value is for the draggable part, the second value is for the background*/
+    scrollbar-color: var(--scroll-bar-bg) transparent;
 }
 
+/*             WebKit Browsers (Chrome, Safari, Edge)                     */
+.pieces::-webkit-scrollbar{
+    width: 10px;
+    background-color: transparent;
+}
+
+.pieces::-webkit-scrollbar-thumb{
+    background-color: var(--scroll-bar-bg);
+    border-radius: 10px;
+}
 
 
 

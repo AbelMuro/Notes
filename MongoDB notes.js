@@ -273,10 +273,15 @@
                                 const id = new ObjectId(id);
                                 
                                 try{
+                                    const user = await User.findOne({id});                /* you can also change the properties of a document using property and object syntax*/
+                                    user.name = 'new name';
+                                    user.age = 'new age';
+                                    await user.save();                            
+                                    
                                     const resultOne = await User.updateOne( { name: 'Alice' }, { $set: { age: 29 } });      //keep in mind that you can only update the properties that are in the schema
                                     const resultTwo = await User.updateOne( {_id: id}, { $set: { age: 45 }});                 //you can also look for a document with its _id
                                     const resultThree = await User.updateMany( {name: 'Alice' }, { $set: { age: 56} });   //first object is the document that we look for, we update the properties with the second object
-        
+                                    
                                     if(resultOne.modifiedCount === 0)
                                         console.log('Document doesnt exist')
                                 }

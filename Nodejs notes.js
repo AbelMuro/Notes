@@ -206,8 +206,9 @@
  
 
 const express = require('express');
-const app = express();                                        //creating an object that represents the main app
 const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
+const multer = require('multer');			      //npm install multer, you can use this to parse incoming files from the front-end
+const app = express();                                        //creating an object that represents the main app
 const port = 5000;
 
 app.use(express.json());					//this will parse all incoming json data, you will need this if your server expects json data from the front-end
@@ -216,34 +217,33 @@ app.use(cookieParser());
 
 // 'get' requests
 app.get('/account', (req, res) => {                             // .get() is for handleling 'get' requests from the client
-    res.send('data has been sent');                                 
+    const someObject = {data: 'hello world'}
+    res.status(200).json(someObject);            		// you must use json to format any JS into json before you send a response                     
 })
 
 // 'post' request
 app.post('/login', (req, res) => {
-    const body = req.body;
-    res.send('data has been received')
+    const {username, password} = req.body;
+    res.status.send('login info is correct')
 })
 
-// 'put' request is similar to 'post', but the main difference is that calling the same 'put' request will produce the same result, but calling the same 'post' request will create the same resource over and over again
-app.put('/update', (req, res) => {
-    //do something with req.body (if request came from a fetch())
-    //or use formidable module to get user input from forms
-    res.send('data has been received')
-    
+// 'put' request - This is how you receive files from the back end
+const storage = multer.memoryStorage();			       // Set up multer for file handling
+const upload = multer({ storage: storage}); 		       //look at the 'multer module' notes WAY BELOW for more info on the different ways of using this module
+
+app.put('/update', upload.single('image') ,(req, res) => {
+    const {username, email, password} = req.body;	
+    const image = req.file;					//this is how you receieve files from the front end ( front-end must use 	const formData = new FormData();  formData.append('file', image)  )
+	
+    res.status(200).send('data has been received')
 })
 
 // 'delete' request
-app.delete('/account/:id', (req, res) => {
-    //do something with req.body (if request came from a fetch())
-    //or use formidable module to get user input from forms
-    const id = req.params.id;						//you can use :id to send data to an endpoint like this http://localhost:4000/login/123456
+app.delete('/account/:id/:type', (req, res) => {
+    //you can use formidable module to get user-input from forms
+    const id = req.params.id;						//you can use :id to send data to an endpoint like this http://localhost:4000/acount/123456
+    const type = req.params.type;
     res.send('data has been deleted')
-})
-
-app.delete('/account/:id/:type', (req, res) => {			//you can have as many params are you want
-	const id = req.params.id;
-	const type = req.params.type;
 })
 
 // app.use will bind a middleware for the path '/contantPage'

@@ -210,7 +210,8 @@ const app = express();                                        //creating an obje
 const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
 const port = 5000;
 
-app.use(express.json());					//this will parse all incoming fetch() requests, you will need this if your server expects fetch requests with the body property
+app.use(express.json());					//this will parse all incoming json data, you will need this if your server expects json data from the front-end
+app.use(express.urlencoded({extended: true}));			//this will parse all incoming form data, you will need this if your server expects form data from the front-end 		(<form action="/submit-form" method="POST"></form>)
 app.use(cookieParser());
 
 // 'get' requests

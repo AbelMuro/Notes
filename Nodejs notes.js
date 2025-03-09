@@ -229,11 +229,11 @@ app.post('/login', (req, res) => {
 
 // 'put' request - This is how you receive files from the back end
 const storage = multer.memoryStorage();			       // Set up multer for file handling
-const upload = multer({ storage: storage}); 		       //look at the 'multer module' notes WAY BELOW for more info on the different ways of using this module
+const upload = multer({ storage: storage}); 		       // look at the 'multer module' notes WAY BELOW for more info on the different ways of using this module
 
-app.put('/update', upload.single('image') ,(req, res) => {
+app.put('/update', upload.single('image') ,(req, res) => {      // in upload.single('image'), it will look for the property 'image' in the FormData object that you created on the front-end
     const {username, email, password} = req.body;	
-    const image = req.file;					//this is how you receieve files from the front end ( front-end must use 	const formData = new FormData();  formData.append('file', image)  )
+    const image = req.file;					//this is how you receieve files from the front end ( front-end must use 	const formData = new FormData();  formData.append('image', image)  )
 	
     res.status(200).send('data has been received')
 })

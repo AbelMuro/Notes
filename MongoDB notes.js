@@ -24,168 +24,27 @@
 */
 
 
-//============================================================ HOW TO INTEGRATE MONGODB INTO A NODE.JS APP ========================================================================
 
-
-                    //1) npm install mongodb
-
-                    //2) Go to mongoDB atlas -> select project -> Database -> Clusters -> Select your cluster -> Click on Collections -> Create Database
-
-                    //3) Use the following lines of code
-                                const { MongoClient, ServerApiVersion } = require('mongodb');
-
-                                const uri = "get uri from your mongoDB cluster:  database -> cluster -> connect";
-                        
-                                const client = new MongoClient(uri, {
-                                      serverApi: {
-                                        version: ServerApiVersion.v1,
-                                        strict: true,
-                                        deprecationErrors: true,
-                                      }
-                                });
-                                
-                                async function connectDB() {
-                                      try {
-                                        // Connect the client to the server
-                                        await client.connect();
-                                        const db = client.db("name-of-database");
-                                        console.log("You successfully connected to MongoDB!");
-                                        return db;
-                                      } 
-                                      catch(error){
-                                         console.log(error);
-                                      }
-                                }
-                                
-                                module.exports = connectDB;                //make sure you call this function in the index.js
-
-
-                        //3) Perform CRUD operations with the db object
-                                //insertOne() will insert a single document in the collection
-                                //insertMany() will insert multiple documents in the collection
-                                //find() will return a cursor that has a single or multiple documents that satisfy the query            this will return NULL if it doesn't find the document in the collection
-                                    // toArray() will return an array with all the documents        
-                                    // next() will return an object with the first document that satisfies the query
-                                //updateOne() will look for the first document that satisfies the query and update its properties
-                                //updateMany() will look for ALL documents that satisfies the query and update its properties
-                                //deleteOne() will look for the first document that satisfies the query and delete it
-                                //deleteMany() will look for ALL documents that satisfies the query and delete them all
-
-                            const connectDB = require('./Database/db.js');
-                            const { ObjectId } = require('mongodb');
-
-
-
-                                app.post('/create_documents', async (req, res) => {
-                                    const body = req.body;
-                                    const id = new ObjectId('any id goes here');
-                                    
-                                    try{
-                                        const db = await connectDB();
-                                        const resultOne = await db.collection('users').insertOne({ name: "Jane", age: 25 });            //insertOne() will insert a new document in the collection
-                                        const resultTwo = await db.collection('users').insertOne({ _id: id, name: 'Jane', age: 25});    //you can specify an id property here with the objectId constructor
-                                        const resultThree = await db.collection('users').insertMany(([{ name: "Jane", age: 25 }, { name: "Doe", age: 22 }]);    
-                                    }
-                                    catch(error){
-                                        if(error.message.includes('E11000 duplicate key error collection'))
-                                            console.log('document with _id already exists')
-                                    }
-                                })
-
-
-
-
-                                app.get('/get_documents', async (req, res) => {      
-                                    const id = new ObjectId('any id goes here');
-                                    
-                                    try{
-                                        const db = await connectDB();
-                                        const allUsers = await db.collection('users').find({}).toArray();            //find({}) will find all documents within the collection
-                                        const user = await db.collection('users').find({name: "John"}).next();       //this will find a document with the property name and value 'John' 
-                                        const anotherUser = await db.collection('users').find({_id: id}).next();     //to find a document with an id, you will need to use the ObjectId constructor  
-
-                                        if(!user)
-                                            console.log("document doesn't exist");
-                                    }
-                                    catch(error){
-                                        console.log(error);
-                                    }
-                                })
-
-
-
-
-                                app.put('/update_documents', async (req, res) => {      
-                                    const id = new ObjectId('any id goes here');
-                                    
-                                    try{
-                                        const db = await connectDB();
-                                        const updateResultOne = await db.collection('users').updateOne({ name: 'Alice' }, { $set: { age: 29 } });       //the $ sign is an atomic operator, we need this to update specific properties of the document
-                                        const updateResultTwo = await db.collection('users').updateOne({_id: id}, { $set: { age: 34 } });               //you can also update a document by using its _id
-                                        const updateResultThree = await db.collection('users').updateMany({ name: 'Alice' }, { $set: { age: 29 }});     //this will update ALL documents that match the query
-                                
-                                        if(updateResultOne.modifiedCount === 0)
-                                            console.log('Document doesnt exists')
-                                        
-                                    }
-                                    catch(error){
-                                        console.log(error);
-                                    }
-                                });
-
-
-
-                                app.put('/replace_documents', async (req, res) => {
-                                        const id = new ObjectId('any id goes here');                                
-                                    
-                                        try{
-                                            const resultOne = await db.collection('users').replaceOne(
-                                                { name: 'Alice' },                                 // we look for a document with the property name: 'Alice'
-                                                { name: 'Alice', age: 30, status: 'active' }       // we delete all the old properties of the document and replace them with these properties
-                                            );
-                                            const resultTwo = await db.collection('users').replaceOne(
-                                                {_id: id},                                        //you can also replace a document with its _id
-                                                {name: 'Alice', age: 30, status: 'active'}
-                                            )
-
-                                            if(resultOne.modifiedCount === 0)
-                                                console.log('no document exists')
-                                            
-                                        }
-                                    catch(error){
-                                        console.log(error.message)
-                                    }
-                                })
-
-
-
-                                app.delete('/delete_documents:id', async (req, res) => {
-                                    const id = req.params.id;
-                                    const idToDelete = new ObjectId(id);
-
-                                    try{
-                                        const db = await connectDB();
-                                        const deleteResultOne = await db.collection('users').deleteOne({ name: 'Alice' });            //we look for a document with the property name: 'Alice' and delete the first occurence
-                                        const deleteResultTwo = await db.collection('users').deleteOne({ _id: idToDelete});           //we look for a document with the _id that is specified and delete the first occurence
-                                        const deleteResultThree = await db.collection('users').deleteMany({name: 'Alice'});           //we look for all documents with the property name: 'Alice' and delete all occurences
-
-                                        if(deleteResultOne.deletedCount === 0)
-                                            console.log('Document doesnt exist')
-                                    }
-                                    catch(error){
-                                        console.log(error);
-                                    }
-                                    
-                                })
-
-
-//=========================================================================== MONGOOSE ============================================================================
+//=========================================================================== How to intergrate MONGOOSE in a Node.js ============================================================================
 /*
         Mongoose is a library that uses mongoDB with schemas and models
         -Schemas is like a template that we use to define how a document is going to look like
         -Models are constructors that are used to construct documents based on a schema
 
         Remember, you need to create a schema and a model in order to create a document
+
+        Go to mongoDB atlas -> select project -> Database -> Clusters -> Select your cluster -> Click on Collections -> Create Database
+
+        //insertOne() will insert a single document in the collection
+        //insertMany() will insert multiple documents in the collection
+        //find() will return a cursor that has a single or multiple documents that satisfy the query            this will return NULL if it doesn't find the document in the collection
+            // toArray() will return an array with all the documents        
+            // next() will return an object with the first document that satisfies the query
+        //findOne() will return the document that satisfies the query
+        //updateOne() will look for the first document that satisfies the query and update its properties
+        //updateMany() will look for ALL documents that satisfies the query and update its properties
+        //deleteOne() will look for the first document that satisfies the query and delete it
+        //deleteMany() will look for ALL documents that satisfies the query and delete them all
 */
 
 
@@ -401,6 +260,156 @@
                 console.error('WebSocket error:', error);
             };
         }
+
+
+
+
+
+
+//============================================================ HOW TO INTEGRATE MONGODB INTO A NODE.JS APP ========================================================================
+
+
+                    //1) npm install mongodb
+
+                    //2) Go to mongoDB atlas -> select project -> Database -> Clusters -> Select your cluster -> Click on Collections -> Create Database
+
+                    //3) Use the following lines of code
+                                const { MongoClient, ServerApiVersion } = require('mongodb');
+
+                                const uri = "get uri from your mongoDB cluster:  database -> cluster -> connect";
+                        
+                                const client = new MongoClient(uri, {
+                                      serverApi: {
+                                        version: ServerApiVersion.v1,
+                                        strict: true,
+                                        deprecationErrors: true,
+                                      }
+                                });
+                                
+                                async function connectDB() {
+                                      try {
+                                        // Connect the client to the server
+                                        await client.connect();
+                                        const db = client.db("name-of-database");
+                                        console.log("You successfully connected to MongoDB!");
+                                        return db;
+                                      } 
+                                      catch(error){
+                                         console.log(error);
+                                      }
+                                }
+                                
+                                module.exports = connectDB;                //make sure you call this function in the index.js
+
+
+                        //4) Perform CRUD operations with the db object
+
+                            const connectDB = require('./Database/db.js');
+                            const { ObjectId } = require('mongodb');
+
+
+
+                                app.post('/create_documents', async (req, res) => {
+                                    const body = req.body;
+                                    const id = new ObjectId('any id goes here');
+                                    
+                                    try{
+                                        const db = await connectDB();
+                                        const resultOne = await db.collection('users').insertOne({ name: "Jane", age: 25 });            //insertOne() will insert a new document in the collection
+                                        const resultTwo = await db.collection('users').insertOne({ _id: id, name: 'Jane', age: 25});    //you can specify an id property here with the objectId constructor
+                                        const resultThree = await db.collection('users').insertMany(([{ name: "Jane", age: 25 }, { name: "Doe", age: 22 }]);    
+                                    }
+                                    catch(error){
+                                        if(error.message.includes('E11000 duplicate key error collection'))
+                                            console.log('document with _id already exists')
+                                    }
+                                })
+
+
+
+
+                                app.get('/get_documents', async (req, res) => {      
+                                    const id = new ObjectId('any id goes here');
+                                    
+                                    try{
+                                        const db = await connectDB();
+                                        const allUsers = await db.collection('users').find({}).toArray();            //find({}) will find all documents within the collection
+                                        const user = await db.collection('users').find({name: "John"}).next();       //this will find a document with the property name and value 'John' 
+                                        const anotherUser = await db.collection('users').find({_id: id}).next();     //to find a document with an id, you will need to use the ObjectId constructor  
+
+                                        if(!user)
+                                            console.log("document doesn't exist");
+                                    }
+                                    catch(error){
+                                        console.log(error);
+                                    }
+                                })
+
+
+
+
+                                app.put('/update_documents', async (req, res) => {      
+                                    const id = new ObjectId('any id goes here');
+                                    
+                                    try{
+                                        const db = await connectDB();
+                                        const updateResultOne = await db.collection('users').updateOne({ name: 'Alice' }, { $set: { age: 29 } });       //the $ sign is an atomic operator, we need this to update specific properties of the document
+                                        const updateResultTwo = await db.collection('users').updateOne({_id: id}, { $set: { age: 34 } });               //you can also update a document by using its _id
+                                        const updateResultThree = await db.collection('users').updateMany({ name: 'Alice' }, { $set: { age: 29 }});     //this will update ALL documents that match the query
+                                
+                                        if(updateResultOne.modifiedCount === 0)
+                                            console.log('Document doesnt exists')
+                                        
+                                    }
+                                    catch(error){
+                                        console.log(error);
+                                    }
+                                });
+
+
+
+                                app.put('/replace_documents', async (req, res) => {
+                                        const id = new ObjectId('any id goes here');                                
+                                    
+                                        try{
+                                            const resultOne = await db.collection('users').replaceOne(
+                                                { name: 'Alice' },                                 // we look for a document with the property name: 'Alice'
+                                                { name: 'Alice', age: 30, status: 'active' }       // we delete all the old properties of the document and replace them with these properties
+                                            );
+                                            const resultTwo = await db.collection('users').replaceOne(
+                                                {_id: id},                                        //you can also replace a document with its _id
+                                                {name: 'Alice', age: 30, status: 'active'}
+                                            )
+
+                                            if(resultOne.modifiedCount === 0)
+                                                console.log('no document exists')
+                                            
+                                        }
+                                    catch(error){
+                                        console.log(error.message)
+                                    }
+                                })
+
+
+
+                                app.delete('/delete_documents:id', async (req, res) => {
+                                    const id = req.params.id;
+                                    const idToDelete = new ObjectId(id);
+
+                                    try{
+                                        const db = await connectDB();
+                                        const deleteResultOne = await db.collection('users').deleteOne({ name: 'Alice' });            //we look for a document with the property name: 'Alice' and delete the first occurence
+                                        const deleteResultTwo = await db.collection('users').deleteOne({ _id: idToDelete});           //we look for a document with the _id that is specified and delete the first occurence
+                                        const deleteResultThree = await db.collection('users').deleteMany({name: 'Alice'});           //we look for all documents with the property name: 'Alice' and delete all occurences
+
+                                        if(deleteResultOne.deletedCount === 0)
+                                            console.log('Document doesnt exist')
+                                    }
+                                    catch(error){
+                                        console.log(error);
+                                    }
+                                    
+                                })
 
     
 

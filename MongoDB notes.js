@@ -199,6 +199,7 @@
     Web sockets are a connection between the front-end and the back-end that allows consistent updates without the need to manually request them
     Typically, web sockets are used to create a connection from a collection in a mongoDB database to the front-end
     Anytime there is an update to that specific collection, the web socket will automatically send the updates to the front end
+    Keep in mind that the front-end can also send updates to the back-end
 
     One way of thinking about this is using Event listeners in the front end. 
     Everytime there is a change in the UI or update to a state, an event listener will be triggered. 

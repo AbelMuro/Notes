@@ -335,10 +335,74 @@
 
 
 
+//======================================================= WEB SOCKETS AND MONGODB ======================================================================
+/* 
+    Web sockets are a connection between the front-end and the back-end that allows consistent updates without the need to manually request them
+    Typically, web sockets are used to create a connection from a collection in a mongoDB database to the front-end
+    Anytime there is an update to that specific collection, the web socket will automatically send the updates to the front end
+
+    One way of thinking about this is using Event listeners in the front end. 
+    Everytime there is a change in the UI or update to a state, an event listener will be triggered. 
+    That event listener will call a function that has access to the updates to the state or changes to the UI
+    
+*/
+
+
+// back-end web socket (typically, you want to do this in a Model.js file that creates the models for your mongoDB app)
+
+        const {Schema} = require('mongoose');
+        const WebSocket = require('ws');
+        
+        const queueSchema = new Schema({
+            player: {type: String, required: true},
+        })
+        
+        const Queue = mongoose.model('queue', queueSchema, 'queue')        //first create your model for the collection you want to detect changes
+        
+        const wss = new WebSocket.Server({port: 8000});                    //second, you create the web socket object (make sure the port is the same for the back-end and the front-end)
+
+        wss.on('connection', ws => {                                        //Third, you establish the connection between the back end and the front end
+            console.log('Front-end and back-end are connected');
+        
+            const changeStream = Queue.watch();                            //This is where you use the Model to create a 'stream' that you can use to create event listeners
+            changeStream.on('change', (change) => {                        //you create an event listener here that detects the changes for the collection
+                ws.send(JSON.stringify(change))                            //This is where you send the changes to the front-end
+            })
+        
+            ws.on('close', () => {                                        //Event listener that is triggered when the front-end is disconnected from the back-end
+                console.log('Client disconnected')
+            })
+        })
 
 
 
+// front-end web socket
 
+        const onmessageFunction = (event) => {
+            const change = JSON.parse(event.data);
+            const newDocumentAddedToCollection = change.fullDocument;
+        }
+
+        //make sure to call this function within a useEffect()
+        const connectToWebSocket = (onmessageFunction) => {                //its a good idea to use callbacks to access the data from the changes detected in the web socket
+            const socket = new WebSocket('ws://localhost:8000');            //make sure the port is the same on the web socket in the back-end
+        
+            socket.onopen = () => {                                        //These are all event listeners
+                console.log('Connected to WebSocket server');
+            };
+        
+            socket.onmessage = onmessageFunction;                          // Update your front-end application with the received change
+        
+            socket.onclose = () => {
+                console.log('Disconnected from WebSocket server');
+            };
+        
+            socket.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+    
 
 
 

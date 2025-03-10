@@ -211,10 +211,13 @@
                                             const user = new User({email, password});
 
                                             if(image){
-                                                  const writestream = gfs.openUploadStream(image.originalname, {contentType: image.mimetype});
+                                                  const imageId = `${image.originalname}-${Date.now()}`;
+                                                  const writestream = gfs.openUploadStream(imageId, {contentType: image.mimetype});
+                                                
                                                   writestream.end(image.buffer);
+                                                
                                                   writestream.on('finish', async () => {
-                                                        user.profileImage = writestream.id;       // Update the user document with the image reference (make sure your model has the appropriate {Type: ObjectId} )
+                                                        user.profileImage = imageId;           // Update the user document with the image reference (imageId must be the same and the first argument of openUploadStream() )
                                                         const userData = await user.save();
                                                         console.log('Image uploaded to MongoDB');                            
                                                   });

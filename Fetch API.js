@@ -68,6 +68,9 @@ if(response.status === 200){
 
 
 
+
+
+
 //----------------------------------Using the fetch api to send files to a server
 const email = e.target.elements.email.value;
 const username = e.target.elements.username.value;
@@ -83,7 +86,34 @@ formData.append('image', image);
 
 fetch('https://myWebsite.com/somePath', {
       method: "POST",                                //you dont need to include the headers property here
-      body: formData;
+      body: formData;				     //look at your node.js notes on how to receive files from the front-end
 })
+
+
+
+
+
+
+//------------------------------------Using the fetch api to receive files from server
+
+const response = await fetch('http://localhost:4000/get_account', {
+	method: 'GET',
+	credentials: 'include'
+})
+	
+const account = await response.json();
+const username = account.username;
+const image = account.image;
+
+const binaryData = atob(image);                             //decode base64 into binary string
+const byteArray = new Uint8Array(binaryData.length);
+for(let i = 0; i < binaryData.length; i++){
+   byteArray[i] = binaryData.charCodeAt(i)
+}
+
+const blob = new Blob([byteArray], {type: account.contentType});
+const imageUrl = URL.createObjectURL(blob));
+	
+	<img src={imageUrl}/>
 
 

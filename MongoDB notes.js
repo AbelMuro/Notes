@@ -192,6 +192,7 @@
                             //          fs is the default bucket name, you can specify a different name in     new GridFSBucket(conn.db, {bucketName: 'image'});
                              // fs.files contains all the metadata of the file; filename, upload date, content type
                              // fs.chunks contains all the binary data of the file
+                             // once the collections have been made, we save a reference (writestream.id) of the image into the document in mongoDB
 
                                     const { GridFSBucket} = require('mongodb');
 
@@ -210,13 +211,14 @@
                                             const user = new User({email, password});
 
                                             if(image){
-                                                  const imageId = `${image.originalname}-${Date.now()}`;
-                                                  const writestream = gfs.openUploadStream(imageId, {contentType: image.mimetype});
+                                                const writestream = gfs.openUploadStream(image.originalname, {        //we create a writestream, its a way of handling data by diving it into smaller chunks
+                                                    contentType: image.mimetype
+                                                });
                                                 
-                                                  writestream.end(image.buffer);
+                                                  writestream.end(image.buffer);                        //we use the writestream by getting the image buffer(the raw binary data for the image) and store the data into the database
                                                 
                                                   writestream.on('finish', async () => {
-                                                        user.profileImage = imageId;           // Update the user document with the image reference (imageId must be the same and the first argument of openUploadStream() )
+                                                        user.profileImage = writestream.id;           // we update the user document with the ID of the writestream (make sure your model accepts 'ObjectId' ) )
                                                         const userData = await user.save();
                                                         console.log('Image uploaded to MongoDB');                            
                                                   });
@@ -249,27 +251,27 @@
                                 
                                     try{
                                         const user = await User.findOne({email});
-                                        const image = user.profileImage;                    //this contains the id for the image
+                                        const image = user.profileImage;                    //this contains the id for the image (its just a 'new ObjectId()')
                                 
                                         if(image){
                                             const _id = new mongoose.Types.ObjectId(image); //convert the _id into an objectId
-                                            const cursor = gfs.find({_id});                 //we look for the file chunk in the bucketList we created before
-                                            const files = await cursor.toArray();
-                                            const file = files?.[0];
-                                            const chunks = [];
-                                            const readstream = gfs.openDownloadStream(_id);
+                                            const cursor = gfs.find({_id});                 //we look for the file in the files collection (cursor is just a pointer to the file in the collecton)
+                                            const files = await cursor.toArray();           //we get all the metadata from the file and store it within an array
+                                            const file = files[0];                        
+                                            const chunks = [];                             //the use the chunks array to retrieve each chunk of the file
+                                            const readstream = gfs.openDownloadStream(_id);  //we initialize a read stream that is used to download the file from the chunks collection
                                 
-                                            readstream.on('data', (chunk) => {
+                                            readstream.on('data', (chunk) => {            //we get each chunk of the file and store it in the array
                                                 chunks.push(chunk);
                                             })
                                 
                                             readstream.on('end', () => {
-                                                const fileBuffer = Buffer.concat(chunks);
+                                                const fileBuffer = Buffer.concat(chunks);   //Buffer.concat() puts together all the binary data chunks into a single chunk
                                                 res.status(200).json({
                                                     username,
                                                     email,
                                                     contentType: file.contentType,
-                                                    image: fileBuffer.toString('base64')
+                                                    image: fileBuffer.toString('base64')    //we convert the binary data into a text format (base 64) that can be transmitted safely with JSON
                                                 })
                                             })
                                 

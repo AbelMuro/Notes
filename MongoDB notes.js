@@ -188,11 +188,10 @@
 
                         //4)  Uploading files to a document in MongoDB
                              // GridFS will split a file into chunks and store them in MongoDB
-                             // The chunks are grouped into two collections fs.files and fs.chunks
+                             // The chunks are grouped into two collections in the mongoDB database,  fs.files and fs.chunks
                             //          fs is the default bucket name, you can specify a different name in     new GridFSBucket(conn.db, {bucketName: 'image'});
                              // fs.files contains all the metadata of the file; filename, upload date, content type
                              // fs.chunks contains all the binary data of the file
-                             // all these chunks are stored in the document and are manageable
 
                                     const { GridFSBucket} = require('mongodb');
 
@@ -236,7 +235,58 @@
                                         }
                                     })
                             
+                          // 5) Get files from documents
 
+                                const initializeGridFs = (req, res, next) => {
+                                    const conn = mongoose.connection;
+                                    const gfs = new GridFSBucket(conn.db, { bucketName: 'images' });
+                                    req.gfs = gfs;
+                                    next();
+                                }
+                                
+                                router.get('/get_account', initializeGridFs, async (req, res) => {
+                                    const gfs = req.gfs;
+                                
+                                    try{
+                                        const user = await User.findOne({email});
+                                        const image = user.profileImage;                    //this contains the id for the image
+                                
+                                        if(image){
+                                            const _id = new mongoose.Types.ObjectId(image); //convert the _id into an objectId
+                                            const cursor = gfs.find({_id});                 //we look for the file chunk in the bucketList we created before
+                                            const files = await cursor.toArray();
+                                            const file = files?.[0];
+                                            const chunks = [];
+                                            const readstream = gfs.openDownloadStream(_id);
+                                
+                                            readstream.on('data', (chunk) => {
+                                                chunks.push(chunk);
+                                            })
+                                
+                                            readstream.on('end', () => {
+                                                const fileBuffer = Buffer.concat(chunks);
+                                                res.status(200).json({
+                                                    username,
+                                                    email,
+                                                    contentType: file.contentType,
+                                                    image: fileBuffer.toString('base64')
+                                                })
+                                            })
+                                
+                                            readstream.on('error', (err) => {
+                                                console.log('Error reading file from MongoDB', err);
+                                                res.status(200).json({username, email})
+                                            })
+                                        }  
+                                        else
+                                            res.status(200).json({username, email});
+                                         
+                                    }
+                                    catch(error){
+                                        const message = error.message;
+                                        res.status(500).send(message);
+                                    }
+                                })
 
 
 //======================================================= WEB SOCKETS AND MONGODB ======================================================================

@@ -72,6 +72,10 @@ if(response.status === 200){
 
 
 //----------------------------------Using the fetch api to send files to a server
+/* 
+	When we get a file from a form and store in FormData(), the file is stored as a Blob(binary large object) and then send to the back end
+*/
+
 const email = e.target.elements.email.value;
 const username = e.target.elements.username.value;
 const password = e.target.element.password.value;   
@@ -82,7 +86,7 @@ const formData = new FormData();
 formData.append('email', email);
 formData.append('password', password);
 formData.append('username', username);
-formData.append('image', image);
+formData.append('image', image);		      //this is stored as a Blob object
 
 fetch('https://myWebsite.com/somePath', {
       method: "POST",                                //you dont need to include the headers property here
@@ -95,6 +99,22 @@ fetch('https://myWebsite.com/somePath', {
 
 
 //------------------------------------Using the fetch api to receive files from server
+/* 
+	1) we get file as a base64 encoded string from the server
+
+ 	2) We decode base64 string into a binary string (each character in the string represents a byte in binary data), 
+  		keep in mind that the string is NOT raw binary data, but just a representation of it
+
+    	3) We create an array of Uint8Array() that will be used to store the unicode value of each character in the binary string
+     	       we use unicode because the unicode value can be decoded into raw binary data
+
+        4) We use the Blob constructor to actually create an object that has the raw binary data
+
+ 	5) With the blob object, we can create a URL from it and use it in our application through the src attribute in img tags
+
+  	(Unicode is a numerical system that gives a unique identifier for every letter, number or symbol; these identifiers can be used to decode raw binary data)
+
+*/
 
 const response = await fetch('http://localhost:4000/get_account', {
 	method: 'GET',
@@ -103,15 +123,16 @@ const response = await fetch('http://localhost:4000/get_account', {
 	
 const account = await response.json();
 const username = account.username;
+const contentType = account.contentType;
 const image = account.image;
 
-const binaryString = atob(image);                             //decode base64 into binary string
-const byteArray = new Uint8Array(binaryString.length);        //we create an array of 8-bit(1 byte) unsigned integers, this array will store each binary character as a byte
+const binaryString = atob(image);                             //decode base64 into binary string (each character represents a byte in binary data)
+const byteArray = new Uint8Array(binaryString.length);        //we create an array of 8-bit(1 byte) unsigned integers, this array will be used to store the unicode value of each character in the binary string
 for(let i = 0; i < binaryString.length; i++){
-   byteArray[i] = binaryString.charCodeAt(i)		     //we get the unicode value of each binary character and store it in the array (Unicode is a numerical system that gives a unique identifier for every letter, number or symbol)
-}							     // new Uint8Array() will create a format that closely resembles raw binary data
+   byteArray[i] = binaryString.charCodeAt(i)		     //we get the unicode value of each binary character and store it in the array
+}							    
 
-const blob = new Blob([byteArray], {type: account.contentType}); //we create a Blob (Binary Large Object) that represents binary raw data for the file
+const blob = new Blob([byteArray], {type: contentType});     //we create a Blob (Binary Large Object) that represents binary raw data for the file
 const imageUrl = URL.createObjectURL(blob));		     //we create a url from the Blob, and use it for the src attribute of img tags
 	
 	<img src={imageUrl}/>

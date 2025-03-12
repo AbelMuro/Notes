@@ -218,7 +218,7 @@
                                                   writestream.end(image.buffer);                        //we use the writestream by getting the image buffer(the raw binary data for the image) and store the data into the database
                                                 
                                                   writestream.on('finish', async () => {
-                                                        user.profileImage = writestream.id;           // we update the user document with the ID of the writestream (make sure your model accepts 'ObjectId' ) )
+                                                        user.profileImage = writestream.id;           // we update the user document with the ID of the writestream (this returns a string) )
                                                         const userData = await user.save();
                                                         console.log('Image uploaded to MongoDB');                            
                                                   });

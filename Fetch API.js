@@ -105,14 +105,14 @@ const account = await response.json();
 const username = account.username;
 const image = account.image;
 
-const binaryData = atob(image);                             //decode base64 into binary string
-const byteArray = new Uint8Array(binaryData.length);
-for(let i = 0; i < binaryData.length; i++){
-   byteArray[i] = binaryData.charCodeAt(i)
-}
+const binaryString = atob(image);                             //decode base64 into binary string
+const byteArray = new Uint8Array(binaryString.length);        //we create an array of 8-bit(1 byte) unsigned integers, this array will store each binary character as a byte
+for(let i = 0; i < binaryString.length; i++){
+   byteArray[i] = binaryString.charCodeAt(i)		     //we get the unicode value of each binary character and store it in the array (Unicode is a numerical system that gives a unique identifier for every letter, number or symbol)
+}							     // new Uint8Array() will create a format that closely resembles raw binary data
 
-const blob = new Blob([byteArray], {type: account.contentType});
-const imageUrl = URL.createObjectURL(blob));
+const blob = new Blob([byteArray], {type: account.contentType}); //we create a Blob (Binary Large Object) that represents binary raw data for the file
+const imageUrl = URL.createObjectURL(blob));		     //we create a url from the Blob, and use it for the src attribute of img tags
 	
 	<img src={imageUrl}/>
 

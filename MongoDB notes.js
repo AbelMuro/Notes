@@ -102,11 +102,11 @@
                                         }
                                     */
                                     const ObjectId = mongoose.Types.ObjectId;              //new ObjectId('24 character id string goes here');     or       new ObjectId()
-                                    /*    when comparing two ObjectId, you must use     
-                                            const idOne = new ObjectId();
-                                            const idTwo = new ObjectId();
-                                            idOne.equals(idTwo); 
-                                    */
+                                    /*    when comparing two ObjectId, you must use     */
+                                    const idOne = new ObjectId();
+                                    const idTwo = new ObjectId();
+                                    idOne.equals(idTwo); 
+                                    
                                     
                                     connectDB();
         

@@ -81,7 +81,7 @@
                                         age: {type: Number, required: true}
                                     })
                                     
-                                    const User = mongoose.model('user', userSchema, 'name-of-collection')        //create a model that will be used to create documents
+                                    const User = mongoose.model('name-of-collection', userSchema)        //create a model that will be used to create documents
                                     
                                     module.exports = {
                                         User

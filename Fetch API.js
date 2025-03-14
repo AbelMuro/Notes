@@ -43,6 +43,7 @@ fetch("/somePath", {
     destination: 'data',								//some api's may require that you put custom properties like this
     redirect: 'follow', // manual, *follow, error
     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    keepalive: true		//this property was designed to be used in a fetch request within a unload event, the browser will not wait to the fetch request to complete before unloading. but using this property will keep the fetch request alive
 })
 
 
@@ -138,3 +139,13 @@ const imageUrl = URL.createObjectURL(blob));		     //we create a url from the Bl
 	<img src={imageUrl}/>
 
 
+
+
+//------------------------------------------
+
+
+
+
+
+
+		

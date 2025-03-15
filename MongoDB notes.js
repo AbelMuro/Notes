@@ -335,6 +335,8 @@
 
 // front-end web socket
 
+        const WEBSOCKET_URL = 'ws://localhost:8000'  or   'wss//my-back-end-domain.com'        //first string is for development, the second is for production
+
         const onmessageFunction = (event) => {
             const change = JSON.parse(event.data);
             const newDocumentAddedToCollection = change.fullDocument;

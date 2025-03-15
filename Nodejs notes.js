@@ -179,6 +179,10 @@
 		    status = 200 
 		    force = true
 
+  		[functions]														//use this if your app uses files to load
+		    included_files = ["src/Config/MongoDB/Models/PemFiles/cert.pem", "src/Config/MongoDB/Models/PemFiles/key.pem"]
+		
+
       	4) npm install serverless-http
        
        		...if you haven't already, use npm install netlify-cli -g

@@ -314,9 +314,18 @@
             player: {type: String, required: true},
         })
         
-        const Queue = mongoose.model('queue', queueSchema, 'queue')        //first create your model for the collection you want to detect changes
-        
-        const wss = new WebSocket.Server({port: 8000});                    //second, you create the web socket object (make sure the port is the same for the back-end and the front-end)
+        const Queue = mongoose.model('player', queueSchema, 'queue')        //first create your model for the collection you want to detect changes
+
+         //PRODUCTION ONLY!
+        const server = https.createServer({                                // this is for production only
+            cert: fs.readFileSync('/path/to/ssl/cert.pem'),                // to generate these files, you need to install openSSL (https://slproweb.com/products/Win32OpenSSL.html)
+            key: fs.readFileSync('/path/to/ssl/key.pem'),                  // you will also need to download the openssl.cnf file (https://github.com/openssl/openssl/blob/master/apps/openssl.cnf), store it in the same installation folder as Openssl
+        });                                                                // then run the following commands     
+                                                                           // 1) openssl req -config C:/Users/abelm/openSSL/openssl.cnf -new -x509 -keyout key.pem -out cert.pem
+                                                                           // 2) openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem   (the files will be generated in the same directory specified in the command line)
+    
+                                        //development      //production
+        const wss = new WebSocket.Server({port: 8000}  or   {server});                    //second, you create the web socket object (make sure the port is the same for the back-end and the front-end)
 
         wss.on('connection', ws => {                                        //Third, you establish the connection between the back end and the front end
             console.log('Front-end and back-end are connected');

@@ -233,7 +233,7 @@ const upload = multer({ storage: storage}); 		       // look at the 'multer modu
 
 app.put('/update', upload.single('image'), (req, res) => {      // in upload.single('image'), it will look for the property 'image' in the FormData object that you created on the front-end
     const {username, email, password} = req.body;	
-    const image = req.file;					//this is how you receieve files from the front end ( front-end must use 	const formData = new FormData();  formData.append('image', image)  )
+    const image = req.file;					//this is how you receieve files from the front end ( look at the fetch api notes for more info on how to send files from the front-end to the back-end  )
 	
     res.status(200).send('data has been received')
 })

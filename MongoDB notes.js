@@ -237,7 +237,7 @@
                                         }
                                     })
                             
-                          // 5) Get files from documents
+                          // 5) Get files from MongoDB documents and send them to the front end 
 
                                 const initializeGridFs = (req, res, next) => {
                                     const conn = mongoose.connection;

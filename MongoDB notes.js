@@ -343,7 +343,7 @@
 
 
 // front-end web socket
-
+                                //development                //production
         const WEBSOCKET_URL = 'ws://localhost:8000'  or   'wss//my-back-end-domain.com'        //first string is for development, the second is for production
 
         const onmessageFunction = (event) => {
@@ -351,9 +351,8 @@
             const newDocumentAddedToCollection = change.fullDocument;
         }
 
-        //make sure to call this function within a useEffect()
-        const connectToWebSocket = (onmessageFunction) => {                //its a good idea to use callbacks to access the data from the changes detected in the web socket
-            const socket = new WebSocket('ws://localhost:8000');            //make sure the port is the same on the web socket in the back-end
+        const connectToWebSocket = (onmessageFunction) => {         
+            const socket = new WebSocket(WEBSOCKET_URL);            //make sure the port is the same on the web socket in the back-end
         
             socket.onopen = () => {                                        //These are all event listeners
                 console.log('Connected to WebSocket server');

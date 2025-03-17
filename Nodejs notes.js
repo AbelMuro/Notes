@@ -221,10 +221,6 @@ app.use(express.json());					//this will parse all incoming json data, you will 
 app.use(express.urlencoded({extended: true}));			//this will parse all incoming form data, you will need this if your server expects form data from the front-end 		(<form action="/submit-form" method="POST"></form>)
 app.use(cookieParser());
 
-app.get('/', () => {
-    const filePath = path.join(__dirname, 'index.html');       //you can send an index.html file to the browser when you access the server's url
-    res.sendFile(filePath);
-})
 
 // 'get' requests
 app.get('/account', (req, res) => {                             // .get() is for handleling 'get' requests from the client
@@ -274,9 +270,79 @@ app.listen(port, (error) => {
 
 
 
+//============================================================ DYNAMICALLY DISPLAYING MESSAGES ON NODE.JS =================================================================
+//you can send a dynamic html file to the browser to display messages about route access and database updates
+
+const express = require('express');
+const app = express();     
+const path = require('path');
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
+
+//for http only
+	const server = http.createServer(app);
+	const io = new Server(server);
+
+//for https only
+	const options = {
+	    key: fs.readFileSync('key.pem'),
+	    cert: fs.readFileSync('cert.pem'),
+	}
+	const server = https.createServer(options);
+	const io = new Server(server);
+
+
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+})
+
+
+app.get('/', () => {
+    const filePath = path.join(__dirname, 'index.html');       //you can send an index.html file to the browser when you access the server's url
+    res.sendFile(filePath);
+})
 
 
 
+/* 
+	--------------------------------index.html
+
+
+	 <!DOCTYPE html>
+	<html lang="en">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>Online Chess Server</title>
+	</head>
+	<body>
+	    <div id="messages"></div>
+	    <script src="/socket.io/socket.io.js"></script>
+	    <script>
+	        const socket = io();
+	        const messagesDiv = document.getElementById('messages');
+	
+	        // Listen for messages from the server
+	        socket.on('message', (msg) => {
+	            const message = document.createElement('p');
+	            message.textContent = msg;
+	            messagesDiv.appendChild(message);
+	        });
+	    </script>
+	</body>
+	</html>
+
+
+
+
+*/
+
+
+
+
+	
 //============================================================== CORS ======================================================================
 /* 
 	CORS: Cross origin resource sharing

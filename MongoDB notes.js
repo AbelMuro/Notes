@@ -301,7 +301,10 @@
     One way of thinking about this is using Event listeners in the front end. 
     Everytime there is a change in the UI or update to a state, an event listener will be triggered. 
     That event listener will call a function that has access to the updates to the state or changes to the UI
-    
+
+    KEEP IN MIND, WE ARE USING ABLY FOR THE WEBSOCKETS BECAUSE I DEPLOY MY NODE.JS APP WITH NETLIFY SERVELESS FUNCTIONS
+
+    ANY OTHER DEPLOYMENT METHOD (AWS C2, HEROKU, ETC..) SHOULD USE FS MODULE (LOOK AT NODE.JS NOTES FOR MORE INFO)
 */
 
 
@@ -316,59 +319,45 @@
         
         const Queue = mongoose.model('player', queueSchema, 'queue')        //first create your model for the collection you want to detect changes
 
-         //PRODUCTION ONLY!
-        const server = https.createServer({                                // this is for production only
-            cert: fs.readFileSync('/path/to/ssl/cert.pem'),                // to generate these files, you need to install openSSL (https://slproweb.com/products/Win32OpenSSL.html)
-            key: fs.readFileSync('/path/to/ssl/key.pem'),                  // you will also need to download the openssl.cnf file (https://github.com/openssl/openssl/blob/master/apps/openssl.cnf), store it in the same installation folder as Openssl
-        });                                                                // then run the following commands     
-                                                                           // 1) openssl req -config C:/Users/abelm/openSSL/openssl.cnf -new -x509 -keyout key.pem -out cert.pem
-                                                                           // 2) openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem   (the files will be generated in the same directory specified in the command line)
-    
-                                        //development      //production
-        const wss = new WebSocket.Server({port: 8000}  or   {server});                    //second, you create the web socket object (make sure the port is the same for the back-end and the front-end)
-
-        wss.on('connection', ws => {                                        //Third, you establish the connection between the back end and the front end
-            console.log('Front-end and back-end are connected');
+        const changeStream = Queue.watch();
         
-            const changeStream = Queue.watch();                            //This is where you use the Model to create a 'stream' that you can use to create event listeners
-            changeStream.on('change', (change) => {                        //you create an event listener here that detects the changes for the collection
-                ws.send(JSON.stringify(change))                            //This is where you send the changes to the front-end
-            })
+        changeStream.on('change', (change) => {
+            console.log('new player has joined the queue');
         
-            ws.on('close', () => {                                        //Event listener that is triggered when the front-end is disconnected from the back-end
-                console.log('Client disconnected')
+            channel.publish('queue-update', change, (err) => {            //make sure you use the same 'event name' on the front end as well
+                if(err) 
+                    console.error('Failed to publish message', err);
+                else
+                    console.log('Change publish to ably channel');
             })
         })
 
 
-
 // front-end web socket
-                                //development                //production
-        const WEBSOCKET_URL = 'ws://localhost:8000'  or   'wss//my-back-end-domain.com'        //first string is for development, the second is for production
 
-        const onmessageFunction = (event) => {
-            const change = JSON.parse(event.data);
-            const newDocumentAddedToCollection = change.fullDocument;
-        }
-
-        const connectToWebSocket = (onmessageFunction) => {         
-            const socket = new WebSocket(WEBSOCKET_URL);            //make sure the port is the same on the web socket in the back-end
-        
-            socket.onopen = () => {                                        //These are all event listeners
-                console.log('Connected to WebSocket server');
+    import {useState, useEffect} from 'react';
+    import Ably from 'ably';
+    
+    function useQueue() {
+        const [queue, setQueue] = useState([]);
+    
+        useEffect(() => {
+            const ably = new Ably.Realtime(process.env.ABLY_API_KEY);         //GET ROOT API KEY FROM YOUR ABLY ACCOUNT
+            const channel = ably.channels.get('queue-channel');                //use same channel as the back end
+    
+            channel.subscribe('queue-update', (message) => {                //use same event name as the back end
+                setQueue((prevUpdates) => [...prevUpdates, message.data]);
+            });
+    
+            return () => {
+                channel.unsubscribe();
+                ably.close();
             };
-        
-            socket.onmessage = onmessageFunction;                          // Update your front-end application with the received change
-        
-            socket.onclose = () => {
-                console.log('Disconnected from WebSocket server');
-            };
-        
-            socket.onerror = (error) => {
-                console.error('WebSocket error:', error);
-            };
-        }
-
+        }, [])
+    
+        return [queue, setQueue];
+    }
+    
 
 
 

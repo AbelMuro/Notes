@@ -280,18 +280,22 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 
-//for http only
+//for http only---------
 	const server = http.createServer(app);
 	const io = new Server(server);
+//for http only---------
 
-//for https only
+
+//for https only--------
 	const options = {
-	    key: fs.readFileSync('key.pem'),
-	    cert: fs.readFileSync('cert.pem'),
-	}
-	const server = https.createServer(options);
+	    key: fs.readFileSync('key.pem'),			//to generate these files, you need to install openSSL (https://slproweb.com/products/Win32OpenSSL.html)               
+	    cert: fs.readFileSync('cert.pem'),			// then run the following commands in the terminal 
+								// openssl genpkey -algorithm RSA -out key.pem -pkeyopt rsa_keygen_bits:2048			//generates the key.pem
+								// openssl req -new -key key.pem -out cert.csr							//generates a signing request (.csr)
+								// openssl x509 -req -days 365 -in cert.csr -signkey key.pem -out cert.pem			//generates the cert.csr
+	const server = https.createServer(options);		
 	const io = new Server(server);
-
+//for https only--------
 
 app.use((req, res, next) => {
     req.io = io;

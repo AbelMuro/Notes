@@ -214,7 +214,7 @@ const multer = require('multer');			      //npm install multer, you can use this
 const app = express();                                        //creating an object that represents the main app
 const port = 5000;
 const path = require('path');
-const filePath = path.resolve(__dirname, 'folder/file.js');	//you should always use path.resolve() to load files in a node.js app with the FS module
+const filePath = path.join(__dirname, 'folder/file.js');	//you should always use path.resolve() to load files in a node.js app with the FS module
 
 
 app.use(express.json());					//this will parse all incoming json data, you will need this if your server expects json data from the front-end

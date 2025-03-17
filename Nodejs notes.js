@@ -905,6 +905,70 @@ app.get('/account', (req, res) => {
 
 
 
+
+//======================================================= WS MODULE =========================================================
+//you can create a WEBSOCKET in your node.js app that creates a connection between the front-end and the back-end
+//typically this connection is used to automatically send data between front-end and back-end when theres a changes in the
+//database or an event that is triggered in the front end
+
+
+
+//------------------------------------------BACK END CODE
+        const WebSocket = require('ws');
+        
+         //PRODUCTION ONLY!
+        const server = https.createServer({                                // this is for production only
+            cert: fs.readFileSync('/path/to/ssl/cert.pem'),                // to generate these files, you need to install openSSL (https://slproweb.com/products/Win32OpenSSL.html)
+            key: fs.readFileSync('/path/to/ssl/key.pem'),                  // you will also need to download the openssl.cnf file (https://github.com/openssl/openssl/blob/master/apps/openssl.cnf), store it in the same installation folder as Openssl
+        });                                                                // then run the following commands     
+                                                                           // 1) openssl req -config C:/Users/abelm/openSSL/openssl.cnf -new -x509 -keyout key.pem -out cert.pem                                                                          
+									   // 2) openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem   (the files will be generated in the same directory specified in the command line)   
+                                        //development      //production
+        const wss = new WebSocket.Server({port: 8000}  or   {server});     //second, you create the web socket object (make sure the port is the same for the back-end and the front-end)
+
+        wss.on('connection', ws => {                                        //Third, you establish the connection between the back end and the front end
+            console.log('Front-end and back-end are connected');
+        
+            ws.send('data goes here')                                     //This is where you send the changes to the front-end (YOU have to call this function when theres a change somewhere)
+        
+            ws.on('close', () => {                                        //Event listener that is triggered when the front-end is disconnected from the back-end
+                console.log('Client disconnected')
+            })
+        })
+
+
+//--------------------------------------------FRONT END CODE
+
+        const WEBSOCKET_URL = 'ws://localhost:8000'  or   'wss//my-back-end-domain.com'        //first string is for development, the second is for production
+
+        const onmessageFunction = (event) => {
+            const change = JSON.parse(event.data);
+            console.log(change);			           	//data received from the back-end
+        }
+
+        const connectToWebSocket = (onmessageFunction) => {         
+            const socket = new WebSocket(WEBSOCKET_URL);            	//make sure the port is the same on the web socket in the back-end
+        
+            socket.onopen = () => {                                        //These are all event listeners
+                console.log('Connected to WebSocket server');
+            };
+        
+            socket.onmessage = onmessageFunction;                          // Update your front-end application with the received change
+        
+            socket.onclose = () => {
+                console.log('Disconnected from WebSocket server');
+            };
+        
+            socket.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+
+
+
+
+
 //=========================================================URL MODULE=========================================================
 var url = require('url');                                       //used for formating the url of the website
     var adr = 'http://localhost:8080/default.htm?year=2017&month=february';  //normally you would use 'req.url' to get the url

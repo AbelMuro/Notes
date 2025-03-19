@@ -156,6 +156,7 @@
                                             const user = await User.findOne({name: 'John'});                //looks for the first occurence of the document in the collection
                                             const anotherUser = await User.findOne({_id: id});                //you can also look for a document with its _id
                                             const users = await User.find({age: 22});                        //looks for ALL occurences of the document in the collection                                                 
+                                            const users = await User.find();                                 //gets ALL documents within a collection
                                             
                                             if(!user)
                                                 console.log('document doesnt exist');

@@ -177,6 +177,7 @@
                                             const resultOne = await User.deleteOne({_id: idToDelete});                //this will delete the first occurence of the specified document
                                             const resultTwo = await User.deleteOne({name: 'John'});
                                             const resultTwo = await User.deleteMany({name: 'Johnathan'});            //this will delete ALL occurences of the specified document
+                                            const resultThre = await User.deleteMany({});                            //this will delete ALL documents in the collection
                                             
                                             if(resultOne.deletedCount === 0)
                                                 console.log('document doesnt exist');

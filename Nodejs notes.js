@@ -273,75 +273,89 @@ app.listen(port, (error) => {
 //============================================================ DYNAMICALLY DISPLAYING MESSAGES ON NODE.JS =================================================================
 //you can send a dynamic html file to the browser to display messages about route access and database updates
 
-const express = require('express');
-const app = express();     
-const path = require('path');
-const http = require('http');
-const https = require('https');
-const fs = require('fs');
-
-//for http only---------
-	const server = http.createServer(app);
-	const io = new Server(server);
-//for http only---------
-
-
-//for https only--------
-	const options = {
-	    key: fs.readFileSync('key.pem'),			//to generate these files, you need to install openSSL (https://slproweb.com/products/Win32OpenSSL.html)               
-	    cert: fs.readFileSync('cert.pem'),			// then run the following commands in the terminal 
-								// openssl genpkey -algorithm RSA -out key.pem -pkeyopt rsa_keygen_bits:2048			//generates the key.pem
-								// openssl req -new -key key.pem -out cert.csr							//generates a signing request (.csr)
-								// openssl x509 -req -days 365 -in cert.csr -signkey key.pem -out cert.pem			//generates the cert.csr
-	const server = https.createServer(options);		
-	const io = new Server(server);
-//for https only--------
-
-app.use((req, res, next) => {
-    req.io = io;
-    next();
-})
-
-
-app.get('/', () => {
-    const filePath = path.join(__dirname, 'index.html');       //you can send an index.html file to the browser when you access the server's url
-    res.sendFile(filePath);
-})
-
-
-
+// -------------- FOR SERVERLESS FUNCTIONS ONLY!
 /* 
-	--------------------------------index.html
-
-
-	 <!DOCTYPE html>
-	<html lang="en">
-	<head>
-	    <meta charset="UTF-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <title>Online Chess Server</title>
-	</head>
-	<body>
-	    <div id="messages"></div>
-	    <script src="/socket.io/socket.io.js"></script>
-	    <script>
-	        const socket = io();
-	        const messagesDiv = document.getElementById('messages');
-	
-	        // Listen for messages from the server
-	        socket.on('message', (msg) => {
-	            const message = document.createElement('p');
-	            message.textContent = msg;
-	            messagesDiv.appendChild(message);
-	        });
-	    </script>
-	</body>
-	</html>
-
-
-
-
+	Keep in mind that in serverless functions (netlify functions, AWS lambda, etc...), they are stateless, 
+        meaning that they cannot store data of any kind. For you to display dynamic messages to the index.html file
+	You need to have a consistent storage to store the messages, one way of doing this is by using MongoDB
+ 	Everytime there is a request to a route, you can add a message to a collection, which will then be displayed 
+  	in the index.html
 */
+
+// ---------- serverless function
+
+const handler = serverless(app);  	
+
+module.exports.handler = async (e, context) => {	
+  await connectDB();		
+
+  if(e.path === '/get_messages'){
+    const allDocuments = await ServerMessage.find();
+    await ServerMessage.deleteMany({});
+    const formatedMessages = allDocuments.map(document => `data: ${JSON.stringify(document.message)}\n\n`).join('');	//make sure you format the message correctly
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+      },
+      body: formatedMessages
+    }
+  }
+  else{
+    const result = await handler(e, context);
+    return result;    
+  }
+};
+
+// ----------- login route
+const ServerMessage = require('../Config/MongoDB/Models/ServerMessage.js');
+
+router.post('/login', async (req, res) => {
+    const newMessage = new ServerMessage({message});
+    await newMessage.save();
+})
+
+
+
+
+ //------------ index.html
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Chess Server</title>
+</head>
+<body>
+    <h1> 
+	Welcome to the World Class Chess Server
+    </h1>
+
+    <div id="messages">
+
+    </div>
+
+    <script>
+	const messageDiv = document.getElementById('messages');
+	const eventSource = new EventSource('/get_messages');		//this will create an event object that will detect any messaged sent by the server
+
+	eventSource.onmessage = (e) => {
+	    const data = e.data;
+	    const newElement = document.createElement('p');
+	    newElement.textContent = data;
+	    messageDiv.appendChild(newElement);
+	}
+    </script>
+</body>
+</html>
+
+
+
+
 
 
 

@@ -1,0 +1,41 @@
+/* 
+
+    --------------------------------------DEPLOYING NODE.JS servers with Docker------------------------------------
+
+    Docker uses containers, they are an isolated environment that can be used to run any code
+    We create a container by first creating an image, which is a blueprint on how the container will 'look like'
+
+    1) First install the docker desktop      (https://docs.docker.com/get-started/get-docker/)
+
+    2) Then create a Dockerfile file in your root directory of your app (Dockerfile has not extention)
+
+        # Use the Node.js base image
+        FROM node:16-alpine
+        
+        # Set the working directory
+        WORKDIR /usr/src/app
+        
+        # Copy package files and install dependencies
+        COPY package*.json ./
+        RUN npm install
+        
+        # Copy the rest of the app’s files
+        COPY . .
+        
+        # Expose the port your app runs on
+        EXPOSE 3000
+        
+        # Run the app
+        CMD ["node", "index.js"]          //make sure this has the same name as your starting file in node.js
+
+    3) run the following command (the following command will create an image)
+
+        docker build -t name-of-image .    
+
+    4) Once you have an image, you can use it to create a container with the following command
+
+        docker run -p 3000:3000 my-node-app
+
+        
+        
+*/

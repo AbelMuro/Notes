@@ -18,12 +18,16 @@
                 # Copy package files and install dependencies
                 COPY package*.json ./
                 RUN npm install
+
+                # Environment variables
+                ENV api_key=123456789
+                ENV another_api_key=23412341234
                 
                 # Copy the rest of the app’s files
                 COPY . .
                 
                 # Expose the port your app runs on
-                EXPOSE 3000
+                EXPOSE 4000                                        //make sure this port is the same port that you use in the app.listen() method of your node.js app
                 
                 # Run the app
                 CMD ["node", "src/index.js"]

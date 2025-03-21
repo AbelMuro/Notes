@@ -314,6 +314,8 @@
 
         const {Schema} = require('mongoose');
         const WebSocket = require('ws');
+        const ably = new Ably.Realtime(process.env.ABLY_API_KEY); 
+        const channel = ably.channels.get('queue-channel');                //make sure you use the same channel name as the front end
         
         const queueSchema = new Schema({
             player: {type: String, required: true},

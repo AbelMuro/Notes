@@ -144,7 +144,7 @@
 
 
 /* 
-	How to deploy node.js app with NETLIFY
+	How to deploy node.js app with NETLIFY FUNCTIONS (this service uses AWS Lambda)
 
  	1) create a functions folder
 
@@ -200,6 +200,14 @@
 	7) npm run build 
  		the command above will ask you a few questions, make sure the publish directory is set to .
    		it will then generate a url that you can use to make fetch requests
+
+*/
+
+
+/* 
+	HOW TO DEPLOY YOUR NODE.JS SERVER WITH DOCKER
+
+ 	1) Install docker desktop on your computer (https://docs.docker.com/get-started/get-docker/?_gl=1*cko8p6*_gcl_au*NzEzOTUzNTMyLjE3NDI1OTA0MzQ.*_ga*Nzk2OTA0MzY3LjE3NDI1OTA0MzQ.*_ga_XJWPQMJYHQ*MTc0MjU5MjU0MC4yLjEuMTc0MjU5Mjg2MC4xNC4wLjA.)
 
 */
 
@@ -1008,17 +1016,18 @@ app.get('/account', (req, res) => {
          //PRODUCTION ONLY!
         const server = https.createServer({                                // this is for production only
             cert: fs.readFileSync('/path/to/ssl/cert.pem'),                // to generate these files, you need to install openSSL (https://slproweb.com/products/Win32OpenSSL.html)
-            key: fs.readFileSync('/path/to/ssl/key.pem'),                  // you will also need to download the openssl.cnf file (https://github.com/openssl/openssl/blob/master/apps/openssl.cnf), store it in the same installation folder as Openssl
+            key: fs.readFileSync('/path/to/ssl/key.pem'),                  // check the folder and see if there is a openssl.cnf file, if there isnt, then you can download it here (https://github.com/openssl/openssl/blob/master/apps/openssl.cnf), store it in the same installation folder as Openssl
         });                                                                // then run the following commands     
-                                                                           // 1) openssl req -config C:/Users/abelm/openSSL/openssl.cnf -new -x509 -keyout key.pem -out cert.pem                                                                          
-									   // 2) openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem   (the files will be generated in the same directory specified in the command line)   
+                                                                           // 1) openssl req -config C:/Users/abelm/openSSL/openssl.cnf -new -x509 -keyout key.pem -out cert.pem  (-config C:\path\to\openssl.cnf)     //remove the parenthesis and only use the -config if terminal can't find the openssl.snf              
+									   // 2) openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem (-config C:\path\to\openssl.cnf)     	       //remove the parenthesis and only use the -config if terminal can't find the openssl.snf 
+									   // the key.pem and cert.pem files will be generated in the same directory set in the terminal
                                         //development      //production
         const wss = new WebSocket.Server({port: 8000}  or   {server});     //second, you create the web socket object (make sure the port is the same for the back-end and the front-end)
 
         wss.on('connection', ws => {                                        //Third, you establish the connection between the back end and the front end
             console.log('Front-end and back-end are connected');
         
-            ws.send('data goes here')                                     //This is where you send the changes to the front-end (YOU have to call this function when theres a change somewhere)
+            ws.send('data goes here')                                     //This is where you send the changes to the front-end (YOU have to call this function, its best to use it in some event handler)
         
             ws.on('close', () => {                                        //Event listener that is triggered when the front-end is disconnected from the back-end
                 console.log('Client disconnected')

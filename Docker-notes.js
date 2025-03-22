@@ -5,7 +5,7 @@
     Docker uses containers, they are an isolated environment that can be used to run any code
     We create a container by first creating an image, which is a blueprint on how the container will 'look like'
 
-    1) First open docker-hub in your account
+    1) First download docker desktop (https://docs.docker.com/desktop/)
 
     2) Then create a Dockerfile file in your root directory of your app (Dockerfile has no extention)
 
@@ -37,9 +37,9 @@
 
                 docker build -t name-of-image .    
 
-    4) Once you have an image, you can use it to create a container with the following command
-
-                docker run -p 3000:3000 my-node-app
+    4) Once you have an image, you can use it to create a container, open up 'docker-desktop' and go to 'images',
+        click on the image that you just build and then click 'Run' on the top right corner, you can add your environment variables here
+        and make sure you use the same port that you node.js app is using in app.listen()
 
         
         

@@ -22,6 +22,7 @@
                 # Environment variables
                 ENV api_key=123456789
                 ENV another_api_key=23412341234
+                ENV secret_key="this is my secret"
                 
                 # Copy the rest of the app’s files
                 COPY . .

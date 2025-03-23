@@ -19,20 +19,23 @@
 /*
     Google cloud run is a service that is used to deploy websites and servers.
           
-    1) Go to your Google cloud console and then to Google Cloud Run
+    1) Use Docker to create an image of your app (look at docker notes for more info)
 
-    2) Click on Connect Repo at the top left
+    2) For windows only, download the google cloud CLI (https://cloud.google.com/sdk/docs/install)
 
-    3) Select github and click on Set up with Cloud Build
-        then select the repository you want to deploy
+        gcloud init
 
-    4) Click on Containers, Volumsn and Network Security
-        Select Variables & Secrets
-        Enter your env variables here
+    3) For macOS only, run the following commands
+
+        brew install google-cloud-sdk
+        gcloud init
+
+    3) gcloud auth login                    //login with google
     
-    5) Click on create
+    4) Run the following commands 
     
-
+        docker tag name-of-image gcr.io/PROJECT_ID/name-of-image                    // you can get PROJECT_ID from the google console 
+        docker push name-of-image gcr.io/PROJECT_ID/name-of-image
 */ 
 
 

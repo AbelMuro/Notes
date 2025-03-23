@@ -20,21 +20,21 @@
     Google cloud run is a service that is used to deploy websites and servers.
 
 
-
+//-------------------------- DEPLOY NODE.JS with CLOUD RUN -------------------------------------------------
 
           
-    1) Use Docker to create an image of your app (look at docker notes for more info)
+    1) Use Docker to create an image of your node.js app (look at docker notes for more info)
 
     2) For windows only, download the google cloud CLI (https://cloud.google.com/sdk/docs/install)
 
         gcloud init
 
-    3) For macOS only, run the following commands
+    3) For macOS only, run the following commands to install google cloud CLI
 
         brew install google-cloud-sdk
         gcloud init
 
-    3) gcloud auth login                    //login with google
+    3) gcloud auth login                                                            //login with google
     
     4) Run the following commands 
     
@@ -53,6 +53,86 @@
     7) Click on Create
        
 */ 
+
+
+
+
+
+
+
+
+
+
+
+//=================================================== GOOGLE LOGIN ====================================================================
+
+/* 
+    You will need to create a client Id for the google sign-in process
+
+    1) Go to google cloud and create a new project
+
+    2) Then go to API & Services
+
+    3) Go to OAuth consent screen and click on publish
+    
+    4) Then go to Credentials and create a new 0Auth client-id and save it
+
+        make sure you add the front end app's url to the authorized origins of the client-id
+
+    5) npm install @react-oauth/google
+    
+
+*/
+
+
+
+//=================================== @react-oauth/google ===================================================
+
+import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
+
+function App() {
+  
+  return(
+     <GoogleOAuthProvider clientId={process.env.CLIENT_ID}>
+        <GoogleLoginButton/>
+     </GoogleOAuthProvider>
+  )
+}
+
+
+function GoogleLoginButton() {
+    const login = useGoogleLogin({
+        onSuccess: async (token) => {
+             console.log(token)
+        },
+        onError: async (error) => {
+            console.log(error)
+        },
+        onNonOAuthError: (error) => {
+            console.log('Typically used when the user closes the popup and decides not to log in with google')
+        },
+    })
+
+    const handleClick = () => {
+        login();
+    }
+
+    return(
+            <button onClick={handleClick}>
+                Google
+            </button>
+    )
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -5,7 +5,7 @@
     Docker uses containers, they are an isolated environment that can be used to run any code
     We create a container by first creating an image, which is a blueprint on how the container will 'look like'
 
-    1) First download docker desktop (https://docs.docker.com/desktop/)
+    1) First download docker desktop (https://docs.docker.com/desktop/) and run the command wsl --install
 
     2) Then create a Dockerfile file in your root directory of your app (Dockerfile has no extention)
 

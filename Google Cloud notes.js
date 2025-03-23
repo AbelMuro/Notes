@@ -38,6 +38,34 @@
           
     1) Use Docker to create an image of your node.js app (look at docker notes for more info)
 
+    1.5) Create a cloudbuild.yaml file in the root directory of your repository
+
+    steps:
+	- name: 'gcr.io/cloud-builders/npm'
+	  args: ['install']
+	- name: 'gcr.io/cloud-builders/npm'
+	  args: ['run', 'build']
+	- name: 'gcr.io/cloud-builders/docker'
+	  args: ['build', '-t', 'gcr.io/PROJECT-ID/ANY-NAME', '.']			//you can get the PROJECT-ID from the google cloud console, from the top right corner.
+	- name: 'gcr.io/cloud-builders/docker'
+	  args: ['push', 'gcr.io/PROJECT-ID/ANY-NAME']
+	- name: 'gcr.io/cloud-builders/gcloud'
+	  args:
+	   - 'run'
+	   - 'deploy'
+	   - 'PROJECT-ID'
+	   - '--image'
+	   - 'gcr.io/PROJECT-ID/ANY-NAME'
+	   - '--region'
+	   - 'us-central1'
+	   - '--platform'
+	   - 'managed'
+	  images:
+	  - 'gcr.io/PROJECT-ID/ANY-NAME'
+	  env:
+	   - 'API_KEY=12345657'
+	   - 'accountname=whatever'
+
     2) For windows only, download the google cloud CLI (https://cloud.google.com/sdk/docs/install)
 
         gcloud init

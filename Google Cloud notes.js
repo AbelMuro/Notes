@@ -9,11 +9,114 @@
     to host their servers, because google already has the hardware (in their data centers) required to maintain and contain servers
     Developers dont need their own physical hardware or computer to host the server 24/7 when they have google cloud.
 
+
+    INSTALLING GOOGLE CLOUD CLI
+
+	- For windows only, download the google cloud CLI (https://cloud.google.com/sdk/docs/install)
+	
+		gcloud init
+
+	- For macOS only, run the following commands to install google cloud CLI
+	
+	        brew install google-cloud-sdk
+	        gcloud init
+
 */
 
 
 
 
+
+
+
+
+
+
+//================================================= GOOGLE CLOUD COMPUTE ENNGINE ===================================================================
+/* 
+	Compute Engine is a service that provides Virtual Machines (VM) that allow you to customize the hardware of the virtual machine to meet your needs (CPU, memory, etc)
+ 	Typically, you can use these VM's to run a server on a different computer that is maintained by google. Keep in mind that a server has to be running on a computer 24/7.
+
+
+	0) Go to Google Compute Engine in your Google Cloud Console and click on create new instance (take note of the instance name and the zone)
+		
+	1) In the repository, use the following command.
+
+		 gcloud compute ssh INSTANCE_NAME --zone=ZONE_NAME
+
+
+   		 or you can just go to the Google Cloud Compute Engine, then VM instances, then click on SSH of the instance (below Connect)
+
+ 	2) A terminal should pop up in your computer, then run the following commands.
+
+    		sudo apt update										// updates the package index
+		sudo apt install curl -y								// install curl
+		curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash		// installs nvm
+		nvm install 21.6.1									// installs node.js version 21.6.1
+  		nvm run 21.6.1									        // we run the current version of node.js
+		sudo apt install git -y									// installs gitbash
+		git clone YOUR_REPO_URL								 	// clones your repo
+		cd YOUR_PROJECT_FOLDER									// changes directory to the folder that has the clone
+  
+		nano ~/.bashrc										//open  the shell configurations file and put the env variables at the very end of the file
+  			export VARIABLE_NAME="value"				
+		        export VARIABLE_NAME="value"
+		        export VARIABLE_NAME="value"							// once you're done writing the env variables, press ctrl + o to 'write out' the file, then exit
+	  	source ~/.bashrc									//save and reload the file
+
+	        
+  
+		npm install										// installs all dependencies for the app
+		npm start 										// runs the app in the cloud
+
+
+
+  	3) To run node.js app with HTTPS you must first configure your app to use HTTPS
+
+   		const express = require('express');
+		const https = require('https');
+   		const path = require('path');
+     		const fs = require('fs');
+
+     		const app = express();   
+       		const privateKeyFilePath = path.join(__dirname, '../SSL/private.key');			//you can generate these files with certbot
+		const certificateFilePath = path.join(__dirname, '../SSL/certificate.crt'); 
+
+		const options = {
+		    key: fs.readFileSync(privateKeyFilePath),
+		    cert: fs.readFileSync(certificateFilePath),
+		}
+
+		https.createServer(options, app).listen(443, (error) => {
+		    if(error){
+		        console.log('HTTPS error occurred: ', error);
+		        return;
+		    }
+		    console.log('HTTPS server is running on port 443')
+		})
+
+	 4) Now you must buy a domain for your server/website, go to ionos.com and then buy a domain
+  	    When you buy a dommain, the website will provide you with a SSL certificate and Key file
+
+
+  	  4) Open up your terminal in Google Cloud Compute Engine and run the following commands
+
+		//for google compute engine
+	     		sudo apt update 									//updates system files				
+	       		sudo apt install certbot								//installs certbot
+		 	sudo certbot certonly --standalone -d your-domain.com					//you must buy and own the domain through a registrar (ionos.com, google domain)
+	   		
+	
+		//for repository terminal
+		 	gcloud compute scp /local/path/to/app INSTANCE_NAME:/remote/path --zone=ZONE            // copy the node.js app into the GCE instance using scp        THIS IS WHERE I LEFT OFF
+	   		gcloud compute ssh INSTANCE_NAME --zone=ZONE						// SSH into the instance
+			cd /remote/path
+	  		npm install 
+			gcloud compute firewall-rules create allow-https --allow tcp:443			//allow traffic on port 443 for https
+  		
+
+
+*/
 
 
 
@@ -30,7 +133,7 @@
 
 //================================================= GOOGLE CLOUD RUN ===========================================================================
 /*
-    Google cloud run is a service that is used to deploy websites and servers.
+    Google cloud run is a service that is used to deploy serverless functions and websites
 
 
 //-------------------------- DEPLOY NODE.JS with CLOUD RUN -------------------------------------------------
@@ -66,18 +169,9 @@
 	   - 'API_KEY=12345657'
 	   - 'accountname=whatever'
 
-    2) For windows only, download the google cloud CLI (https://cloud.google.com/sdk/docs/install)
-
-        gcloud init
-
-    3) For macOS only, run the following commands to install google cloud CLI
-
-        brew install google-cloud-sdk
-        gcloud init
-
-    3) gcloud auth login                                                            //login with google
+    2) gcloud auth login                                                            //login with google
     
-    4) Run the following commands 
+    3) Run the following commands 
     
         docker tag name-of-image gcr.io/PROJECT_ID/name-of-image                    // you can get PROJECT_ID from the google console 
         docker push gcr.io/PROJECT_ID/name-of-image                                 // This will uploade the image to the Google Artifact registry
@@ -85,13 +179,13 @@
         //if you have an issue with authorization, run the following command
         gcloud auth configure-docker
 
-    5) Then go to 'Google Cloud Run' and then click on Deploy Container (click on 'service' in the dropdown)
+    4) Then go to 'Google Cloud Run' and then click on Deploy Container (click on 'service' in the dropdown)
 
-    6) Select Docker Hub and Artifact Registry
+    5) Select Docker Hub and Artifact Registry
        In the 'Container Image Url', click on select, and find the image that you uploaded on the Artifact Registry
        In 'Containers, Volumes, Networking, Security', select 'Variables & Secrets' and put your env variables there
        
-    7) Click on Create
+    6) Click on Create
        
 */ 
 

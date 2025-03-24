@@ -1,4 +1,4 @@
-//====================================================== CLOUD COMPUTING ===========================================================================
+w//====================================================== CLOUD COMPUTING ===========================================================================
 /* 
     Cloud computing is the on-demand delivery of IT resources via the internet. Instead of owning expensive hardware that manages servers and databases, 
     you can access technology services (storage, databases, computing power) on an as-needed basis from a cloud provider (AWS)
@@ -570,7 +570,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             
                 server {
                     listen 80;
-                    server_name example.com;                    //you must have a domain name that points to the url of your ec2 instance (https://ec2-52-53-169-169.us-west-1.compute.amazonaws.com/)
+                    server_name example.com;                    //Use the url of your ec2 instance (https://ec2-52-53-169-169.us-west-1.compute.amazonaws.com/)
                 
                     location / {
                         proxy_pass http://localhost:3000;        //make sure to replace 3000 with the actual port your node.js is running on
@@ -581,7 +581,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
 
         16.5) sudo apt install certbot python3-certbot-nginx        //installing certbot
 
-        16.6) sudo certbot --nginx -d example.com                   //creating SSL certificate, replace example.com with the domain that you created
+        16.6) sudo certbot --nginx -d example.com                   //creating SSL certificate, replace example.com with the url of your ec2 instance (https://ec2-52-53-169-169.us-west-1.compute.amazonaws.com/)
 
         16.7) Ensure that your nginx config file looks like this
 
@@ -620,10 +620,11 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
           b) If your server relies on env variables, then run the following commands
             
                 nano .env            //creates an env file in current directory
-
                 apiKey=123456789     //start entering the env variables
 
+        c) if you have made changes to your remote repository, you will have to close the server and run the following command
 
+                git pull
 
 
 
@@ -639,57 +640,6 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             
 
 
-
-
-
-
-
-
-
-
-
-//------------------------------------------------ HOW TO MAKE EC2 INSTANCE DETECT CHANGES IN GITHUB REPOSITORY -------------------------------------
-
-
-      1) Go to the github repository and click on settings
-
-      2) click on webhooks, then add webhook
-
-      3) for the payload url, set the url for the ec2 instance 
-
-            http://ec2-52-53-169-169.us-west-1.compute.amazonaws.com/webhook
-            
-      4) For the contect-type, set application/json
-      
-      5) In your node.js server, add the following endpoint
-
-          app.post('/webhook', (req, res) => {
-                const payload = req.body;
-            
-                // Check if the event is a push event
-                if(payload.ref === 'refs/heads/main') {
-                    // Pull the latest changes from the repository
-                    exec('git pull', (error, stdout, stderr) => {           //pm2 restart all will restart your node.js app
-                        if(error) {
-                            console.error(`Error pulling changes: ${error.message}`);
-                            return res.status(500).send('Error pulling changes!');
-                        }
-                        console.log(`stdout: ${stdout}`);
-                        console.error(`stderr: ${stderr}`);
-                        console.log('Changes pulled successfully!');
-                        res.status(200).send('Changes pulled successfully');
-                    });
-                } 
-                else {
-                    console.log('Not a push event to the main branch!');
-                    res.status(200).send('Not a push event to the main branch');
-                }   
-            });
-
-        6) You will need to manually use git pull on the repository in ec2 instance to apply the changes first
-
-        7) You will need to restart your node.js app in ec2 instances for the changes to take effect after every push to the repo
-*/    
 
 
 

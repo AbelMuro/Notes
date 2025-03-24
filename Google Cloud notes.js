@@ -43,8 +43,7 @@
 	1) In the repository, use the following command.
 
 		 gcloud compute ssh INSTANCE_NAME --zone=ZONE_NAME
-
-
+   
    		 or you can just go to the Google Cloud Compute Engine, then VM instances, then click on SSH of the instance (below Connect)
 
  	2) A terminal should pop up in your computer, then run the following commands.
@@ -97,16 +96,11 @@
 
 	 4) Now you must buy a domain for your server/website, go to ionos.com and then buy a domain
   	    When you buy a dommain, the website will provide you with a SSL certificate and Key file
+       	    save these files in your repository
 
 
   	  4) Open up your terminal in Google Cloud Compute Engine and run the following commands
 
-		//for google compute engine
-	     		sudo apt update 									//updates system files				
-	       		sudo apt install certbot								//installs certbot
-		 	sudo certbot certonly --standalone -d your-domain.com					//you must buy and own the domain through a registrar (ionos.com, google domain)
-	   		
-	
 		//for repository terminal
 		 	gcloud compute scp /local/path/to/app INSTANCE_NAME:/remote/path --zone=ZONE            // copy the node.js app into the GCE instance using scp        THIS IS WHERE I LEFT OFF
 	   		gcloud compute ssh INSTANCE_NAME --zone=ZONE						// SSH into the instance

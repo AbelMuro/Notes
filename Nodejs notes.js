@@ -204,12 +204,6 @@
 */
 
 
-/* 
-	HOW TO DEPLOY YOUR NODE.JS SERVER WITH DOCKER
-
- 	1) Install docker desktop on your computer (https://docs.docker.com/get-started/get-docker/?_gl=1*cko8p6*_gcl_au*NzEzOTUzNTMyLjE3NDI1OTA0MzQ.*_ga*Nzk2OTA0MzY3LjE3NDI1OTA0MzQ.*_ga_XJWPQMJYHQ*MTc0MjU5MjU0MC4yLjEuMTc0MjU5Mjg2MC4xNC4wLjA.)
-
-*/
 
 
 //=============================================================== EXPRESS WEB FRAMEWORK =================================================================
@@ -1015,12 +1009,9 @@ app.get('/account', (req, res) => {
         
          //PRODUCTION ONLY!
         const server = https.createServer({                                // this is for production only
-            cert: fs.readFileSync('/path/to/ssl/cert.pem'),                // to generate these files, you need to install openSSL (https://slproweb.com/products/Win32OpenSSL.html)
-            key: fs.readFileSync('/path/to/ssl/key.pem'),                  // check the folder and see if there is a openssl.cnf file, if there isnt, then you can download it here (https://github.com/openssl/openssl/blob/master/apps/openssl.cnf), store it in the same installation folder as Openssl
-        });                                                                // then run the following commands     
-                                                                           // 1) openssl req -config C:/Users/abelm/openSSL/openssl.cnf -new -x509 -keyout key.pem -out cert.pem  (-config C:\path\to\openssl.cnf)     //remove the parenthesis and only use the -config if terminal can't find the openssl.snf              
-									   // 2) openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem (-config C:\path\to\openssl.cnf)     	       //remove the parenthesis and only use the -config if terminal can't find the openssl.snf 
-									   // the key.pem and cert.pem files will be generated in the same directory set in the terminal
+            cert: fs.readFileSync('/path/to/ssl/cert.cer'),                // these are the SSL files that come with a domain after you buy it from ionos
+            key: fs.readFileSync('/path/to/ssl/private.key'),              // make sure that the DNS configuration of the domain has the 'A' record pointing to the ipv4 address of the computer hosting the node.js app 
+	})								   // host name for the 'A' record should just be @
                                         //development      //production
         const wss = new WebSocket.Server({port: 8000}  or   {server});     //second, you create the web socket object (make sure the port is the same for the back-end and the front-end)
 

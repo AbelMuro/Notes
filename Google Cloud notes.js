@@ -97,9 +97,23 @@
 		    console.log('HTTPS server is running on port 443')
 		})
 
-  	 4) run the following command to enable https traffic to the VM 
+  	 4) Run the following command to enable https traffic to the VM 
 
    		gcloud compute firewall-rules create allow-https --allow tcp:443
+     		gcloud compute firewall-rules list
+
+	       NAME NETWORK 	DIRECTION 	PRIORITY 	ALLOW 	DENY 	DISABLED 
+	       allow-http 	default 	INGRESS 	1000 	tcp:80 	False 
+	       allow-https 	default 	INGRESS 	1000 	tcp:443 False 
+	       default-allow-http default 	INGRESS 	1000 	tcp:80 	False 
+	       default-allow-https default 	INGRESS 	1000 	tcp:443 False 			//just make sure that this line appears in your list of firewall rules
+	       default-allow-icmp default 	INGRESS 	65534 	icmp 	False 
+	       default-allow-internal default 	INGRESS 	65534 	tcp:0-65535,udp:0-65535,icmp 	False 
+	       default-allow-rdp default 	INGRESS 	65534 	tcp:3389 	False 
+	       default-allow-ssh default 	INGRESS 	65534 	tcp:22 	False
+
+	      	   -You can also change the firewall rules for the VM by configuring the VPC network of the VM
+		  	Go to Compute Engine -> VM instances -> On the VM instance, click on the 3 dots on the far right -> view network details -> Network interface details, click on the Network option -> firewalls
 
 	 5) Now you must buy a domain for your server/website, go to ionos.com and then buy a domain
   	    When you buy a domain, the website will provide you with a SSL certificate and Key file

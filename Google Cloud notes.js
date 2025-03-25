@@ -57,14 +57,19 @@
 		git clone YOUR_REPO_URL								 	// clones your repo
 		cd YOUR_PROJECT_FOLDER									// changes directory to the folder that has the clone
   
-		nano ~/.bashrc										//open  the shell configurations file and put the env variables at the very end of the file
+		nano ~/.bashrc										// open  the shell configurations file and put the env variables at the very end of the file
   			export VARIABLE_NAME="value"				
 		        export VARIABLE_NAME="value"
 		        export VARIABLE_NAME="value"							// once you're done writing the env variables, press ctrl + o to 'write out' the file, then exit
-	  	source ~/.bashrc									//save and reload the file
+	  	source ~/.bashrc									// save and reload the file
 
 		npm install										// installs all dependencies for the app
 		npm start 										// runs the app in the cloud
+
+
+		-if you are having permission issues running npm start, run the following commands
+  			sudo apt-get install libcap2-bin 						// installs the libcap2-bin package that is used to manage linux capabilities such as permissions
+			sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\`` 		// Grant Node.js permission to bind to privileged ports (like port 443)... The setcap command allows Node.js to bind to such ports without needing to run as root.
 
 
 

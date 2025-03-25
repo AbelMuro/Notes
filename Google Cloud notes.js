@@ -46,7 +46,7 @@
    
    		 or you can just go to the Google Cloud Compute Engine, then VM instances, then click on SSH of the instance (below Connect)
 
- 	2) A terminal should pop up in your computer, then run the following commands.
+ 	2) A terminal should pop up in your computer, then run the following commands. (you may need to use sudo as a prefix to fix permissions issue that may arise)
 
     		sudo apt update										// updates the package index
 		sudo apt install curl -y								// install curl

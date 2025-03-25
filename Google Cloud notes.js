@@ -72,8 +72,12 @@
 			sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\`` 		// Grant Node.js permission to bind to privileged ports (like port 443)... The setcap command allows Node.js to bind to such ports without needing to run as root.
 
 
+	3) You must buy a domain for your server/website, go to ionos.com and then buy a domain
+  	    When you buy a domain, the website will provide you with a SSL certificate and Key file
+       	    save these files in your repository
 
-  	3) To run node.js app with HTTPS you must first configure your app to use HTTPS
+
+  	4) To run node.js app with HTTPS you must first configure your app to use HTTPS
 
    		const express = require('express');
 		const https = require('https');
@@ -97,7 +101,7 @@
 		    console.log('HTTPS server is running on port 443')
 		})
 
-  	 4) Run the following command to enable https traffic to the VM 
+  	 5) Run the following command to enable https traffic to the VM 
 
    		gcloud compute firewall-rules create allow-https --allow tcp:443
      		gcloud compute firewall-rules list
@@ -114,10 +118,6 @@
 
 	      	   -You can also change the firewall rules for the VM by configuring the VPC network of the VM
 		  	Go to Compute Engine -> VM instances -> On the VM instance, click on the 3 dots on the far right -> view network details -> Network interface details, click on the Network option -> firewalls
-
-	 5) Now you must buy a domain for your server/website, go to ionos.com and then buy a domain
-  	    When you buy a domain, the website will provide you with a SSL certificate and Key file
-       	    save these files in your repository
 
 
 

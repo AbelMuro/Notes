@@ -53,6 +53,8 @@
 		curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash		// installs nvm
 		nvm install 21.6.1									// installs node.js version 21.6.1
   		nvm run 21.6.1									        // we run the current version of node.js
+      		sudo apt-get install libcap2-bin 							// installs the libcap2-bin package that is used to manage linux capabilities such as permissions
+		sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\`` 			// Grant Node.js permission to bind to privileged ports (like port 443)... The setcap command allows Node.js to bind to such ports without needing to run as root.
 		sudo apt install git -y									// installs gitbash
 		git clone YOUR_REPO_URL								 	// clones your repo
 		cd YOUR_PROJECT_FOLDER									// changes directory to the folder that has the clone
@@ -64,17 +66,21 @@
 	  	source ~/.bashrc									// save and reload the file
 
 		npm install										// installs all dependencies for the app
-		npm start 										// runs the app in the cloud
 
 
-		-if you are having permission issues running npm start, run the following commands
-  			sudo apt-get install libcap2-bin 						// installs the libcap2-bin package that is used to manage linux capabilities such as permissions
-			sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\`` 		// Grant Node.js permission to bind to privileged ports (like port 443)... The setcap command allows Node.js to bind to such ports without needing to run as root.
 
 
 	3) You must buy a domain for your server/website, go to ionos.com and then buy a domain
   	    When you buy a domain, the website will provide you with a SSL certificate and Key file
        	    save these files in your repository
+
+     	3.1) Go to your domain list in ionos, and select the domain you just bought.
+	     DNS -> Add Record -> Select A
+
+      	3.2) Host Name = @
+	     Points to = external-ip-address of the VM instance
+
+        3.3) Click create
 
 
   	4) To run node.js app with HTTPS you must first configure your app to use HTTPS
@@ -106,19 +112,18 @@
    		gcloud compute firewall-rules create allow-https --allow tcp:443
      		gcloud compute firewall-rules list
 
-	       NAME NETWORK 	DIRECTION 	PRIORITY 	ALLOW 	DENY 	DISABLED 
-	       allow-http 	default 	INGRESS 	1000 	tcp:80 	False 
-	       allow-https 	default 	INGRESS 	1000 	tcp:443 False 
-	       default-allow-http default 	INGRESS 	1000 	tcp:80 	False 
-	       default-allow-https default 	INGRESS 	1000 	tcp:443 False 			//just make sure that this line appears in your list of firewall rules
-	       default-allow-icmp default 	INGRESS 	65534 	icmp 	False 
-	       default-allow-internal default 	INGRESS 	65534 	tcp:0-65535,udp:0-65535,icmp 	False 
-	       default-allow-rdp default 	INGRESS 	65534 	tcp:3389 	False 
-	       default-allow-ssh default 	INGRESS 	65534 	tcp:22 	False
+		       NAME NETWORK 	DIRECTION 	PRIORITY 	ALLOW 	DENY 	DISABLED 
+		       allow-http 	default 	INGRESS 	1000 	tcp:80 	False 
+		       allow-https 	default 	INGRESS 	1000 	tcp:443 False 
+		       default-allow-http default 	INGRESS 	1000 	tcp:80 	False 
+		       default-allow-https default 	INGRESS 	1000 	tcp:443 False 			//just make sure that this line appears in your list of firewall rules
+		       default-allow-icmp default 	INGRESS 	65534 	icmp 	False 
+		       default-allow-internal default 	INGRESS 	65534 	tcp:0-65535,udp:0-65535,icmp 	False 
+		       default-allow-rdp default 	INGRESS 	65534 	tcp:3389 	False 
+		       default-allow-ssh default 	INGRESS 	65534 	tcp:22 	False
 
 	      	   -You can also change the firewall rules for the VM by configuring the VPC network of the VM
 		  	Go to Compute Engine -> VM instances -> On the VM instance, click on the 3 dots on the far right -> view network details -> Network interface details, click on the Network option -> firewalls
-
 
 
 

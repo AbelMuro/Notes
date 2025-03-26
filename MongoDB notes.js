@@ -220,7 +220,7 @@
                                                   writestream.end(image.buffer);                        //we use the writestream by getting the image buffer(the raw binary data for the image) and store the data into the database
                                                 
                                                   writestream.on('finish', async () => {
-                                                        user.profileImage = writestream.id;           // we update the user document with the ID of the writestream (this returns a string) )
+                                                        user.profileImageId = writestream.id;           // we update the user document with the ID of the writestream (this returns a string) )
                                                         const userData = await user.save();
                                                         console.log('Image uploaded to MongoDB');                            
                                                   });
@@ -253,10 +253,10 @@
                                 
                                     try{
                                         const user = await User.findOne({email});
-                                        const image = user.profileImage;                    //this contains the id for the image (its just a 'new ObjectId()')
+                                        const imageId = user.profileImageId;                    //this contains the id for the image (its just a 'new ObjectId()')
                                 
                                         if(image){
-                                            const _id = new mongoose.Types.ObjectId(image); //convert the _id into an objectId
+                                            const _id = new mongoose.Types.ObjectId(imageId); //convert the _id into an objectId
                                             const cursor = gfs.find({_id});                 //we look for the file in the files collection (cursor is just a pointer to the file in the collecton)
                                             const files = await cursor.toArray();           //we get all the metadata from the file and store it within an array
                                             const file = files[0];                        

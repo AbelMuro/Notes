@@ -216,13 +216,17 @@ const multer = require('multer');			      //npm install multer, you can use this
 const app = express();                                        //creating an object that represents the main app
 const port = 5000;
 const path = require('path');
-const filePath = path.join(__dirname, 'folder/index.html');	//you should always use path.resolve() to load files in a node.js app with the FS module (when deploying the node.js app, some web host may need you to specify the location of the files, like netlify.toml)
+const indexFilePath = path.join(__dirname, 'folder/index.html');	//you should always use path.resolve() to load files in a node.js app with the FS module (when deploying the node.js app, some web host may need you to specify the location of the files, like netlify.toml)
 
 
 app.use(express.json());					//this will parse all incoming json data, you will need this if your server expects json data from the front-end
 app.use(express.urlencoded({extended: true}));			//this will parse all incoming form data, you will need this if your server expects form data from the front-end 		(<form action="/submit-form" method="POST"></form>)
 app.use(cookieParser());
 
+
+app.use('/', (req, res) => {					//root directory, you can send a message to the client or a index.html file
+    res.sendFile(indexFilePath);
+})
 
 // 'get' requests
 app.get('/account', (req, res) => {                             // .get() is for handleling 'get' requests from the client
@@ -233,18 +237,7 @@ app.get('/account', (req, res) => {                             // .get() is for
 // 'post' request
 app.post('/login', (req, res) => {
     const {username, password} = req.body;
-    res.status.send('login info is correct')
-})
-
-// 'put' request - This is how you receive files in the back-end (look at the Fetch API notes on how to send files from the front-end)
-const storage = multer.memoryStorage();			       // Set up multer for file handling
-const upload = multer({ storage: storage}); 		       // look at the 'multer module' notes WAY BELOW for more info on the different ways of using this module
-
-app.put('/update', upload.single('image'), (req, res) => {      // in upload.single('image'), it will look for the property 'image' in the FormData object that you created on the front-end
-    const {username, email, password} = req.body;	
-    const image = req.file;					//this is how you receieve files from the front end ( look at the fetch api notes for more info on how to send files from the front-end to the back-end  )
-	
-    res.status(200).send('data has been received')
+    res.status(200).send('login info is correct')
 })
 
 // 'delete' request
@@ -272,7 +265,7 @@ app.listen(port, (error) => {
 
 
 
-//============================================================ DYNAMICALLY DISPLAYING MESSAGES ON NODE.JS =================================================================
+//======================================================== DYNAMICALLY DISPLAYING MESSAGES ON NODE.JS =================================================================
 //you can send a dynamic html file to the browser to display messages about route access and database updates
 
 // -------------- FOR SERVERLESS FUNCTIONS ONLY!
@@ -909,15 +902,29 @@ app.get('/account', (req, res) => {
 
 
 //======================================================== MULTER MODULE ======================================
+//Multer module is used for handling multi-part/form data, particularly file uploads
+// (look at the Fetch API notes on how to send files from the front-end with a fetch request)
 
-//SENDING FILES TO AN ENDPOINT IN NODE.JS
+	// --------------The example below is how you receive files in the back-end
+	const multer = require('multer');
+	const storage = multer.memoryStorage();			       	    // Set up multer for file handling
+	const upload = multer({ storage: storage}); 		      
+	
+	app.put('/upload_file', upload.single('image'), (req, res) => {      // in upload.single('image'), it will look for the property 'image' in the FormData object that you created on the front-end
+	    const {username, email, password} = req.body;	
+	    const image = req.file;					     // this is how you receieve files from the front end ( look at the fetch api notes for more info on how to send files from the front-end to the back-end  )
+
+	    //look at mongoDB notes for the GridFsBucket module on how to get the binary string of req.file and store it within a database
+		
+	    res.status(200).send('data has been received')
+	})
 
 
-	1) The example below will send an image from an <input type='file'> to the server, the server will then get the file and store it in a folder './uploads'
+
+
+	// ----------------The example below will send an image from an <input type='file'> to the server, the server will then get the file and store it in a folder './uploads'
  
 		// BACK-END
-		
-			//npm install multer
 			const multer = require('multer')
 		 
 			const storage = multer.diskStorage({
@@ -939,7 +946,6 @@ app.get('/account', (req, res) => {
 		
 		
 		 // FRONT-END
-		 
 			const image = document.querySelector('input[type='file']').files[0];
 			const formData = new FormData();						//you MUST use a FormData() to store all data, and send it to the server
 		        formData.append('image', image);
@@ -950,10 +956,9 @@ app.get('/account', (req, res) => {
 		        });
 
 
-	//2) The example below will send an image from an <input type='file'> to the server, the server will then upload the image to an s3 bucket
+	//-------------- The example below will send an image from an <input type='file'> to the server, the server will then upload the image to an s3 bucket
 
 		//BACK END
-  
 	 		//npm install @aws-sdk/client-s3
 			//npm install multer
 	  		//npm install aws-sdk
@@ -981,10 +986,9 @@ app.get('/account', (req, res) => {
 			})
 	
 		//FRONT END
-  
 	 		const image = document.querySelector("input[type='file']").files[0];
 			const formData = new FormData();							//you MUST use a FormData() to store all data, and send it to the server
-			formData.append('image', image);
+			formData.append('image', image);							//make sure you use the same property here and in upload.single()
 			
 			const response = await fetch('http://localhost:4000/add_transaction', {			//file will be uploaded automatically
 				method: 'POST',
@@ -993,11 +997,12 @@ app.get('/account', (req, res) => {
 
 
 
+	//-------------- The example below will receive a file from the back end and store the file in base
 
 
 
 
-//======================================================= WS MODULE =========================================================
+//======================================================= WEBSOCKET MODULE =========================================================
 //you can create a WEBSOCKET in your node.js app that creates a connection between the front-end and the back-end
 //typically this connection is used to automatically send data between front-end and back-end when theres a changes in the
 //database or an event that is triggered in the front end
@@ -1007,23 +1012,40 @@ app.get('/account', (req, res) => {
 //------------------------------------------BACK END CODE
         const WebSocket = require('ws');
         
-         //PRODUCTION ONLY!
-        const server = https.createServer({                                // this is for production only
-            cert: fs.readFileSync('/path/to/ssl/cert.cer'),                // these are the SSL files that come with a domain after you buy it from ionos
-            key: fs.readFileSync('/path/to/ssl/private.key'),              // make sure that the DNS configuration of the domain has the 'A' record pointing to the ipv4 address of the computer hosting the node.js app 
-	})								   // host name for the 'A' record should just be @
-                                        //development      //production
-        const wss = new WebSocket.Server({port: 8000}  or   {server});     //second, you create the web socket object (make sure the port is the same for the back-end and the front-end)
+	/* 
+		./src/index.js
+  
+	 	const options = {
+		    key: fs.readFileSync(privateKeyFilePath),			//these files must be valid SSL files for a domain that you bought
+		    cert: fs.readFileSync(certificateFilePath),
+		}
+		
+		const httpsServer = https.createServer(options, app).listen(443, (error) => {
+		    if(error){
+		        console.log('HTTPS error occurred: ', error);
+		        return;
+		    }
+		    console.log('HTTPS server is running on port 443')
+		});
 
-        wss.on('connection', ws => {                                        //Third, you establish the connection between the back end and the front end
-            console.log('Front-end and back-end are connected');
-        
-            ws.send('data goes here')                                     //This is where you send the changes to the front-end (YOU have to call this function, its best to use it in some event handler)
-        
-            ws.on('close', () => {                                        //Event listener that is triggered when the front-end is disconnected from the back-end
-                console.log('Client disconnected')
-            })
-        })
+  		createWebSocket(httpsServer);
+ 		
+ 	*/
+
+	const createWebSocket = (server) => {
+						  //development		//production
+	        const wss = new WebSocket.Server({port: 8000}  or   {noServer: true});     //make sure the port is the same for the back-end and the front-end
+	
+	        wss.on('connection', ws => {                                        //you establish the connection between the back end and the front end
+	            console.log('Front-end and back-end are connected');
+	        
+	            ws.send('data must be in json format')                         //This is where you send the changes to the front-end (YOU have to call this function, its best to use it in some event handler)
+	        
+	            ws.on('close', () => {                                        //Event listener that is triggered when the front-end is disconnected from the back-end
+	                console.log('Client disconnected')
+	            })
+		})	
+	}
 
 
 //--------------------------------------------FRONT END CODE
@@ -1080,12 +1102,15 @@ var url = require('url');                                       //used for forma
 //=========================================================FILE SYSTEM MODULE=========================================================
 var fs = require("fs");
     //updating files (be careful with writeFile())
+
     fs.appendFile("./nameOfFile.html", 'Hello World!', function (err) { //appending content "hello world "to the end of a file, if the file doesnt exist, then a new one will be created 
         if(err) throw err;
     })
+
     fs.writeFile("./nameOfFile.html", "hello World", function (err) { //replacing a file with the same name as the first argument and appending 'hello world' at the end of the new file, 
         if(err) throw err;                                            //if the file doesnt exist, then a new one will be created
     })
+
     //reading files
     fs.readFile('./nameOfFile.html', function(err, data) {      //reads a file
         if(err){
@@ -1096,17 +1121,21 @@ var fs = require("fs");
         res.write(data);                                        //data is the actual html that you want to send to the client
         return res.end();                                       //should return the res.end()
     })
+
     fs.open("./nameOfFile.html", function(err, file) {          //opening a file, if the file doesnt exist, then a new one will be created   (you can add a second argument 'w', it stands for 'writing')
         if (err) throw err;
     })
+
     //deleting files
     fs.unlink("./nameOfFile.html", function(err){               //deleting a file
         if(err) throw err;
     })
+
     //renaming files
     fs.rename("./nameOfFile.html", "./newFileName.html", function(err) { //renaming an existing file
         if(err) throw err;
     })
+
     var rs = fs.createReadStream("./demofile.txt");             //createReadStream fires an event everytime the file opens or closes
     rs.on("open", function() {
         //do something here

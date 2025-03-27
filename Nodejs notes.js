@@ -1035,7 +1035,17 @@ app.get('/account', (req, res) => {
 	const createWebSocket = (server) => {
 						  //development		//production
 	        const wss = new WebSocket.Server({port: 8000}  or   {noServer: true});     //make sure the port is the same for the back-end and the front-end
-	
+
+		//we upgrade the http request to a websocket request (for production only)
+		server.on('upgrade', (request, socket, head) => {               // upgrade event will be triggered when the client sends a request to upgrade from http request to websocket request
+		    if(request.headers['upgrade'] !== 'websocket')              // if the client is not requesting an upgrade to websocket, then we destroy the websocket
+			socket.destroy();
+		    else
+			wss.handleUpgrade(request, socket, head, (ws) => {      // we handle the upgrade here
+			    wss.emit('connection', ws, request);                // we create the websocket connection
+			})
+		})
+		
 	        wss.on('connection', ws => {                                        //you establish the connection between the back end and the front end
 	            console.log('Front-end and back-end are connected');
 	        

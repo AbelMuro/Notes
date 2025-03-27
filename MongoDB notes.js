@@ -295,27 +295,13 @@
 
 //======================================================= WEB SOCKETS AND MONGODB ======================================================================
 /* 
-    Web sockets are a connection between the front-end and the back-end that allows consistent updates without the need to manually request them
-    Typically, web sockets are used to create a connection from a collection in a mongoDB database to the front-end
-    Anytime there is an update to that specific collection, the web socket will automatically send the updates to the front end
-    Keep in mind that the front-end can also send updates to the back-end
-
-    One way of thinking about this is using Event listeners in the front end. 
-    Everytime there is a change in the UI or update to a state, an event listener will be triggered. 
-    That event listener will call a function that has access to the updates to the state or changes to the UI
-
-    KEEP IN MIND, WE ARE USING ABLY FOR THE WEBSOCKETS BECAUSE I DEPLOY MY NODE.JS APP WITH NETLIFY SERVELESS FUNCTIONS
-
-    ANY OTHER DEPLOYMENT METHOD (AWS C2, HEROKU, ETC..) SHOULD USE FS MODULE (LOOK AT NODE.JS NOTES FOR MORE INFO)
+    Look at the Websocket module in node.js notes for more info on how websockets work
+    You can use an event handler that detects changes in a collection from a mongoDB database,
+    you can send those changes though a websocket to the front end
 */
 
 
-// back-end web socket (typically, you want to do this in a Model.js file that creates the models for your mongoDB app)
-
         const {Schema} = require('mongoose');
-        const WebSocket = require('ws');
-        const ably = new Ably.Realtime(process.env.ABLY_API_KEY); 
-        const channel = ably.channels.get('queue-channel');                //make sure you use the same channel name as the front end
         
         const queueSchema = new Schema({
             player: {type: String, required: true},
@@ -323,45 +309,15 @@
         
         const Queue = mongoose.model('player', queueSchema, 'queue')        //first create your model for the collection you want to detect changes
 
-        const changeStream = Queue.watch();
-        
-        changeStream.on('change', (change) => {
-            console.log('new player has joined the queue');
-        
-            channel.publish('queue-update', change, (err) => {            //make sure you use the same 'event name' on the front end as well
-                if(err) 
-                    console.error('Failed to publish message', err);
-                else
-                    console.log('Change publish to ably channel');
-            })
-        })
+        const changeStream = Queue.watch();                                 //this is an event handler that detects any changes made to the collection(new document, or delete document)
+
+        wss.on('connection', ws => {                                        //look at the websocket module in node.js notes for more info
+            changeStream.on('change', (change) => {                         //once the connection has been established
+                 ws.send('data must be in json format')                     //This is where you send the changes to the front-end 
+            })    
+    	})
 
 
-// front-end web socket
-
-    import {useState, useEffect} from 'react';
-    import Ably from 'ably';
-    
-    function useQueue() {
-        const [queue, setQueue] = useState([]);
-    
-        useEffect(() => {
-            const ably = new Ably.Realtime(process.env.ABLY_API_KEY);         //GET ROOT API KEY FROM YOUR ABLY ACCOUNT
-            const channel = ably.channels.get('queue-channel');                //use same channel as the back end
-    
-            channel.subscribe('queue-update', (message) => {                //use same event name as the back end
-                setQueue((prevUpdates) => [...prevUpdates, message.data]);
-            });
-    
-            return () => {
-                channel.unsubscribe();
-                ably.close();
-            };
-        }, [])
-    
-        return [queue, setQueue];
-    }
-    
 
 
 

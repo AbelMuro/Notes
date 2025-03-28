@@ -310,11 +310,21 @@
         const Queue = mongoose.model('player', queueSchema, 'queue')        //first create your model for the collection you want to detect changes
 
         const changeStream = Queue.watch();                                 //this is an event handler that detects any changes made to the collection(new document, or delete document)
+        const changeStream = Queue.watch([{$match: {'fullDocument._id': userId}}]);    //this will detect any changes made to a specific document in a collection
+        
 
         wss.on('connection', ws => {                                        //look at the websocket module in node.js notes for more info
             changeStream.on('change', (change) => {                         //once the connection has been established
-                 ws.send('data must be in json format')                     //This is where you send the changes to the front-end 
-            })    
+                const fullDocument = change.fullDocument;                    //contains the whole document that was added to the collection
+                const operationType = change.operationType;                 //insert document or delete document
+                
+                if(operationType === 'delete'){
+                    ws.close();                                                //you can close the websocket connection
+                    changeStream.close();                                        //you can close the change stream connection
+                }
+                    
+                     ws.send('data must be in json format')                     //This is where you send the changes to the front-end 
+                })    
     	})
 
 

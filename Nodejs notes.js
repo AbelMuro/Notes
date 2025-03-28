@@ -1047,10 +1047,9 @@ app.get('/account', (req, res) => {
 		})
 		
 	        wss.on('connection', ws => {                                        //you establish the connection between the back end and the front end
-	            console.log('Front-end and back-end are connected');
-	        
+	            console.log('Front-end and back-end are connected');        
 	            ws.send('data must be in json format')                         //This is where you send the changes to the front-end (YOU have to call this function, its best to use it in some event handler)
-	        
+		    ws.close();							   //you can manually close the websocket whenever you want	
 	            ws.on('close', () => {                                        //Event listener that is triggered when the front-end is disconnected from the back-end
 	                console.log('Client disconnected')
 	            })

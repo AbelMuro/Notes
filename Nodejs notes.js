@@ -290,6 +290,10 @@
  		Host name: @
    		Points to: ipv6 address of the computer hosting the node.js app
 
+     Once you implement the instructions above, you can access your app with your domain
+     
+     https://my-domain.com
+
 */
 
 	 	const options = {

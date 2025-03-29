@@ -94,7 +94,8 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
             import Reducer from './Reducers';
 
             const store = configureStore({                      //this will create the store with a reducer
-                reducer: Reducer
+                reducer: Reducer,
+                middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})                      //you may need to use this if you are storing unserializable data in the store
             })
 
             export default store;
@@ -143,6 +144,49 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
 
 
+//================================== STEPS TO INTEGRATE REDUX IN YOUR NODE.JS APPLICATION ================================================
+
+
+//  1)  create a folder called './store' with the file store.js
+
+//  2) store.js will have the following boilerplate code
+     
+            const {configureStore} = require('@reduxjs/toolkit');
+            const Reducer = require('./Reducers');
+
+            const store = configureStore({                      //this will create the store with a reducer
+                reducer: Reducer,
+                middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})                      //you may need to use this if you are storing unserializable data in the store
+            })
+
+            module.exports = store;
+
+
+// 3) Create a ./Reducers folder and create a serverReducer.js file
+
+            const { createAction, createReducer } = require('@reduxjs/toolkit');
+                        
+            const setHttpsServer = createAction('SET_HTTPS_SERVER');
+            const setHttpServer = createAction('SET_HTTP_SERVER');
+            const initialState = { https_server: null, http_server: null }
+            
+            const serverReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
+              builder
+                .addCase(setHttpsServer, (state, action) => {                      
+                  state.https_server = action.payload.server;
+                })
+                .addCase(setHttpServer, (state, action) => {
+                  state.http_server = action.payload.server;                         
+                })
+            })
+            
+            module.exports = serverReducer;
+
+// 4) Now you can start dispatching actions and accessing the store anywhere in your node.js app
+            const store = require('./Config/Store/Store.js');
+            
+            store.dispatch({type: 'SET_HTTPS_SERVER', payload: {server: httpsServer}})                    //dispatching actions to the store
+            const {https_server} = store.getState();                                                      //accessing the state from the store
 
 
 
@@ -162,17 +206,27 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 // that return an updated version of the array and doesnt mutate the original array
 
 
-const reducer = (state = {list: []}, action) => {       //you can initialize state with a global object if you want
-    let stateList = state.list;
-    switch(action.type) {
-        case "add item": 
-            return {list: [...stateList, action.item] };
-        case "remove item":
-            return {list: stateList.filter((item) => {return item != action.item})}
-        default:
-            return state;
-    }
-}
+            import { createAction, createReducer } from '@reduxjs/toolkit'
+            
+            const increment = createAction('counter/increment')                     //create an action that will be used to update a specific part of the state
+            const decrement = createAction('counter/decrement')
+            const incrementByAmount = createAction('counter/incrementByAmount')
+            const initialState = { value: 0 }            
+            
+            const counterReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
+              builder
+                .addCase(increment, (state, action) => {                          
+                  state.value++
+                })
+                .addCase(decrement, (state, action) => {
+                  state.value--                         
+                })
+                .addCase(incrementByAmount, (state, action) => {
+                  state.value += action.payload
+                })
+            })
+
+            export default counterReducer;
 
 
 //--------------You can also split reducers to handle different parts of the state--------------
@@ -181,15 +235,15 @@ const reducer = (state = {list: []}, action) => {       //you can initialize sta
 // it should not access the property of the state that is 'owned' by another reducer
 
 
-import {combineReducers} from 'redux';
-import ListReducer from './ListReducer';
-import CounterReducer from './CounterReducer';
-
-const rootReducer = combineReducers({
-    list: ListReducer,                           //generally, you want to name the reducers after the property of the state in which they manipulate
-    counter: CounterReducer
-});
-export default rootReducer;
+            import {combineReducers} from 'redux';
+            import ListReducer from './ListReducer';
+            import CounterReducer from './CounterReducer';
+            
+            const rootReducer = combineReducers({
+                list: ListReducer,                           //generally, you want to name the reducers after the property of the state in which they manipulate
+                counter: CounterReducer
+            });
+            export default rootReducer;
 
 
 
@@ -250,15 +304,8 @@ root.render(
 // 1)   DISPATCHING ACTIONS TO THE STORE
 import {configureStore} from '@reduxjs/toolkit';
 
-const addTodo = (data) => {
-  return {
-    type: 'ADD_TODO',
-    payload: data
-  };
-};
-
 const store = configureStore({reducer: myReducer});
-store.dispatch(addTodo('Buy milk.'));                                       //Dispatch an action to the store
+store.dispatch({type: 'ADD_ITEM', payload: {item: 'milk'}});                                       //Dispatch an action to the store
 
 
 
@@ -270,13 +317,13 @@ const todos = store.getState(state => state.todos)                           //a
 
 
 
-// 3)   SUBSCRIBING TO THE STATE CHANGES IN THE STORE
+// 3)   SUBSCRIBING TO THE STATE CHANGES IN THE STORE 
 
 function myComponent() {            
       return(<></>)
 }
 
-store.subscribe(myComponent);                                              //this will render myComponent everytime there is a change in state in the store
+store.subscribe(myComponent);                                              //this will re-render myComponent everytime there is a change in state in the store
 
 
 
@@ -412,43 +459,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-
-
-// using the connect function to connect the Counter component with mapStateToProps() and mapDispatchToProps()
-export default connect(mapStateToProps, mapDispatchToProps)(Counter);
-
-
-
-
-
-
-//==================================================== bindActionCreators() ===========================================================
-// bindActionCreators() is used to bind a dispatch function to action creators. 
-// Everytime the action creators are called, the dispatch method will also be called
-// keep in mind that this function was designed to be used with the connect() function
-
-
-import { bindActionCreators } from 'redux';
-import * as actions from './actions';                                   //this file has the 'increment' action creator and 'decrement' action creator
-
-
-function Counter({count, increment, decrement}) {
-            
-      return(<button onClick={increment()}> increment</button>)         // just by calling the action creator 'increment' , you are automatically dispatching the action   
-}
-
-
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
-}
-
-// mapStateToProps() also allows you to subscribe to a specific part of the state
-function mapStateToProps(state) {
-  return {
-    count: state.count
-  };
-}
 
 
 // using the connect function to connect the Counter component with mapStateToProps() and mapDispatchToProps()

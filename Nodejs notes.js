@@ -206,147 +206,108 @@
 
 
 
+
+
+
+
+
+
 //=============================================================== EXPRESS WEB FRAMEWORK =================================================================
-//middleware, a function that does something between the server receiving a request and sending a response 
-
+// the following code will show you how to run your node.js app with HTTP
  
-const express = require('express');
-const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
-const multer = require('multer');			      //npm install multer, you can use this to parse incoming files from the front-end
-const app = express();                                        //creating an object that represents the main app
-const port = 5000;
-const path = require('path');
-const indexFilePath = path.join(__dirname, 'folder/index.html');	//you should always use path.resolve() to load files in a node.js app with the FS module (when deploying the node.js app, some web host may need you to specify the location of the files, like netlify.toml)
-
-
-app.use(express.json());					//this will parse all incoming json data, you will need this if your server expects json data from the front-end
-app.use(express.urlencoded({extended: true}));			//this will parse all incoming form data, you will need this if your server expects form data from the front-end 		(<form action="/submit-form" method="POST"></form>)
-app.use(cookieParser());
-
-
-app.use('/', (req, res) => {					//root directory, you can send a message to the client or a index.html file
-    res.sendFile(indexFilePath);
-})
-
-// 'get' requests
-app.get('/account', (req, res) => {                             // .get() is for handleling 'get' requests from the client
-    const someObject = {data: 'hello world'}
-    res.status(200).json(someObject);            		// you must use json to format any JS into json before you send a response                     
-})
-
-// 'post' request
-app.post('/login', (req, res) => {
-    const {username, password} = req.body;
-    res.status(200).send('login info is correct')
-})
-
-// 'delete' request
-app.delete('/account/:id/:type', (req, res) => {
-    //you can use formidable module to get user-input from forms
-    const id = req.params.id;						//you can use :id to send data to an endpoint like this http://localhost:4000/acount/123456
-    const type = req.params.type;
-    res.send('data has been deleted')
-})
-
-// app.use will bind a middleware for the path '/contantPage'
-app.use('/contactPage', () => {                              // .use() is a function that will 'use' the function on the second argument
-})                                                          // everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
-
-//listens to port 5000
-app.listen(port, (error) => {
-	if(error)
-	    console.log('Internal Error')
-	else
-	    console.log(`Server is running on port ${port}`)
-});                                           
-
-
-
+		const express = require('express');
+		const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
+		const multer = require('multer');			      //npm install multer, you can use this to parse incoming files from the front-end
+		const app = express();                                        //creating an object that represents the main app
+		const port = 5000;
+		const path = require('path');
+		const indexFilePath = path.join(__dirname, 'folder/index.html');	//you should always use path.resolve() to load files in a node.js app with the FS module (when deploying the node.js app, some web host may need you to specify the location of the files, like netlify.toml)
+		
+		
+		app.use(express.json());					//this will parse all incoming json data, you will need this if your server expects json data from the front-end
+		app.use(express.urlencoded({extended: true}));			//this will parse all incoming form data, you will need this if your server expects form data from the front-end 		(<form action="/submit-form" method="POST"></form>)
+		app.use(cookieParser());
+		
+		
+		app.use('/', (req, res) => {					//root directory, you can send a message to the client or a index.html file
+		    res.sendFile(indexFilePath);				// you can send an index.html to the client when the user accesses the ./ route
+		})
+		
+		// 'get' requests
+		app.get('/account', (req, res) => {                             // .get() is for handleling 'get' requests from the client
+		    const someObject = {data: 'hello world'}
+		    res.status(200).json(someObject);            		// you must use json to format any JS into json before you send a response                     
+		})
+		
+		// 'post' request
+		app.post('/login', (req, res) => {
+		    const {username, password} = req.body;
+		    res.status(200).send('login info is correct')
+		})
+		
+		// 'delete' request
+		app.delete('/account/:id/:type', (req, res) => {
+		    //you can use formidable module to get user-input from forms
+		    const id = req.params.id;						//you can use :id to send data to an endpoint like this http://localhost:4000/acount/123456
+		    const type = req.params.type;
+		    res.send('data has been deleted')
+		})
+		
+		// app.use will bind a middleware for the path '/contantPage'
+		app.use('/contactPage', () => {                              		// .use() is a function that will 'use' the function on the second argument
+		})                                                         	 	// everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
+		
+		//listens to port 5000
+		app.listen(port, (error) => {						//keep in mind that the listen method is asynchronous
+			if(error)
+			    console.log('Internal Error')
+			else
+			    console.log(`Server is running on port ${port}`)
+		});                                           
 
 
 
-//======================================================== DYNAMICALLY DISPLAYING MESSAGES ON NODE.JS =================================================================
-//you can send a dynamic html file to the browser to display messages about route access and database updates
 
-// -------------- FOR SERVERLESS FUNCTIONS ONLY!
+
+
+
+
+
+
+
+//======================================================= RUNNING NODE.JS APP WITH HTTPS ============================================================================
+// The following code will show you how to run node.js app with HTTPS
+// The SSL files must be valid SSL files for a domain that you bought
+// you can get these files from ionos, google domains or any other registrar that allows you to buy domains
+// you must change the DNS settings for the domain to make sure that the domain points to your computer
+// For the DNS settings, add the following records
 /* 
-	Keep in mind that in serverless functions (netlify functions, AWS lambda, etc...), they are stateless, 
-        meaning that they cannot store data of any kind. For you to display dynamic messages to the index.html file
-	You need to have a consistent storage to store the messages, one way of doing this is by using MongoDB
- 	Everytime there is a request to a route, you can add a message to a collection, which will then be displayed 
-  	in the index.html
+	A record
+ 		Host name: @
+   		Points to: ipv4 address of the computer hosting the node.js app
+     
+	AAAA record
+ 		Host name: @
+   		Points to: ipv6 address of the computer hosting the node.js app
+
 */
 
-// ---------- serverless function
+	 	const options = {
+		    key: fs.readFileSync(privateKeyFilePath),			//SSL file for private.key
+		    cert: fs.readFileSync(certificateFilePath),			//SSL file for certificate.cer
+		}								
+										
+									
+		const httpsServer = https.createServer(options, app).listen(443, (error) => {
+		    if(error){
+		        console.log('HTTPS error occurred: ', error);
+		        return;
+		    }
+		    console.log('HTTPS server is running on port 443')
+		});
 
-const handler = serverless(app);  	
+  		
 
-module.exports.handler = async (e, context) => {	
-  await connectDB();		
-
-  if(e.path === '/get_messages'){
-    const allDocuments = await ServerMessage.find();
-    await ServerMessage.deleteMany({});
-    const formatedMessages = allDocuments.map(document => `data: ${JSON.stringify(document.message)}\n\n`).join('');	//make sure you format the message correctly
-
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        "Connection": "keep-alive",
-      },
-      body: formatedMessages
-    }
-  }
-  else{
-    const result = await handler(e, context);
-    return result;    
-  }
-};
-
-// ----------- login route
-const ServerMessage = require('../Config/MongoDB/Models/ServerMessage.js');
-
-router.post('/login', async (req, res) => {
-    const newMessage = new ServerMessage({message});
-    await newMessage.save();
-})
-
-
-
-
- //------------ index.html
-
- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Chess Server</title>
-</head>
-<body>
-    <h1> 
-	Welcome to the World Class Chess Server
-    </h1>
-
-    <div id="messages">
-
-    </div>
-
-    <script>
-	const messageDiv = document.getElementById('messages');
-	const eventSource = new EventSource('/get_messages');		//this will create an event object that will detect any messaged sent by the server
-
-	eventSource.onmessage = (e) => {
-	    const data = e.data;
-	    const newElement = document.createElement('p');
-	    newElement.textContent = data;
-	    messageDiv.appendChild(newElement);
-	}
-    </script>
-</body>
-</html>
 
 
 
@@ -380,6 +341,10 @@ router.post('/login', async (req, res) => {
  
 	});
 */
+
+
+
+
 
 
 
@@ -510,6 +475,7 @@ app.get('/account', (req, res) => {
 	const mongoose = require('mongoose');
 	const {Schema} = require('mongoose');
 	const bcrypt = require('bcryptjs');
+	const crypto = require('crypto');						//build in module
 	
 	const userSchema = new Schema({
 	    email: {type: String, required: true, unique: true},    			//remember to set the unique property here to true

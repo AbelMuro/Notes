@@ -1037,14 +1037,13 @@ app.get('/account', (req, res) => {
 	        const wss = new WebSocket.Server({port: 8000}  or   {noServer: true});     //make sure the port is the same for the back-end and the front-end
 
 		//we upgrade the http request to a websocket request (for production only)
-		server.on('upgrade', (request, socket, head) => {               // upgrade event will be triggered when the client sends a request to upgrade from http request to websocket request
-		    if(request.headers['upgrade'] !== 'websocket')              // if the client is not requesting an upgrade to websocket, then we destroy the websocket
-			socket.destroy();
-		    else
-			wss.handleUpgrade(request, socket, head, (ws) => {      // we handle the upgrade here
-			    wss.emit('connection', ws, request);                // we create the websocket connection
-			})
-		})
+	        server.on('upgrade', (request, socket, head) => {
+	            if (request.url === '/queue') {                                 //you can have different endpoints for your websocket   wss://domain.com/path1  etc..
+	                wss.handleUpgrade(request, socket, head, (ws) => {          //this will enable you to have multiple websockets in your node.js app
+	                    wss.emit('connection', ws, request);
+	                });
+	            }
+	        });
 		
 	        wss.on('connection', ws => {                                        //you establish the connection between the back end and the front end
 	            console.log('Front-end and back-end are connected');        
@@ -1059,7 +1058,7 @@ app.get('/account', (req, res) => {
 
 //--------------------------------------------FRONT END CODE
 
-        const WEBSOCKET_URL = 'ws://localhost:8000'  or   'wss//my-back-end-domain.com'        //first string is for development, the second is for production
+        const WEBSOCKET_URL = 'ws://localhost:8000'  or   'wss//my-back-end-domain.com:443/queue'        //first string is for development, the second is for production (port 443 is the default port for https)
 
         const onmessageFunction = (event) => {
             const change = JSON.parse(event.data);

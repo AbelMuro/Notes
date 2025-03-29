@@ -258,7 +258,7 @@
 		})                                                         	 	// everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
 		
 		//listens to port 5000
-		app.listen(port, (error) => {						//keep in mind that the listen method is asynchronous
+		const httpServer = app.listen(port, (error) => {			//keep in mind that the listen method is asynchronous
 			if(error)
 			    console.log('Internal Error')
 			else
@@ -302,7 +302,7 @@
 		}								
 										
 									
-		const httpsServer = https.createServer(options, app).listen(443, (error) => {
+		const httpsServer = https.createServer(options, app).listen(443, (error) => {		//if you are planning on exporting httpsServer, keep in mind that the 'listen' method is async
 		    if(error){
 		        console.log('HTTPS error occurred: ', error);
 		        return;

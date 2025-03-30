@@ -1013,6 +1013,9 @@ app.get('/account', (req, res) => {
 	                    wss.emit('connection', ws, request);
 	                });
 	            }
+		   else 
+			socket.destroy(); 				            // Close invalid requests (be careful with this method, if you have mutliple websockets, this can disconnect other webssockets)
+		        
 	        });
 		
 	        wss.on('connection', ws => {                                        //you establish the connection between the back end and the front end

@@ -998,25 +998,29 @@ app.get('/account', (req, res) => {
 		    console.log('HTTPS server is running on port 443')
 		});
 
-  		createWebSocket(httpsServer);
+		global.webSocketHandlers = {};                              // this global variable will be used to store all websocket handlers (wss)
+		
+		httpsServer.on('upgrade', (request, socket, head) => {
+		    const wss = global.webSocketHandlers[request.url];      //we access a list of websockets we already created
+		    
+		    if (wss) {						   //if the request url already has a websocket
+		        wss.handleUpgrade(request, socket, head, (ws) => {
+		            wss.emit('connection', ws, request);
+		        });
+		    } else {
+		        socket.destroy();                                   // Gracefully close invalid connections
+		    }
+		});
+
+  		createWebSocket();
  		
  	*/
 
-	const createWebSocket = (server) => {
+	//dont forget to add the upgrade event handler above
+	const createWebSocket = () => {
 						  //development		//production
 	        const wss = new WebSocket.Server({port: 8000}  or   {noServer: true});     //make sure the port is the same for the back-end and the front-end
-
-		//we upgrade the http request to a websocket request (for production only)
-	        server.on('upgrade', (request, socket, head) => {
-	            if (request.url === '/queue') {                                 //you can have different endpoints for your websocket   wss://domain.com/path1  etc..
-	                wss.handleUpgrade(request, socket, head, (ws) => {          //this will enable you to have multiple websockets in your node.js app
-	                    wss.emit('connection', ws, request);
-	                });
-	            }
-		   else 
-			socket.destroy(); 				            // Close invalid requests (be careful with this method, if you have mutliple websockets, this can disconnect other webssockets)
-		        
-	        });
+		global.webSocketHandlers[`/${path}`] = wss;				  //we save the websocketHandler in our global list
 		
 	        wss.on('connection', ws => {                                        //you establish the connection between the back end and the front end
 	            console.log('Front-end and back-end are connected');        

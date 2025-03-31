@@ -1021,16 +1021,19 @@ app.get('/account', (req, res) => {
 	const createWebSocket = (server) => {
 						  //development		//production
 	        const wss = new WebSocket.Server({port: 8000}  or   {noServer: true});     //make sure the port is the same for the back-end and the front-end
+		
 		// 1) only use this if you are planning on having multiple websockets
 		global.webSocketHandlers[`/${path}`] = wss;				 //we save the websocketHandler in our global list
 
 		// 2) only use this if you are planning on having ONE websocket
 		server.on('upgrade', (request, socket, head) => {	    
-		    if (request.url === `/queue`) {					//if the request url already has a websocket
-		        wss.handleUpgrade(request, socket, head, (ws) => {
+		    if (request.url === `/queue`) {					//make sure the websocket has the same endpoint as the front-end
+		        wss.handleUpgrade(request, socket, head, (ws) => {		//connects to websocket
 		            wss.emit('connection', ws, request);
 		        });
 		    }
+		    else
+			socket.destroy();						//disconnect websocket
 		});
 		
 	        wss.on('connection', ws => {                                        //you establish the connection between the back end and the front end

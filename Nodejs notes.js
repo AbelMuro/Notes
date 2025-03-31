@@ -999,7 +999,8 @@ app.get('/account', (req, res) => {
 		});
 
 		global.webSocketHandlers = {};                              // this global variable will be used to store all websocket handlers (wss)
-		
+
+  	//only use this if you are planning on having multiple websockets
 		httpsServer.on('upgrade', (request, socket, head) => {
 		    const wss = global.webSocketHandlers[request.url];      //we access a list of websockets we already created
 		    
@@ -1012,15 +1013,25 @@ app.get('/account', (req, res) => {
 		    }
 		});
 
-  		createWebSocket();
+  		createWebSocket(httpsServer);
  		
  	*/
 
 	//dont forget to add the upgrade event handler above
-	const createWebSocket = () => {
+	const createWebSocket = (server) => {
 						  //development		//production
 	        const wss = new WebSocket.Server({port: 8000}  or   {noServer: true});     //make sure the port is the same for the back-end and the front-end
-		global.webSocketHandlers[`/${path}`] = wss;				  //we save the websocketHandler in our global list
+		// 1) only use this if you are planning on having multiple websockets
+		global.webSocketHandlers[`/${path}`] = wss;				 //we save the websocketHandler in our global list
+
+		// 2) only use this if you are planning on having ONE websocket
+		server.on('upgrade', (request, socket, head) => {	    
+		    if (request.url === `/queue`) {					//if the request url already has a websocket
+		        wss.handleUpgrade(request, socket, head, (ws) => {
+		            wss.emit('connection', ws, request);
+		        });
+		    }
+		});
 		
 	        wss.on('connection', ws => {                                        //you establish the connection between the back end and the front end
 	            console.log('Front-end and back-end are connected');        

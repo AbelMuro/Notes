@@ -78,7 +78,8 @@
                                     
                                     const userSchema = new Schema({
                                         name: {type: String, required: true},
-                                        age: {type: Number, required: true}
+                                        age: {type: Number, required: true},
+                                        birthday: {type: String, default: 'any string value goes here'}
                                     })
                                     
                                     const User = mongoose.model('name-of-model', userSchema, 'name-of-collection')        //create a model that will be used to create documents, name of model doesnt have to match

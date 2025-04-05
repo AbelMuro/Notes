@@ -1038,6 +1038,21 @@ app.get('/account', (req, res) => {
 	    global.webSocketHandlers[`/${path}`].close();
 	}
 
+	const CloseAllWebSockets = () => {
+		const websockets = global.webSocketHandlers;
+
+	        for(let wss of Object.values(websockets)){
+	            wss.clients.forEach((client) => {				//disconnecting any client connections, before we close the websockets
+	                if(client.readyState === WebSocket.OPEN)		// const WebSocket = require('ws')
+	                    client.close();
+	            });  
+	
+	            wss.close();
+	        }     
+	
+	        global.webSocketHandlers = {};
+	}
+
 
 //--------------------------------------------FRONT END CODE
 

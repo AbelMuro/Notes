@@ -87,12 +87,20 @@
        	    save these files in your repository
 
      	3.1) Go to your domain list in ionos, and select the domain you just bought.
-	     DNS -> Add Record -> Select A
-
-      	3.2) Host Name = @
-	     Points to = external-ip-address of the VM instance
-
-        3.3) Click create
+      
+		     DNS -> Add Record -> Select A
+	
+	      		 Host Name = @
+		     	 Points to = external-ip-address of the VM instance
+	
+	                 Click create
+	
+	 	    DNS -> Add Record -> Select AAAA
+	
+			Host Name = @
+	  		Points to = ipv6-address that you assigned to vm instance in step 0.5
+	
+	    		click create
 
 
   	4) To run node.js app with HTTPS you must first configure your app to use HTTPS

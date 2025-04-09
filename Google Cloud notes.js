@@ -46,6 +46,7 @@
 	
  				Name: allow-https-for-my-app
      				Network: default (must be the network your VM instance is running pn)
+	 			Target Tags: allow-https-for-my-app	(or you can select All instances of network)    (if you choose a tag name, you need to assign it to the vm instance)
 				Direction of traffic: ingress (incoming traffic)
     				Actions on match: allow
 				Targets: all instances in the network
@@ -54,7 +55,7 @@
      				Specified protocols and ports: Check TCP and use the https port your app is running on (443)
 
     				Click on create
-
+	
 
 	0.5) By default, vm instances will be connected to a VPC network that enables iPV4 addresses to connect to the instance, 
  	     if you want to allow iPV6 addresses to connect to your instance then...

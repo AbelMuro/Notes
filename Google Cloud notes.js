@@ -40,6 +40,18 @@
 
 	0) Go to Google Compute Engine in your Google Cloud Console and click on create new instance (take note of the instance name and the zone)
 
+	0.5) By default, vm instances will be connected to a VPC network that enables iPV4 addresses to connect to the instance, 
+ 	     if you want to allow iPV6 addresses to connect to your instance then...
+
+	     click on the three dots in the instance -> View network details -> IP addresses -> Reserve External Ip address
+      
+      		Select the following options...
+			select IPV6
+    			select the region that you instance is running on
+       			select the vpc network that you instance is connected to (subnetwork should be the same)
+	  		select the VM instance	
+
+
   	1) You can access the terminal of the VM in google compute engine -> Go to VM instances, then click on the SSH of the instance
 	   You can also access the terminal of the VM in your local computers' terminal by using the following command 
     	  (keep in mind that the terminal will have a different username, and you wont have permissions to change the files of other users unless you use sudo as a prefix to all of your commands)

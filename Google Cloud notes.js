@@ -40,6 +40,22 @@
 
 	0) Go to Google Compute Engine in your Google Cloud Console and click on create new instance (take note of the instance name and the zone)
 
+ 		You will also need to create a firewall policy specifically for your vm instance
+		  	Go to Compute Engine -> VM instances -> On the VM instance, click on the 3 dots on the far right -> view network details -> Network interface details, click on the Network option -> firewalls
+     			-> click on Add firewall rule
+	
+ 				Name: allow-https-for-my-app
+     				Network: default (must be the network your VM instance is running pn)
+				Direction of traffic: ingress (incoming traffic)
+    				Actions on match: allow
+				Targets: all instances in the network
+    				Source filter: ipv4 or ipv6
+ 				Source ipv4 filter: 0.0.0.0/0
+     				Specified protocols and ports: Check TCP and use the https port your app is running on (443)
+
+    				Click on create
+
+
 	0.5) By default, vm instances will be connected to a VPC network that enables iPV4 addresses to connect to the instance, 
  	     if you want to allow iPV6 addresses to connect to your instance then...
 
@@ -126,24 +142,6 @@
 		    }
 		    console.log('HTTPS server is running on port 443')
 		})
-
-  	 5) Run the following command to enable https traffic to the VM 
-
-   		gcloud compute firewall-rules create allow-https --allow tcp:443
-     		gcloud compute firewall-rules list
-
-		       NAME NETWORK 	DIRECTION 	PRIORITY 	ALLOW 	DENY 	DISABLED 
-		       allow-http 	default 	INGRESS 	1000 	tcp:80 	False 
-		       allow-https 	default 	INGRESS 	1000 	tcp:443 False 
-		       default-allow-http default 	INGRESS 	1000 	tcp:80 	False 
-		       default-allow-https default 	INGRESS 	1000 	tcp:443 False 			//just make sure that this line appears in your list of firewall rules
-		       default-allow-icmp default 	INGRESS 	65534 	icmp 	False 
-		       default-allow-internal default 	INGRESS 	65534 	tcp:0-65535,udp:0-65535,icmp 	False 
-		       default-allow-rdp default 	INGRESS 	65534 	tcp:3389 	False 
-		       default-allow-ssh default 	INGRESS 	65534 	tcp:22 	False
-
-	      	   -You can also change the firewall rules for the VM by configuring the VPC network of the VM
-		  	Go to Compute Engine -> VM instances -> On the VM instance, click on the 3 dots on the far right -> view network details -> Network interface details, click on the Network option -> firewalls
 
 
 

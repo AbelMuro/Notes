@@ -4,14 +4,14 @@
 
                                                              FEATURES OF REACT 
 
-                                                             RENDERING PROCESS
+                                                               RENDERING PROCESS
                     A component will be re-rendered (updated) when there is a change in the state object.
                     Keep in mind that all state changes are asynchronous in react, and DOM updates are also asynchronous.
 
                                                                 RECONCILIATION
                    Reconciliation is an algorithm that React uses to efficiently update the DOM. It starts by first mounting a component (and its element). 
-                   Then an exact copy of the Real DOM will be created in memory. When a state change occurs, React will generate another copy of the the real DOM, at this point, 
-                   we have 2 copies of the real DOM in memory. Then every node of both DOM copies will be compared with each other to see which nodes have been updated due to
+                   React will then create an exact copy of the Real DOM in memory. When a state change occurs, React will generate another copy of the the real DOM, at this point, 
+                   we have 2 copies of the real DOM in memory. Then every node of both DOM copies will be compared with each other to see which nodes have been changed due to
                    the state change that occurred. For the nodes that have changed, those nodes will be updated in the Real DOM. But for the nodes that have NOT changed, those nodes 
                    will NOT be updated in the real DOM
 
@@ -157,10 +157,16 @@
 
 
 // =========================================== COMPONENTS ================================================
-// React has two types of components, Class and Function commponents. These are the building blocks of React
+/* 
+        React has two types of components, Class and Function commponents. These are the building blocks of React
+        We also have the following variations of components
+                -Stateful components are components with a state.
+                -Stateless components are components with no state.
+                -Controlled components are components with a state that is binded to one of its inputs.
+                -Uncontrolled components are components that don't have a state that is binded to one of its inputs.
+        
 
-
-
+*/
 //------------------------------------- FUNCTION COMPONENTS
 //function components use hooks, go to the hooks section to learn more about hooks
 function App() {
@@ -367,6 +373,9 @@ function DynamicImport {
           }
 }
 
+export default DynamicImport;
+
+
 
 
 
@@ -461,7 +470,7 @@ const element = React.createElement(
 
 
 
-//=========================================== KEYS ===========================================
+//=========================================== REACT LISTS ===========================================
 
 // keys help React identify which items in a list have changed
 // the 'key' property has a special meaning in React, 
@@ -1295,7 +1304,7 @@ class PercentageStat extends React.PureComponent {
 
     
 
-//======================================================================== REACT ROUTER ===========================================================================================================================
+//==================================================== REACT ROUTER ==============================================================================
 // React Routers vs Conventional Router
 // React Routers is Client-side routing
 // Conventional Router is Server-side routing

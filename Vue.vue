@@ -169,17 +169,48 @@
 
 <!-- ===================================================== STATE ============================================================ -->
 <!-- 
-    You can create a state object within your single-file component with the ref() function
-    You can also create a state object with the reactive() function
+    You can create a state object within your single-file component with the ref() and reactive() function
 
-        const countRef = ref(0);
-        const countReactive = reactive({count: 1, people: 23}); 
+    Using the ref() and reactive() functions will have deep reactivity by default
 
-    The difference is that the component will keep track of ALL the properties in countReactive, 
-    and the component will keep track of the 'value' property in countRef
+        const countRef = ref(0);                                    //will keep track of the 'value' property only (and all its nested objects)
+        const countReactive = reactive({count: 1, people: 23});     //will keep track of ALL the properties (and all its nested objects)
+
+
+    Using the shallowRef() and shallowReactive() will have shallow reactivity by default
+
+        const countRef = shallowRef();                             //will keep track of the 'value' property only (but NOT its nested objects)
+        const countReactive = shallowReactive({count: [{n: '2'},2,3]}) //will keep track of ALL the properties (but NOT its nested objects)
+
+
 
     Facts to keep in mind
         -Do not pass down state as props directly
+        -You can mutate the property values of a state directly
+        -You can assign a state object to another state object as a property
+
+                const stateOne = ref(1);
+                const stateTwo = reactive({            //changes made to stateTwo will also reflect on stateOne
+                    stateOne
+                });
+
+                stateTwo.stateOne = 10;
+                console.log(stateOne.value);           //will log 10
+            
+        -Do not destructure your state object, doing so will disconnect the destructured variable from the state
+
+                const state = ref(0);
+                const { count } = state;
+                count++;                           //this will not trigger a re-render
+            
+        -When you pass the state object to a function, make sure to pass the whole object to retain reactivity
+         if you pass an individual property to a function, you are only passing a copy of that value
+
+                const count = ref(0);
+                someFunction(count);               //changes made to count will cause a re-render
+                otherFunction(count.value);        //changes made to count.value will NOT cause a re-render
+                
+
         -All updates to the state are synchronous, but updates to the DOM are asynchronous
          When you update multiple state objects, Vue will wait until all states have been updated,
          then Vue will update the DOM by causing a re-render

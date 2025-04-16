@@ -1,6 +1,3 @@
-import React, { useEffect, useState, createContext , useContext, useRef, useReducer, useMemo, useCallback, } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNavigate } from 'react-router-dom';
-
 
 /* 
         steps to initialize React in your application

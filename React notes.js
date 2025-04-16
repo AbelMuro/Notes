@@ -71,47 +71,23 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                  root.render(<App/ >)
                  
                10) then you should create a /components folder that will have all the functions and classes that are exported
-               
-               
-               
-               
-         IF YOU DECIDE TO USE PARCEL AS THE BUNDLER, there is a few differences to note here
-               
-               1) npm install parcel
-               
-               2) the entry point of the application will be the index.html file and NOT the index.js
-               
-               3) the index.html file must include a <script type="module"> tag that imports the index.js file 
-               
-               4) parcel will install babel for you
-               
+        
 */      
-
-
-
-/* 
-                                        COMPONENT RE-RENDERING PROCESS
-                 1) User interacts with App. Let us say the user clicks a button.
-
-                 2) state object is updated because the button triggered a setState()
-
-                 3) DOM is updated 
-                 
-                 3.5) cleanup function from useLayoutEffect() is called here, and then useLayoutEffect() is then called here
-                 
-                 4) changes are painted on the screen
-                 
-                 5) cleanup function is invoked to clean up effects from previous render (clean up function it the callback that is returned from useEffect())
-                 
-                 6) useEffect() is then called
-*/
 
 
 /* 
 
                                                              FEATURES OF REACT
 
-                                                       VIRTUAL DOM and RECONCILIATION
+                                                        COMPONENT RE-RENDERING PROCESS
+                    A component will be re-rendered (updated) when there is a change in the state object.
+                    Keep in mind that all state changes are asynchronous in react.
+                    DOM updates are also asynchronous.
+
+                                                                LIFECYCLE
+
+
+                                                       VIRTUAL DOM and RECONCILIATION ALGORITHM
                     The virtual DOM is an exact copy of the REAL DOM, but it is used by React developers to 'mutate' the real DOM 
                     in the most efficient way possible. Everytime we update the virtual DOM, what happens is that React will generate
                     ANOTHER virtual DOM with the changes that we made, and will compare the new virtual DOM with the old virtual DOM,
@@ -123,52 +99,44 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
                     Lets say we have 4 setState() being called in succession inside of an event handler. React will automatically
                     group together these 4 setState() functions into one re-render. Keep in mind that this batching is only available
                     in concurrent mode and blocking mode
+
+                                                                 CODE SPLITING
+                    Instead of downloading the entire app before users can use it, code-splitting allows you to split your code into 
+                    small chunks which you can then load on demand. React achieves this by using the React.lazy() and React.suspense()
+                     Code Splitting is also the idea of breaking down the UI into different components
                     
                                                            CONCURRENCY MODE (react 18)
-                    Concurrency refers to having multiple tasks in progress at the same time(i.e tasks can overlap).
+                    Concurrency refers to having multiple tasks in progress at the same time (i.e tasks can overlap).
                     React could only handle one task at a time in the past (which was referred to as Blocking rendering). 
                     To solve this problem, concurrent mode was introduced in React as an experimental feature.
                     Concurrency just means we can have two tasks on hand and can switch between them depending on the priority.
                     
-                            - To enable concurrent mode:    (index.js)
-                                        const rootEl = document.getElementById("root")
-                                        const root = ReactDOM.createRoot(rootEl);
-                                        root.render(<App/>);
-                                      
-                            - To use legacy mode:             (index.js)
-                                        const rootEl = document.getElementById('root')
-                                        ReactDOM.render(<App />, rootEl)                                                                
+                                            - To enable concurrent mode:    (index.js)
+                                                        const rootEl = document.getElementById("root")
+                                                        const root = ReactDOM.createRoot(rootEl);
+                                                        root.render(<App/>);
+                                                      
+                                            - To use legacy mode:             (index.js)
+                                                        const rootEl = document.getElementById('root')
+                                                        ReactDOM.render(<App />, rootEl)                                                                
 
-
-
-                                          
+                           
                                                                CLIENT SIDE RENDERING
                       Client side rendering is the process of rendering your application on your browser (React does this by default)           
                       
-                               1. First, we load the JavaScript to the client. When that has finished we can…
-                        
+                               1. First, we load the JavaScript to the client. When that has finished we can…                  
                                2. Fetch the data from the server. When that has finished we can….
-
                                3. We render the react components in the DOM… When that has finished we can…
-
                                4. We can use the application. — see the content on the page, click on things etc.
                                                            
                                                                 SERVER SIDE RENDERING
                        Server side rendering is the process of rendering your application on the server and sending 
                        it to the client as fully rendered HTML pages
                        
-                                1. First, we fetch data from the server for the entire application.
-                                
+                                1. First, we fetch data from the server for the entire application.                      
                                 2. Then we render the HTML for the entire application in the server and send it to the client
-
                                 3. Load javascript to the client for the entire application
-
-                                4. Then Hydrate the page for the entire application (rendering components and attaching event handlers)  
-                                
-
-
-
-                                                                SUSPENSE ON THE SERVER
+                                4. Then Hydrate the page for the entire application (rendering components and attaching event handlers)                           
                                         
                         In React 18, suspense on the server (server-side rendering) is implemented by using the 'renderToPipeableStream' API
                         renderToPipeableStream() is a new API that allows you to render a React tree to a pipeable Node.js stream, 
@@ -179,405 +147,42 @@ import { BrowserRouter as Router, Routes, Route, Link, Outlet, useParams, useNav
 */
 
 
-import React, { Suspense } from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { createFetch, createFromFetch } from 'react-fetch';
-import App from './App';
-import express from 'express';
-
-const server = express();
-const fetch = createFetch();
-
-server.use(express.static('build'));                                // Serve the static files from the build folder
 
 
-server.get('*', async (req, res) => {                                // Handle all requests with a wildcard
-  const suspenseFetch = createFromFetch(fetch, req);
-        
-  const stream = ReactDOMServer.renderToPipeableStream(
-    <Suspense fallback={<div>Loading...</div>}>
-      <App fetch={suspenseFetch} />
-    </Suspense>
-  );
-
-  // Send the HTML response with the stream
-  res.write(`
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="utf-8" />
-        <title>React SSR with Suspense Example</title>
-      </head>
-      <body>
-        <div id="root">
-  `);
-
-  stream.pipe(
-    res,
-    { end: false }
-  );
-
-  stream.on('end', () => {
-    res.write(`
-        </div>
-        <script src="/bundle.js"></script>
-      </body>
-    </html>
-    `);
-    res.end();
-  });
-});
-
-// Start the server on port 3000
-server.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
+// =========================================== COMPONENTS ================================================
+// React has two types of components, Class and Function commponents. These are the building blocks of React
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=========================================== IMPORT STATEMENTS =========================================== 
-
-/*                                              CODE SPLITING
-         Instead of downloading the entire app before users can use it, code-splitting allows you to split your code into 
-         small chunks which you can then load on demand. React achieves this by using the React.lazy() and React.suspense()
-         
-         Code Splitting is also the idea of breaking down the UI into different components
-*/
-
-//--------------------------------------------DEFAULT IMPORT------------------------------------------------
-//each file can only have ONE export default
-
-// ./HomePage.js
-export default Home;
-
-
-// ./App.js
-import Home from './HomePage.js';                      //this only works if 'HomePage' file has a 'default export'
-import HomeComponent from './HomePage.js'              // you can use any name for the component that was exported with default
-
-
-
-//----------------------------------------------NAMED IMPORT-------------------------------------------------------
-//a file can export as many components/variables as you want
-
-// ./HomePage.js
-export Home;
-export const number = 34;
-
-
-// ./App.js
-import {Home} from './HomePage.js';                         //this will work
-import {HomeComponent} from './HomePage.js'                 //this will NOT work because HomePage.js is not exporting HomeComponent
-import {number as myNumber} from './HomePage.js'            //this will work
-Import * as objectName from'./HomePage.js';                //this will import ALL of the named exports into an object
-
-//--------------------------------------------- DYNAMIC IMPORT ----------------------------------------------
-//instead of importing a moduleA with the import statement, you can dynamically load a module at runtime with the module() function
-//import() is a built-in function for JS
-
-function DynamicImport {
-        
-          const handleClick = () => {
-                import('./moduleA')                     //this will return a promise
-                      .then(({ moduleA }) => {
-                        // Use moduleA
-                      })
-                      .catch(err => {
-                        // Handle failure
-                      });
-          };
-
-          render() {
-            return (
-              <div>
-                <button onClick={this.handleClick}>Load</button>
-              </div>
-            );
-          }
-}
-
-
-//---------------------------------------------- LAZY LOADING ----------------------------------------------
-//lazy loading is the technique of making certain parts of a website have a delay in loading, instead of having the entire website load in one go.
-//this can greatly improve loading time for a website
-
-import {lazy} from 'react';
-const ProjectSection = lazy(() => import('./ProjectSection'));          // you pass a callback and you wrap arround the directory of the folder with import()
-                                                                        
+//------------------------------------- FUNCTION COMPONENTS
+//function components use hooks, go to the hooks section to learn more about hooks
 function App() {
+        const [count, setCount] = useState();                //creating a state object with the useState() hook
+        const myRef = useRef();                              //creating a ref object that can be used to reference an element in the real dom 
+        const 
+
+        const handleCount = () => {
+                setCount(count + 1);
+        }
+
+        useEffect(() => {
+                
+        }, [])
+
         return (
-           <main>
-                <ProjectSection/>                                       // this component will be lazily loaded  
-           </main>
+                <div ref={myRef}> 
+                    {count}
+                </div>
         )
 }
 
-//-------------------------------------------- SUSPENSE ------------------------------------------------------
-// Suspense lets you specify a loading screen for a part of the component tree if it’s not yet ready to be displayed
-// Before React 18, <Suspense/> was designed to display a loading screen when a component was being lazy loaded.
 
-import { Suspense } from 'react';
 
-function App() {
-  return (
-    <div>                                                       //<Suspense/> will display a fallback UI while <MyComponent/> is being rendered
-      <Suspense fallback={<div>Loading...</div>}>               
-        <Lazyloaded />                                          //thi
-      </Suspense>
-    </div>
-  );
-}
 
 
-// But now with React 18, you can use <Suspense/> to display a loading screen for components that fetch data inside
-// an application that has been rendered on the server
-
-import { Suspense } from 'react';
-
-function App() {
-  return (
-    <div>                                                       //<Suspense/> will display a fallback UI while <MyComponent/> is being rendered
-      <Suspense fallback={<div>Loading...</div>}>               
-        <MakesFetchRequest/>
-      </Suspense>
-    </div>
-  );
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//-----------------------------------------REACT DOM -----------------------------------------------------------------------------------------
-//How to render components onto the virtual DOM
-
-import ReactDOM, {hydrateRoot} 'react-dom/client';             //importing methods from built in packages in react
-import App from './components';
-
-
-
-const root = document.getElementById('root')
-
-//For client-side rendering
-const clientRoot = ReactDOM.createRoot(root);  
-clientRoot.render(<App /> )                                     
-
-//For server-side rendering            
-const hydrateRoot = hydrateRoot(root);     // Create a root and attach React to the existing HTML
-hydrateRoot.render(<App />);
-
-
-
-
-
-
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-                   
-                   
-                   
-                   
-                   
-                   
-            
-            
-            
-            
-            
-            
-            
-
-
-
-
-
-//------------------------------------------- JSX syntax ---------------------------------------------------------------------------------------------
-//JSX stands for Javascript syntax extension, it was designed by React for the purpose of using HTML syntax in a javascript file
-//this greatly improves readability.
-//once you have written your JSX code (usually in the return statement of a function component or in the render() of a class component)
-// React will then convert the JSX code into React.createElement(), which will actually create an element in the DOM
-
-//remember, any valid javascript expression is allowed inside {}    
-//the attributes used in JSX are very similar to the regular attributes in HTML
-//but most are written in camelCase
-            
-function UsingJSX() {
-        
-        //you can use any html semantic tag in JSX, the only difference is that some of the attributes are spelled differently
-        return(
-               <>
-                   <h1 className="someClass"> 
-                        "hello," + {name} 
-                   </h1>
-                   <a href={"http://www.google.com"}> 
-                       "click here" 
-                   </a>
-                   <p> 
-                       {example()} 
-                   </p>    
-                   <div>                                                       
-                        <p>
-                           "you can create elements with children"
-                        </p>
-                        <p>
-                           "like this as well"
-                        </p>
-                   </div>
-               </>     
-        )
-}
-            
-         
-//JSX will get transpiled to the function below by babel
-const element = React.createElement(
-    'h1',                                                       //tag name
-    {className: "myClass"},                                     //attributes
-    'hello, world'                                              //content
-)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//----------------------------------------------------- && and Ternary operators--------------------------------------------------------------------
-// You can use logical operators inside {} in JSX
-// {true && expression} will always return the expression
-// {false && expression} will not return anything
-
-{true && <MyComponent />}                   //MyComponent will render
-{false && <MyComponent />}                   //MyComponent will not render
-
-//there may be some bugs with using && operators in React
-//take a look at the example below...
-//lets assume that the array has numbers and null values
-//what we want to do is iterate through the values and only display the numbers
-//but the problem here is that the code below will not display 0 because it is considered a falsey value
-
-array.map((val, i) => {
-        return {val && <div> {val} </div> }             //the bug here is that we will not display 0, even though it is a number
-})
-      
- 
-//It is considered good practice to use Ternary operators instead of &&
- {true ? <div> "true" </div> : <div> "false" </div> }
-
-
-
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-
-
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-
-
-
-//============================================================================= REACT CLASSES ======================================================================================================================
-//classes are to be replaced with hooks****
-
-
-//extends means that ClassComponent is the child of React.Component
- //so that means that ClassComponent can inherit the methods and properties from React.Component
-class ClassComponent extends React.Component {
+// --------------------------------------- CLASS COMPONENTS
+// (class components are to be replaced with function components)
+class ClassComponent extends React.Component {                //extends means that ClassComponent is the child of React.Component (ClassComponent can access the methods and properties of React.Component)
 
     constructor(props) {                                       //Keep in mind that props is only accessible in the constructor, it cannot be accessed outside yet
         super(props);                                        //we should always call the parent constructor of a class component because it allows use to use this.props for the whole scope of this component
@@ -640,36 +245,27 @@ X   componentWillUnmount() {                                //lifecycle method t
         )
     }
 }
- 
 
 
 
 
 
-//========================================================== PURE COMPONENTS ==========================================================
-//Pure Components are class components that extends Pure.Component
-//These components do NOT rely on variables/objects defined outside of its scope
-//Passing the same argument to these components will always return the same result
-//These components will automatically re-render IF the previous state/props 
-// is different that the new state/props. If its not different, then the component will not re-render
 
 
-//this component will automatically re-render if props is different from the previous props
-class PercentageStat extends React.PureComponent {
-        
-   //shouldComponentUpdate(){}                  //you dont have to use this lifecycle method anymore in pure components            
+//=========================================== STATE ===========================================
+/* 
+        A state is an object that contains data, when this data is updated or changed, it will cause a re-render
+*/
 
-  render() {
-        const { label, score = 0, total = Math.max(1, score) } = this.props;
 
-        return (
-             <div>
-                 <h6>{ label }</h6>
-                 <span>{ Math.round(score / total * 100) }%</span>
-            </div>
-    )
-  }
+function App() {
+        const [count, setCount] = useState();
 
+        return(
+           <button onClick={() => {setCount(count + 1)}}> 
+                Click here
+           </button>
+        )
 }
 
 
@@ -678,70 +274,256 @@ class PercentageStat extends React.PureComponent {
 
 
 
+//=========================================== PROPS ===========================================
+/* 
+        Props means properties
+        props are used to pass data from one component to another
+*/
 
-//========================================================== ERROR BOUNDARIES =================================================
- // Error Boundaries are basically class components that will catch any errors that are thrown in any child component
- // The idea is to wrap your entire application with these Error Boundaries and it will automatically detect any errors thrown from the child
- // keep in mind that the try catch block will only work with vanilla JS, look at the example below
- 
- // keep in mind that the <ErrorBoundary/> will automatically catch errors in the components nested within
- 
- import ErrorBoundary from './ErrorBoundary.js';
- 
+    
  function App() {
-       return (                 {/* ErrorBoundary will not catch errors from event handlers, Asynchronous code*/}
-            <>  
-              <ErrorBoundary>                 
-                    <MyComponent/>
-              </ErrorBoundary/>
-            </>
-          )
+        //you can pass any type of data as props to other components
+        const [state, setState] = useState("exmaple");                                  //for passing state, its best that you use useContext() hook       
+        let someString = "passing this as props";
+        const someEventHandler = (e) => {
+             console.log(e.target);
+        } 
+       
+        return (
+             <HomePage myString={someString} myEventHandler={someEventHandler} state={state}/>
+        
+        )
+ }
+        
+ function HomePage(props){
+        props.myString;                                 //"passing this as props"
+        props.someEventHandler();                       //event handler that was passed as props
+        props.state;                                    //passing the state object to child components   
+ }
+
+
+
+
+
+
+//=========================================== MODULARIZATION=========================================== 
+
+//--------------------------------------------DEFAULT IMPORT
+//each file can only have ONE export default
+
+// ./HomePage.js
+export default Home;
+
+
+// ./App.js
+import Home from './HomePage.js';                      //this only works if 'HomePage' file has a 'default export'
+import HomeComponent from './HomePage.js'              // you can use any name for the component that was exported with default
+
+
+
+//----------------------------------------------NAMED IMPORT
+//a file can export as many components/variables as you want
+
+// ./HomePage.js
+export Home;
+export const number = 34;
+
+
+// ./App.js
+import {Home} from './HomePage.js';                         //this will work
+import {HomeComponent} from './HomePage.js'                 //this will NOT work because HomePage.js is not exporting HomeComponent
+import {number as myNumber} from './HomePage.js'            //this will work
+import * as objectName from'./HomePage.js';                //this will import ALL of the named exports into an object
+
+//--------------------------------------------- DYNAMIC IMPORT
+//instead of importing a moduleA with the import statement, you can dynamically load a module at runtime with the module() function
+//import() is a built-in function for JS
+
+function DynamicImport {
+        
+          const handleClick = () => {
+                import('./moduleA')                     //this will return a promise
+                      .then(({ moduleA }) => {
+                        // Use moduleA
+                      })
+                      .catch(err => {
+                        // Handle failure
+                      });
+          };
+
+          render() {
+            return (
+              <div>
+                <button onClick={this.handleClick}>Load</button>
+              </div>
+            );
+          }
 }
-  
-// ./ErrorBoundary.js
- class ErrorBoundary extends Component {
-         constructor(props) {
-            super(props);
-            this.state = { error: false, message: '' };
-         }
+
+
+
+
+
+
+//=========================================== VIRTUAL DOM ===========================================
+//How to render components onto the virtual DOM
+
+import ReactDOM, {hydrateRoot} 'react-dom/client';             //importing methods from built in packages in react
+import App from './components';
+
+const root = document.getElementById('root')
+
+//For client-side rendering
+const clientRoot = ReactDOM.createRoot(root);  
+clientRoot.render(<App /> )                                     
+
+//For server-side rendering            
+const hydrateRoot = hydrateRoot(root);     // Create a root and attach React to the existing HTML
+hydrateRoot.render(<App />);
+
+
+
+
+
+
+
+
+
+
+//=========================================== JSX ===========================================
+//JSX stands for Javascript syntax extension, it was designed by React for the purpose of using HTML syntax in a javascript file
+//this greatly improves readability.
+//once you have written your JSX code (usually in the return statement of a function component or in the render() of a class component)
+// React will then convert the JSX code into React.createElement(), which will actually create an element in the DOM
+
+//remember, any valid javascript expression is allowed inside {}    
+//the attributes used in JSX are very similar to the regular attributes in HTML
+//but most are written in camelCase
+            
+function UsingJSX() {
+        
+        //you can use any html semantic tag in JSX, the only difference is that some of the attributes are spelled differently
+        return(
+               <>
+                   <h1 className="someClass"> 
+                        "hello," + {name} 
+                   </h1>
+                   <a href={"http://www.google.com"}> 
+                       "click here" 
+                   </a>
+                   <p> 
+                       {example()} 
+                   </p>    
+                   <div>                                                       
+                        <p>
+                           "you can create elements with children"
+                        </p>
+                        <p>
+                           "like this as well"
+                        </p>
+                   </div>
+               </>     
+        )
+}
+            
          
-         static getDerivedStateFromError(error) {
-            return { 
-                    error: true, 
-                    message: error.toString()                        // Updating state (this method will automatically catch errors in the child component)
-                  };            
-          }
+//JSX will get transpiled to the function below by babel
+const element = React.createElement(
+    'h1',                                                       //tag name
+    {className: "myClass"},                                     //attributes
+    'hello, world'                                              //content
+)
 
-          render() {
-            const { error, message } = this.state;
-            const { children } = this.props;
 
-            return error ? 
-                        <div> 
-                            {message} 
-                        </div>  : 
-                        children;
-          }
+
+
+
+
+
+//=========================================== CONDITIONAL RENDERING ===========================================
+// You can use logical operators inside {} in JSX
+// {true && expression} will always return the expression
+// {false && expression} will not return anything
+
+{true && <MyComponent />}                   //MyComponent will render
+{false && <MyComponent />}                   //MyComponent will not render
+{true ? <MyComponent/> : <MyOtherComponent/>} //MyComponent will render
+
+ 
+ 
+
+
+
+//=========================================== KEYS ===========================================
+
+// keys help React identify which items in a list have changed
+// the 'key' property has a special meaning in React, 
+// when you create an array of JSX elements, each element
+// must have a unique key that identifies it.
+// you can use any string as a key. but its best to use the 
+// relevant data from the list to identify the items
+        
+        
+function MakeList(props) {
+    const [names, setNames] = useState(['david', 'carlos', 'stephanie'])
+        
+    return (names.map((name) =>
+        <div key={name}> 
+             {name} 
+        </div>
+    ));
 }
 
 
-//MyComponent.js
- class MyComponent extends React.Component {
-          constructor(props) {
-            super(props);
-            this.state = { data: null };
-          }
+
+
+//KEEP IN MIND that you should not use the index of a list item as a key.. take the example below
+
+function Keys () {
+     const [list, setList] = useState(["foo", "bar", "baz"]);
         
-          componentDidMount() {
-            fetch("https://invalid.url")                // This will throw an error because the URL is invalid
-              .then((response) => response.json())
-              .then((data) => this.setState({ data }));
-          }
-        
-          render() {
-             return <div>{this.state.data.length}</div>;       // This will also throw an error if data is null
-          }
-        }
+     const deleteItem = (e) => {
+           const indexToDelete = e.target.key;  
+           const newList = list.filter((item, index) => { 
+                   if(index !== indexToDelete)
+                       return false;
+                   else
+                        return true;
+           })
+           setList(newList);
+     }        
+       
+      return(
+             <ul>
+                {list.map((item, i) => {
+                     return(<li key={i} onClick={deleteItem}> {item[i]} </li>)
+                })}       
+             </ul>
+      )  
+}
+
+
+//VISUAL presentation
+
+/* 
+        <ul>
+                <li key=0 > 0 </li>        <---       //lets say we delete this item from the list
+                <li key=1 > 1 </li>
+                <li key=2 > 2 </li>
+                <li key=3 > 3 </li>
+        </ul>
+
+
+        //deleting an item will cause a re-render, so we will have to iterate through the list again
+
+        <ul>
+                <li key=0 > 1 </li>                    // <li> 1 </li> used to have a key that was set to 1, but now it is 0
+                <li key=1 > 2 </li>                    // all the list items have had their keys changed as well
+                <li key=2 > 3 </li>                    // now React will look at this and will re-render all the items because their keys have changed
+        </ul>
+
+
+*/
 
 
 
@@ -750,37 +532,7 @@ class PercentageStat extends React.PureComponent {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//============================================================================== REACT HOOKS ===========================================================================================================================
+//=================================================== REACT HOOKS ==============================================================================
 //import React, { useEffect, useState, createContext } from 'react';
 //hooks are functions that let you 'hook into' React features from function components
 
@@ -1003,7 +755,6 @@ function Ref() {
 
 
 //you can also use useRef() dynamically like this..
-
 function RefDynamically({product}) {                                    //product is an array of objects, each object has an img
 
      const myRef = useRef([]);
@@ -1026,7 +777,6 @@ function RefDynamically({product}) {                                    //produc
 
 
 //if you are planning on setting the styles of an element with useRef after the first render, its better to use useCallback to do this
-
 function Ref() {
      const elementRef = useCallback((ref) => {
              if(!ref) return;
@@ -1044,6 +794,37 @@ function Ref() {
             </>)
 
 }
+
+
+
+//----------------------------------------------------------- FORWARD REF() -----------------------------------------------------------
+//you can use useRef() and forwardRef() together to make a parent component have control over an element in a child component
+//keep in mind that forwardRef() on a component has the same functionality as a regular React component,
+//the only difference is that you can now pass a ref along with the props
+
+
+function ParentComponent() {
+    const someRef = useRef();
+        
+     useEffect(() => {
+        someRef.current;                //someRef.current now references the <div> element in the ChildComponent
+        
+     })    
+        
+    return(
+        <ChildComponent ref={someRef}>
+    )    
+}
+
+//syntax is different, but this is still a react component
+const ChildComponent = forwardRef((props, ref) => {
+        return(
+           <div ref={ref}> greetings </div>
+        )
+})
+
+
+
 
 
 
@@ -1340,37 +1121,6 @@ function App() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //=========================================================== MEMO() ===========================================================================================
 // memo() is used to force a function to only re-render when its props have changed, this can improve performance.
 
@@ -1424,69 +1174,107 @@ function MyApp() {
 
 
 
+//============================================= PURE CLASS COMPONENTS ==========================================================
+//Pure Components are class components that extends Pure.Component
+//These components do NOT rely on variables/objects defined outside of its scope
+//Passing the same argument to these components will always return the same result
+//These components will automatically re-render IF the previous state/props 
+// is different that the new state/props. If its not different, then the component will not re-render
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=========================================================== FORWARD REF() ===========================================================
-//you can use useRef and forwardRef together to make a parent component have control over an element in a child component
-//keep in mind that forwardRef() on a component has the same functionality as a regular React component,
-//the only difference is that you can now pass a ref along with the props
-
-
-function ParentComponent() {
-    const someRef = useRef();
+//this component will automatically re-render if props is different from the previous props
+class PercentageStat extends React.PureComponent {
         
-     useEffect(() => {
-        someRef.current;                //someRef.current now references the <div> element in the ChildComponent
-        
-     })    
-        
-    return(
-        <ChildComponent ref={someRef}>
-    )    
+   //shouldComponentUpdate(){}                  //you dont have to use this lifecycle method anymore in pure components            
+
+  render() {
+        const { label, score = 0, total = Math.max(1, score) } = this.props;
+
+        return (
+             <div>
+                 <h6>{ label }</h6>
+                 <span>{ Math.round(score / total * 100) }%</span>
+            </div>
+    )
+  }
 }
 
-//syntax is different, but this is still a react component
-const ChildComponent = forwardRef((props, ref) => {
-        return(
-           <div ref={ref}> greetings </div>
-        )
-})
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================== ERROR BOUNDARY CLASS COMPONENT ===========================================
+ // Error Boundaries are basically class components that will catch any errors that are thrown in any child component
+ // The idea is to wrap your entire application with these Error Boundaries and it will automatically detect any errors thrown from the child
+ // keep in mind that the try catch block will only work with vanilla JS, look at the example below
+ 
+ // keep in mind that the <ErrorBoundary/> will automatically catch errors in the components nested within
+ 
+ import ErrorBoundary from './ErrorBoundary.js';
+ 
+ function App() {
+       return (                 {/* ErrorBoundary will not catch errors from event handlers, Asynchronous code*/}
+            <>  
+              <ErrorBoundary>                 
+                    <MyComponent/>
+              </ErrorBoundary/>
+            </>
+          )
+}
   
+// ./ErrorBoundary.js
+ class ErrorBoundary extends Component {
+         constructor(props) {
+            super(props);
+            this.state = { error: false, message: '' };
+         }
+         
+         static getDerivedStateFromError(error) {
+            return { 
+                    error: true, 
+                    message: error.toString()                        // Updating state (this method will automatically catch errors in the child component)
+                  };            
+          }
+
+          render() {
+            const { error, message } = this.state;
+            const { children } = this.props;
+
+            return error ? 
+                        <div> 
+                            {message} 
+                        </div>  : 
+                        children;
+          }
+}
+
+
+//MyComponent.js
+ class MyComponent extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = { data: null };
+          }
+        
+          componentDidMount() {
+            fetch("https://invalid.url")                // This will throw an error because the URL is invalid
+              .then((response) => response.json())
+              .then((data) => this.setState({ data }));
+          }
+        
+          render() {
+             return <div>{this.state.data.length}</div>;       // This will also throw an error if data is null
+          }
+        }
 
 
 
@@ -1495,14 +1283,6 @@ const ChildComponent = forwardRef((props, ref) => {
 
 
 
-
-
-
-
-
-
-
-    
 
 
 
@@ -1516,7 +1296,6 @@ const ChildComponent = forwardRef((props, ref) => {
 // In client-side routing, whenever a request is made for a route, this request is not sent to the server. Instead, the javascript code handles the routing process.
 
 // React Routers displays different routes(pages) in a single html file, while conventional router displays pages in different html files
-
 
 // npm install react-router-dom
     
@@ -1715,127 +1494,114 @@ function AboutUs() {
 
 
 
+//---------------------------------------------- LAZY LOADING ----------------------------------------------
+//lazy loading is the technique of making certain parts of a website have a delay in loading, instead of having the entire website load in one go.
+//this can greatly improve loading time for a website
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//------------------------------------------------ JS-COOKIES---------------------------------------------------------------------------------------------------
-//npm install js-cookies                this package lets you use cookies but with set and get methods
-import Cookies from 'js-cookies';
-
-function MyCookies () {
-        
-        Cookies.set("name", "jason");                   //same syntax for vanilla cookies
-        Cookies.set("age", "23", {expires: 7});         //expires in 7 days
-        Cookies.set("gender", "male", {path: ''});      //cookie is visible to the current page
-        Cookies.set("mood", "happy", {domain: 'myWebsite.com'}; //cookie will be visible to this domain and all the sub-domains
-        Cookies.set("searchResult", "funny video", {sameSite: strict}); //allowing to control whether the browser is sending a cookie along with cross-site requests.
-        Cookies.set("birthplace", "san francisco", {expires: 5, path: '' }); //you can use multiple attributes for the third argument
-
-        Cookies.get("name");                            //returns jason
-        Cookies.get();                                  //returns all visible cookies
-
-        //keep in mind that the only attributes that you have to include to remove a cookie, is path and domain
-        Cookies.remove("name");                         //removes the name cookie
-        Cookies.remove("gender", {path: ''})            //to remove the gender cookie, you will have to include the path used to create the cookie
-}
-
-
-
-
-
-
-
-
-
-
-
-
-//================================================== USING JSON DATA IN REACT ======================================================
-
-// ./data.json
-
-{
-     "name" : "abel",
-     "birthday" : "july 22, 1993",
-     "age" : "29",
-}
-
-// ./index.js
-
-const data = require('./data.json');                            //this will automatically parse the json into js for you
-export default data;
-
-
-// ./someComponent.js
-
-import data from './data';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//------------------------------------------------ PROPS -----------------------------------------------------------------------------------------------------------------------
-
-//props means properties
-//props are similar to attributes in HTML, 
-//but props are used to pass data from one component to another
-    
- function App() {
-        //you can pass any type of data as props to other components
-        const [state, setState] = useState("exmaple");                                  //for passing state, its best that you use useContext() hook       
-        let someString = "passing this as props";
-        const someEventHandler = (e) => {
-             console.log(e.target);
-        } 
-       
+import {lazy} from 'react';
+const ProjectSection = lazy(() => import('./ProjectSection'));          // you pass a callback and you wrap arround the directory of the folder with import()
+                                                                        
+function App() {
         return (
-             <HomePage myString={someString} myEventHandler={someEventHandler} state={state}/>
-        
+           <main>
+                <ProjectSection/>                                       // this component will be lazily loaded  
+           </main>
         )
- }
+}
+
+//-------------------------------------------- SUSPENSE ------------------------------------------------------
+// Suspense lets you specify a loading screen for a part of the component tree if it’s not yet ready to be displayed
+// Before React 18, <Suspense/> was designed to display a loading screen when a component was being lazy loaded.
+
+import { Suspense } from 'react';
+
+function App() {
+  return (
+    <div>                                                       //<Suspense/> will display a fallback UI while <MyComponent/> is being rendered
+      <Suspense fallback={<div>Loading...</div>}>               
+        <Lazyloaded />                                          //thi
+      </Suspense>
+    </div>
+  );
+}
+
+
+// But now with React 18, you can use <Suspense/> to display a loading screen for components that fetch data inside
+// an application that has been rendered on the server
+
+import { Suspense } from 'react';
+
+function App() {
+  return (
+    <div>                                                       //<Suspense/> will display a fallback UI while <MyComponent/> is being rendered
+      <Suspense fallback={<div>Loading...</div>}>               
+        <MakesFetchRequest/>
+      </Suspense>
+    </div>
+  );
+}
+
+
+
+
+
+//--------------------------------------------- SUSPENSE ON THE SERVER ------------------------------------------------------
+//Below is an example of implementing suspense on the server (server side rendering)
+
+
+import React, { Suspense } from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { createFetch, createFromFetch } from 'react-fetch';
+import App from './App';
+import express from 'express';
+
+const server = express();
+const fetch = createFetch();
+
+server.use(express.static('build'));                                // Serve the static files from the build folder
+
+
+server.get('*', async (req, res) => {                                // Handle all requests with a wildcard
+  const suspenseFetch = createFromFetch(fetch, req);
         
- function HomePage(props){
-        props.myString;                                 //"passing this as props"
-        props.someEventHandler();                       //event handler that was passed as props
-        props.state;                                    //passing the state object to child components   
- }
+  const stream = ReactDOMServer.renderToPipeableStream(
+    <Suspense fallback={<div>Loading...</div>}>
+      <App fetch={suspenseFetch} />
+    </Suspense>
+  );
 
+  // Send the HTML response with the stream
+  res.write(`
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <title>React SSR with Suspense Example</title>
+      </head>
+      <body>
+        <div id="root">
+  `);
 
+  stream.pipe(
+    res,
+    { end: false }
+  );
 
+  stream.on('end', () => {
+    res.write(`
+        </div>
+        <script src="/bundle.js"></script>
+      </body>
+    </html>
+    `);
+    res.end();
+  });
+});
 
-
-
+// Start the server on port 3000
+server.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
 
 
 
@@ -1876,123 +1642,6 @@ function debounce(cb, d) {
           <input type='text' onChange={handleChange}/>
       )
  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//----------------------------------------------------------------KEYS and UUID----------------------------------------------------------------------------------
-
-// keys help React identify which list items have changed
-// the 'key' property has a special meaning in React, 
-// when you create an array of JSX elements, each element
-// must have a unique key that identifies it.
-// you can use any string as a key. but its best to use the 
-// uuid api to create universally unique ID's 
-        
-import {v4 as uuid} from 'uuid';
-        
-function ListItem(props) {
-    return <li>{props.value}</li>
-}
-
-function MakeList(props) {
-    const numbers = props.array;
-        
-    return (numbers.map((number) =>
-        <ListItem key={uuid()} value={number} />  
-    ));
-}
-
-const numbers = [1, 2, 3, 4, 5, 6];
-
-root.render(<MakeList array={numbers}/>);
-
-
-
-
-
-//KEEP IN MIND that you should not use the index of a list item as a key.. take the example below
-
-function Keys () {
-     const [list, setList] = useState(["foo", "bar", "baz"]);
-        
-     const deleteItem = (e) => {
-           const indexToDelete = e.target.key;  
-           const newList = list.filter((item, index) => { 
-                   if(index !== indexToDelete)
-                       return false;
-                   else
-                        return true;
-           })
-           setList(newList);
-     }        
-       
-      return(
-             <ul>
-                {list.map((item, i) => {
-                     return(<li key={i} onClick={deleteItem}> {item[i]} </li>)
-                })}       
-             </ul>
-      )  
-}
-
-
-//VISUAL presentation
-
-/* 
-        <ul>
-                <li key=0 > 0 </li>        <---       //lets say we delete this item from the list
-                <li key=1 > 1 </li>
-                <li key=2 > 2 </li>
-                <li key=3 > 3 </li>
-        </ul>
-
-
-        //deleting an item will cause a re-render, so we will have to iterate through the list again
-
-        <ul>
-                <li key=0 > 1 </li>                    // <li> 1 </li> used to have a key that was set to 1, but now it is 0
-                <li key=1 > 2 </li>                    // all the list items have had their keys changed as well
-                <li key=2 > 3 </li>                    // now React will look at this and will re-render all the items because their keys have changed
-        </ul>
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

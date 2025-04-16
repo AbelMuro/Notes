@@ -8,14 +8,6 @@
                     A component will be re-rendered (updated) when there is a change in the state object.
                     Keep in mind that all state changes are asynchronous in react, and DOM updates are also asynchronous.
 
-                                                                LIFECYCLE
-                    Lifecycle refers to the process that a component takes to be mounted onto the DOM and unmounted from the DOM.
-                    The lifecycle has 4 main phases; Initialization phase,  Mounting phase, Updating phase, and the Unmounting phase. The initialization phase starts by creating 
-                    the props, state, and functions of the component. The mounting phase begins by rendering the component onto the DOM. The updating phase begins 
-                    when the state of the component is updated, thus triggering a re-render(stuff gets updated on the screen) on the component.
-                    Then the umounting phase starts by removing the component (its JSX) from the DOM.
-
-
                                                                 RECONCILIATION
                    Reconciliation is an algorithm that React uses to efficiently update the DOM. It starts by first mounting a component (and its element). 
                    Then an exact copy of the Real DOM will be created in memory. When a state change occurs, React will generate another copy of the the real DOM, at this point, 
@@ -23,13 +15,18 @@
                    the state change that occurred. For the nodes that have changed, those nodes will be updated in the Real DOM. But for the nodes that have NOT changed, those nodes 
                    will NOT be updated in the real DOM
 
-                                                               VIRTUAL DOM 
+                                                                 VIRTUAL DOM 
                     The virtual DOM is an exact copy of the REAL DOM, but it is used by React developers to 'mutate' the real DOM 
-                    in the most efficient way possible. Everytime we update the virtual DOM, what happens is that React will generate
-                    ANOTHER virtual DOM with the changes that we made, and will compare the new virtual DOM with the old virtual DOM,
-                    and calculate the most minimal way to update the real DOM. This in turn will increase performance of the application
+                    in the most efficient way possible. The virtual DOM is used in the Reconciliation algorithm to improve performance.                    
 
-                                                            ONE-WAY DATA BINDING
+                                                                  LIFECYCLE
+                    Lifecycle refers to the process that a component takes to be mounted onto the DOM and unmounted from the DOM.
+                    The lifecycle has 4 main phases; Initialization phase,  Mounting phase, Updating phase, and the Unmounting phase. The initialization phase starts by creating 
+                    the props, state, and functions of the component. The mounting phase begins by rendering the component onto the DOM. The updating phase begins 
+                    when the state of the component is updated, thus triggering a re-render(stuff gets updated on the screen) on the component.
+                    Then the umounting phase starts by removing the component (its JSX) from the DOM.
+
+                                                               ONE-WAY DATA BINDING
                     All data in a React app flows in one direction. Typically, the parent component can pass its state down as props to the child component.
 
                                                            COMPONENT-BASED ARCHITECTURE
@@ -61,7 +58,6 @@
                                                         const rootEl = document.getElementById('root')
                                                         ReactDOM.render(<App />, rootEl)                                                                
 
-                           
                                                                CLIENT SIDE RENDERING
                       Client side rendering is the process of rendering your application on your browser (React does this by default)           
                                1. First, we load the JavaScript to the client. When that has finished we can…                  

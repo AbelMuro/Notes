@@ -1,3 +1,90 @@
+/* 
+        React is a JS library designed to make User Interfaces on the front-end.
+
+
+                                                             FEATURES OF REACT 
+
+                                                             RENDERING PROCESS
+                    A component will be re-rendered (updated) when there is a change in the state object.
+                    Keep in mind that all state changes are asynchronous in react, and DOM updates are also asynchronous.
+
+                                                                LIFECYCLE
+                    Lifecycle refers to the process that a component takes to be mounted onto the DOM and unmounted from the DOM.
+                    The lifecycle has 4 main phases; Initialization phase,  Mounting phase, Updating phase, and the Unmounting phase. The initialization phase starts by creating 
+                    the props, state, and functions of the component. The mounting phase begins by rendering the component onto the DOM. The updating phase begins 
+                    when the state of the component is updated, thus triggering a re-render(stuff gets updated on the screen) on the component.
+                    Then the umounting phase starts by removing the component (its JSX) from the DOM.
+
+
+                                                                RECONCILIATION
+                   Reconciliation is an algorithm that React uses to efficiently update the DOM. It starts by first mounting a component (and its element). 
+                   Then an exact copy of the Real DOM will be created in memory. When a state change occurs, React will generate another copy of the the real DOM, at this point, 
+                   we have 2 copies of the real DOM in memory. Then every node of both DOM copies will be compared with each other to see which nodes have been updated due to
+                   the state change that occurred. For the nodes that have changed, those nodes will be updated in the Real DOM. But for the nodes that have NOT changed, those nodes 
+                   will NOT be updated in the real DOM
+
+                                                               VIRTUAL DOM 
+                    The virtual DOM is an exact copy of the REAL DOM, but it is used by React developers to 'mutate' the real DOM 
+                    in the most efficient way possible. Everytime we update the virtual DOM, what happens is that React will generate
+                    ANOTHER virtual DOM with the changes that we made, and will compare the new virtual DOM with the old virtual DOM,
+                    and calculate the most minimal way to update the real DOM. This in turn will increase performance of the application
+
+                                                            ONE-WAY DATA BINDING
+                    All data in a React app flows in one direction. Typically, the parent component can pass its state down as props to the child component.
+
+                                                           COMPONENT-BASED ARCHITECTURE
+                    React uses a component-based architecture, where every part of the UI is broken down into components. Every component is separate 
+                    from other components, to the point that if a state change happens in one component, the other component will not be affected.
+                    Each component will be responsible for its part in the UI.
+                    
+                                                           AUTOMATIC BATCHING (react 18)
+                    Batching is when React groups multiple setState updates into a single re-render for better performance.
+                    Lets say we have 4 setState() being called in succession inside of an event handler. React will automatically
+                    group together these 4 setState() functions into one re-render. Keep in mind that this batching is only available
+                    in concurrent mode and blocking mode
+
+                                                                 CODE SPLITING
+                    Instead of downloading the entire app before users can use it, code-splitting allows you to split your code into 
+                    small chunks which you can then load on demand. React achieves this by using the React.lazy() and React.suspense()
+                    Code Splitting is also the idea of breaking down the UI into different components
+                    
+                                                              CONCURRENCY (react 18)
+                    Concurrency refers to having multiple tasks in progress at the same time (i.e tasks can overlap).
+                    React could only handle one task at a time in the past (which was referred to as Blocking rendering). 
+                    To solve this problem, concurrent mode was introduced in React as an experimental feature.
+                    Concurrency just means we can have two tasks on hand and can switch between them depending on the priority.
+                                            - To enable concurrent mode:    (index.js)
+                                                        const rootEl = document.getElementById("root")
+                                                        const root = ReactDOM.createRoot(rootEl);
+                                                        root.render(<App/>);                           
+                                            - To use legacy mode:             (index.js)
+                                                        const rootEl = document.getElementById('root')
+                                                        ReactDOM.render(<App />, rootEl)                                                                
+
+                           
+                                                               CLIENT SIDE RENDERING
+                      Client side rendering is the process of rendering your application on your browser (React does this by default)           
+                               1. First, we load the JavaScript to the client. When that has finished we can…                  
+                               2. Fetch the data from the server. When that has finished we can….
+                               3. We render the react components in the DOM… When that has finished we can…
+                               4. We can use the application. — see the content on the page, click on things etc.
+                                                           
+                                                                SERVER SIDE RENDERING
+                       Server side rendering is the process of rendering your application on the server and sending 
+                       it to the client as fully rendered HTML pages 
+                                1. First, we fetch data from the server for the entire application.                      
+                                2. Then we render the HTML for the entire application in the server and send it to the client
+                                3. Load javascript to the client for the entire application
+                                4. Then Hydrate the page for the entire application (rendering components and attaching event handlers)                           
+                        In React 18, suspense on the server (server-side rendering) is implemented by using the 'renderToPipeableStream' API
+                        renderToPipeableStream() is a new API that allows you to render a React tree to a pipeable Node.js stream, 
+                        which can improve the performance and user experience of server-side rendering          
+                                
+                        
+
+*/
+
+
 
 /* 
         steps to initialize React in your application
@@ -70,79 +157,6 @@
                10) then you should create a /components folder that will have all the functions and classes that are exported
         
 */      
-
-
-/* 
-
-                                                             FEATURES OF REACT
-
-                                                        COMPONENT RE-RENDERING PROCESS
-                    A component will be re-rendered (updated) when there is a change in the state object.
-                    Keep in mind that all state changes are asynchronous in react.
-                    DOM updates are also asynchronous.
-
-                                                                LIFECYCLE
-
-
-                                                       VIRTUAL DOM and RECONCILIATION ALGORITHM
-                    The virtual DOM is an exact copy of the REAL DOM, but it is used by React developers to 'mutate' the real DOM 
-                    in the most efficient way possible. Everytime we update the virtual DOM, what happens is that React will generate
-                    ANOTHER virtual DOM with the changes that we made, and will compare the new virtual DOM with the old virtual DOM,
-                    and calculate the most minimal way to update the real DOM. This in turn will increase performance of the application
-                    
-                    
-                                                        AUTOMATIC BATCHING (react 18)
-                    Batching is when React groups multiple setState updates into a single re-render for better performance.
-                    Lets say we have 4 setState() being called in succession inside of an event handler. React will automatically
-                    group together these 4 setState() functions into one re-render. Keep in mind that this batching is only available
-                    in concurrent mode and blocking mode
-
-                                                                 CODE SPLITING
-                    Instead of downloading the entire app before users can use it, code-splitting allows you to split your code into 
-                    small chunks which you can then load on demand. React achieves this by using the React.lazy() and React.suspense()
-                     Code Splitting is also the idea of breaking down the UI into different components
-                    
-                                                           CONCURRENCY MODE (react 18)
-                    Concurrency refers to having multiple tasks in progress at the same time (i.e tasks can overlap).
-                    React could only handle one task at a time in the past (which was referred to as Blocking rendering). 
-                    To solve this problem, concurrent mode was introduced in React as an experimental feature.
-                    Concurrency just means we can have two tasks on hand and can switch between them depending on the priority.
-                    
-                                            - To enable concurrent mode:    (index.js)
-                                                        const rootEl = document.getElementById("root")
-                                                        const root = ReactDOM.createRoot(rootEl);
-                                                        root.render(<App/>);
-                                                      
-                                            - To use legacy mode:             (index.js)
-                                                        const rootEl = document.getElementById('root')
-                                                        ReactDOM.render(<App />, rootEl)                                                                
-
-                           
-                                                               CLIENT SIDE RENDERING
-                      Client side rendering is the process of rendering your application on your browser (React does this by default)           
-                      
-                               1. First, we load the JavaScript to the client. When that has finished we can…                  
-                               2. Fetch the data from the server. When that has finished we can….
-                               3. We render the react components in the DOM… When that has finished we can…
-                               4. We can use the application. — see the content on the page, click on things etc.
-                                                           
-                                                                SERVER SIDE RENDERING
-                       Server side rendering is the process of rendering your application on the server and sending 
-                       it to the client as fully rendered HTML pages
-                       
-                                1. First, we fetch data from the server for the entire application.                      
-                                2. Then we render the HTML for the entire application in the server and send it to the client
-                                3. Load javascript to the client for the entire application
-                                4. Then Hydrate the page for the entire application (rendering components and attaching event handlers)                           
-                                        
-                        In React 18, suspense on the server (server-side rendering) is implemented by using the 'renderToPipeableStream' API
-                        renderToPipeableStream() is a new API that allows you to render a React tree to a pipeable Node.js stream, 
-                        which can improve the performance and user experience of server-side rendering          
-                                
-                        
-
-*/
-
 
 
 

@@ -185,9 +185,28 @@
 
 
     Facts to keep in mind
+        -When you create a state object in Vue, the state object will automatically be unwrapped
+         meaning that you don't have to use the value property of the state object.
+         Unwrapping only occurs if the ref() or reactive() functions are at the top level of your script
+
+                const state = ref(10);
+                console.log(state);            //you dont need the 'value' property here
+
+                const otherState = reactive({name: 'carlos', age: 23});
+                otherState.name;               //you dont need the 'value' property here
+
+        -When you have a state object that contains an array of other state objects,
+         those state objects will not be unwrapped automatically
+
+                const stateOne = ref(2)
+                const stateArray = ref(['1', 34, stateOne]);
+                stateArray[2].value;            //you need to use the 'value' property
+
+                
         -Do not pass down state as props directly
         -You can mutate the property values of a state directly
-        -You can assign a state object to another state object as a property
+        -You can assign a state object as a propetyy to another state object, 
+         any changes made to the state object will affect the parent state object
 
                 const stateOne = ref(1);
                 const stateTwo = reactive({            //changes made to stateTwo will also reflect on stateOne
@@ -258,7 +277,101 @@
 
 
 
+<!-- ============================================== PROPS ==================================================== -->
+<!-- 
+    You can pass data to a component using props
+    Keep in mind that props are immutable, meaning that you can't 
+    change the value of props once a component received it
+-->
 
+<script setup>
+    import SomeComponent from './SomeComponent.vue';     //assume this component has a prop called message
+    const { foo } = defineProps(['foo']);                //you can define props using an array 
+    const {title, likes} = defineProps({                 //you can also define props using an object
+      title: String,
+      likes: Number,
+      name: {                                           //prop validation, you can make a certain prop a requirement for a component
+        type: String,
+        required: true
+      },
+      group: {
+        validator(value, props) {
+          return ['success', 'warning', 'danger'].includes(value) // The value must match one of these strings
+        }
+  },
+    })
+</script>
+
+
+<template>
+    <div>
+        Props passed to this component is {{title}}
+    </div>
+    <SomeComponent :message="'expression/variable goes here'"/>       <!-- props can also be dynamic by using the v-bind directive -->
+</template>
+
+
+
+
+
+
+
+
+
+<!-- =========================================== COMPUTED() ===============================================
+<!-- 
+    You can use the Computed function from Vue to simplify a JS expression within your template
+
+    Keep in mind that computed() will be called automatically when one of its dependencies changes.
+    Even though a re-render will call all functions in the component, it will not call computed() unless 
+    the state object being used inside computed() causes the re-render.
+
+    computed() is similar to the useMemo() hook in react
+
+    You should only use state objects in computed()
+
+-->
+
+<script setup>
+    import {ref, computed} from 'vue';
+
+    const count = ref(0);
+    const firstName = ref('John')
+    const lastName = ref('Doe');
+    
+    // 1) computed() will only be called when the count state is updated
+    const computedRef = computed(() => {       
+          return count > 34 ? 'yes' : 'no';           //count is now a dependency of computedRef
+    })
+
+    // 2) you can use computed() to get and set a state object
+    const fullName = computed({                  
+          get(previous) {                            //you can also get the previous state in the getter method
+            return firstName + ' ' + lastName
+          }
+          set(newValue) {
+            [firstName, lastName] = newValue.split(' ')
+          }
+    })
+    fullName = 'Carlos barrang';        //will trigger the setter method
+    console.log(fullName);              //will trigger the getter method
+
+
+    // 3) you can get the previous state with callbacks
+    const alwaysSmall = computed((previous) => {   
+          if(count < 3)
+             return count;
+          return previous
+    })
+
+</script>
+
+
+<template>
+    <div> 
+        {{computedRef}}
+    </div>
+</template>
 
 
 

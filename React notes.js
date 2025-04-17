@@ -1,6 +1,26 @@
 /* 
         React is a JS library designed to make User Interfaces on the front-end.
 
+        Bookmarks:
+                1) Features of React
+                2) Steps to initialize a React app
+                3) Components (Function Components, Class Components, Controlled Components, Uncontrolled Components)
+                4) State 
+                5) Props (Child props, Prop validation)
+                6) Modularization (import and export statements)
+                7) Virtual DOM
+                8) JSX
+                9) Conditional Rendering
+                10) React Lists (Keys)
+                11) React Hooks
+                12) Memo()
+                13) React Router
+                14) Lazy Loading
+                15) Suspense
+                16) Server-side Rendering (Suspense on the server)
+                17) Debouncing
+                18) 
+
 
                                                              FEATURES OF REACT 
 
@@ -34,7 +54,7 @@
                     from other components, to the point that if a state change happens in one component, the other component will not be affected.
                     Each component will be responsible for its part in the UI.
                     
-                                                           AUTOMATIC BATCHING (react 18)
+                                                               AUTOMATIC BATCHING 
                     Batching is when React groups multiple setState updates into a single re-render for better performance.
                     Lets say we have 4 setState() being called in succession inside of an event handler. React will automatically
                     group together these 4 setState() functions into one re-render. Keep in mind that this batching is only available
@@ -45,7 +65,7 @@
                     small chunks which you can then load on demand. React achieves this by using the React.lazy() and React.suspense()
                     Code Splitting is also the idea of breaking down the UI into different components
                     
-                                                              CONCURRENCY (react 18)
+                                                                   CONCURRENCY 
                     Concurrency refers to having multiple tasks in progress at the same time (i.e tasks can overlap).
                     React could only handle one task at a time in the past (which was referred to as Blocking rendering). 
                     To solve this problem, concurrent mode was introduced in React as an experimental feature.
@@ -83,7 +103,7 @@
 
 
 /* 
-        steps to initialize React in your application
+        Steps to initialize React in your application
 
             0) npx create-react-app my-app
             
@@ -136,7 +156,7 @@
                      "build": "webpack --mode production"
               
               8) create /src folder with index.js and index.html (index.html must have <div id="root"> </div>)
-                      make sure to implement your <meta/> tags for SEO (DONT FORGET TO ADD A FAVICON!)
+                 make sure to implement your <meta/> tags for SEO (DONT FORGET TO ADD A FAVICON!)
                             <meta name="author" content="Abel Muro"/>       
                             <meta name="keywords" content="front-end quiz, html quiz, css quiz, javascript quiz, accessibility quiz"/>
                             <meta name="description" content="Front-end quiz that will test your skills in HTML, CSS, Javascript and Accessibility!"/> 
@@ -159,7 +179,7 @@
 // =========================================== COMPONENTS ================================================
 /* 
         React has two types of components, Class and Function commponents. These are the building blocks of React
-        We also have the following variations of components
+        We also have the following variations of function/class components
                 -Stateful components are components with a state.
                 -Stateless components are components with no state.
                 -Controlled components are components with a state that is binded to one of its inputs.
@@ -167,12 +187,13 @@
         
 
 */
-//------------------------------------- FUNCTION COMPONENTS
+
+
+//------------------------------------- FUNCTION COMPONENTS -------------------------------------
 //function components use hooks, go to the hooks section to learn more about hooks
 function App() {
         const [count, setCount] = useState();                //creating a state object with the useState() hook
         const myRef = useRef();                              //creating a ref object that can be used to reference an element in the real dom 
-        const 
 
         const handleCount = () => {
                 setCount(count + 1);
@@ -193,7 +214,7 @@ function App() {
 
 
 
-// --------------------------------------- CLASS COMPONENTS
+// ------------------------------------- CLASS COMPONENTS -------------------------------------
 // (class components are to be replaced with function components)
 class ClassComponent extends React.Component {                //extends means that ClassComponent is the child of React.Component (ClassComponent can access the methods and properties of React.Component)
 
@@ -261,11 +282,136 @@ X   componentWillUnmount() {                                //lifecycle method t
 
 
 
+//------------------------------------- PURE CLASS COMPONENTS -------------------------------------
+//Pure Components are class components that extends Pure.Component
+//These components do NOT rely on variables/objects defined outside of its scope
+//Passing the same argument to these components will always return the same result
+//These components will automatically re-render IF the previous state/props 
+// is different that the new state/props. If its not different, then the component will not re-render
+
+
+//this component will only re-render if the props or state change (similar to using the memo() function)
+class PercentageStat extends React.PureComponent {
+        
+   //shouldComponentUpdate(){}                  //you dont have to use this lifecycle method anymore in pure components            
+
+  render() {
+        const { label, score = 0, total = 56 } = this.props;
+
+        return (
+             <div>
+                 <h6>{ label }</h6>
+            </div>
+    )
+  }
+}
+
+
+//------------------------------------- CONTROLLED COMPONENTS -------------------------------------
+
+// CONTROLLED TEXT FIELD COMPONENTS
+function TextField() {
+        const [text, setText] = useState('');
+
+        const handleText = (e) => {
+                setText(e.target.value);
+        }
+
+        return (
+                <form>
+                        <input value={text} onChange={handleText}/>
+                </form>
+        )
+}
+
+
+
+// CONTROLLED RADIO BUTTON COMPONENTS
+function RadioButtons() {
+    const [radio, setRadio] = useState('one')
+
+    const handleChange = (e) => {
+        setRadio(e.target.value);
+    }
+
+
+    return(
+        <form>
+             <input 
+                  type='radio' 
+                  value='one'
+                  checked={payment === 'one'}                //radio button will be checked if expression returns true
+                  onChange={handleChange}
+                  name='one' />
+                          
+             <input 
+                  type='radio'
+                  value='two'
+                  checked={payment === 'two'}                    //radio button will not be checked if expression returns false
+                  onChange={handleChange}                        
+                  name='two' />
+        </form>
+    )
+}
+
+// CONTROLLED CHECKBOX COMPONENTS
+function CheckBoxes() {
+     const [blue, setBlue] = useState(false);
+     const [red, setRed] = useState(false);
+        
+     const handleBlue = () => {
+        setBlue(!blue);
+     }   
+        
+     const handleRed = () => {
+        setRed(!red);
+     }
+     
+     
+     return(
+            <form>
+                   <input 
+                       type="checkbox" 
+                       onChange={handleBlue} 
+                       checked={blue}                       //the checkbox will be checked if blue is a truthy value
+                     />
+                     <input 
+                       type="checkbox" 
+                       onChange={handleRed} 
+                       checked={red}                         //the checkbox will be unchecked if red is a falsey value
+                     />
+            </form>
+     )     
+}
+
+// ------------------------------------- UNCONTROLLED COMPONENTS -------------------------------------
+function Uncontrolled() {
+        const input = useRef("");
+        
+        const handleInput = () => {
+                console.log(input.current.value);               //you can access the value of the input using Ref
+        }
+        
+          
+        return(        
+            <form>
+                <input ref={input}>
+                <button onClick={handleInput}>
+                       "Click here"        
+                </button>
+            </form>
+        )
+}
 
 
 
 
-//=========================================== STATE ===========================================
+
+
+
+
+
+//=========================================== STATE OBJECT ================================================
 /* 
         A state is an object that contains data, when this data is updated or changed, it will cause a re-render
 */
@@ -274,8 +420,12 @@ X   componentWillUnmount() {                                //lifecycle method t
 function App() {
         const [count, setCount] = useState();
 
+        const handleCount = () => {
+                setCount(count + 1);
+        }
+
         return(
-           <button onClick={() => {setCount(count + 1)}}> 
+           <button onClick={handleCount}> 
                 Click here
            </button>
         )
@@ -287,7 +437,10 @@ function App() {
 
 
 
-//=========================================== PROPS ===========================================
+
+
+
+//=========================================== PROPS ================================================
 /* 
         Props means properties
         props are used to pass data from one component to another
@@ -295,7 +448,6 @@ function App() {
 
     
  function App() {
-        //you can pass any type of data as props to other components
         const [state, setState] = useState("exmaple");                                  //for passing state, its best that you use useContext() hook       
         let someString = "passing this as props";
         const someEventHandler = (e) => {
@@ -303,8 +455,7 @@ function App() {
         } 
        
         return (
-             <HomePage myString={someString} myEventHandler={someEventHandler} state={state}/>
-        
+             <HomePage myString={someString} myEventHandler={someEventHandler} state={state}/>   //you can pass any type of data as props to other components 
         )
  }
         
@@ -315,13 +466,124 @@ function App() {
  }
 
 
+//------------------------------------- CHILD PROPS -------------------------------------
+//you can pass nested elements in JSX to function components
+
+function CreateBorder({color, children}) {
+    return (                                                       
+        <div style={{color: color}}>                      
+            {children}                                         //props.children will be replaced by the nested elements
+        </div>
+    )                                                               
+}                                                                   
+
+
+function Dialog() {
+    return (                                                        
+        <CreateBorder color={"red"}>                                 /* everything inside <CreateBorder> </CreateBorder> will be passed as props.children */
+            <h1> Welcome Home </h1>                                    
+            <h2> Abel Muro</h2>
+        </CreateBorder>
+    )
+}
+
+
+
+//------------------------------------- PROPS VALIDATION -------------------------------------
+//You can validate the props of a component with propTypes, this can help reduce bugs and unexpected behavior
+
+import PropTypes from 'prop-types';
+
+function Greeting({ name }) {
+      return <h1> Hello, {name}! </h1>;
+}
+
+Greeting.propTypes = {
+  name: PropTypes.string.isRequired,         // Ensures 'name' is a required string
+  age: PropTypes.number.isRequired
+};
+
+export default Greeting;
 
 
 
 
-//=========================================== MODULARIZATION=========================================== 
 
-//--------------------------------------------DEFAULT IMPORT
+
+
+
+
+//=========================================== SYNTHETIC EVENTS AND EVENT HANDLERS ================================================
+//Keep in mind that React uses Synthetic events... 
+// ...and all browsers have their own set of native events (onClick, onSubmit, onChange, etc...) 
+// (although browsers all use the same name for the native events, some of them have different effects that are not consistent across all browsers)
+
+//React uses a cross-browser wrapper object that is usually named 'e' (synthetic event)
+//that pools together all the native events together and makes sure that the event works the same across all browsers
+//The whole point of this is to improve compatibility between all browsers and react
+//there may be cases where a native event may have a different
+
+
+
+function EvenHandlers() {
+        
+     const handleClick = (e) => {
+          e.target;
+          e.preventDefault();
+          alert("e is a synthetic event");
+     }
+     
+     function handleClicked(){
+          alert("e is a synthetic event")
+     }
+
+    return(
+        <>              //event handlers are always camelCase attributes
+              <button onClick={handleClick}> Click here </button>
+              <button onClick={(e) => {handleClicked(e)}}> Click here </button>
+        </>
+    )
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================== MODULARIZATION ================================================
+//You can use import and export statements to modularize your code
+
+// ./MyComponent.js
+function MyComponent() {
+        return (
+            <div> Hello World </div>
+        )
+}
+export default MyComponent;
+
+
+// ./App.js
+import MyComponent from './MyComponent.js';
+
+function App(){
+        return(
+             <MyComponent /> 
+        )
+}
+
+
+
+//------------------------------------- DEFAULT IMPORT -------------------------------------
 //each file can only have ONE export default
 
 // ./HomePage.js
@@ -334,21 +596,22 @@ import HomeComponent from './HomePage.js'              // you can use any name f
 
 
 
-//----------------------------------------------NAMED IMPORT
+//------------------------------------- NAMED EXPORT -------------------------------------
 //a file can export as many components/variables as you want
 
 // ./HomePage.js
-export Home;
+export {Home};
 export const number = 34;
 
 
 // ./App.js
 import {Home} from './HomePage.js';                         //this will work
-import {HomeComponent} from './HomePage.js'                 //this will NOT work because HomePage.js is not exporting HomeComponent
+import {HomeComponent} from './HomePage.js'                 //You can't change the name of a named export
 import {number as myNumber} from './HomePage.js'            //this will work
 import * as objectName from'./HomePage.js';                //this will import ALL of the named exports into an object
 
-//--------------------------------------------- DYNAMIC IMPORT
+
+//------------------------------------- DYNAMIC IMPORT -------------------------------------
 //instead of importing a moduleA with the import statement, you can dynamically load a module at runtime with the module() function
 //import() is a built-in function for JS
 
@@ -381,7 +644,12 @@ export default DynamicImport;
 
 
 
-//=========================================== VIRTUAL DOM ===========================================
+
+
+
+
+
+//=========================================== VIRTUAL DOM ================================================
 //How to render components onto the virtual DOM
 
 import ReactDOM, {hydrateRoot} 'react-dom/client';             //importing methods from built in packages in react
@@ -406,7 +674,7 @@ hydrateRoot.render(<App />);
 
 
 
-//=========================================== JSX ===========================================
+//=========================================== JSX ================================================
 //JSX stands for Javascript syntax extension, it was designed by React for the purpose of using HTML syntax in a javascript file
 //this greatly improves readability.
 //once you have written your JSX code (usually in the return statement of a function component or in the render() of a class component)
@@ -456,7 +724,11 @@ const element = React.createElement(
 
 
 
-//=========================================== CONDITIONAL RENDERING ===========================================
+
+
+
+
+//=========================================== CONDITIONAL RENDERING ================================================
 // You can use logical operators inside {} in JSX
 // {true && expression} will always return the expression
 // {false && expression} will not return anything
@@ -470,16 +742,46 @@ const element = React.createElement(
 
 
 
-//=========================================== REACT LISTS ===========================================
 
-// keys help React identify which items in a list have changed
-// the 'key' property has a special meaning in React, 
-// when you create an array of JSX elements, each element
-// must have a unique key that identifies it.
-// you can use any string as a key. but its best to use the 
-// relevant data from the list to identify the items
-        
-        
+
+
+
+
+
+
+//=========================================== REACT LISTS ================================================
+
+/* 
+        A React list is an array of JSX elements, each of these elements
+        must have a key prop to help identify the item in the list.
+        React will use the key to see which items in a list have changed.
+        If the key of an item has changed, then the item will be re-rendered.
+        But if the key doesn't change, then the item will be left alone.
+        All keys should have unique values, and they should represent the data
+        in the list.
+
+        You should not use the index of the array as the key of an item for the reasons below..
+
+        <ul>
+                <li key=0 > 0 </li>        <---    lets say we delete this item from the list
+                <li key=1 > 1 </li>
+                <li key=2 > 2 </li>
+                <li key=3 > 3 </li>
+        </ul>
+
+
+        -deleting an item will cause a re-render, but because we have to iterate through the list again
+        every item will have a new key, thus re-rendering ALL 
+
+        <ul>
+                <li key=0 > 1 </li>                    // <li> 1 </li> used to have a key that was set to 1, but now it is 0
+                <li key=1 > 2 </li>                    // all the list items have had their keys changed as well
+                <li key=2 > 3 </li>                    // now React will look at this and will re-render all the items because their keys have changed
+        </ul>
+
+*/
+
+   
 function MakeList(props) {
     const [names, setNames] = useState(['david', 'carlos', 'stephanie'])
         
@@ -493,69 +795,18 @@ function MakeList(props) {
 
 
 
-//KEEP IN MIND that you should not use the index of a list item as a key.. take the example below
-
-function Keys () {
-     const [list, setList] = useState(["foo", "bar", "baz"]);
-        
-     const deleteItem = (e) => {
-           const indexToDelete = e.target.key;  
-           const newList = list.filter((item, index) => { 
-                   if(index !== indexToDelete)
-                       return false;
-                   else
-                        return true;
-           })
-           setList(newList);
-     }        
-       
-      return(
-             <ul>
-                {list.map((item, i) => {
-                     return(<li key={i} onClick={deleteItem}> {item[i]} </li>)
-                })}       
-             </ul>
-      )  
-}
-
-
-//VISUAL presentation
-
-/* 
-        <ul>
-                <li key=0 > 0 </li>        <---       //lets say we delete this item from the list
-                <li key=1 > 1 </li>
-                <li key=2 > 2 </li>
-                <li key=3 > 3 </li>
-        </ul>
-
-
-        //deleting an item will cause a re-render, so we will have to iterate through the list again
-
-        <ul>
-                <li key=0 > 1 </li>                    // <li> 1 </li> used to have a key that was set to 1, but now it is 0
-                <li key=1 > 2 </li>                    // all the list items have had their keys changed as well
-                <li key=2 > 3 </li>                    // now React will look at this and will re-render all the items because their keys have changed
-        </ul>
-
-
-*/
 
 
 
 
-
-
-
-
-//=================================================== REACT HOOKS ==============================================================================
+//=========================================== REACT HOOKS ================================================
 //import React, { useEffect, useState, createContext } from 'react';
 //hooks are functions that let you 'hook into' React features from function components
 
 
 
 
-//----------------------------------------------------------------USE STATE HOOK---------------------------------------------------------
+//------------------------------------- USE STATE() HOOK -------------------------------------
 
 // useState() hook lets you declare a state object and a function that can be used to update that state object...
 // after the component has been rendered for the second time, useState will have its argument ignored 
@@ -594,7 +845,7 @@ function HooksTwo() {
 
 
 
-//------------------------------------------------------------- USE EFFECT HOOK-----------------------------------------------------
+//------------------------------------- USE EFFECT() HOOK -------------------------------------
 // useEffect() is a combination of ComponentDidMount, ComponentDidUpdate, ComponentWillUnmount
 // this function gets called after the first render, after every re-render, and once the component is unmounted from the DOM
 // you can have multiple useEffect() hooks in the same function component, this is useful for separating unrelated code and uniting related code
@@ -617,7 +868,7 @@ function HooksThree() {
     )                               
 }       
 
-//------------------------------------------------ MAPPING LIFECYCLE METHODS WITH USE EFFECT----------------------------------------------------------------
+//------------------------------------- MAPPING LIFECYCLE METHODS WITH USEEFFECT() -------------------------------------
 
 // Mounting Phase
 
@@ -654,7 +905,7 @@ useEffect(() => {
 
 
 
-//------------------------------------------------------------USE LAYOUT EFFECT HOOK----------------------------------------------------------------
+//------------------------------------- USE LAYOUT EFFECT() HOOK -------------------------------------
 //useLayoutEffect is similar to useEffect(), the difference here is that useLayoutEffect() gets called BEFORE each render.
 //this is usefull if you want to make changes to the DOM after the state object is updated.
 //using useEffect to make changes to the DOM can cause a flickering effect
@@ -663,25 +914,27 @@ useEffect(() => {
 
 
 function Example() {
+        const [state, setState] = useState(0);
+
+        const handleClick = () => {
+            setState(state + 1);
+        }
         
         useLayoutEffect(() => {
-             const document.querySelector("div").innerHTML = 5;                 //this is typically how you want to use useLayoutEffect()
-        })
+             console.log('before render happens')
+        }, [state])
         
         return(
-              <div>
+              <button onClick={handleClick}>
                   3
-              <div>
+              </button>
         )
 }
 
 
 
 
-
-
-
-//------------------------------------------------------------ USE CONTEXT HOOK --------------------------------------------
+//------------------------------------- USE CONTEXT() HOOK -------------------------------------
 // you can pass state object and setState() to child components by using createContext() and useContext()
 //its a good idea to export const StateObject = createContext() if you are modularizing your code
 // Rememeber that its a good idea to use high order components to augment the App component with Context
@@ -723,10 +976,7 @@ function AnotherComponent() {
 
 
 
-
-
-
-//----------------------------------------------------------- USE REF HOOK -----------------------------------------------------
+//------------------------------------- USE REF() HOOK -------------------------------------
 // useRef() is a hook that can creates a constant reference to an element or can be used to store a value
 // keep in mind that useRef() is a way to bypass the virtual DOM and directly access the underlying element in the real DOM
 // this hook does not cause a re-render everytime it gets updated
@@ -813,7 +1063,7 @@ function Ref() {
 
 
 
-//----------------------------------------------------------- FORWARD REF() -----------------------------------------------------------
+//------------------------------------- FORWARD REF() HOOK -------------------------------------
 //you can use useRef() and forwardRef() together to make a parent component have control over an element in a child component
 //keep in mind that forwardRef() on a component has the same functionality as a regular React component,
 //the only difference is that you can now pass a ref along with the props
@@ -844,7 +1094,7 @@ const ChildComponent = forwardRef((props, ref) => {
 
 
 
-//------------------------------------------------------USE IMPERATIVE HANDLE HOOK-----------------------------------------------------------------
+//------------------------------------- USE IMPERATIVE HANDLE() HOOK -------------------------------------
 //useImperativeHandle() was designed to be used together with forwardRef(), it enables the parent component to access MULTIPLE refs from the child component
 //also keep in mind that the parent component can access ANYTHING from the child component, including state
 
@@ -893,7 +1143,7 @@ const ChildComponent = forwardRef((props, ref) => {
 });
 
 
-//---------------------------------------------------- USE REDUCER HOOK ------------------------------------------------------------------
+//------------------------------------- USE REDUCER() HOOK -------------------------------------
 // useReducer() can be used to extract state management logic out of a component
 // however, the component will still be a statefull componenent, because it still owns the state object
 // this hook must be used with useContext hook to pass down state and the dispatcher
@@ -921,7 +1171,6 @@ function reducer (state, action) {
     }
 }
 
-//below is the syntax for a component that uses a reducer
 function MyComponent() {
     //dispatch is a function that will dispatch an action to the reducer
     const [state, dispatch] = useReducer(reducer, initialState);           
@@ -938,21 +1187,15 @@ function MyComponent() {
 
     return (
         <>
-            //the buttons below will dispatch actions to the reducer
             <button onClick={()=> dispatch(actionOne)}> Click here to dipatch</button>
             <button onClick={()=> dispatch(actionTwo)}> Click here to dipatch</button>
-
-            //the component below and all of its child components will be able to use the reducer and the state
-            <StateObject.Provider value={{state, dispatch}}>
-                    <SomeComponent />                           //make sure to use view notes about useContext()
-            </StateObject.Provider>
         </>  
     )
 }
 
 
 
-//-------------------------------------------------- USE CALLBACK HOOK ----------------------------------------------------
+//------------------------------------- USE CALLBACK() HOOK -------------------------------------
 //useCallback() can be used to force a function to only be recreated when a certain variable changes
 //useCallback() was designed to be used with a memoized component(component that gets exported with memo())
 //keep in mind that everytime a component get re-rendered, the functions get recreated, which can potentially affect performance
@@ -978,7 +1221,7 @@ function UsingCallbackHook() {
 
 
 
-//-------------------------------------------------- USE MEMO HOOK -------------------------------------------------------------
+//------------------------------------- USE MEMO() HOOK -------------------------------------
 // useMemo() can be used to force a function to run only when a certain state/object has changed
 // this hook should be used for functions that require alot of processing power or just take a long time
 
@@ -1019,7 +1262,7 @@ function expensiveCalculation() {
 }
 
 
-//----------------------------------------------- USE TRANSITION HOOK -----------------------------------------------
+//------------------------------------- USE TRANSITION() HOOK -------------------------------------
 // Transitions is a feature that takes a heavy computational task and reserves it for a low priority queue
 // In React, we create transitions with the useTransition hook
 // For Example, typing in an <input/> has high priority but is a light computational task
@@ -1066,7 +1309,7 @@ function SearchBar() {
 }
 
 
-//--------------------------------------------- USE DEFERRED VALUE HOOK---------------------------------------------------
+//------------------------------------- USE DEFFERED VALUE() HOOK -------------------------------------
 // useDeferredHook() will accept a state variable as an argument and will return a 'copy' of the state. 
 // The changes made to the original state will have high priority
 // The changes made to the copy state will have low priority
@@ -1117,7 +1360,7 @@ function App() {
   );
 }
 
-//----------------------------------------------- USE ID HOOK ---------------------------------------------------------------------
+//------------------------------------- USEID() HOOK -------------------------------------
 // useID() can be used to generate a unique id
 
 function App() {
@@ -1130,6 +1373,26 @@ function App() {
         )
 }
 
+//------------------------------------- CUSTOM HOOKS -------------------------------------
+// Custom hooks are designed to share code between functional components
+
+
+function useFetch(url) {
+      const [data, setData] = useState(null);           
+
+        const makeFetch = () => {
+             fetch(url)
+                   .then((response) => response.json())
+                   .then((data) => setData(data))
+                   .catch((error) => {setData(error)})
+        }
+        
+        useEffect(() => {
+               makeFetch();
+        }, [url])
+        
+        return [data, makeFetch];                               //the state must be returned from this hook to cause a re-render on the parent component
+}                                                               //you can also pass the setData function to cause a re-render in this hook AND the parent component
 
 
 
@@ -1137,7 +1400,16 @@ function App() {
 
 
 
-//=========================================================== MEMO() ===========================================================================================
+
+
+
+
+
+
+
+
+
+//=========================================== MEMO() ================================================
 // memo() is used to force a function to only re-render when its props have changed, this can improve performance.
 
 //look at the example below...
@@ -1190,107 +1462,6 @@ function MyApp() {
 
 
 
-//============================================= PURE CLASS COMPONENTS ==========================================================
-//Pure Components are class components that extends Pure.Component
-//These components do NOT rely on variables/objects defined outside of its scope
-//Passing the same argument to these components will always return the same result
-//These components will automatically re-render IF the previous state/props 
-// is different that the new state/props. If its not different, then the component will not re-render
-
-
-//this component will automatically re-render if props is different from the previous props
-class PercentageStat extends React.PureComponent {
-        
-   //shouldComponentUpdate(){}                  //you dont have to use this lifecycle method anymore in pure components            
-
-  render() {
-        const { label, score = 0, total = Math.max(1, score) } = this.props;
-
-        return (
-             <div>
-                 <h6>{ label }</h6>
-                 <span>{ Math.round(score / total * 100) }%</span>
-            </div>
-    )
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=========================================== ERROR BOUNDARY CLASS COMPONENT ===========================================
- // Error Boundaries are basically class components that will catch any errors that are thrown in any child component
- // The idea is to wrap your entire application with these Error Boundaries and it will automatically detect any errors thrown from the child
- // keep in mind that the try catch block will only work with vanilla JS, look at the example below
- 
- // keep in mind that the <ErrorBoundary/> will automatically catch errors in the components nested within
- 
- import ErrorBoundary from './ErrorBoundary.js';
- 
- function App() {
-       return (                 {/* ErrorBoundary will not catch errors from event handlers, Asynchronous code*/}
-            <>  
-              <ErrorBoundary>                 
-                    <MyComponent/>
-              </ErrorBoundary/>
-            </>
-          )
-}
-  
-// ./ErrorBoundary.js
- class ErrorBoundary extends Component {
-         constructor(props) {
-            super(props);
-            this.state = { error: false, message: '' };
-         }
-         
-         static getDerivedStateFromError(error) {
-            return { 
-                    error: true, 
-                    message: error.toString()                        // Updating state (this method will automatically catch errors in the child component)
-                  };            
-          }
-
-          render() {
-            const { error, message } = this.state;
-            const { children } = this.props;
-
-            return error ? 
-                        <div> 
-                            {message} 
-                        </div>  : 
-                        children;
-          }
-}
-
-
-//MyComponent.js
- class MyComponent extends React.Component {
-          constructor(props) {
-            super(props);
-            this.state = { data: null };
-          }
-        
-          componentDidMount() {
-            fetch("https://invalid.url")                // This will throw an error because the URL is invalid
-              .then((response) => response.json())
-              .then((data) => this.setState({ data }));
-          }
-        
-          render() {
-             return <div>{this.state.data.length}</div>;       // This will also throw an error if data is null
-          }
-        }
 
 
 
@@ -1304,7 +1475,7 @@ class PercentageStat extends React.PureComponent {
 
     
 
-//==================================================== REACT ROUTER ==============================================================================
+//=========================================== REACT ROUTER ================================================
 // React Routers vs Conventional Router
 // React Routers is Client-side routing
 // Conventional Router is Server-side routing
@@ -1385,7 +1556,7 @@ function NavigationBar() {
     )
 }
 
-//--------------------------------------------------------- (1) ------------------------------------------------------------------------------------------- 
+//------------------------------------- (1) -------------------------------------
 //nested Routes that will display and replace the <Outlet />
 function NestedNavigationBar() {
     return(
@@ -1398,7 +1569,7 @@ function NestedNavigationBar() {
 }
                            
                            
-//------------------------------------------------------------ (2) ---------------------------------------------------------------------------- 
+//------------------------------------- (2) -------------------------------------
 //Routes can pass URL parameters to other routes 
 function DonateUs() {
     const navigate = useNavigate();                                //this hook is used to navigate to a different page, its useful if its used inside even handlers          
@@ -1424,7 +1595,7 @@ function Whatever() {
      navigate("/DonateUs/" + repoName + otherRepoName + "somethingElse");   
      
 }
-//--------------------------------------------------------------- (3) useParams() hook---------------------------------------------------------------------------------------
+//------------------------------------- (3) -------------------------------------
 //useParams() hook is used to pass url parameters from one route to another
 
 function Complaints() {      
@@ -1455,7 +1626,7 @@ function PageTwo(){
 
 
 
-//---------------------------------------------------------------- (4) ---------------------------------------------------------------------------------------
+//------------------------------------- (4) -------------------------------------
 //default page that appears when the user accesses a page that doesnt exist
 
 function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}
@@ -1467,7 +1638,7 @@ function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}
 
 
 
-//------------------------------------------------------- useLocation() and useNavigate() hook ----------------------------------------------------------------------------------
+//------------------------------------- USE LOCATION() HOOK and USE NAVIGATE() HOOK -------------------------------------
 //useNavigate() is used to navigate to a different route in the app
 //useLocation() is used to get information from the current route AND to pass data from one route to another
 
@@ -1510,7 +1681,11 @@ function AboutUs() {
 
 
 
-//---------------------------------------------- LAZY LOADING ----------------------------------------------
+
+
+
+
+//=========================================== LAZY LOADING ================================================
 //lazy loading is the technique of making certain parts of a website have a delay in loading, instead of having the entire website load in one go.
 //this can greatly improve loading time for a website
 
@@ -1525,7 +1700,18 @@ function App() {
         )
 }
 
-//-------------------------------------------- SUSPENSE ------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+//=========================================== SUSPENSE ================================================
 // Suspense lets you specify a loading screen for a part of the component tree if it’s not yet ready to be displayed
 // Before React 18, <Suspense/> was designed to display a loading screen when a component was being lazy loaded.
 
@@ -1561,7 +1747,20 @@ function App() {
 
 
 
-//--------------------------------------------- SUSPENSE ON THE SERVER ------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================== SUSPENSE ON THE SERVER (SERVER SIDE RENDERING) ================================================
 //Below is an example of implementing suspense on the server (server side rendering)
 
 
@@ -1627,7 +1826,23 @@ server.listen(3000, () => {
 
 
 
-//======================================================= DEBOUNCING ===============================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================== DEBOUNCING ================================================
 //Debouncing is the idea that some function will be triggered when the user stops typing
 //The logic below works like this...
 //The onChange event handler will detect any changes made by the user.
@@ -1677,328 +1892,87 @@ function debounce(cb, d) {
 
 
 
-//------------------------------------------------- SYNTHETIC EVENTS and EVENT HANDLERS-------------------------------------------------------------------------------------------------------------------
-//Keep in mind that React uses Synthetic events... 
-// ...and all browsers have their own set of native events (onClick, onSubmit, onChange, etc...) 
-// (although browsers all use the same name for the native events, some of them have different effects that are not consistent across all browsers)
-
-//React uses a cross-browser wrapper object that is usually named 'e' (synthetic event)
-//that pools together all the native events together and makes sure that the event works the same across all browsers
-//The whole point of this is to improve compatibility between all browsers and react
-//there may be cases where a native event may have a different
 
 
 
-function EvenHandlers() {
-        
-     const handleClick = (e) => {
-          e.target;
-          e.preventDefault();
-          alert("e is a synthetic event");
-     }
-     
-     function handleClicked(){
-          alert("e is a synthetic event")
-     }
 
-    return(
-        <>              //event handlers are always camelCase attributes
-              <button onClick={handleClick}> Click here </button>
-              <button onClick={(e) => {handleClicked(e)}}> Click here </button>
-        </>
-    )
 
+
+
+//=========================================== ADVANCED CONCEPTS IN REACT ================================================
+
+
+
+
+
+//------------------------------------- ERROR BOUNDARY CLASS COMPONENT -------------------------------------
+ // Error Boundaries are basically class components that will catch any errors that are thrown in any child component
+ // The idea is to wrap your entire application with these Error Boundaries and it will automatically detect any errors thrown from the child
+ // keep in mind that the try catch block will only work with vanilla JS, look at the example below
+ 
+ // keep in mind that the <ErrorBoundary/> will automatically catch errors in the components nested within
+ 
+ import ErrorBoundary from './ErrorBoundary.js';
+ 
+ function App() {
+       return (                 {/* ErrorBoundary will not catch errors from event handlers, Asynchronous code*/}
+            <>  
+              <ErrorBoundary>                 
+                    <MyComponent/>
+              </ErrorBoundary/>
+            </>
+          )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//--------------------------------------------------------------------CONTROLLED COMPONENTS---------------------------------------------------------------------------
-
-// Controlled components are components that bind its state to its input, select, textfields, etc...
-// Uncontrolled components are components that dont bind its state to its input, select, textfields
-// you have better control of what is being inputed by the user
-// KEEP IN MIND, that the value attribute is ONLY for controlled components
-
-
-
-// CONTROLLED TEXT FIELDS COMPONENTS
-function Login() {                  
-    const [password, setPassword] = useState(""); 
-    const inputElement = useRef();
-    let disable = password.length < 6 || password.match(/[a-zA-Z]/g) == null || password.match(/\d/g) == null || password.match(/\W/g) == null;   //password must has at least one leter, one digit, and must have a non alphanumeric character and must be greater than 6 characters  
-             
-    const handleFocus = () => {                                         //onFocus event is triggered when the user clicks on an input
-       //you can do some styling here to indicate the input is focused on
-    }
-
-    const handleBlur = () => {                                          //onBlur event is triggered when the user clicks on something else that is not the input
-        if(inputElement.current.checkValidity()){               
-            //you can do some styling here to indicate the input is valid           
-        }
-        else{
-            //you can do some styling here to indicate the input is invalid
-        }
-    } 
-    
-    const handleInvalid = (e) => {                                      //onInvalid event is triggered when the user click on submit and the input is invalid
-        e.target.setCustomValidity(' ')                                 //this may remove the default message box that appears for invalid inputs
-    }                                                                   //but make sure to pass an empty string to setCustomValidity('') when the user starts typing again
-            
-
-    const handleChange = (e) => {                                       //onChange event is triggered everytime the user types in something in the input
-          setPassword(e.target.value);
-    }
-   
-    useEffect(() => {
-         inputElement.current.setCustomValidity('');                    //its a good idea to remove the invalid state of the input once the user starts typing again 
-    }, [password])
   
-    return(
-        <>
-            <form>
-                <input 
-                     type="password" 
-                     onFocus={handleFocus} 
-                     onBlur={handleBlur} 
-                     onInvalid={handleInvalid} 
-                     value={password} 
-                     onChange={handleChange}
-                     ref={inputElement}
-                />
-                <input disabled={disabled} type="submit" value="Login"/>      
-            </form> 
-        </>
+// ./ErrorBoundary.js
+ class ErrorBoundary extends Component {
+         constructor(props) {
+            super(props);
+            this.state = { error: false, message: '' };
+         }
+         
+         static getDerivedStateFromError(error) {
+            return { 
+                    error: true, 
+                    message: error.toString()                        // Updating state (this method will automatically catch errors in the child component)
+                  };            
+          }
 
-    )
+          render() {
+            const { error, message } = this.state;
+            const { children } = this.props;
+
+            return error ? 
+                        <div> 
+                            {message} 
+                        </div>  : 
+                        children;
+          }
 }
 
 
-
-
-
-// CONTROLLED RADIO BUTTON COMPONENTS
-
-function PaymentDetails() {
-    const [payment, setPayment] = useState('eMoney')
-
-    const handleChange = (e) => {
-        setPayment(e.target.value);
-    }
-
-    useEffect(() => {
-        if(payment === 'eMoney'){
-            //you can do some styling here
+//MyComponent.js
+ class MyComponent extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = { data: null };
+          }
+        
+          componentDidMount() {
+            fetch("https://invalid.url")                // This will throw an error because the URL is invalid
+              .then((response) => response.json())
+              .then((data) => this.setState({ data }));
+          }
+        
+          render() {
+             return <div>{this.state.data.length}</div>;       // This will also throw an error if data is null
+          }
         }
 
-        else if(payment === 'cash on delivery'){
-            //you can do some styling here
-        }
-    }, [payment])
-
-
-    return(
-        <form>
-             <input 
-                  type='radio' 
-                  value='eMoney'
-                  checked={payment === 'eMoney'}
-                  onChange={handleChange}
-                  name='paymentMethod'/>
-                          
-             <input 
-                  type='radio'
-                  value='cash on delivery'
-                  checked={payment === 'cash on delivery'}
-                  onChange={handleChange}                        
-                  name='paymentMethod'/>
-        </form>
-    )
-}
 
 
 
-
-
-
-//CONTROLLED CHECKBOX COMPONENTS
-
-function CheckBoxes() {
-     const [blue, setBlue] = useState(false);
-     const [red, setRed] = useState(false);
-     const [yellow, setYellow] = useState(false);
-        
-     const handleBlue = () => {
-        setBlue(!blue);
-     }   
-        
-     const handleRed = () => {
-        setRed(!red);
-     }
-     
-     const handleYellow = () => {
-        setYellow(!yellow);
-     }
-     
-     useEffect(() => {
-        if(blue)
-             //you can do some styling here
-     
-     }, [blue])
-     
-     useEffect(() => {
-        if(red)
-             //you can do some styling here
-     
-     }, [red])
-
-     useEffect(() => {
-        if(yellow)
-             //you can do some styling here
-     
-     }, [yellow])
-     
-     return(
-            <form>
-                   <input 
-                       type="checkbox" 
-                       onChange={handleBlue} 
-                       checked={blue} 
-                     />
-                     <input 
-                       type="checkbox" 
-                       onChange={handleRed} 
-                       checked={red} 
-                     />
-                     <input 
-                       type="checkbox" 
-                       onChange={handleYellow} 
-                       checked={yellow} 
-                     />
-            </form>
-     
-     )
-     
-}
-
-
-
-//--------------------------------------------------------- Uncontrolled Components --------------------------------------------------------------------
-//Components that handle data WITHOUT its state binded to the inputs are called uncontrolled components
-//You can use defaultValue attribute on uncontrolled inputs
-
-function Uncontrolled() {
-        const input = useRef("");
-        
-        const handleInput = () => {
-                console.log(input.current.value);               //you can access the value of the input using Ref
-        }
-        
-          
-        return(        
-            <form>
-                <input ref={input}>
-                <button onClick={handleInput}>
-                       "Click here"        
-                </button>
-            </form>
-        )
-        
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//----------------------------------------------------------------CHILD PROPS---------------------------------------------------------------------------------------------
-//remember that PROPS can accept any primitive value, React components and functions
-
-//you can pass nested elements in JSX to function components
-function CreateBorder(props) {
-    return (                                                       
-        <div style={{color: props.color}}>                      
-            {props.children}                                         //props.children will be replaced by the nested elements
-        </div>
-    )                                                               
-}                                                                   
-
-
-function Dialog() {
-    return (                                                        
-        <CreateBorder color={"red"}>                                 /* everything inside <CreateBorder> </CreateBorder> will be passed as props.children */
-            <h1> Welcome Home </h1>                                    
-            <h2> Abel Muro</h2>
-        </CreateBorder>
-    )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//------------------------------------------------------ LIFTING STATE UP ------------------------------------------------------
+//------------------------------------- LIFTING STATE UP -------------------------------------
 // Lifting state up is the idea that when two components rely on the same data in state, you can make those two components
 // into siblings in a parent component, and then you can 'lift' the state up to the parent component instead of having 
 // the state in both siblings
@@ -2057,36 +2031,7 @@ function DisplayListLength(props) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//======================================================= ADVANCED CONCEPTS IN REACT ===============================================
-
-
-
-
-
-
-
-
-
-
-//---------------------------------------------------------------- RENDER PROPS ---------------------------------------------------------
+//------------------------------------- RENDER PROPS -------------------------------------
 // Render props is basically a function that is passed to a component, this function tells the component what to render
 // the idea with Render Props is to sharing code between react components by using props whose value is a function/component
 // the whole point of render props is to re-use stateful behavior and pass the state down to the child components
@@ -2181,7 +2126,7 @@ function App{
 
 
 
-//----------------------------------------------------------------- HIGH ORDER COMPONENTS (HoC) ------------------------------------------------
+//------------------------------------- HIGH ORDER COMPONENTS (HOC) -------------------------------------
 //High order components are components that take in another component as an argument, 
 // enhance it somehow, and then return the same component
 //The whole point of these HoC is to re-use component behavior such as re-using event handlers and lifecycle methods
@@ -2235,68 +2180,6 @@ function App(){
         </>
      )   
 }
-
-
-//you can also use HOC to sepat
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//------------------------------------------------------- CUSTOM HOOKS ---------------------------------------------------------------------------
-// Custom hooks are designed to share code between functional components
-
-
-function useFetch(url) {
-      const [data, setData] = useState(null);           
-        
-        useEffect(() => {
-               fetch(url)
-                   .then((response) => response.json())
-                   .then((data) => setData(data))
-                   .catch((error) => {setData(error)})
-        }, [url])
-        
-        return [data];                                          //the state must be returned from this hook to cause a re-render on the parent component
-}                                                               //you can also pass the setData function to cause a re-render in this hook AND the parent component
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//-------------------------------------------------------------------THINKING IN REACT--------------------------------------------------------
-
-//React recommends that you break down a UI component into smaller components.
-//the first step is to build a static version of the UI, that is.. only using props to pass down data from parent to child component
-//the second step is to identify which data can be stored inside state, (data must be mutable data)
-//the third step is to then implement the state object on the parent component, (identify where state should live)
-//the fourth step is to actually change the state object with event handlers
-
-
 
 
 

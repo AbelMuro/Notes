@@ -4,22 +4,23 @@
         Bookmarks:
                 1) Features of React
                 2) Steps to initialize a React app
-                3) Components (Function Components, Class Components, Controlled Components, Uncontrolled Components)
-                4) State 
-                5) Props (Child props, Prop validation)
-                6) Modularization (import and export statements)
-                7) Virtual DOM
-                8) JSX
-                9) Conditional Rendering
-                10) React Lists (Keys)
-                11) React Hooks
-                12) Memo()
-                13) React Router
-                14) Lazy Loading
-                15) Suspense
-                16) Server-side Rendering (Suspense on the server)
-                17) Debouncing
-                18) 
+                3) State
+                4) Props (Child props, Prop validation)
+                5) JSX
+                6) React Lists (Keys)
+                7) Synthetic Events and Event handlers
+                8) Modularization (import and export statements)
+                9) Components (Function Components, Class Components, Controlled Components, Uncontrolled Components)
+                10) Virtual DOM (Client side rendering and server side rendering)
+                11) Conditional Rendering
+                12) React Hooks
+                13) Memo()
+                14) React Router
+                15) Lazy Loading
+                16) Suspense
+                17) Server-side Rendering (Suspense on the server)
+                18) Debouncing
+                19) Advanced Concepts in React (Error Boundaries, Lifting State up, Render Props, High order components)
 
 
                                                              FEATURES OF REACT 
@@ -173,6 +174,363 @@
                10) then you should create a /components folder that will have all the functions and classes that are exported
         
 */      
+
+
+
+
+
+//=========================================== STATE OBJECT ================================================
+/* 
+        A state is an object that contains data, when this data is updated or changed, it will cause a re-render
+*/
+
+
+function App() {
+        const [count, setCount] = useState();
+
+        const handleCount = () => {
+                setCount(count + 1);
+        }
+
+        return(
+           <button onClick={handleCount}> 
+                Click here
+           </button>
+        )
+}
+
+
+
+
+
+
+
+
+
+
+//=========================================== PROPS ================================================
+/* 
+        Props means properties
+        props are used to pass data from one component to another
+*/
+
+    
+ function App() {
+        const [state, setState] = useState("exmaple");                                  //for passing state, its best that you use useContext() hook       
+        let someString = "passing this as props";
+        const someEventHandler = (e) => {
+             console.log(e.target);
+        } 
+       
+        return (
+             <HomePage myString={someString} myEventHandler={someEventHandler} state={state}/>   //you can pass any type of data as props to other components 
+        )
+ }
+        
+ function HomePage(props){
+        props.myString;                                 //"passing this as props"
+        props.someEventHandler();                       //event handler that was passed as props
+        props.state;                                    //passing the state object to child components   
+ }
+
+
+//------------------------------------- CHILD PROPS -------------------------------------
+//you can pass nested elements in JSX to function components
+
+function CreateBorder({color, children}) {
+    return (                                                       
+        <div style={{color: color}}>                      
+            {children}                                         //props.children will be replaced by the nested elements
+        </div>
+    )                                                               
+}                                                                   
+
+
+function Dialog() {
+    return (                                                        
+        <CreateBorder color={"red"}>                                 /* everything inside <CreateBorder> </CreateBorder> will be passed as props.children */
+            <h1> Welcome Home </h1>                                    
+            <h2> Abel Muro</h2>
+        </CreateBorder>
+    )
+}
+
+
+
+//------------------------------------- PROPS VALIDATION -------------------------------------
+//You can validate the props of a component with propTypes, this can help reduce bugs and unexpected behavior
+
+import PropTypes from 'prop-types';
+
+function Greeting({ name }) {
+      return <h1> Hello, {name}! </h1>;
+}
+
+Greeting.propTypes = {
+  name: PropTypes.string.isRequired,         // Ensures 'name' is a required string
+  age: PropTypes.number.isRequired
+};
+
+export default Greeting;
+
+
+
+
+
+
+
+
+//=========================================== JSX ================================================
+//JSX stands for Javascript syntax extension, it was designed by React for the purpose of using HTML syntax in a javascript file
+//this greatly improves readability.
+//once you have written your JSX code (usually in the return statement of a function component or in the render() of a class component)
+// React will then convert the JSX code into React.createElement(), which will actually create an element in the DOM
+
+//remember, any valid javascript expression is allowed inside {}    
+//the attributes used in JSX are very similar to the regular attributes in HTML
+//but most are written in camelCase
+            
+function UsingJSX() {
+        
+        //you can use any html semantic tag in JSX, the only difference is that some of the attributes are spelled differently
+        return(
+               <>
+                   <h1 className="someClass"> 
+                        "hello," + {name} 
+                   </h1>
+                   <a href={"http://www.google.com"}> 
+                       "click here" 
+                   </a>
+                   <p> 
+                       {example()} 
+                   </p>    
+                   <div>                                                       
+                        <p>
+                           "you can create elements with children"
+                        </p>
+                        <p>
+                           "like this as well"
+                        </p>
+                   </div>
+               </>     
+        )
+}
+            
+         
+//JSX will get transpiled to the function below by babel
+const element = React.createElement(
+    'h1',                                                       //tag name
+    {className: "myClass"},                                     //attributes
+    'hello, world'                                              //content
+)
+
+
+
+
+
+
+
+
+
+        
+
+
+//=========================================== REACT LISTS ================================================
+
+/* 
+        A React list is an array of JSX elements, each of these elements
+        must have a key prop to help identify the item in the list.
+        React will use the key to see which items in a list have changed.
+        If the key of an item has changed, then the item will be re-rendered.
+        But if the key doesn't change, then the item will be left alone.
+        All keys should have unique values, and they should represent the data
+        in the list.
+
+        You should not use the index of the array as the key of an item for the reasons below..
+
+        <ul>
+                <li key=0 > 0 </li>        <---    lets say we delete this item from the list
+                <li key=1 > 1 </li>
+                <li key=2 > 2 </li>
+                <li key=3 > 3 </li>
+        </ul>
+
+
+        -deleting an item will cause a re-render, but because we have to iterate through the list again
+        every item will have a new key, thus re-rendering ALL 
+
+        <ul>
+                <li key=0 > 1 </li>                    // <li> 1 </li> used to have a key that was set to 1, but now it is 0
+                <li key=1 > 2 </li>                    // all the list items have had their keys changed as well
+                <li key=2 > 3 </li>                    // now React will look at this and will re-render all the items because their keys have changed
+        </ul>
+
+*/
+
+   
+function MakeList(props) {
+    const [names, setNames] = useState(['david', 'carlos', 'stephanie'])
+        
+    return (names.map((name) =>
+        <div key={name}> 
+             {name} 
+        </div>
+    ));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================== SYNTHETIC EVENTS AND EVENT HANDLERS ================================================
+//Keep in mind that React uses Synthetic events... 
+// ...and all browsers have their own set of native events (onClick, onSubmit, onChange, etc...) 
+// (although browsers all use the same name for the native events, some of them have different effects that are not consistent across all browsers)
+
+//React uses a cross-browser wrapper object that is usually named 'e' (synthetic event)
+//that pools together all the native events together and makes sure that the event works the same across all browsers
+//The whole point of this is to improve compatibility between all browsers and react
+//there may be cases where a native event may have a different
+
+
+
+function EvenHandlers() {
+        
+     const handleClick = (e) => {
+          e.target;
+          e.preventDefault();
+          alert("e is a synthetic event");
+     }
+     
+     function handleClicked(){
+          alert("e is a synthetic event")
+     }
+
+    return(
+        <>              //event handlers are always camelCase attributes
+              <button onClick={handleClick}> Click here </button>
+              <button onClick={(e) => {handleClicked(e)}}> Click here </button>
+        </>
+    )
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=========================================== MODULARIZATION ================================================
+//You can use import and export statements to modularize your code
+
+// ./MyComponent.js
+function MyComponent() {
+        return (
+            <div> Hello World </div>
+        )
+}
+export default MyComponent;
+
+
+// ./App.js
+import MyComponent from './MyComponent.js';
+
+function App(){
+        return(
+             <MyComponent /> 
+        )
+}
+
+
+
+//------------------------------------- DEFAULT IMPORT -------------------------------------
+//each file can only have ONE export default
+
+// ./HomePage.js
+export default Home;
+
+
+// ./App.js
+import Home from './HomePage.js';                      //this only works if 'HomePage' file has a 'default export'
+import HomeComponent from './HomePage.js'              // you can use any name for the component that was exported with default
+
+
+
+//------------------------------------- NAMED EXPORT -------------------------------------
+//a file can export as many components/variables as you want
+
+// ./HomePage.js
+export {Home};
+export const number = 34;
+
+
+// ./App.js
+import {Home} from './HomePage.js';                         //this will work
+import {HomeComponent} from './HomePage.js'                 //You can't change the name of a named export
+import {number as myNumber} from './HomePage.js'            //this will work
+import * as objectName from'./HomePage.js';                //this will import ALL of the named exports into an object
+
+
+//------------------------------------- DYNAMIC IMPORT -------------------------------------
+//instead of importing a moduleA with the import statement, you can dynamically load a module at runtime with the module() function
+//import() is a built-in function for JS
+
+function DynamicImport {
+        
+          const handleClick = () => {
+                import('./moduleA')                     //this will return a promise
+                      .then(({ moduleA }) => {
+                        // Use moduleA
+                      })
+                      .catch(err => {
+                        // Handle failure
+                      });
+          };
+
+          render() {
+            return (
+              <div>
+                <button onClick={this.handleClick}>Load</button>
+              </div>
+            );
+          }
+}
+
+export default DynamicImport;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -411,240 +769,6 @@ function Uncontrolled() {
 
 
 
-//=========================================== STATE OBJECT ================================================
-/* 
-        A state is an object that contains data, when this data is updated or changed, it will cause a re-render
-*/
-
-
-function App() {
-        const [count, setCount] = useState();
-
-        const handleCount = () => {
-                setCount(count + 1);
-        }
-
-        return(
-           <button onClick={handleCount}> 
-                Click here
-           </button>
-        )
-}
-
-
-
-
-
-
-
-
-
-
-//=========================================== PROPS ================================================
-/* 
-        Props means properties
-        props are used to pass data from one component to another
-*/
-
-    
- function App() {
-        const [state, setState] = useState("exmaple");                                  //for passing state, its best that you use useContext() hook       
-        let someString = "passing this as props";
-        const someEventHandler = (e) => {
-             console.log(e.target);
-        } 
-       
-        return (
-             <HomePage myString={someString} myEventHandler={someEventHandler} state={state}/>   //you can pass any type of data as props to other components 
-        )
- }
-        
- function HomePage(props){
-        props.myString;                                 //"passing this as props"
-        props.someEventHandler();                       //event handler that was passed as props
-        props.state;                                    //passing the state object to child components   
- }
-
-
-//------------------------------------- CHILD PROPS -------------------------------------
-//you can pass nested elements in JSX to function components
-
-function CreateBorder({color, children}) {
-    return (                                                       
-        <div style={{color: color}}>                      
-            {children}                                         //props.children will be replaced by the nested elements
-        </div>
-    )                                                               
-}                                                                   
-
-
-function Dialog() {
-    return (                                                        
-        <CreateBorder color={"red"}>                                 /* everything inside <CreateBorder> </CreateBorder> will be passed as props.children */
-            <h1> Welcome Home </h1>                                    
-            <h2> Abel Muro</h2>
-        </CreateBorder>
-    )
-}
-
-
-
-//------------------------------------- PROPS VALIDATION -------------------------------------
-//You can validate the props of a component with propTypes, this can help reduce bugs and unexpected behavior
-
-import PropTypes from 'prop-types';
-
-function Greeting({ name }) {
-      return <h1> Hello, {name}! </h1>;
-}
-
-Greeting.propTypes = {
-  name: PropTypes.string.isRequired,         // Ensures 'name' is a required string
-  age: PropTypes.number.isRequired
-};
-
-export default Greeting;
-
-
-
-
-
-
-
-
-
-//=========================================== SYNTHETIC EVENTS AND EVENT HANDLERS ================================================
-//Keep in mind that React uses Synthetic events... 
-// ...and all browsers have their own set of native events (onClick, onSubmit, onChange, etc...) 
-// (although browsers all use the same name for the native events, some of them have different effects that are not consistent across all browsers)
-
-//React uses a cross-browser wrapper object that is usually named 'e' (synthetic event)
-//that pools together all the native events together and makes sure that the event works the same across all browsers
-//The whole point of this is to improve compatibility between all browsers and react
-//there may be cases where a native event may have a different
-
-
-
-function EvenHandlers() {
-        
-     const handleClick = (e) => {
-          e.target;
-          e.preventDefault();
-          alert("e is a synthetic event");
-     }
-     
-     function handleClicked(){
-          alert("e is a synthetic event")
-     }
-
-    return(
-        <>              //event handlers are always camelCase attributes
-              <button onClick={handleClick}> Click here </button>
-              <button onClick={(e) => {handleClicked(e)}}> Click here </button>
-        </>
-    )
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=========================================== MODULARIZATION ================================================
-//You can use import and export statements to modularize your code
-
-// ./MyComponent.js
-function MyComponent() {
-        return (
-            <div> Hello World </div>
-        )
-}
-export default MyComponent;
-
-
-// ./App.js
-import MyComponent from './MyComponent.js';
-
-function App(){
-        return(
-             <MyComponent /> 
-        )
-}
-
-
-
-//------------------------------------- DEFAULT IMPORT -------------------------------------
-//each file can only have ONE export default
-
-// ./HomePage.js
-export default Home;
-
-
-// ./App.js
-import Home from './HomePage.js';                      //this only works if 'HomePage' file has a 'default export'
-import HomeComponent from './HomePage.js'              // you can use any name for the component that was exported with default
-
-
-
-//------------------------------------- NAMED EXPORT -------------------------------------
-//a file can export as many components/variables as you want
-
-// ./HomePage.js
-export {Home};
-export const number = 34;
-
-
-// ./App.js
-import {Home} from './HomePage.js';                         //this will work
-import {HomeComponent} from './HomePage.js'                 //You can't change the name of a named export
-import {number as myNumber} from './HomePage.js'            //this will work
-import * as objectName from'./HomePage.js';                //this will import ALL of the named exports into an object
-
-
-//------------------------------------- DYNAMIC IMPORT -------------------------------------
-//instead of importing a moduleA with the import statement, you can dynamically load a module at runtime with the module() function
-//import() is a built-in function for JS
-
-function DynamicImport {
-        
-          const handleClick = () => {
-                import('./moduleA')                     //this will return a promise
-                      .then(({ moduleA }) => {
-                        // Use moduleA
-                      })
-                      .catch(err => {
-                        // Handle failure
-                      });
-          };
-
-          render() {
-            return (
-              <div>
-                <button onClick={this.handleClick}>Load</button>
-              </div>
-            );
-          }
-}
-
-export default DynamicImport;
-
-
-
-
-
-
-
-
 
 
 
@@ -674,55 +798,6 @@ hydrateRoot.render(<App />);
 
 
 
-//=========================================== JSX ================================================
-//JSX stands for Javascript syntax extension, it was designed by React for the purpose of using HTML syntax in a javascript file
-//this greatly improves readability.
-//once you have written your JSX code (usually in the return statement of a function component or in the render() of a class component)
-// React will then convert the JSX code into React.createElement(), which will actually create an element in the DOM
-
-//remember, any valid javascript expression is allowed inside {}    
-//the attributes used in JSX are very similar to the regular attributes in HTML
-//but most are written in camelCase
-            
-function UsingJSX() {
-        
-        //you can use any html semantic tag in JSX, the only difference is that some of the attributes are spelled differently
-        return(
-               <>
-                   <h1 className="someClass"> 
-                        "hello," + {name} 
-                   </h1>
-                   <a href={"http://www.google.com"}> 
-                       "click here" 
-                   </a>
-                   <p> 
-                       {example()} 
-                   </p>    
-                   <div>                                                       
-                        <p>
-                           "you can create elements with children"
-                        </p>
-                        <p>
-                           "like this as well"
-                        </p>
-                   </div>
-               </>     
-        )
-}
-            
-         
-//JSX will get transpiled to the function below by babel
-const element = React.createElement(
-    'h1',                                                       //tag name
-    {className: "myClass"},                                     //attributes
-    'hello, world'                                              //content
-)
-
-
-
-
-
-
 
 
 
@@ -742,55 +817,6 @@ const element = React.createElement(
 
 
 
-
-
-
-
-
-
-
-//=========================================== REACT LISTS ================================================
-
-/* 
-        A React list is an array of JSX elements, each of these elements
-        must have a key prop to help identify the item in the list.
-        React will use the key to see which items in a list have changed.
-        If the key of an item has changed, then the item will be re-rendered.
-        But if the key doesn't change, then the item will be left alone.
-        All keys should have unique values, and they should represent the data
-        in the list.
-
-        You should not use the index of the array as the key of an item for the reasons below..
-
-        <ul>
-                <li key=0 > 0 </li>        <---    lets say we delete this item from the list
-                <li key=1 > 1 </li>
-                <li key=2 > 2 </li>
-                <li key=3 > 3 </li>
-        </ul>
-
-
-        -deleting an item will cause a re-render, but because we have to iterate through the list again
-        every item will have a new key, thus re-rendering ALL 
-
-        <ul>
-                <li key=0 > 1 </li>                    // <li> 1 </li> used to have a key that was set to 1, but now it is 0
-                <li key=1 > 2 </li>                    // all the list items have had their keys changed as well
-                <li key=2 > 3 </li>                    // now React will look at this and will re-render all the items because their keys have changed
-        </ul>
-
-*/
-
-   
-function MakeList(props) {
-    const [names, setNames] = useState(['david', 'carlos', 'stephanie'])
-        
-    return (names.map((name) =>
-        <div key={name}> 
-             {name} 
-        </div>
-    ));
-}
 
 
 

@@ -7,7 +7,7 @@
 
     REACTIVITY SYSTEM:
         -Deep Reactivity: all nested objects and arrays will be tracked within the state object
-        -Shallow Reactivity: Only a certain level of nested objects and arrays will be tracked within the state object
+        -Shallow Reactivity: Only the first level of nested objects and arrays will be tracked within the state object (typically the value property)
 
         Every component in Vue.js will keep track of ALL of its state objects (ref)
         When the state is updated, the component will be re-rendered.
@@ -15,19 +15,19 @@
         Vue uses objects as state, because Vue can intercept the get and set operations of an object 
         with the setter and getter methods
 
-            const myRef = {
-              _value: 0,                   // the state value
-
-              get value() {
-                track()                    // when a value has been accessed by a component, we start the tracking process
-                return this._value
-              },
-
-              set value(newValue) {
-                this._value = newValue     // When the state changes, we cause a re-render
-                triggerRe-Render()
-              }
-            }
+                const myRef = {
+                  _value: 0,                   // the state value
+    
+                  get value() {
+                    track()                    // when a value has been accessed by a component, we start the tracking process
+                    return this._value
+                  },
+    
+                  set value(newValue) {
+                    this._value = newValue     // When the state changes, we cause a re-render
+                    triggerRe-Render()
+                  }
+                }
 
 
     Steps to initialize Vue.js
@@ -90,6 +90,13 @@
 -->
 
 
+
+
+
+
+
+
+
 <!-- ============================================ SINGLE FILE COMPONENTS ======================================================= -->
 <!-- 
     Single file components are files that contain one component (basically one template)
@@ -97,23 +104,11 @@
 -->
 
 <!-- script tag allows you to write JS code -->
-<script>
+<script setup>
     const x = 2 + "3";
     const str = "random";
     const myFunc = () => {
         return "Hello-World"
-    }
-
-    export default {                                                    //you can use the export default keyword and the setup function to use variables and functions within your template
-        setup(){
-            const otherFunc = () => console.log('Other function');
-            return {
-                x,
-                str,
-                myFunc,
-                otherFunc,
-            }
-        }
     }
 </script>
 
@@ -121,8 +116,8 @@
 
 <!-- template tag allows you to use HTML syntax to declare and define your DOM elements (template tag will automatically be exported from this file)-->
 <template>
-    <p class='myClass'> Hello World </p>                                      <!-- You can pass props to a component like this --> 
-    <button v-on:click="otherFunc()"> Click Here </button>                    <!-- Any variable or function exported using setup() will be available in the template-->
+    <p class="myClass"> Hello World </p>                                     
+    <button v-on:click="otherFunc"> Click Here </button>                    <!-- Any variable or function exported using setup() will be available in the template-->
 </template>
 
 
@@ -132,7 +127,19 @@
   .myClass {
     color: red;
   }
+
+    @media(max-width: 550px){
+        .myClass{
+            color: blue;
+        }
+    }
 </style>
+
+
+
+
+
+
 
 
 
@@ -144,20 +151,29 @@
 <!--==================================================== TEMPLATES ======================================================== -->
 <!--
     You can use the template tag to use html syntax to declare your elements within your single-file component
+    Templates typically use directives to dynamically alter the elements in some way
+    Keep in mind that most directives accept an expression or variable that resolves to a string
 -->
+
+<script setup>
+    const dynamic = "expression that resolves to a string";
+</script>
 
 <template>
     <HelloWorld msg="You did it!" />                                      <!-- You can pass props to a component like this --> 
     <p class="myClass"> {{random === '' ? 'n' : 'v'}} </p>                <!-- {{}} allows you to use any JS expression in Vue-->
 
-      <!-- Directives (anything inside the "" and [] must be an expression or variable that resolves to a string)-->
-    <div v-bind:class="dynamicValue"></div>                             <!-- Attributes declared with v-bind: will make the attribute into a dynamic attribute, shorthand : -->
-    <div v-bind:[dynamicAttribute]="url"></div>                         <!-- You can dynamically assign a single attribute with the v-bind keyword -->
-    <div v-bind={{attributes}}></div>                                   <!-- You can dynamically assign multiple attributes with the v-bind keyword -->
-    <div v-if="display"></div>                                          <!-- You can apply conditional rendering in Vue with the v-if directory (display must resolve to a truthy or falsey value)-->
-    <button v-on:click="handleClick()"> Click here </button>            <!-- You can bind event handlers with the v-on directory, shorthand @ -->
-    <form v-on:submit.prevent="handleSubmit()"></form>                  <!-- You can use modifiers to call certain functions for an event, prevent will call the e.preventDefault() for the submit event-->
+      <!-- Directives-->
+    <div v-bind:class="dynamic"></div>                                  <!-- Dynamically assigning a class to this element, shorthand : -->
+    <div class="container" v-bind:class="dynamic">                      <!-- A directive can co-exist with the plain attribute as well-->
 </template>
+
+
+
+
+
+
+
 
 
 
@@ -277,6 +293,12 @@
 
 
 
+
+
+
+
+
+
 <!-- ============================================== PROPS ==================================================== -->
 <!-- 
     You can pass data to a component using props
@@ -318,6 +340,10 @@
 
 
 
+
+
+
+
 <!-- =========================================== COMPUTED() ===============================================
 <!-- 
     You can use the Computed function from Vue to simplify a JS expression within your template
@@ -326,9 +352,11 @@
     Even though a re-render will call all functions in the component, it will not call computed() unless 
     the state object being used inside computed() causes the re-render.
 
-    computed() is similar to the useMemo() hook in react
-
-    You should only use state objects in computed()
+    Facts to keep in mind.
+        
+        -computed() is similar to the useMemo() hook in react
+        -You should only use state objects in computed()
+        -You can use the return value of computed() with any directive
 
 -->
 
@@ -358,10 +386,16 @@
 
 
     // 3) you can get the previous state with callbacks
-    const alwaysSmall = computed((previous) => {   
+    const previousState = computed((previous) => {   
           if(count < 3)
              return count;
           return previous
+    })
+
+    //4) you can use a computed value and assign it to a directive
+    const dynamicClasses = computed({
+        classOne: firstName === 'my name',
+        classTwo: lastName === 'my other name'
     })
 
 </script>
@@ -371,7 +405,125 @@
     <div> 
         {{computedRef}}
     </div>
+    <button :class="dynamicClasses">        <!-- you can also use the computed value in a directive-->
+        Click here
+    </button>
 </template>
+
+
+
+
+
+
+
+
+
+
+<!-- =========================================== CONDITIONAL RENDERING ===============================================-->
+<!--
+    You can conditionally render your elements by using the v-if directive
+-->
+
+<script setup>
+    import {ref} from 'vue';
+
+    const display = ref(false);
+    
+</script>
+
+
+<template>
+    <div v-if="display">     <!-- this element will be displayed if display is a truthy value-->
+        Hello World
+    </div>
+</template>
+
+
+
+
+
+
+
+
+        
+
+        
+
+
+<!-- ============================================ DYNAMIC ATTRIBUTES AND VALUES ========================================= -->
+<script setup>
+    import {ref, computed} from 'vue';
+
+    const stateOne = ref('class-one');
+    const stateTwo = ref('class-two');
+    const dynamic = 'expression that resolves to a string'
+
+    const computedValue = computed({                                    //rememeber to use state objects here to create dependencies
+        classOne: 'expression that resolves to a boolean value',
+        classTwo: 'expression that resolves to a boolean value'
+    })
+    
+</script>
+
+        
+
+<template>
+    <div v-bind:class="{active: true, menu: false}">                    <!-- Dynamically assigning classes to this element-->    
+    <div v-bind:[dynamic]="url"></div>                                  <!-- Dynamically assigning a single attribute to this element -->
+    <div v-bind={{attributes}}></div>                                   <!-- Dynamically assigning multiple attributes to this element -->
+    <div v-bind:class="computedValue"></div>                            <!-- Dynamically assigning classes with a computed value-->
+    <div v-bind="[stateOne, stateTwo]"></div>                           <!-- Dynamically assigning multiple classes to this element with state objects (must be strings) -->
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+<!--  =========================================== EVENT HANDLERS =============================================== -->
+<!-- 
+    You can use the v-on directive to bind event handlers to your elements
+    Shorthand is @
+-->
+
+<script setup>
+    import {ref} from 'vue';
+
+    const count = ref(0);
+
+    const handleClick = () => {
+        count++;
+    }
+
+    const handleSubmit = () => {
+        
+    }
+    
+</script>
+
+
+<template>
+    <button v-on:click="handleClick">                     <!-- clicking on this button will invoke the handleClick() function -->
+        Click Here
+    </button>
+    <form v-on:submit.prevent="handleSubmit()"></form>    <!-- You can use modifiers to call certain functions for an event, prevent will call the e.preventDefault() for the submit event-->
+</template>
+
+
+
+
+
+
+
 
 
 

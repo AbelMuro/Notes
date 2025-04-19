@@ -18,10 +18,10 @@
         this will also trigger the setter method.
 
         When a state update occurs, Vue will not blindly destroy the old DOM structure, instead it will re-use some parts 
-        of the state in the new DOM structure. If we assume that we have a state that contains an array of objects, and we assign a 
-        new array to the state, Vue will check if any objects in the old array overlap(have same properties) with the objects in the new array, 
-        if they do, then these overlapping objects will be updated, not removed. If the order of the objects in the array have changed,
-        then Vue will simply update those objects so that they reflect the new order.
+        of the state in the new DOM structure. If we assume that we have a state that contains an array of strings, and we assign a 
+        new array to the state, Vue will simply update the elements in the old array so that they match the new array. If the order 
+        of the elements have changed, Vue will also update the elements in the old array so that they match the new order.
+
 
                 const myRef = {
                       _value: 0,                   // the state value

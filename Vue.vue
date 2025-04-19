@@ -23,7 +23,7 @@
         -Shallow Reactivity: Only the first level of properties will be tracked within the state object (typically the value property)
         Every component in Vue.js will keep track of ALL of its state objects (ref, reactivity)
         When the state is updated, the component will be re-rendered. Vue uses objects as state, 
-        because Vue can intercept the get and set operations of an object with the setter and getter methods. 
+        because Vue can intercept the 'get' and 'set' operations of an object with the setter and getter methods. 
         When a state object has been accessed, the getter method will be called and will make the component track
         the state. When a state object has been updated, the setter method will be called and will cause a re-render
         on all components that are tracking the state. Keep in mind that if any prototype method was used (push(), map(), filter()),
@@ -39,10 +39,9 @@
         
                       set value(newValue) {
                         this._value = newValue;     // When the state changes...
-                        trigger_Re_render();        // we will cause a re-render on all components tracking this state object
+                        trigger_re_render();        // we will cause a re-render on all components tracking this state object
                       }
                 }
-
 
                                                     VIRTUAL DOM
         Vue uses the virtual DOM, just like React. The Virtual DOM is an exact copy of the real DOM, and its used to determine which nodes 

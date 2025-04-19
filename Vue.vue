@@ -33,13 +33,13 @@
                       _value: 0,                   // the state value
         
                       get value() {
-                        track()                    // when a value has been accessed by a component, we start the tracking process
-                        return this._value
+                        track();                    // when a value has been accessed by a component, we start the tracking process
+                        return this._value;
                       },
         
                       set value(newValue) {
-                        this._value = newValue     // When the state changes, we cause a re-render
-                        triggerRe-Render()
+                        this._value = newValue;     // When the state changes...
+                        trigger_Re_render();        // we will cause a re-render on all components tracking this state object
                       }
                 }
 

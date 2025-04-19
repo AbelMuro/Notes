@@ -1,14 +1,26 @@
 <!-- 
-    VUE.JS is a JS framework that is used to build User Interfaces (UI) and has many similarities to the React library
-    VUE.JS uses Vite as the build tool to build the app into files ready for production
+        VUE.JS is a JS framework that is used to build User Interfaces (UI) and has many similarities to the React library
+        VUE.JS uses Vite as the build tool to bundle the files of the app into one file ready for production
 
 
+                            
+                                                 RENDERING PROCESS
+        A component will be re-rendered (updated) when there is a change in the state object.
+        All updates to the state are synchronous, but all updates to the DOM are asynchronous
+        When a state update occurs, Vue will not blindly destroy the old DOM structure and create a new DOM structure, 
+        instead, it will update the old state with the new state values. If we assume that we have a state that contains 
+        an array of strings, and we assign a new array to the state, Vue will simply update the elements in the old array 
+        so that they match the new array. If the order of the elements have changed, Vue will also update the elements in 
+        the old array so that they match the new order. By default, Vue uses position-matching to determine if a 
+        state object has changed, look at the example below to visually understand this....
+
+                const state = ref(['apple', 'orange', 'pineapple']);
+                state = ['lettuce', 'tomato', 'tomato'];                    // Vue will only update the elements in the old array, state[0] = 'apple' will become state[0] = 'lettuce', etc...
 
 
                                                 REACTIVITY SYSTEM:
         -Deep Reactivity: all nested objects and arrays will be tracked within the state object
-        -Shallow Reactivity: Only the first level of nested objects and arrays will be tracked within the state object (typically the value property)
-
+        -Shallow Reactivity: Only the first level of properties will be tracked within the state object (typically the value property)
         Every component in Vue.js will keep track of ALL of its state objects (ref, reactivity)
         When the state is updated, the component will be re-rendered. Vue uses objects as state, 
         because Vue can intercept the get and set operations of an object with the setter and getter methods. 
@@ -17,13 +29,7 @@
         on all components that are tracking the state. Keep in mind that if any prototype method was used (push(), map(), filter()),
         this will also trigger the setter method.
 
-        When a state update occurs, Vue will not blindly destroy the old DOM structure, instead it will re-use some parts 
-        of the state in the new DOM structure. If we assume that we have a state that contains an array of strings, and we assign a 
-        new array to the state, Vue will simply update the elements in the old array so that they match the new array. If the order 
-        of the elements have changed, Vue will also update the elements in the old array so that they match the new order.
-
-
-                const myRef = {
+                const state = {
                       _value: 0,                   // the state value
         
                       get value() {
@@ -37,7 +43,21 @@
                       }
                 }
 
-                                        
+
+                                                    VIRTUAL DOM
+        Vue uses the virtual DOM, just like React. The Virtual DOM is an exact copy of the real DOM, and its used to determine which nodes 
+        in the real DOM have to be updated. The difference here is that Vue does NOT create another copy of the virtual DOM in memory when 
+        there is a state change, instead, Vue uses the reactivity system to decide which nodes will be updated in the real DOM.
+        Every node in the virtual DOM has a component tracking a state object, when that state object is updated, that same node will be updated in 
+        the real DOM
+    
+
+
+
+
+
+
+
 
 
     Steps to initialize Vue.js

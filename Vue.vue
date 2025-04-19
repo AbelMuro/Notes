@@ -5,29 +5,39 @@
 
 
 
-    REACTIVITY SYSTEM:
+                                                REACTIVITY SYSTEM:
         -Deep Reactivity: all nested objects and arrays will be tracked within the state object
         -Shallow Reactivity: Only the first level of nested objects and arrays will be tracked within the state object (typically the value property)
 
-        Every component in Vue.js will keep track of ALL of its state objects (ref)
-        When the state is updated, the component will be re-rendered.
-        
-        Vue uses objects as state, because Vue can intercept the get and set operations of an object 
-        with the setter and getter methods
+        Every component in Vue.js will keep track of ALL of its state objects (ref, reactivity)
+        When the state is updated, the component will be re-rendered. Vue uses objects as state, 
+        because Vue can intercept the get and set operations of an object with the setter and getter methods. 
+        When a state object has been accessed, the getter method will be called and will make the component track
+        the state. When a state object has been updated, the setter method will be called and will cause a re-render
+        on all components that are tracking the state. Keep in mind that if any prototype method was used (push(), map(), filter()),
+        this will also trigger the setter method.
+
+        When a state update occurs, Vue will not blindly destroy the old DOM structure, instead it will re-use some parts 
+        of the state in the new DOM structure. If we assume that we have a state that contains an array of objects, and we assign a 
+        new array to the state, Vue will check if any objects in the old array overlap(have same properties) with the objects in the new array, 
+        if they do, then these overlapping objects will be updated, not removed. If the order of the objects in the array have changed,
+        then Vue will simply update those objects so that they reflect the new order.
 
                 const myRef = {
-                  _value: 0,                   // the state value
-    
-                  get value() {
-                    track()                    // when a value has been accessed by a component, we start the tracking process
-                    return this._value
-                  },
-    
-                  set value(newValue) {
-                    this._value = newValue     // When the state changes, we cause a re-render
-                    triggerRe-Render()
-                  }
+                      _value: 0,                   // the state value
+        
+                      get value() {
+                        track()                    // when a value has been accessed by a component, we start the tracking process
+                        return this._value
+                      },
+        
+                      set value(newValue) {
+                        this._value = newValue     // When the state changes, we cause a re-render
+                        triggerRe-Render()
+                      }
                 }
+
+                                        
 
 
     Steps to initialize Vue.js
@@ -97,6 +107,13 @@
 
 
 
+
+
+
+
+
+
+
 <!-- ============================================ SINGLE FILE COMPONENTS ======================================================= -->
 <!-- 
     Single file components are files that contain one component (basically one template)
@@ -148,6 +165,9 @@
 
 
 
+
+
+
 <!--==================================================== TEMPLATES ======================================================== -->
 <!--
     You can use the template tag to use html syntax to declare your elements within your single-file component
@@ -167,6 +187,12 @@
     <div v-bind:class="dynamic"></div>                                  <!-- Dynamically assigning a class to this element, shorthand : -->
     <div class="container" v-bind:class="dynamic">                      <!-- A directive can co-exist with the plain attribute as well-->
 </template>
+
+
+
+
+
+
 
 
 
@@ -299,6 +325,11 @@
 
 
 
+
+
+
+
+
 <!-- ============================================== PROPS ==================================================== -->
 <!-- 
     You can pass data to a component using props
@@ -331,6 +362,221 @@
     </div>
     <SomeComponent :message="'expression/variable goes here'"/>       <!-- props can also be dynamic by using the v-bind directive -->
 </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ============================================ DYNAMIC ATTRIBUTES AND VALUES ========================================= -->
+<!-- 
+    You can use the v-bind attribute to dynamically set an attribute or value to an element
+    shorthand :
+-->
+
+<script setup>
+    import {ref, computed} from 'vue';
+
+    const stateOne = ref('class-one');
+    const stateTwo = ref('class-two');
+    const dynamic = 'expression that resolves to a string'
+
+    const computedClasses = computed({                                    //rememeber to use state objects here to create dependencies
+        classOne: 'expression that resolves to a boolean value',
+        classTwo: 'expression that resolves to a boolean value'
+    })
+    
+</script>
+
+
+
+
+<template>
+    <div v-bind:class="{active: true, menu: false}">                    <!-- Dynamically assigning classes to this element-->    
+    <div v-bind:[dynamic]="url"></div>                                  <!-- Dynamically assigning a single attribute to this element -->
+    <div v-bind={{attributes}}></div>                                   <!-- Dynamically assigning multiple attributes to this element -->
+    <div v-bind:class="computedClasses"></div>                          <!-- Dynamically assigning classes with a computed value-->
+    <div v-bind="[stateOne, stateTwo]"></div>                           <!-- Dynamically assigning multiple classes to this element with state objects (must be strings) -->
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  ============================================ CONDITIONAL RENDERING =========================================-->
+<!--
+    You can conditionally render your elements by using the v-if, v-else-if, and v-else directive
+
+    v-if, v-else-if, v-else:     these directives will conditionally render your elements based on an expression that resolves to a boolean value
+    v-show:                      this directive will conditionally toggle the display css property of the element, the element will remain in the DOM
+
+
+    Facts to keep in mind:
+        -v-if has higher toggle costs, while v-show has higher initial render costs
+        -Choose v-show if you need to toggle something very often, and choose v-if if the condition is unlikely to change at runtime.
+        -All of these directories accept an expression that resolves to a boolean value
+-->
+
+<script setup>
+    import {ref} from 'vue';
+    const display = ref('A');
+</script>
+
+
+
+<template v-if="true">                            <!-- You can conditionally render a whole template with the v-if directive-->
+    
+    <div v-if="display === 'A'"></div>
+    <div v-else-if="display === 'B'"></div>
+    <div v-else></div>
+
+    <div v-show="true"></div>                     <!-- v-show will conditionally toggle the display css property of the element-->
+    
+</template>
+
+<template v-else-if="false"></template>          <!-- You can conditionally render different templates like this as well-->
+<template v-else="false"></template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  ============================================ LIST RENDERING ========================================= -->
+<!-- 
+    You can use the v-for directive to render a list of items in an array.
+    Every item in a list will have its own 'key' attribute that is used to identify the 
+    item in the list. Vue uses an in-place patching strategy to update the items in the list.
+    When an item in the list was removed, Vue will efficiently remove 
+    the item from the DOM, while leaving all the other items alone. If the order of the
+    items was changed, Vue will update(patch) the items in the list to reflect the 
+    new list order. This strategy is efficient for most cases, except if an item is a 
+    child-component or an element that relies on some state
+
+    Facts to keep in mind    (you will get the same result with 'for' and 'in')
+        - if list is an array        v-for="(value, index) in list"           
+        - if list is an object       v-for="(value, key, index) in list"
+        - you can use v-for directive on templates as well
+        - Do not use v-if and v-for on the same element
+        - if you want to create a list of components, then use v-for in the component
+
+    Reminder about For() loops
+        - for (let value of fruits) will iterate over the values of an object or array
+        - for (let key in fruits) will iterate over the property names or the indices 
+-->
+
+<script setup>
+    import {ref} from 'vue';
+    const list = ref(['A', 'B', 'C']);
+    const people = ref([{name: 'carlos'}, {name: 'david'}, {name: 'stephanie'}])
+</script>
+
+<template>
+    
+    <div v-for="(item, index) in list" :key="item">          <!-- This will create 3 div elements (list.length === 3)-->
+        {{item}} - {{index}}                                 <!-- the key prop is used by vue to identify the item in the list (list must be a state)-->
+    </div>
+
+    <div v-for="n in 15">                                    <!-- You can create a range of values to iterate through to create a list-->
+        {{n}}
+    </div>
+    
+    <MyComponent v-for="(item, index) in list" :key="item" :prop="item"/> <!-- You can create a list of components (all props to these components must be dynamic)-->
+
+    <div v-for="item in list" :key="item.id">
+      <span v-for="childItem in item.children" :key="childItem">   <!-- You can also nest v-for directives-->
+        {{ childItem }}
+      </span>
+    </div>
+    
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  =========================================== EVENT HANDLERS =============================================== -->
+<!-- 
+    You can use the v-on directive to bind event handlers to your elements
+    Shorthand is @
+-->
+
+<script setup>
+    import {ref} from 'vue';
+
+    const count = ref(0);
+
+    const handleClick = () => {
+        count++;
+    }
+
+    const handleSubmit = () => {
+        
+    }
+    
+</script>
+
+
+<template>
+    <button v-on:click="handleClick">                     <!-- clicking on this button will invoke the handleClick() function -->
+        Click Here
+    </button>
+    <form v-on:submit.prevent="handleSubmit()"></form>    <!-- You can use modifiers to call certain functions for an event, prevent will call the e.preventDefault() for the submit event-->
+</template>
+
+
+
+
+
 
 
 
@@ -419,24 +665,6 @@
 
 
 
-<!-- =========================================== CONDITIONAL RENDERING ===============================================-->
-<!--
-    You can conditionally render your elements by using the v-if directive
--->
-
-<script setup>
-    import {ref} from 'vue';
-
-    const display = ref(false);
-    
-</script>
-
-
-<template>
-    <div v-if="display">     <!-- this element will be displayed if display is a truthy value-->
-        Hello World
-    </div>
-</template>
 
 
 
@@ -446,78 +674,6 @@
 
 
         
-
-        
-
-
-<!-- ============================================ DYNAMIC ATTRIBUTES AND VALUES ========================================= -->
-<script setup>
-    import {ref, computed} from 'vue';
-
-    const stateOne = ref('class-one');
-    const stateTwo = ref('class-two');
-    const dynamic = 'expression that resolves to a string'
-
-    const computedValue = computed({                                    //rememeber to use state objects here to create dependencies
-        classOne: 'expression that resolves to a boolean value',
-        classTwo: 'expression that resolves to a boolean value'
-    })
-    
-</script>
-
-        
-
-<template>
-    <div v-bind:class="{active: true, menu: false}">                    <!-- Dynamically assigning classes to this element-->    
-    <div v-bind:[dynamic]="url"></div>                                  <!-- Dynamically assigning a single attribute to this element -->
-    <div v-bind={{attributes}}></div>                                   <!-- Dynamically assigning multiple attributes to this element -->
-    <div v-bind:class="computedValue"></div>                            <!-- Dynamically assigning classes with a computed value-->
-    <div v-bind="[stateOne, stateTwo]"></div>                           <!-- Dynamically assigning multiple classes to this element with state objects (must be strings) -->
-</template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-<!--  =========================================== EVENT HANDLERS =============================================== -->
-<!-- 
-    You can use the v-on directive to bind event handlers to your elements
-    Shorthand is @
--->
-
-<script setup>
-    import {ref} from 'vue';
-
-    const count = ref(0);
-
-    const handleClick = () => {
-        count++;
-    }
-
-    const handleSubmit = () => {
-        
-    }
-    
-</script>
-
-
-<template>
-    <button v-on:click="handleClick">                     <!-- clicking on this button will invoke the handleClick() function -->
-        Click Here
-    </button>
-    <form v-on:submit.prevent="handleSubmit()"></form>    <!-- You can use modifiers to call certain functions for an event, prevent will call the e.preventDefault() for the submit event-->
-</template>
-
 
 
 

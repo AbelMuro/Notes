@@ -1,0 +1,36 @@
+                                                            TERMINOLOGY OF WEB DEVELOPMENT
+
+                                FRONT-END-DEVELOPMENT: development of the visual aspect of a website/app
+                                
+                                BACK-END-DEVELOPMENT: development of server-side logic and databases
+
+                                API: application programming interface. They are interfaces that enable interaction between two software applications.
+                                     this interface must be used if one software app wants to request resources from another software app
+
+                                RESTfull API: Representational State Transfer API, They are interfaces that enable interaction between a Client (website) and a server through HTTP methods (GET, POST, DELETE, etc...)
+                                              These API's must follow the following rules to be considered a RESTfull
+
+                                              1) Stateless: the API cannot store any session data from the client
+                                              2) HTTP Methods: the API must use HTTP methods (GET, POST, etc...)
+                                              3) JSON Responses: the API must send responses containing data in JSON
+                                              4) Endpoints: the API must have URL endpoints that represent resources (/username/settings)
+                                              5) Client-Server Separation: The front-end and back-end operate independently, communicating via HTTP method requests.                                  
+                                
+                                SERVER: a computer that provides resources to other computers
+                                        WEB-SERVER: a server that provides files of a website/app to other computers (netlify, vercel, etc...)
+                                        APPLICATION-SERVER: a server that runs instructions and processes requests from other computers and sends responses (Node.js) 
+                                        DATABASE-SERVER: a server that manages and stores data (SQL, noSQL)
+
+                                HOW THE INTERNET WORKS:
+                                          1) When you first type-in the URL of a website (www.google.com), the browser will check the DNS(Domain Name System) of the URL.
+                                             The browser will use the DNS to translate the human-readable URL into the corresponding IP address of the server that is hosting the website 
+
+                                          2) Once the browser knows the IP address of the server, it will make a request to that server, asking for all the resources of the website (HTML files, css files, JS files)
+
+                                          3) The server will process the request and decide what content to send to the browser
+                                              If the server uses server-side rendering, then the server will generate the website in the server first before sending a response
+                                              If the server uses client-side rendering, then the server will first send the HTML files to the browser, then the JS files
+
+                                          4) The server will then send a response to the browser, containing all the files necessary for the website
+
+                                          5) The browser interprets the HTML, applies CSS for styling, executes JavaScript for interactivity, and starts displaying content on your screen.

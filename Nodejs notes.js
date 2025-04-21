@@ -1,11 +1,49 @@
 //Node.js is an open source server environment that allows you to run javascript outside of a browser
 
 /* 
-		FEATURES OF NODE.JS
+			FEATURES OF NODE.JS
 
 
-  		NON-BLOCKING
+			    	           		MODULAR SYSTEM
+		     	Node.js uses a modular system that allows the developer to break the application into smaller, re-usable components.
+		      	Typically, every component is imported and used with the require() function
+		
+					  		SINGLE-THREADED
+		        Node.js is single threaded, which means that it can only perform one task at a time.
+		  
+		  			    		EVENT LOOP
+			 Node.js uses the event loop to process and handle tasks, even though Node.js is single-threaded, we use the
+    			 event loop to simultaneously perform multiple tasks. All synchronous tasks are placed in the call-stack,
+		  	 and executed one by one. All asynchronous tasks are taken out of the call-stack and processed in a different 
+		    	 thread (this thread is NOT part of node.js). Once the asynchronous task has completed in the 
+		         separate thread, it will then be placed in the Queue. Once the call-stack is empty, all tasks in the 
+			 queue then get placed in the call-stack for execution in the main node.js thread.
 
+				   NODE.JS THREAD			    SEPARATE THREAD											 	
+			 	
+				     Call stack												  	  
+			  	   |		|										
+				   |		|												
+				   |  syncFunc	|											
+				   |  AsyncFunc	| --------------> this async function is taken out of the call stack 	
+				   |  syncFunc	|		  and processed in a separate thread. Once the function				
+				   |  syncFunc	|                 finishes processing, it gets placed in the Queue				
+				   |  syncFunc	|				|								
+				   -------------				|								
+					^					|
+					| 					|	
+				       Queue					|
+				   |		|				|
+				   |		|	<---------------------- |
+				   |		|
+				   |		|
+				   |		|
+				   | AsyncFunc  |
+				    ----------
+
+    
+													
+					
     
 
 

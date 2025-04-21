@@ -1,4 +1,16 @@
 //Node.js is an open source server environment that allows you to run javascript outside of a browser
+
+/* 
+		FEATURES OF NODE.JS
+
+
+  		NON-BLOCKING
+
+    
+
+
+
+*/
 //Node.js uses asynchronous programming
 
 // Below is how Node.js handles file requests

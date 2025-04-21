@@ -25,16 +25,30 @@
 
                                                              FEATURES OF REACT 
 
-                                                               RENDERING PROCESS
+                                                               STATE CHANGE PROCESS
                     A component will be re-rendered (updated) when there is a change in the state object.
                     Keep in mind that all state changes are asynchronous in react, and DOM updates are also asynchronous.
 
                                                                 RECONCILIATION
                    Reconciliation is an algorithm that React uses to efficiently update the DOM. It starts by first mounting a component (and its element). 
-                   React will then create an exact copy of the Real DOM in memory. When a state change occurs, React will generate another copy of the the real DOM, at this point, 
-                   we have 2 copies of the real DOM in memory. Then every node of both DOM copies will be compared with each other to see which nodes have been changed due to
-                   the state change that occurred. For the nodes that have changed, those nodes will be updated in the Real DOM. But for the nodes that have NOT changed, those nodes 
-                   will NOT be updated in the real DOM
+                   React will then create an Virtual DOM in memory. When a state change occurs, React will generate another Virtual DOM. At this point, 
+                   we have 2 Virtual DOMs in memory. React will use a process called 'diffing' to compare every node of both Virtual DOMs in memory,
+                   and will decide which nodes to update in the Real DOM. Once React has decided which nodes to change in the Real DOM, it will decide
+                   to either update, remove, or create nodes in the Real DOM. If a node needs to be updated, React will use a process called patching to 
+                   update the node. If a node needs to be removed or created, React will simply delete the node or create a new node in the Real DOM
+
+                                                                PATCHING
+                   Patching is the process in React that updates nodes in the Real DOM when the state changes.
+                   If a node was updated, React will not re-create the node, but instead just update it.
+                   Keep in mind, patching is only used for nodes that have been updated. If a new node was detected by React,
+                   React will simply create a new node in the Real Dom
+        
+                        function App() {
+                          const [message, setMessage] = useState("hello world");
+                          return <div>{message}</div>;
+                        }
+        
+                   If we change the state above, React will not recreate the <div> element in the Real DOM, instead, it will only update it
 
                                                                  VIRTUAL DOM 
                     The virtual DOM is an exact copy of the REAL DOM, but it is used by React developers to 'mutate' the real DOM 

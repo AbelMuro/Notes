@@ -61,6 +61,37 @@
                     when the state of the component is updated, thus triggering a re-render(stuff gets updated on the screen) on the component.
                     Then the umounting phase starts by removing the component (its JSX) from the DOM.
 
+                                                             SYNTHETIC EVENT SYSTEM
+                     When an event is triggered in the DOM, JS will use Event Propagation.
+                     Lets say that we have a button nested inside a div, the button was clicked and triggered
+                     its on-click event. What happens next are the 3 main phases/steps of Event Propagation
+        
+                             1) Capturing Phase: JS will look for the button element that initially triggered the event.
+                                                 It starts at the top of the DOM tree (HTML) and works 
+                                                 its way down until it finds the button element. If there are any event listeners
+                                                 for the capturing phase in the parent elements, these elements will handle the event
+                                                 before it reaches the button element
+                
+                                                div.addEventListener('click', () => {
+                                                    console.log('Div clicked during capturing phase');
+                                                }, true);                             //third argument specifies that the event listener will be triggered on the capturing phase
+                
+                             2) Target Phase:  Once JS finds the button element, it will trigger the on-click event handler
+                
+                             3) Bubbling Phase: The event will then 'bubble' up to the top of the DOM tree. Starting from the 
+                                                button element, then finally to the html element. If any element (html, div) has 
+                                                an event listener attached, it will be triggered.   
+                
+                                                div.addEventListener('click', () => {
+                                                     console.log('Div clicked during bubbling phase');
+                                                });
+        
+                     The phases above are true for the native event system in JS, but React uses a synthetic event system 
+                     that follows the same phases but with one major difference, React will trigger the event handlers during the 
+                     capturing phase and bubbling phase and NOT the event listeners. For the capturing phase, you need to use the 
+                     special attribute 'onClickCapture' in React. For the bubbling phase, any event handlers in the parent elements 
+                     will be triggered automatically           
+
                                                                ONE-WAY DATA BINDING
                     All data in a React app flows in one direction. Typically, the parent component can pass its state down as props to the child component.
 
@@ -416,26 +447,6 @@ function MakeList(props) {
 //React uses a cross-browser wrapper object that is usually named 'e' (synthetic event)
 //that pools together all the native events together and makes sure that the event works the same across all browsers
 //The whole point of this is to improve compatibility between all browsers and react
-
-/* 
-
-        RECAP: When an event is triggered in the DOM, JS will use Event Propagation.
-               Lets say that we have a button nested inside a div, the button was clicked and triggered
-               its on-click event. What happens next are the 3 main phases/steps of Event Propagation
-
-           1) Capturing Phase: JS will look for the button element that initially triggered the event.
-                               It starts at the top of the DOM tree (HTML) and works 
-                               its way down until it finds the button element. If there are any event listeners
-                               for the capturing phase in the parent elements, these elements will handle event
-                               before it reaches the button element
-
-           2) Target Phase: Once JS finds the button element, it will trigger the on-click event handler
-
-           3) Bubbling Phase: The event will then 'bubble' up to the top of the DOM tree. Starting from the 
-                              button element, then finally to the html element. If any element (html, div) has an event listener for the 
-                              bubbling phase of the event, it will be triggered.   
-*/
-
 
 
 function EvenHandlers() {

@@ -61,36 +61,38 @@
                     when the state of the component is updated, thus triggering a re-render(stuff gets updated on the screen) on the component.
                     Then the umounting phase starts by removing the component (its JSX) from the DOM.
 
+                                                            SYNTHETIC EVENT OBJECT
+                     React uses an event object that is an instance of the SyntheticEvent class. The SyntheticEvent class is modeled after 
+                     the native Event class in the browser, but it is used to ensure consistent behavior across web browsers.
+
+                                     const handleClick = (e) => {                Using the e object will ensure the same behavior across web browsers
+                                             e.preventDefault();                
+                                             e.stopPropagation();
+                                     }      
+
                                                              SYNTHETIC EVENT SYSTEM
-                     When an event is triggered in the DOM, JS will use Event Propagation.
+                     React has its own implemenation of an event system that is similar to the native event system in the browser
+                     When an event is triggered in the DOM, React will use a variation of Event Propagation.
                      Lets say that we have a button nested inside a div, the button was clicked and triggered
                      its on-click event. What happens next are the 3 main phases/steps of Event Propagation
         
-                             1) Capturing Phase: JS will look for the button element that initially triggered the event.
+                             1) Capturing Phase: React will look for the button element that initially triggered the event.
                                                  It starts at the top of the DOM tree (HTML) and works 
-                                                 its way down until it finds the button element. If there are any event listeners
+                                                 its way down until it finds the button element. If there are any event handlers
                                                  for the capturing phase in the parent elements, these elements will handle the event
                                                  before it reaches the button element
-                
-                                                div.addEventListener('click', () => {
-                                                    console.log('Div clicked during capturing phase');
-                                                }, true);                             //third argument specifies that the event listener will be triggered on the capturing phase
+
+                                                 <div onClickCapture={handleClick}/>     //onClickCapture will call the function during the capturing phase
+                        
                 
                              2) Target Phase:  Once JS finds the button element, it will trigger the on-click event handler
                 
                              3) Bubbling Phase: The event will then 'bubble' up to the top of the DOM tree. Starting from the 
                                                 button element, then finally to the html element. If any element (html, div) has 
-                                                an event listener attached, it will be triggered.   
+                                                an event handler attached, it will be triggered.   
                 
-                                                div.addEventListener('click', () => {
-                                                     console.log('Div clicked during bubbling phase');
-                                                });
-        
-                     The phases above are true for the native event system in JS, but React uses a synthetic event system 
-                     that follows the same phases but with one major difference, React will trigger the event handlers during the 
-                     capturing phase and bubbling phase and NOT the event listeners. For the capturing phase, you need to use the 
-                     special attribute 'onClickCapture' in React. For the bubbling phase, any event handlers in the parent elements 
-                     will be triggered automatically           
+                                                <div onClick={handleClick}>
+          
 
                                                                ONE-WAY DATA BINDING
                     All data in a React app flows in one direction. Typically, the parent component can pass its state down as props to the child component.

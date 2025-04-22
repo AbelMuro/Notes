@@ -416,7 +416,25 @@ function MakeList(props) {
 //React uses a cross-browser wrapper object that is usually named 'e' (synthetic event)
 //that pools together all the native events together and makes sure that the event works the same across all browsers
 //The whole point of this is to improve compatibility between all browsers and react
-//there may be cases where a native event may have a different
+
+/* 
+
+        RECAP: When an event is triggered in the DOM, JS will use Event Propagation.
+               Lets say that we have a button nested inside a div, the button was clicked and triggered
+               its on-click event. What happens next are the 3 main phases/steps of Event Propagation
+
+           1) Capturing Phase: JS will look for the button element that initially triggered the event.
+                               It starts at the top of the DOM tree (HTML) and works 
+                               its way down until it finds the button element. If there are any event listeners
+                               for the capturing phase in the parent elements, these elements will handle event
+                               before it reaches the button element
+
+           2) Target Phase: Once JS finds the button element, it will trigger the on-click event handler
+
+           3) Bubbling Phase: The event will then 'bubble' up to the top of the DOM tree. Starting from the 
+                              button element, then finally to the html element. If any element (html, div) has an event listener for the 
+                              bubbling phase of the event, it will be triggered.   
+*/
 
 
 

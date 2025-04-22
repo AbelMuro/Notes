@@ -4,23 +4,14 @@
 
 
                             
-                                                 RENDERING PROCESS
+                                                 STATE CHANGE PROCESS
         A component will be re-rendered (updated) when there is a change in the state object.
         All updates to the state are synchronous, but all updates to the DOM are asynchronous
-        When a state update occurs, Vue will not blindly destroy the old DOM structure and create a new DOM structure, 
-        instead, it will update the old state with the new state values. If we assume that we have a state that contains 
-        an array of strings, and we assign a new array to the state, Vue will simply update the elements in the old array 
-        so that they match the new array. If the order of the elements have changed, Vue will also update the elements in 
-        the old array so that they match the new order. By default, Vue uses position-matching to determine if a 
-        state object has changed, look at the example below to visually understand this....
-
-                const state = ref(['apple', 'orange', 'pineapple']);
-                state = ['lettuce', 'tomato', 'tomato'];                    // Vue will only update the elements in the old array, state[0] = 'apple' will become state[0] = 'lettuce', etc...
-
 
                                                 REACTIVITY SYSTEM:
         -Deep Reactivity: all nested objects and arrays will be tracked within the state object
         -Shallow Reactivity: Only the first level of properties will be tracked within the state object (typically the value property)
+
         Every component in Vue.js will keep track of ALL of its state objects (ref, reactivity)
         When the state is updated, the component will be re-rendered. Vue uses objects as state, 
         because Vue can intercept the 'get' and 'set' operations of an object with the setter and getter methods. 
@@ -43,16 +34,58 @@
                       }
                 }
 
+
+                                                   RENDERING PROCESS
+        The rendering process for Vue is similar to Reacts Reconciliation algorithm, the main difference is how React and Vue detect state changes.
+        When a component is first mounted, Vue will generate a Virtual DOM in memory that represents the component. Then, when the 
+        state of a component is updated, it will create another Virtual DOM in memory. At this point, we have two Virtual DOM's 
+        in memory. Vue will use a process called 'diffing' to compare all nodes from both Virtual DOM trees, and decide which 
+        nodes to update in the Real DOM. Once Vue has decided which nodes to update in the Real DOM, it will use a process 
+        called 'patching' to update the nodes in the Real DOM, instead of recreating the nodes. Patching is only used when 
+        the node have been updated. If the node has been removed, it will simply unmount the node.
+
+                                                       PATCHING
+        Patching is the process in Vue that updates nodes in the Real DOM when the state changes.
+        This process is seen more commonly in React lists, where each item in a list is identified by 
+        the 'key' prop. Vue will track the list with the 'key' prop to see if the state/list has changed.
+
+                        const state = ref(['apple', 'orange', 'pineapple']);
+                        state.value = ['lettuce', 'orange', 'pineapple'];   
+
+                        <div>
+                           {{state[0]}}
+                        </div>
+                        <div>
+                           {{state[1]}}
+                        </div>
+                        <div>
+                           {{state[2]}}
+                        </div>
+
+        When the state change above occurs, Vue will update the Real DOM by updating the first <div> only, 
+         {{state[0] = 'apple'}}      to     {{state[0] = 'lettuce'}} 
+        Vue will leave everything else alone.
+
                                                     VIRTUAL DOM
         Vue uses the virtual DOM, just like React. The Virtual DOM is an exact copy of the real DOM, and its used to determine which nodes 
-        in the real DOM have to be updated. The difference here is that Vue does NOT create another copy of the virtual DOM in memory when 
-        there is a state change, instead, Vue uses the reactivity system to decide which nodes will be updated in the real DOM.
-        Every node in the virtual DOM has a component tracking a state object, when that state object is updated, that same node will be updated in 
-        the real DOM
+        in the real DOM have to be updated. When a component is first mounted, it will be represented by a Virtual DOM node.
     
 
+                                                     LIFECYCLE
+        Every component has a lifecycle that outlines the step by step process that it takes from creation to destruction
+        In Vue, the lifecycle is similar to the React lifecycle, having 4 main phases
 
-
+                1) Creation Phase: the template is first compiled into a render function.
+                   The render function will return a Virtual DOM tree branch that represents the component
+        
+                2) Mounting Phase: The render function is then called and this will mount the component onto the 
+                   Virtual DOM, and then finally to the Real DOM
+        
+                3) Updating Phase: Vue will use the reactivity system to 'patch' or 'update' the component 
+                   when the state changes.
+        
+                4) Destruction Phase: The component will be removed from the Virtual DOM, and then from the Real DOM
+                   all event listeners, child components and state are destroyed.
 
 
 
@@ -249,6 +282,7 @@
         -When you create a state object in Vue, the state object will automatically be unwrapped
          meaning that you don't have to use the value property of the state object.
          Unwrapping only occurs if the ref() or reactive() functions are at the top level of your script
+         REMEMBER, uwrapping only occurs in the template, NOT in the script
 
                 const state = ref(10);
                 console.log(state);            //you dont need the 'value' property here
@@ -266,7 +300,7 @@
                 
         -Do not pass down state as props directly
         -You can mutate the property values of a state directly
-        -You can assign a state object as a propetyy to another state object, 
+        -You can assign a state object as a property to another state object, 
          any changes made to the state object will affect the parent state object
 
                 const stateOne = ref(1);
@@ -541,7 +575,10 @@
         {{n}}
     </div>
     
-    <MyComponent v-for="(item, index) in list" :key="item" :prop="item"/> <!-- You can create a list of components (all props to these components must be dynamic)-->
+    <MyComponent 
+        v-for="(item, index) in list" 
+        :key="item" 
+        :prop="item"/>                                         <!-- You can create a list of components (all props to these components must be dynamic)-->
 
     <div v-for="item in list" :key="item.id">
       <span v-for="childItem in item.children" :key="childItem">   <!-- You can also nest v-for directives-->
@@ -574,7 +611,8 @@
 
     const count = ref(0);
 
-    const handleClick = () => {
+    const handleClick = (e) => {                                // e is the Native DOM event
+        e.target.tagName;                
         count++;
     }
 
@@ -586,10 +624,11 @@
 
 
 <template>
-    <button v-on:click="handleClick">                     <!-- clicking on this button will invoke the handleClick() function -->
-        Click Here
-    </button>
-    <form v-on:submit.prevent="handleSubmit()"></form>    <!-- You can use modifiers to call certain functions for an event, prevent will call the e.preventDefault() for the submit event-->
+    <button v-on:click="handleClick"></button>                     <!-- handleClick is a method handler -->
+    <button v-on:click="handleClick($event)"></button>             <!-- handleClick() is an inline handler, using $event is another way of getting the event object-->
+    <button @click.once="handleClick"></button>                    <!-- handleClick() will be triggered at most once-->
+    <button @click.capture="handleClick"></button>                 <!-- We create a click event listener-->
+    <form v-on:submit.prevent="handleSubmit"></form>               <!-- You can use modifiers to call certain functions for an event, prevent will call the e.preventDefault() for the submit event-->
 </template>
 
 

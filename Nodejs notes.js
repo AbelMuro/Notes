@@ -1,17 +1,31 @@
-//Node.js is an open source server environment that allows you to run javascript outside of a browser
-
 /* 
-			FEATURES OF NODE.JS
+			Node.js is a runtime environment that allows you to run javascript outside of a browser.
+   			A runtime environment is an abstraction that represents all the tools that you need to execute a program.
+   			Node.js is mostly used to create RESTful APIs on the back-end.
+   			You will need to install Node.js on the server that is using your RESTful API
 
+						      FEATURES OF NODE.JS
 
-			    	           		MODULAR SYSTEM
+			    	           		 MODULAR SYSTEM
 		     	Node.js uses a modular system that allows the developer to break the application into smaller, re-usable components.
 		      	Typically, every component is imported and used with the require() function
 		
-					  		SINGLE-THREADED
+					  		 SINGLE-THREADED
 		        Node.js is single threaded, which means that it can only perform one task at a time.
+
+   							 NON-BLOCKING I/O
+	  	        Node.js uses the event loop to ensure that tasks being performed are not blocking or halting other tasks.
+
+     							    STREAMS
+			Node.js uses streams to process large amounts of data. A stream is a continuous flow of data (binary, strings, files) 
+   			that is loaded asychronously. The stream will break down large data into chunks, and these chunks will contain raw binary data.
+      			The chunks are then stored into a buffer
+
+  							     BUFFERS
+	      		Node.js uses buffers to store raw binary data. They are a temporary storage for the raw binary data of files or other large data.
+			Buffers can be used to manipulate the data, such as writing new text to a text file.
 		  
-		  			    		EVENT LOOP
+		  			    		   EVENT LOOP
 			 Node.js uses the event loop to process and handle tasks, even though Node.js is single-threaded, we use the
     			 event loop to simultaneously perform multiple tasks. All synchronous tasks are placed in the call-stack,
 		  	 and executed one by one. All asynchronous tasks are taken out of the call-stack and processed in a different 

@@ -31,7 +31,9 @@
 		  	 and executed one by one. All asynchronous tasks are taken out of the call-stack and processed in a different 
 		    	 thread (this thread is NOT part of node.js). Once the asynchronous task has completed in the 
 		         separate thread, it will then be placed in the Queue. Once the call-stack is empty, all tasks in the 
-			 queue then get placed in the call-stack for execution in the main node.js thread.
+			 queue then get placed in the call-stack for execution in the main node.js thread. Keep in mind that the queue
+    			 divides its tasks into microtasks and macrotasks; microtasks(promises) have a higher priority, and macrotasks(setTimeout) 
+			 have a lower priority
 
 				   NODE.JS THREAD			    SEPARATE THREAD											 	
 			 	
@@ -53,7 +55,7 @@
 				   |		|
 				   |		|
 				   | AsyncFunc  |
-				    ----------
+				    ----------			The Queue will complete all microtasks before completing macrotasks
 
     
 													

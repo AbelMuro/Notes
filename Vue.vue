@@ -68,7 +68,7 @@
 
                                                     VIRTUAL DOM
         Vue uses the virtual DOM, just like React. The Virtual DOM is an exact copy of the real DOM, and its used to determine which nodes 
-        in the real DOM have to be updated. When a component is first mounted, it will be represented by a Virtual DOM node.
+        in the real DOM have to be updated. When a component is first mounted, Vue will create a corresponding Virtual DOM node in the tree.
     
 
                                                      LIFECYCLE
@@ -86,6 +86,38 @@
         
                 4) Destruction Phase: The component will be removed from the Virtual DOM, and then from the Real DOM
                    all event listeners, child components and state are destroyed.
+
+
+                                                NATIVE EVENT SYSTEM
+           Vue uses the native event system in the browser, it doesn't have a synthetic event system like React
+           RECAP: When an event is triggered in the DOM, JS will use Event Propagation.
+           Lets say that we have a button nested inside a div, the button was clicked and triggered
+           its on-click event. What happens next are the 3 main phases/steps of Event Propagation
+
+                   1) Capturing Phase: JS will look for the button element that initially triggered the event.
+                                       It starts at the top of the DOM tree (HTML) and works 
+                                       its way down until it finds the button element. If there are any event listeners
+                                       for the capturing phase in the parent elements, these elements will handle event
+                                       before it reaches the button element
+        
+                                       div.addEventListener('click', () => {
+                                           console.log('Div clicked during capturing phase');
+                                        }, true);                             //third argument specifies that the event listener will be triggered on the capturing phase
+        
+                   2) Target Phase: Once JS finds the button element, it will trigger the on-click event handler
+        
+                   3) Bubbling Phase: The event will then 'bubble' up to the top of the DOM tree. Starting from the 
+                                      button element, then finally to the html element. If any element (html, div) has an event listener for the 
+                                      bubbling phase of the event, it will be triggered.    
+        
+                                      div.addEventListener('click', () => {
+                                          console.log('Div clicked during bubbling phase');
+                                        });
+
+
+
+
+
 
 
 
@@ -429,11 +461,35 @@
 
 
 
+<!-- =========================================== DIRECTIVES =================================================== --!>
+<!-- 
+        Directives are used with attributes in elements inside templates, they apply additional logic to the attribute.
+        All directives start with a prefix v-
+
+        Syntax for directives:
+                v-on:click.prevent="JS expression"
+                directive:attribute.modifier="JS expression"    
+
+        Modifiers: They are denoted as directive postfixes with a dot. They apply even more logic to the attribute. 
+        Keep in mind that modifiers can be chained together
+                .prevent modifier will call the e.preventDefault()
+                .passive modifier will call the event handler immediately instead of waiting for the event to finish
+
+        Directly below are the most common directives in Vue
+-->
 
 
 
 
-<!-- ============================================ DYNAMIC ATTRIBUTES AND VALUES ========================================= -->
+
+
+
+
+
+
+
+
+<!-- ============================================ DYNAMIC ATTRIBUTES (V-BIND) ========================================= -->
 <!-- 
     You can use the v-bind attribute to dynamically set an attribute or value to an element
     shorthand :
@@ -480,13 +536,7 @@
 
 
 
-
-
-
-
-
-
-<!--  ============================================ CONDITIONAL RENDERING =========================================-->
+<!--  ============================================ CONDITIONAL RENDERING (V-IF, V-ELSE-IF, V-ELSE, V-SHOW) =========================================-->
 <!--
     You can conditionally render your elements by using the v-if, v-else-if, and v-else directive
 
@@ -536,7 +586,7 @@
 
 
 
-<!--  ============================================ LIST RENDERING ========================================= -->
+<!--  ============================================ LIST RENDERING (V-FOR) ========================================= -->
 <!-- 
     You can use the v-for directive to render a list of items in an array.
     Every item in a list will have its own 'key' attribute that is used to identify the 
@@ -600,10 +650,11 @@
 
 
 
-<!--  =========================================== EVENT HANDLERS =============================================== -->
+<!--  =========================================== EVENT HANDLERS (V-ON)=============================================== -->
 <!-- 
     You can use the v-on directive to bind event handlers to your elements
     Shorthand is @
+
 -->
 
 <script setup>
@@ -626,8 +677,10 @@
 <template>
     <button v-on:click="handleClick"></button>                     <!-- handleClick is a method handler -->
     <button v-on:click="handleClick($event)"></button>             <!-- handleClick() is an inline handler, using $event is another way of getting the event object-->
-    <button @click.once="handleClick"></button>                    <!-- handleClick() will be triggered at most once-->
-    <button @click.capture="handleClick"></button>                 <!-- We create a click event listener-->
+    <button v-on:click.once="handleClick"></button>                <!-- handleClick() will be triggered at most once-->
+    <button v-on:click.self="handleClick"></button>                <!-- handleClick() will only be called if the event was triggered by THIS element-->
+    <button v-on:click.capture="handleClick"></button>             <!-- We create a click event listener-->
+    <div v-on:scroll.passive="handleScroll"></div>                 <!-- handleScroll() will be called immediately, instead of waiting for onScroll to complete (the passive modifier can be used for mobile devices)-->
     <form v-on:submit.prevent="handleSubmit"></form>               <!-- You can use modifiers to call certain functions for an event, prevent will call the e.preventDefault() for the submit event-->
 </template>
 
@@ -639,6 +692,63 @@
 
 
 
+<!--  ============================================ FORMS (V-MODEL) ========================================= -->
+<!-- 
+        You can use the v-model directive to synchronize the state in Vue with the input inside a form
+        By using v-model, the state will automatically be displayed in the input element, 
+-->
+
+
+
+<!-- TEXT FIELDS -->
+
+<script setup>
+      import {ref} from 'vue';
+      const text = ref('');
+</script>
+
+<template>
+    <form>
+        <input type="text" v-model="text"/>                <!-- text will automatically be updated when the user types in the input-->
+    </form>
+</template>
+
+
+
+
+
+<!-- TEXT AREA (Do NOT use interpolation {{text}}-->
+
+<script setup>
+      import {ref} from 'vue';
+      const message = ref('')
+</script>
+
+<template>
+    <form>
+         <textarea v-model="message"/>
+    </form>
+</template>
+                 
+
+
+
+
+<!-- CHECKBOXES -->
+
+<script setup>
+    import {ref} from 'vue';
+    const checkedBoxes = ref([]);
+</script>
+
+<template>
+     <form>
+        <input type="checkbox" value="one" v-model="checkedBoxes"/>          <!-- clicking this checkbox will automatically get the value attribute and put it in the state array-->
+        <input type="checkbox" value="two" v-model="checkedBoxes"/>
+        <input type="checkbox" value="three" v-model="checkedBoxes"/>
+     </form>
+</template>
+                 
 
 
 
@@ -648,7 +758,9 @@
 
 
 
-<!-- =========================================== COMPUTED() ===============================================
+
+                 
+<!-- =========================================== COMPUTED() =============================================== -->
 <!-- 
     You can use the Computed function from Vue to simplify a JS expression within your template
 

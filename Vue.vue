@@ -655,6 +655,15 @@
     You can use the v-on directive to bind event handlers to your elements
     Shorthand is @
 
+    Modifiers to remember:
+
+        v-on:click.once          this will trigger the event handler only once
+        v-on:click.self          this will trigger the event handler if the event was created by THIS element
+        v-on:click.capture       this will create an event listener when the element triggers the event for the first time
+        v-on:scroll.passive      this will call the event handler immediately, instead of waiting for the scroll event to complete (best used for mobile devices)
+        v-on:submit.prevent      e.preventDefault()
+        v-on:click.stop          this will stop the bubbling phase of event propagation
+
 -->
 
 <script setup>
@@ -666,22 +675,12 @@
         e.target.tagName;                
         count++;
     }
-
-    const handleSubmit = () => {
-        
-    }
-    
 </script>
 
 
 <template>
     <button v-on:click="handleClick"></button>                     <!-- handleClick is a method handler -->
     <button v-on:click="handleClick($event)"></button>             <!-- handleClick() is an inline handler, using $event is another way of getting the event object-->
-    <button v-on:click.once="handleClick"></button>                <!-- handleClick() will be triggered at most once-->
-    <button v-on:click.self="handleClick"></button>                <!-- handleClick() will only be called if the event was triggered by THIS element-->
-    <button v-on:click.capture="handleClick"></button>             <!-- We create a click event listener-->
-    <div v-on:scroll.passive="handleScroll"></div>                 <!-- handleScroll() will be called immediately, instead of waiting for onScroll to complete (the passive modifier can be used for mobile devices)-->
-    <form v-on:submit.prevent="handleSubmit"></form>               <!-- You can use modifiers to call certain functions for an event, prevent will call the e.preventDefault() for the submit event-->
 </template>
 
 
@@ -695,7 +694,14 @@
 <!--  ============================================ FORMS (V-MODEL) ========================================= -->
 <!-- 
         You can use the v-model directive to synchronize the state in Vue with the input inside a form
-        By using v-model, the state will automatically be displayed in the input element, 
+        By using v-model, you dont need an on-change event handler to update the state, Vue will
+        automatically update the state for you.
+
+        Modifiers to remember..
+
+                v-model.lazy       state will ONLY be updated when the user stops typing and loses focus of the input (text will still be displayed on screen)
+                v-model.number     state will be typecast into a number, if the state can't be typecasted, then a string will be the result (this modifier is applied automatically if type='number' is used)
+                v-model.trim       state will be updated to remove all whitespaces
 -->
 
 
@@ -705,11 +711,12 @@
 <script setup>
       import {ref} from 'vue';
       const text = ref('');
+      const otherText = ref('');
 </script>
 
 <template>
     <form>
-        <input type="text" v-model="text"/>                <!-- text will automatically be updated when the user types in the input-->
+        <input type="text" v-model="text"/>                <!-- state will automatically be updated when the user types in the input-->         
     </form>
 </template>
 
@@ -717,7 +724,7 @@
 
 
 
-<!-- TEXT AREA (Do NOT use interpolation {{text}}-->
+<!-- TEXT AREA (Do NOT use interpolation {{text}} inside the textarea tag -->
 
 <script setup>
       import {ref} from 'vue';
@@ -726,7 +733,8 @@
 
 <template>
     <form>
-         <textarea v-model="message"/>
+         <textarea v-model="message">
+        </textarea>
     </form>
 </template>
                  
@@ -734,7 +742,7 @@
 
 
 
-<!-- CHECKBOXES -->
+<!-- CHECKBOXES (value attribute can be dynamic as well (v-bind))-->
 
 <script setup>
     import {ref} from 'vue';
@@ -743,15 +751,154 @@
 
 <template>
      <form>
-        <input type="checkbox" value="one" v-model="checkedBoxes"/>          <!-- clicking this checkbox will automatically get the value attribute and put it in the state array-->
+        <input type="checkbox" value="one" v-model="checkedBoxes"/>                  <!-- clicking this checkbox will automatically get the value attribute and put it in the state array-->
         <input type="checkbox" value="two" v-model="checkedBoxes"/>
         <input type="checkbox" value="three" v-model="checkedBoxes"/>
+        <input type="checkbox" v-model="toggle" true-value="yes" false-value="no"/>  <!-- If toggle state is equal to "yes", then the checkbox will be checked,-->
+     </form>                                                                         <!-- If toggle state is equal to "no", then the checkbox will NOT be checked -->
+</template>                                                                          <!-- true-value and false-value enable you to set default values for the checked state and unchecked state-->
+                                                                                     <!-- The state of the checkbox doesnt have to be a boolean value if you use these attributes -->
+
+
+
+
+<!-- RADIO BUTTONS (value attribute can be dynamic as well (v-bind))-->
+
+<script setup>
+     import {ref} from "vue";
+     const color = ref("red");
+</script>
+
+<template>
+     <form>
+        <input type="radio" value="red" v-model="color">
+        <input type="radio" value="blue" v-model="color">
+        <input type="radio" value="green" v-model="color">
      </form>
 </template>
-                 
 
 
 
+<!-- SELECT -->
+
+<script setup>
+     import {ref} from "vue";
+     const selected = ref("");
+</script>
+
+<template>
+     <form>
+        <select v-model="selected">
+             <option disabled value=""> Select a letter </option>                <!-- This can be used as a placeholder in a select tag-->
+             <option value="A">A</option>
+             <option value="B">B</option>
+             <option value="C">C</option>
+             <option :value="{message: 'hello world'}">D</option>                <!-- the value attribute can be assigned an object-->
+        </select>
+     </form>
+</template>
+
+
+
+
+
+
+<!-- =========================================== WATCHERS =============================================== -->
+<!-- 
+        You can use watchers in Vue to apply side-effects to a component when a state change occurs.
+        Watchers are functions that are called after a state change occurred, but BEFORE the re-render happens. 
+-->            
+
+
+<!--    
+
+                                        Watch()   
+        You can use the watch() method in vue to keep track of a small number of state objects. You have to explicitly define 
+        the state objects as dependencies. On a positive note, Watch() provides better control on when the function
+        will be called, and which levels of nested properties will be tracked. By default, Watch() will NOT be called 
+        after the mounting phase. 
+
+                
+                
+                Different ways of using watch():
+
+                watch([state, otherState], ([newState, oldState], [newOtherState, oldOtherState]) => {})     // you can have watchers watching multiple state objects
+                watch(state, () => {}, {deep: 2});                                                           // Watcher will be called if the properties on the first and second nested level in state object are updated
+                watch(state, () => {}, {immediate: true})                                                    // Watcher will be called after the component has mounted
+                watch(() => state.value + otherState.value, (combinedState) => {})                           // you can use getter functions in watchers, if one of the states changes in the getter, it will trigger the watcher
+                watch(state, () => {}, {once: true})                                                         // Watcher will be called only once
+-->
+
+<script setup>
+    import { ref, watch } from 'vue';
+
+    const state = ref('');
+    const otherState = ref(0);
+
+    const handleClick = () => {
+        state.value = 'new state'
+    }
+
+    watch(state, async (newState, oldState) => {})                                          //you have access to the old state and new state from here        
+</script>
+
+
+<template>
+    <button @click="handleClick">
+        Click Here
+    </button>
+<template>
+
+
+
+
+<!-- 
+                                        watchEffect()
+       You can use WatchEffect() to keep track of a large number of state objects. You don't have to explicitly define 
+       the state objects as dependencies. WatchEffect() has less control on when the function can be called, and which levels 
+       of properties will be tracked. By default, watchEffect() will be called after the mounting phase.  
+
+        Keep in mind, watchEffect() will only keep track of state objects that are ACCESSED within the callback. Any state object
+        that is assigned a new value in the callback will not be a dependency.
+-->
+
+<script setup>
+    import {ref, watchEffect} from "vue";
+
+    const state = ref("");
+    const otherState = ref(2);
+
+    const handleClick = () => {
+            state.value = 'new state';
+    }
+
+    watchEffect(() => {
+        console.log(state.value);                //watchEffect() will be called if value property changes, or if ANY of the nested property changes as well
+        otherState.value = 23;                   //otherState.value will NOT be a dependency
+    })
+
+</script>
+
+<template>
+    <button @click="handleClick">Click</button>
+</template>
+
+
+
+
+<!-- 
+                                        onWatcherCleanup()
+        You can perform a clean up function inside a watcher to free up sources or to cancel certain fetch requests
+        
+-->
+
+<script setup>
+     import {ref, watchEffect, onWatcherCleanup} from "vue";
+
+     
+        
+        
+</script>
 
 
 

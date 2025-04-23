@@ -3,42 +3,125 @@
 
 
        							DYNAMICALLY TYPED
-	      	  Javascript is a dynamically typed language, meaning that any variable can change its data type at any time
-			     				let count = 4;
-				 			count = true;
+		      	  Javascript is a dynamically typed language, meaning that any variable can change its data type at any time
+					let count = 4;
+					count = true;
+
+     							SINGLE-THREADED
+	    		  Javascript is single threaded, meaning that it can only perform one task at a time
 
      							GARBAGE COLLECTORS
-	    	  Javascript will automatically free up space when a variable or object is not being used anymore
+		    	  Javascript will automatically free up space when a variable or object is not being used anymore
 
-  							  STACK/HEAP
-		  Javascript uses the stack and the heap to store temporary data. 
-    		      Stack: is used to store primitive values and references to objects, 
-      		      Heap: is used to store the objects and data structures
+ 							      SCOPES
+	      		  Scope refers to the area of access that a variable in Javascript has. Javascript has three 
+	   		 types of scope; function scope, block scope, and global scope.
 
-       	           					EVENT PROPAGATION
-	           When an event is triggered in the DOM, JS will use Event Propagation.
-	           Lets say that we have a button nested inside a div, the button was clicked and triggered
-	           its on-click event. What happens next are the 3 main phases/steps of Event Propagation
+ 							   LEXICAL SCOPE
+			  Lexical scope refers to the way variable access is determined within functions. Javascript has a hierarchical 
+			  scope structure, where the inner function has access to the variables declared in the outer function, but not the
+			  other way around. Variable access is determined during the definition of the function and NOT during the execution
+     			  of the function.
+						function outer(){
+						     const x = 2;
+						     function inner() {
+							 console.log(x);     //x can be accessed here
+						     }
+						}
 
-	                   1) Capturing Phase: JS will look for the button element that initially triggered the event.
-	                                       It starts at the top of the DOM tree (HTML) and works 
-	                                       its way down until it finds the button element. If there are any event listeners
-	                                       for the capturing phase in the parent elements, these elements will handle event
-	                                       before it reaches the button element
-	        
-	                                       div.addEventListener('click', () => {
-	                                           console.log('Div clicked during capturing phase');
-	                                        }, true);                             //third argument specifies that the event listener will be triggered on the capturing phase
-	        
-	                   2) Target Phase: Once JS finds the button element, it will trigger the on-click event handler
-	        
-	                   3) Bubbling Phase: The event will then 'bubble' up to the top of the DOM tree. Starting from the 
-	                                      button element, then finally to the html element. If any element (html, div) has an event listener for the 
-	                                      bubbling phase of the event, it will be triggered.    
-	        
-	                                      div.addEventListener('click', () => {
-	                                          console.log('Div clicked during bubbling phase');
-	                                        });
+      							       CLOSURES
+		    	 A closure in Javascript is the concept that allows functions to use variables and objects that are declared 
+			 outside of its local scope. Variables being used inside a closure will not be garbage collected during the lifetime
+    			 of the functions execution context.
+
+    						const x = 5;
+
+       						function myFunc(){		//this function formed a closure with the x variable
+	     					   console.log(x);
+						}
+
+      						          SCOPE CHAIN RESOLUTION
+			 Scope chain resolution is the concept that javascript uses to determine which declaration of variables to use 
+    			 within a function. When a function uses a variable or object within its local scope, javascript will look for the 
+			 declaration of the variable in the local scope first. If it doesn't find it there, then it will look for the 
+    			 declaration in the outer scopes.
+							
+							const x = 7;				//javascript will not use this declaration
+							function outermost(){
+       							    const x = 4;			//javascript finds a declaration here
+							    function outer(){
+								function inner(){
+								    function innermmost(){
+	    								console.log(x);	        //we start scope chain resolution here and look to the outer functions
+								    }
+								}							
+							   }
+							}
+ 
+    	
+  							      STACK/HEAP
+		         Javascript uses the stack and the heap to store and manage temporary data. The Stack is used for function calls, 
+	   		 every function call creates a stack frame that contain the execution context(local variables, other function calls) 
+       			 of the function, the stack frame is then placed into the stack. The heap is used to store objects and large data structures.
+			 The stack is faster, but has limited spaced. The heap is slower, but has dynamic memory allocation, in other words, it can
+    			 grow as needed.
+
+							       EVENT LOOP
+    			 Node.js uses the event loop to process and handle tasks, even though Node.js is single-threaded, we use the
+    			 event loop to simultaneously perform multiple tasks. All synchronous tasks are placed in the call-stack,
+		  	 and executed one by one. All asynchronous tasks are taken out of the call-stack and processed in a different 
+		    	 thread (this thread is NOT part of node.js). Once the asynchronous task has completed in the 
+		         separate thread, it will then be placed in the Queue. Once the call-stack is empty, all tasks in the 
+			 queue then get placed in the call-stack for execution in the main node.js thread. Keep in mind that the queue
+    			 divides its tasks into microtasks and macrotasks; microtasks(promises) have a higher priority, and macrotasks(setTimeout) 
+			 have a lower priority
+
+				   JAVASCRIPT THREAD			    SEPARATE THREAD											 	
+			 	
+				     Call stack												  	  
+			  	   |		|										
+				   |		|												
+				   |  syncFunc	|											
+				   |  AsyncFunc	| --------------> this async function is taken out of the call stack 	
+				   |  syncFunc	|		  and processed in a separate thread. Once the function				
+				   |  syncFunc	|                 finishes processing, it gets placed in the Queue				
+				   |  syncFunc	|				|								
+				   -------------				|								
+					^					|
+					| 					|	
+				       Queue					|
+				   |		|				|
+				   |		|	<---------------------- |
+				   |		|
+				   |		|
+				   |		|
+				   | AsyncFunc  |		The Queue will complete all microtasks before completing macrotasks
+				    ----------				
+
+       	           					    EVENT PROPAGATION
+		           When an event is triggered in the DOM, JS will use Event Propagation.
+		           Lets say that we have a button nested inside a div, the button was clicked and triggered
+		           its on-click event. What happens next are the 3 main phases/steps of Event Propagation
+	
+		                   1) Capturing Phase: JS will look for the button element that initially triggered the event.
+		                                       It starts at the top of the DOM tree (HTML) and works 
+		                                       its way down until it finds the button element. If there are any event listeners
+		                                       for the capturing phase in the parent elements, these elements will handle event
+		                                       before it reaches the button element
+		        
+		                                       div.addEventListener('click', () => {
+		                                           console.log('Div clicked during capturing phase');
+		                                        }, true);                             //third argument specifies that the event listener will be triggered on the capturing phase
+		        
+		                   2) Target Phase: Once JS finds the button element, it will trigger the on-click event handler
+		        
+		                   3) Bubbling Phase: The event will then 'bubble' up to the top of the DOM tree. Starting from the 
+		                                      button element, then finally to the html element. If any element (html, div) has an event listener for the 
+		                                      bubbling phase of the event, it will be triggered.    
+		        
+		                                      div.addEventListener('click', () => {
+		                                          console.log('Div clicked during bubbling phase');
+		                                        });
 
 
 

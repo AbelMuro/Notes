@@ -1,0 +1,713 @@
+<!--VALIDATION ATTRIBUTES and CSS SELECTORS-->
+<!--
+    attributes:
+        name:       most important attribute, the server relies on this attribute to identify data sent by the <input/>
+        action:     sends the value specified to the server as a URL parameter... EXAMPLE: action="random".... "random" is sent to the server
+        method:     method="post" sends the data as URL variables.... method="get" is for requesting data from a server
+        enctype:    defines how the data is encoded before being sent to the server... "multipart/form-data" is for uploading files... "application/x-www-form-urlencoded" is for text
+        multiple:   specifically designed for uploading files, you can upload multiple files with this attribute
+        value:      contains the actual text that is written by the user
+        required:   forces the user to input something to the input box, it cannot be empty
+        disabled:   attribute for forms that accepts true or false, if its true, then the input will be disabled
+        placeholder: displays default text to the user that will dissapear once the user focuses on the text field
+        pattern:    specifies the exact pattern that a user MUST match with their input. Pattern has the syntax [any symbol]{digit}
+        target:     determines if a new page will be displayed after the form has been submitted, target="_blank" means a new page will be displayed, target="_self" means that another page will not pop up (default)
+        max:        the maximum value that a user can input
+        min:        the minimum value that a user can input
+        autofocus:  can be usefull if a certain input box does not appear while a page loads
+        autocomplete: helps the user auto complete a text field if its assign a reserved value such as: "username", "current-password", "cc-number", "street address"
+
+    CSS SELECTORS FOR VALIDATION
+        :valid          selects input elements that have valid values 
+        :invalid        selects input elements that have invalid values
+        :optional       selects input elements that have no "required" attribute
+        :required       selects input elements that have the "required" attribute
+        :focus          selects input elements that have been clicked on by the user (if you want to change the border of a focused element, you must use 'outline' css property )
+        ::placeholder   styles the placeholder text of an input element
+        :checked        styles a checkbox when it has been clicked, rememeber to use 'accent-color' css property to change the background color
+        :-webkit-autofill                                       styles an input after they have used autofill, this is important since the browser decides how an input will be displayed once autofil is triggered
+        -webkit-box-shadow:0 0 0 50px #E7816B inset;            css property used to 'hide' the default background color(that the browser uses for autofil on inputs) with a custom color
+        -webkit-text-fill-color: white;                         css property used to 'hide' the default text color(that the browser uses for autofil on inputs) with a custom color
+
+
+
+
+
+    Using JS to mark an input as invalid
+        const text_field = document.querySelector(".textField");
+        text_field.setCustomValidity("error");                  //setCustomValidity() can automatically set a text field as invalid
+        text_field.setCustomValidity("");                       //passing an empty string will remove the invalid state of the text field
+        text_field.setCustomValidity(" ");                      //passing a space like this can remove the default popup window for invalid text fields
+        text_field.reportValidity();                            //This method will fire an invalid event of an input
+        text_field.checkValidity();                             //returns true or false indicating if the input is valid, also fires the invalid event if the input is false
+    
+    Event handlers for <input/> in REACT
+        onInvalid                                               //event that will be triggered when an input text field is invalid
+        onChange                                                //event that will be triggered every time the user changes something about the <input/>
+        onSubmit                                                //event that will be triggered when the user clicks on an <input type="submit"/>, this event should be in a <form/>       
+        onFocus                                                 //event that will be triggered when the user clicks on an input
+        onBlur                                                  //event that will be triggered when the user clicks on something that is NOT the input
+    
+    DOM properties for <form/>
+        e.target.elements;                                      //this will return an node list of all the inputs, fieldset, selects, buttons in the form
+        e.target.elements.password                              //this will return a reference to an <input/> that has the name attribute set to 'password'
+        e.target.elements.password.value                        //gets the value of the <input name='password'>
+        e.target.elements.radioButtons.value                    //allCheckboxes will return a collection of <input type='radio' name='radioButtons'>, the value will be from the radio that is currently selected
+
+    DOM properties from <input/>
+        e.target.value;                                         //returns the value of an <input/>
+        e.target.checked;                                       //used for checkboxes, returns true or false
+        e.preventDefault();                                     //prevents the default behavior of a form when it is submitted (stops auto refresh, stops the form from being submitted to server)                                                                      
+        e.target.validity.typeMismatch;                         //returns true if the user doesn't type @ in an input of type='email' (this is just an example)
+        e.target.validity.valueMissing;                         //returns true if the input is empty
+        e.target.validity.patternMismatch:                      //returns true if the users input doesn't match the pattern attribute of the input element (pattern attribute only works with type = text, tel, search, email, url, password)
+        e.target.validity.customError;                          //returns true if the programmer has programmatically set the error with setCustomValidity()
+        e.target.style.setProperty('--placeholder', 'blue')     //you can dynamically change the color for the placeholder text in inputs, but make sure that the ::placeholder has a css variable assigned to color property
+-->
+<html>
+    <head>
+
+    </head>
+    <body>
+
+
+
+        
+            <!--a form should only have one <input type='submit'/> -->
+        <form action="sendInput" method="post" autocomplete="on">                                    <!-- action attribute will send the 'sendInput' as a URL parameter to the server-->          
+
+
+
+
+
+
+
+
+
+            
+
+            
+            <!-- NAME ATTRIBUTE-->                        
+            <fieldset>                                                                               <!-- fieldset groups together a set of inputs within a block-->
+                <label for="username">                                                               <!-- creating a label for the element with ID username-->
+                    Username: 
+                </label>                                                          
+                <input type="text" id="username" name="username" required>                          <!-- the name attribute must be specified so the server can reference the user's input-->
+                <br>                                                                                 <!-- value in this case defines the text displayed in the text box initially-->
+                <label for="password"> 
+                    Password: 
+                </label>                                                                             <!-- type="password" is also a text box but will hide the text will ****-->  
+                <input type="password" id="password" name="password" required>                       <!-- value in this case defines the text displayed in the text box initially-->          
+                <br> 
+                <input type="submit" value="Login">                                                  <!-- creating a button that sends data to server-->
+                <input type="reset">                                                                 <!-- resets all input values to their default-->
+            </fieldset>
+
+
+
+
+
+
+
+
+
+            
+
+
+
+            
+
+            <!-- CREDIT CARD INPUTS-->
+            <fieldset> 
+                <label> 
+                    Enter credit card number
+                </label>
+                <input type='tel' inputmode='numeric' pattern="[0-9\s]{19}" autocomplete="cc-number">                    //inputmode='numeric'   means only numbers are allowed in the input (type='number' doesnt prevent users from inputing non-numbers)
+            </fieldset>
+
+
+            <!-- 
+                You can use the function below to format the credit card numbers with spaces
+            
+                    function formatCardNumber(cardNumber) {
+                        let formatCard = cardNumber.replaceAll(' ', '');                          //this algorithm relies on the length of the string, we will need to remove the spaces first
+                        let temp = '';
+                
+                        for(let i = 0; i < formatCard.length; i++){
+                            if(i % 4 === 0)                                                        //we will add a space after every 4th number in the string
+                                temp += ` ${formatCard[i]}`;
+                            else
+                                temp += formatCard[i];
+                        }
+                        return temp.replace(' ', '');
+                    }
+            -->
+
+
+
+
+
+
+            
+            
+
+            
+            <!-- PASSWORD INPUTS-->                                                                <!-- ::-ms-reveal{}  is a pseudo element that lets you style the visibility button in password inputs -->
+            <fieldset> 
+                <label for='password'>
+                    Enter Password
+                </label>                                                                            <!-- the pattern attribute can be used to force the user to enter a letter, number, or symbol-->
+                <input type='password' id='password' pattern='[a-zA-Z0-9!@#$%^&*?]{6,}' name='password'/>                            <!-- any character entered in this input will be replaced by dots .........  -->                    
+            </fieldset>
+
+            <!-- 
+                you can also use the following pattern value
+
+                pattern='(?=.*[a-zA-Z]) (?=.*\d) (?=.*[!@#$%^&*]).{8,}'            //remember to delete the spaces here
+
+                this will make sure that the user must enter a letter, a number and a symbol, and password must have a length of 8 characters
+            -->
+
+
+
+
+
+
+
+
+
+            
+
+            <!-- RESET INPUTS-->
+            <fieldset>
+                <input type='reset' value='RESET'>                              <!-- Reset input will reset all the UNCONTROLED inputs to their default value-->
+            </fieldset>                                                         <!-- if you want to reset the value of a CONTROLLED input, you must use the onReset() event handler in a Form -->
+        
+            <!-- 
+            // ----------------------CONTROLLED COMPONENTS--------------------------------------------
+                    const handleClick = (e) => {                                //  if you have an onClick event handler for input type='reset',
+                        const form = e.currentTarget.form;                      //  you must call the reset() function manually to trigger the onReset event handler in the form
+                        form.reset();
+                    }
+
+                    const handleReset = (e) => {
+                        // you must use useRef(), forwardRef() and useImperativeHandle() to reset the state manually in controlled components
+                    }
+    
+                    <form onReset={handleReset}>
+                        <input type='reset' onClick={handleClick}>
+                    </form>
+
+
+
+
+            
+            // ----------------------- UNCONTROLLED COMPONENTS -----------------------------------------
+                    //the uncontrolled component must have a defaultValue attribute for the reset to work
+
+            
+                    <form onReset={handleReset}>
+                        <input type='text' defaultValue='type here'>                
+                        <input type='reset'>
+                    </form>
+            
+            -->
+
+
+
+
+
+            <!-- Progress Bars -->
+
+            <progress value={45} max={100} className={'.progress_bar'}/>
+
+            <!-- 
+                
+                .progress_bar{
+                    width: 100%;
+                    height: 32px;
+                    border-radius: 4px;
+                    color: #277C78;
+                    background-color: #F8F4F0;  
+                }
+                
+                .progress_bar::-webkit-progress-bar{
+                    background-color: #F8F4F0;               //background color for progress bar
+                    padding: 4px; 
+                    border-radius: 4px;
+                  }
+                  
+                .progress_bar::-webkit-progress-value {
+                    background-color: #277C78;               //color for the progress value in bar
+                    padding: 4px;
+                    border-radius: 4px;
+                  }
+                  
+                .progress_bar::-moz-progress-bar {
+                    background-color: #277C78;                //background color for progress bar
+                    border-radius: 4px;
+                }          
+        
+            -->
+
+
+            
+            
+            <!--SEARCH BOXES-->
+            <fieldset>
+                <label for="search">
+                    Search Box:
+                </label>
+                <input type="search" id="search" name="search" value={} onChange={}>                              <!-- type="search" will create a search box-->
+                <input type="submit">                                                               
+            </fieldset>
+
+
+
+
+
+
+
+
+
+
+            
+
+            
+            <!-- RANGE INPUT-->
+            <fieldset> 
+                  <label>Volume (between 0 and 50):</label>
+                  <input type="range" min="0" max="100" defaultValue='80' disabled>         <!-- this will return a range switch that you can move -->
+            </fieldset>
+
+
+            <!-- 
+                HOW TO STYLE AN INPUT TYPE RANGE
+
+
+               1) The code below will only work IF the thumb is inside the input element        =========[]===        [] is the thumb
+            
+                .range{                                                                        
+                    appearance: none;                                                        // removes the default styling for input type range
+                    width: 100px;
+                    height: 12px;
+                    border-radius: 33.5px;
+                    background-color: rgba(47, 47, 47, 0.05);                                // this will color the background of the input type range but NOT the thumb itself
+                }
+                
+                .range::-webkit-slider-thumb {                                               // this selector will style the thumb in the input type range                      
+                    appearance: none;                                                        
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 100%;
+                    background-color: red;
+                    box-shadow: -250px 0px 0px 350px red;                                    //you will need to use box-shadow to style the background color on the LEFT side of the thumb
+                }                                                                            //check the notes for box shadow in css notes
+
+                .range::-moz-range-thumb{}                                                   //for mozila firefox
+    
+                .range::-ms-thump{}                                                          //for IE and edge
+            
+                <input type='range' className='range' />
+
+
+
+            
+                2) If you want to style a range input that has the thumb outside the input element, go to this repository
+                
+                    https://github.com/AbelMuro/password-generator-app/blob/main/src/Components/GeneratePassword/PasswordLength/PasswordLength.js
+            
+            -->
+
+
+
+
+
+
+
+            
+
+            
+            
+            <!-- TEXT AREA, rows defines the height of the text area, columns defines the width of the text area-->
+            <fieldset>
+                <textarea 
+                    name="textarea" 
+                    rows='5'                 
+                    cols='30' 
+                    required> 
+                </textarea> 
+                <input type="submit"> 
+            <fieldset>
+
+        <!-- 
+                STYLING A TEXT AREA
+
+                .textarea{
+                    width: 400px;
+                    height: 400px;
+                    resize: none;                //disables the user from resizing the text area
+                
+                }
+                                           
+         -->
+
+
+
+
+
+
+
+
+
+                
+
+
+                
+                
+            <!-- SELECT OPTIONS-->                              <!-- the popup window that appears with the select tag cannot be styled with css because the browser handles the styling for us, the same logic applies to the arrow icon -->
+            <fieldset>
+                <select name="selectedOption" onChange={handleSelect}>
+                    <option value="Java">
+                        Java
+                    </option>
+                    <option value="Java">
+                        C++
+                    </option>
+                    <option value="Java">
+                        HTML
+                    </option>
+                </select>
+                <input type="submit">
+            </fieldset>
+
+
+
+
+
+
+
+                
+                
+            <!--RADIO BUTTONS -->                                            //accent-color: blue     only works when the radio button is checked
+            <fieldset>                                                       //remember to use the 'name' attribute to 'group' together the radio buttons
+                <div id="favcolor1">  
+                    <input type="radio" id="blue" name="favColor" value="blue">             <!-- value in this case defines the data inputed by the user-->
+                    <label for="blue"> 
+                        Blue
+                    </label>
+
+                    <input type="radio" id="green" name="favColor" value="green">
+                    <label for="green"> 
+                        Green
+                    </label>
+
+                    <input type="radio" id="pink" name="favColor" value="pink">
+                    <label for="pink"> 
+                        Pink
+                    </label>
+                </div>
+            </fieldset>
+
+              <!-- 
+                    HOW TO CREATE CUSTOM RADIO BUTTONS AND CHECK BOXES!
+
+                .radioButton:checked ~ .checkMark{                                     // this is what actually makes the custom check mark appear
+                    display: block;
+                }
+
+                .radioInput{
+                    accent-color: green;                                                //you can change the color of the dot for radio buttons
+                }
+
+                <label className={styles.checkbox_container} htmlFor='checkbox'>        // style the label element to look like a radio or check box
+                    <input type='checkbox' id='checkbox'/>                              // set display: none
+                    <img className={styles.checkmark} src={checkmark}/>                 // also set this check mark image to display: none
+                </label>
+
+
+
+
+                    HOW TO MAKE A CONTROLLED COMPONENT WITH RADIO BUTTONS
+
+                function RadioButtons() {
+                    const [selectedRadio, setSelectedRadio] = useState('')
+
+                    const handleRadio = (e) => {
+                        setSelectedRadio(e.target.value);
+                    }
+
+                    return(
+                        <form> 
+                            <input type='radio' value='green' checked={selectedRadio === 'green'} onChange={handleRadio}/>
+                            <input type='radio' value='blue' checked={selectedRadio === 'blue'} onChange={handleRadio}/>
+                            <input type='radio' value='red' checked={selectedRadio === 'red'} onChange={handleRadio}/>
+                        </form>
+                    )                
+                }
+                
+            -->
+
+
+
+
+
+
+
+                
+                                                                              //only works if the check box is checked
+           <!-- CHECK BOXES-->                  //e.target.checked          //accent-color: blue            //in react, you would need to assign a state for each of the checkboxes with its own change event handler
+            <fieldset>                                                                                     // checked={state}    onChange={handleCheck}
+                <input type="checkbox" id="vehicle1" value="Bike" onChange={handleCheck}>                    
+                <label for="vehicle1"> 
+                    I have a bike
+                </label>
+                <input type="checkbox" id="vehicle2" value="Car" onChange={handleCheck}>
+                <label for="vehicle2"> 
+                    I have a car
+                </label>
+                <input type="checkbox" id="vehicle3" value="Boat" onChange={handleCheck}>
+                <label for="vehicle3"> 
+                    I have a boat
+                </label>                 
+            </fieldset>
+                
+                
+                
+
+
+
+
+
+
+
+
+                
+            <!--COLOR SELECTION-->
+            <fieldset>
+                <div id="favcolor2">
+                    <label for="favcolor"> 
+                        Select your favorite color 
+                    </label>
+                    <input type="color" id="favcolor" name="favcolor" value="#ff0000">
+                </div>        
+            </fieldset>
+
+                
+                
+
+
+
+
+
+
+
+                
+                
+                
+
+            <!--DATE SELECTION-->                                      
+            <fieldset>
+                <div id="dateselect">
+                    <label for="birthday"> 
+                        Enter your birthday 
+                    </label>                                                          
+                    <input type="date" id="birthday" name="birthday" value="birthday">          <!-- you can use the max and min attributes to create a certain timeframe that the user HAS to select , example; 1993-07-22 through 1996-05-2-->           
+                </div>
+                <input type="submit"> 
+            </fieldset>
+
+            <!-- 
+                input[type="date"]::-webkit-calendar-picker-indicator {                         //this is how you change the calendar icon
+                    background-image: url('./icons/icon-calendar.svg')
+                } 
+            -->    
+                
+
+
+
+
+
+
+
+
+
+
+                
+                
+            <!--UPLOADING FILES-->
+            <fieldset>
+                <label for="myfile">
+                    Select a file:
+                </label>                                                                                              <!--  you can use accept='image/png' to accept all images-->
+                <input type="file" id="myfile" name="myfile" accept="image/png, image/gif, image/jpeg" multiple><br>  <!-- you can select multiple files with the multiple attribute -->
+                <p> To select multiple files, hold down CTRL key while selecting </p>
+                <input type="hidden" id="updateDatabase" name="updateDatabase" value="666"> <!-- type="hidden" can be used to send data to a server-->
+                <input type="submit" enctype="multipart/form-data">  
+            </fieldset>
+                
+
+                
+            <!--         
+                HOW TO STYLE INPUT TYPE="FILE"
+                
+                 <label htmlFor='inputFile'>                                            //you can make this into the actual input type='file'
+                    <input id='inputFile' type='file'/>                                 //set this to display: none
+                    <img src={'someIcon.svg'} />                                        //and you can add icons and text like this
+                    + Upload Image
+                 </label>
+
+
+
+                HOW TO MAKE A CONTROLLED COMPONENT WITH INPUT TYPE FILE
+                
+                    function SelectImage() {
+                        const [image, setImage] = useState();
+                    
+                        const handleImage = (e) => {
+                            setImage(e.target.files[0]);
+                        }
+                    
+                        return(
+                            <>
+                                <input type='file' onChange={handleImage} name='image'/> 
+                                {image && <img src={URL.createObjectURL(image)}/>}
+                            </>
+                        )
+                    }
+
+
+                INSIDE ONSUBMIT EVENT HANDLER
+
+                    const handleSubmit = (e) => {
+                        e.preventDefault();
+                        const image = e.target.elements.image.files;            //you will need to use the files property to get the image object
+                    }   
+                
+            -->
+
+
+
+
+
+
+
+
+                
+                
+                
+                
+            <!-- NUMBER SELECTION-->
+            <fieldset>
+                <label for="quantity">
+                    Pick a number between 1 and 20:
+                </label>
+                <input type="number" id="quantity" name="userchoice" min="1" max="20">      <!-- user cannot input a number bigger than 20 and less than 1-->
+                <input type="submit">
+            </fieldset>
+
+
+                <!--- 
+                        YOU CAN USE THE FOLLOWING PSEUDO ELEMENTS TO REMOVE THE UP AND DOWN BUTTONS THAT APPEAR IN INPUT TYPE=NUMBER
+                        keep in mind that if you remove the arrow buttons, the min and max attributes will not work properly, you will have to use the function below for number validation
+                
+                            input::-webkit-outer-spin-button,
+                            input::-webkit-inner-spin-button {
+                                -webkit-appearance: none;
+                                margin: 0;
+                            }
+                            
+                            input[type=number]{
+                                -moz-appearance: textfield;
+                                appearance: textfield;
+                            }
+
+
+                
+                        YOU CAN USE THE FUNCTION BELOW TO FORCE THE USER TO INPUT A NUMBER WITHIN A RANGE
+                        THE EXAMPLE BELOW WILL FORCE THE USER TO INPUT A NUMBER BETWEEN 1 AND 12
+                
+                            const handleChange = (e) => {
+                                const userInput = e.target.value;
+                                const currentMonth = Number(userInput);
+                                if(currentMonth < 0 || currentMonth > 12 || userInput.length > 2)
+                                    return;
+                                setMonth(userInput);
+                            }   
+
+
+                        YOU CAN ALSO USE THE FUNCTION BELOW TO PREVENT THE USER FROM INPUTING A SPECIFIC CHARACTER
+                        THIS IS FOR THE onKeyDown event
+                
+                            const handleNumber = (e) => {
+                                if(e.key === 'e' || e.key === '.')
+                                    return e.preventDefault() 
+                            }
+                --> 
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+                
+            
+            <!--TELEPHONE NUMBER SELECTION WITH VALIDATION, keep in mind that the pattern attribute accepts any RegExp-->
+            <!-- keep in mind that the pattern attribute must have a string with double quotation marks -->
+            <fieldset>
+                <label for="phone"> 
+                    Enter your phone number:
+                </label>                                   
+                <input type="tel" id="phone" name="phone" placeholder="123-456-789" pattern="(\+[0-9]{1} [0-9]{3} [0-9]{3} [0-9]{4})|(\+[0-9]{1}[0-9]{3}[0-9]{3}[0-9]{4})|([0-9]{1} [0-9]{3} [0-9]{3} [0-9]{4})|([0-9]{1}[0-9]{3}[0-9]{3}[0-9]{4})|([0-9]{3}[0-9]{3}[0-9]{4})|([0-9]{3} [0-9]{3} [0-9]{4})" maxlength="12">
+                <input type="submit">
+            </fieldset>
+
+                
+                
+                
+
+
+
+
+
+
+
+
+
+                
+                
+                
+                
+                
+            <!-- SELECTING IMAGES-->
+            <fieldset>
+                <label for="imageChoice"> 
+                    Please choose one of the images below that corresponds to blah blah
+                </label>
+                <input type="image" src="./images/catOne.jpg" alt="Submit" />       <!--keep in mind that you dont need the name attribute for files-->
+                <input type="image" src="./images/catTwo.jpg" alt="submit" />
+            </fieldset>
+
+
+
+
+
+
+
+
+                
+        </form>
+
+
+    </body>
+</html>
+

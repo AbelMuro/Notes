@@ -88,6 +88,16 @@
                    all event listeners, child components and state are destroyed.
 
 
+                                                COMPONENT-BASED ARCHITECTURE
+         Vue uses a component-based architecture that breaks down the UI into different re-usable components. Each part
+         of the UI will be manipulated by a component
+
+
+                                                      BATCHING
+          Vue has a similar batching process to the automatic batching used in React. When there are multiple state updates
+          that happen synchronously, Vue will 'batch' all these state updates into one asynchronous re-render.
+
+
                                                 NATIVE EVENT SYSTEM
            Vue uses the native event system in the browser, it doesn't have a synthetic event system like React
            RECAP: When an event is triggered in the DOM, JS will use Event Propagation.
@@ -239,9 +249,36 @@
 
 
 
+<!-- 
+                                Importing and Exporting components
+
+        You can use the import and export keywords to modularize your components. 
+        All single file components will automatically export its template.
+        
+-->
+
+<!-- Parent Component -->
+<script setup>
+    import {ChildComponents} from './ChildComponent.vue';
+</script>
+
+<template>
+        <ChildComponent />
+</template>
 
 
 
+<!-- Child Component-->
+
+<script setup>
+    import {ref} from 'vue';;
+
+    const state = ref(1);
+</script>
+
+<template>
+       <div> Hello World </div>
+</template>
 
 
 
@@ -256,7 +293,6 @@
 <!--
     You can use the template tag to use html syntax to declare your elements within your single-file component
     Templates typically use directives to dynamically alter the elements in some way
-    Keep in mind that most directives accept an expression or variable that resolves to a string
 -->
 
 <script setup>
@@ -267,9 +303,6 @@
     <HelloWorld msg="You did it!" />                                      <!-- You can pass props to a component like this --> 
     <p class="myClass"> {{random === '' ? 'n' : 'v'}} </p>                <!-- {{}} allows you to use any JS expression in Vue-->
 
-      <!-- Directives-->
-    <div v-bind:class="dynamic"></div>                                  <!-- Dynamically assigning a class to this element, shorthand : -->
-    <div class="container" v-bind:class="dynamic">                      <!-- A directive can co-exist with the plain attribute as well-->
 </template>
 
 
@@ -417,35 +450,86 @@
 
 <!-- ============================================== PROPS ==================================================== -->
 <!-- 
-    You can pass data to a component using props
-    Keep in mind that props are immutable, meaning that you can't 
+    You can pass data to a component using props. Keep in mind that props are immutable, meaning that you can't 
     change the value of props once a component received it
+
+    defineProps() is used to define what kind of data (primitive or non-primitive) can be passed to a component
+
+    const { foo } = defineProps(['foo']);                                //you can define props using an array 
+
+    const {title, likes} = defineProps({                                 //you can also define props using an object
+              title: String,
+              likes: Number,
+              name: {                                                    //prop validation, you can make a certain prop a requirement for a component
+                type: String,
+                required: true
+              },
+              group: {
+                validator(value, props) {
+                  return ['success', 'warning', 'danger'].includes(value)     // The value must match one of these strings
+                }
+          }, 
 -->
 
+
+<!-- Parent Component -->
 <script setup>
-    import SomeComponent from './SomeComponent.vue';     //assume this component has a prop called message
-    const { foo } = defineProps(['foo']);                //you can define props using an array 
-    const {title, likes} = defineProps({                 //you can also define props using an object
-      title: String,
-      likes: Number,
-      name: {                                           //prop validation, you can make a certain prop a requirement for a component
-        type: String,
-        required: true
-      },
-      group: {
-        validator(value, props) {
-          return ['success', 'warning', 'danger'].includes(value) // The value must match one of these strings
-        }
-  },
-    })
+    import ChildComponent from './ChildComponent.vue';  
 </script>
 
+<template>
+    <ChildComponent :message="'expression/variable goes here'"/>       <!-- props can also be dynamic by using the v-bind directive -->
+</template>
+
+
+
+<!-- Child Component -->
+<script setup>
+    const {message} = defineProps({message: String});              // build in function in Vue
+</script>
 
 <template>
     <div>
-        Props passed to this component is {{title}}
+        Props passed to this component is {{message}}
     </div>
-    <SomeComponent :message="'expression/variable goes here'"/>       <!-- props can also be dynamic by using the v-bind directive -->
+</template>
+
+
+
+
+
+
+
+<!-- 
+                                CHILD PROPS
+
+                You can pass elements and other components to a child component 
+                using the <Slot/> component in Vue 
+-->
+
+
+<!-- Parent Component -->
+<script setup>
+    import ChildComponent from './ChildComponent.vue';  
+</script>
+
+<template>
+    <ChildComponent>
+            <div> hello world </div>
+    </ChildComponent>
+</template>
+
+
+
+<!-- Child Component -->
+<script setup>
+</script>
+
+<template>
+    <div>
+        Goodbye world
+    </div>
+    <Slot/>
 </template>
 
 
@@ -477,6 +561,10 @@
 
         Directly below are the most common directives in Vue
 -->
+
+
+
+
 
 
 
@@ -686,6 +774,39 @@
 
 
 
+<!-- 
+                                Component Event Handlers
+
+        Parent Components can assign a custom event handler to a child component
+        The child component will emit the event handler with the $emit() function.
+-->
+
+<!-- Parent Component -->
+<script setup>
+    import {ChildComponent} from './ChildComponent.vue';
+    const handleSomething = () => {}
+</script>
+
+<template>
+     <ChildComponent @customEvent="handleSomething"/>        <!-- you can use any name for your event handler-->
+</template>
+
+
+
+<!-- Child Component -->
+<script setup>
+    import {ref} from 'vue';
+    const state = ref(1);
+    const emit = defineEmits(['customEvent'])                        //build in function in vue 
+    emit('customEvent')                                              //you can use emit() to programatically emit an event
+</script>
+
+<template>
+    <button @click="$emit('customEvent')"> Click here </button>
+</template>
+
+
+
 
 
 
@@ -803,10 +924,39 @@
 
 
 
+
+
+
+
+
+
+
+
 <!-- =========================================== WATCHERS =============================================== -->
 <!-- 
         You can use watchers in Vue to apply side-effects to a component when a state change occurs.
         Watchers are functions that are called after a state change occurred, but BEFORE the re-render happens. 
+        All watchers will be called once, even if there are multiple state updates that happen consecutively. 
+        If there are one thousand state updates, Vue will 'batch' all these state updates into one invocation of the watcher.
+        Calling synchronous watchers will create an asynchronous task in the queue. The task will wait until the callstack
+        is empty before being called. Watchers by default are bound to the component, if the component is unmounted,
+        the watcher will be freed from memory as well. But this is only true if watcher is called synchronously
+
+                Stopping a watcher:
+
+                        const unwatch = watch(state, callback);
+                        unwatch();                                //will free up the watcher from memory and stop the calls to the function
+
+                Third argument for watchers: 
+        
+                        watch(state, callback, {        //This watcher will be executed AFTER the re-render occurs
+                          flush: 'post'
+                        })
+
+                        watch(state, callback, {        //This watcher will be called synchronously after EVERY state update
+                          flush: 'sync'
+                        })
+        
 -->            
 
 
@@ -853,7 +1003,7 @@
 
 
 <!-- 
-                                        watchEffect()
+                                        watchEffect()    or         watchPostEffect()
        You can use WatchEffect() to keep track of a large number of state objects. You don't have to explicitly define 
        the state objects as dependencies. WatchEffect() has less control on when the function can be called, and which levels 
        of properties will be tracked. By default, watchEffect() will be called after the mounting phase.  
@@ -889,19 +1039,25 @@
 <!-- 
                                         onWatcherCleanup()
         You can perform a clean up function inside a watcher to free up sources or to cancel certain fetch requests
-        
+        Keep in mind that onWatcherCleanup() must be called synchronously, it cannot be called after an await statement
 -->
 
 <script setup>
-     import {ref, watchEffect, onWatcherCleanup} from "vue";
+     import {ref, watch, onWatcherCleanup} from "vue";
 
-     
-        
+     const state = ref('');
+
+     watch(state, (newState) => {
+         console.log(newState);
+              
+         fetch('someURL').then(() => {});                        //do NOT use await before calling onWatcherCleanup()
+             
+         onWatcherCleanup(() => {
+                 //do some clean up here; free up resources, remove event listeners..
+         })
+     }) 
         
 </script>
-
-
-
 
 
 
@@ -979,12 +1135,55 @@
 
 
 
+<!-- =========================================== TEMPLATE REFS =============================================== -->
+<!-- 
+        Vue uses ref objects to maintain a reference to an element in the real DOM. Ref objects
+        will bypass the Virtual DOM and access the real DOM directly. Keep in mind that to access
+        ref objects, they must first be binded to an element that exists in the real DOM. In other words,
+        please wait until the component has been mounted before using the ref object.
+
+        Template refs can be used inside watchers as well, but you will need a conditional statement
+        to check if the ref object has a truthy or falsy value.
+
+        You can use template refs to reference components as well, this is one way for a parent component
+        to access the variables and methods of a child component
+-->
+
+
+<!-- Parent Component -->
+<script setup>
+    import {useTemplateRef, onMount, ChildComponent} from 'vue';
+
+    const inputRef = useTemplateRef('text-input');     //You can use ref objects to reference an element
+    const childRef = useTemplateRef('child');          //You can use ref objects to reference components
+    const listRef = useTemplateRef('list')             //You can use ref objects to reference lists created with v-for
+
+    onMount(() => {
+        inputRef.value.focus();                 
+        childRef.value.method;                   // the parent component will have access to the variables and methods from the child component
+        listRef.value[2];                        
+    })
+</script> 
+
+<template>
+    <input ref="text-input">
+    <ChildComponent ref="child"/>                <!-- you can use ref objects with components, this ref will reference the instance of the component-->
+    <ul v-for="n in 10" ref="list"></ul>
+    <div :ref="(ref) => {/* assign the reference to some property*/}">
+</template>
 
 
 
 
+<!-- Child Component -->
+<script setup>
+     const x = 4;
+     const method = () => {}
 
-
+     defineExpose({                                // <script setup> by default makes all variables and methods private
+         x, method                                 // but using defineExpose() will make certain variables public and usable 
+     })                                            // defineExpose() is a built in function that must be called synchronously
+</script>
 
 
 

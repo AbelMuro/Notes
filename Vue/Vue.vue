@@ -69,8 +69,16 @@
                                                     VIRTUAL DOM
         Vue uses the virtual DOM, just like React. The Virtual DOM is an exact copy of the real DOM, and its used to determine which nodes 
         in the real DOM have to be updated. When a component is first mounted, Vue will create a corresponding Virtual DOM node in the tree.
-    
 
+                                                ONE WAY DATA BINDING
+        Vue supports one way data binding with props. Typically, the parent component can pass down its state to the child component as props.
+
+                                                TWO WAY DATA BINDING
+        Vue primarily uses two way data binding with the 'v-model' directive and the defineModel() function. A parent component can pass 
+        down its state to the child component, and the child component can update the state directly with its own data. This is one way 
+        of passing data from the child component to the parent component. Keep in mind that the state used between the parent and child are 
+        synced. Any changes made to the state by the child component will reflect the state in the parent component, and vice versa
+    
                                                      LIFECYCLE
         Every component has a lifecycle that outlines the step by step process that it takes from creation to destruction
         In Vue, the lifecycle is similar to the React lifecycle, having 4 main phases
@@ -1002,7 +1010,79 @@
 
 
 
+<!-- COMPONENTS -->
+<!--
+        You can use v-model to implement a two-way data binding 
+        relationship between the parent component and the child
+        component. Just rememmber to use defineModel() in the 
+        child component
 
+        v-model in a component can also accept arguments, this
+        can be usefull when you need to pass multiple states 
+        to the child component. Each argument can have a modifier 
+        as well
+-->
+
+        
+<!-- Parent Component-->        
+<script setup>
+    import {ref} from 'vue';
+    import {ChildComponent} from './ChildComponent.vue';
+
+    const state = ref(1);
+    const otherState = ref(3);
+    const lastState = ref('hello world');
+        
+</script>
+
+<template>
+    <ChildComponent 
+            v-model:first="state" 
+            v-model:second="otherState"
+            v-model:third.capitalize="lastState"/>         <!-- the modifiers will not do anything unless you implement their behavior on the second argument of defineModel()-->
+</template>
+
+
+<!-- Child Component -->
+<script setup>
+    const state = defineModel('first');
+    const otherState = defineModel('second');
+    const [lastState, lastStateModifier] = defineModel('third', {        //the second argument can be used to pass a setter method that
+            set(value){                                                  //mutates the state before the child component receives it
+                if(lastStateModifier.capitalize)
+                    return value[0].toUpperCase() + value.slice(1);  
+                else 
+                    return value;
+            }
+    })
+
+    const handleState = () => {                        // The child component can directly update the parent components' state
+         state.value++;                                // This can also be used to pass data from the child to the parent
+    }    
+</script>
+
+<template>
+     <button @click="handleState">
+             click here
+     </button>
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 <!-- =========================================== LIFECYCLE HOOKS =============================================== -->
 <!-- 
         Lifecycle hooks are functions that are called at certain phases of the lifecycle of a component   

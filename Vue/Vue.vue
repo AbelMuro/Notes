@@ -6,7 +6,21 @@
                             
                                                  STATE CHANGE PROCESS
         A component will be re-rendered (updated) when there is a change in the state object.
-        All updates to the state are synchronous, but all updates to the DOM are asynchronous
+        All updates to the state are synchronous, but all updates to the DOM are asynchronous.
+        Vue updates the state immediately when the value property is changed, but will 
+        typically wait until the first moment the callstack is empty before applying the re-render.
+
+                                const handleClick = () => {
+                                    loading.value = true;           // Vue will schedule the re-render after the callstack is empty
+                                    //some synchronous logic here
+                                }                                   // Vue will now cause the re-render from 'loading.value = true'
+
+                                const handleClick = async () => {
+                                    loading.value = true;           // Vue will schedule the re-render after the callstack is empty
+                                    await fetch();                  // Vue will immediately trigger the scheduled re-render from 'loading.value = true' 
+                                    loading.value = false;          // Vue will schedule the re-render after the callstack is empty
+                                }                                   // Vue will now trigger the re-render from 'loading.value = false'
+                                        
 
                                                 REACTIVITY SYSTEM:
         -Deep Reactivity: all nested objects and arrays will be tracked within the state object

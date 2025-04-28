@@ -2,7 +2,39 @@
     Next.js is a framework for React. A framework is a collection of pre-written JavaScript code libraries 
     that provide developers with pre-written JS code to use for routine programming features and tasks
 
-    1) Next.js has client-side routing, the pages folder automatically creates a URL for each js file
+
+                                        FEATURES OF NEXT.JS
+
+
+                                          CLIENT-SIDE ROUTING
+            Next.js has client-side routing, the pages folder automatically creates a URL for each js file
+
+                                          CLIENT-SIDE RENDERING
+            Next.js has client-side rendering, which means the application will be rendered on the browser after
+            the server sends the html and javascript files. Client side rendering is best used for dynamic websites 
+            where the data is always changing during runtime. 
+
+                                        SERVER-SIDE RENDERING (SSR)
+            Next.js also has server-side rendering, which means the applications will be rendered on the server
+            before being sent to the browser. The process starts with the user requesting a SSR enabled page from 
+            the server. The server will then fetch any necessary data from databases, API, and then generate the HTML.
+            The HTML is then sent to the browser as a fully rendered page. Then the javascript is sent from the server 
+            to the browser, making the page interactive. Server side rendering is often used for websites that rely on 
+            new data everytime you refresh the page (News websites, E-commerce websites). SSR is also perfect for Search 
+            Engine Optimization.
+
+                                         STATIC SITE GENERATION (SSG)
+            Next.js uses static site generation, which means the applications will also be rendered on the server before
+            being sent fo the browser. The HTML will be generated on the server during build time (when the server first 
+            builds the next.js app). Next.js will then re-use the HTML with every request made to the server via a CDN. 
+            The CDN will deliver the HTML to the browser. Afterwards, the server will then send the javascript to the browser 
+            to make the page interactive. Static site generation is used on websites where the data doesnt change frequently
+            (Blog websites, Portfolio websites). SSG is also perfect for Search Engine Optimization.
+
+
+
+
+            
     
     2) Next.js has pre-rendering, Next.js will pre-render every page in the background, this results in faster routing
                 -The way this works is that NEXT.js will generate HTML for each page in advance, instead of the client side JS creating the HTML.

@@ -74,16 +74,26 @@
           "start": "next start",
           "lint": "next lint"
           
-    4) create a pages folder in the root of the directory and create an index.js
+    4) create a pages folder in the root of the directory and create an index.js and _app.js file
     
           pages
-             index.js               /
-             posts
-                first-post.js      /posts/first-post
-                second-post.js     /posts/second-post
-             about-me              /about-me
+             index.js               // entry to your app
+             _app.js                // this file will be used by next.js to render each page
 
-      5) create a public folder in the root of the directory (this will be used for static files, images, icons, etc..)
+
+    5)  The index.js file typically looks like this...
+
+            import React from 'react';
+
+            function App() {
+                return(<> hello world </>)
+            }
+
+            export default App;
+
+     6) Look that the _app.js notes below on more information about this file. 
+
+     7) create a public folder in the root of the directory (this will be used for static files, images, icons, etc..)
 
 */
 
@@ -148,13 +158,18 @@ export default function MyApp({Component, pageProps}) {         //Component is t
 
 
 
-//======================================================== STATIC GENERATION WITH DATA =======================================================================
-// STATIC GENERATION is the pre-rendering method that generates the HTML at build time. The pre-rendered HTML is then reused on each request.
-// you can use getStaticProps() to make fetch requests for pages that are statically generated
+//======================================================== STATIC SITE GENERATION =======================================================================
+/* 
+         STATIC GENERATION is the pre-rendering method that generates the HTML at build time. The pre-rendered HTML is then re-used on each request.
+         For a page to use static site generation, the file needs to export getStaticProps() from the file.
+         When a page uses static site generation, Next.js will call getStaticProps() to retrieve some kind of data. 
+         Once it has the data, it will be passed to the page as props. This process only happens once, and it happens during 
+         build time.
+*/
 
 
 
-export default function Home(props) {           //this component will rely on the data from an API to populate its content when it first loads on the screen
+export default function Home(props) {           //props will be sent by getStaticProps()
     const {userName, userEmail} = props;
     
     return (
@@ -166,27 +181,24 @@ export default function Home(props) {           //this component will rely on th
 }
 
 export async function getStaticProps(context) {        
-  const response = await fetch('url');              //The value of the `props` key will be passed to the `Home` component   
+  const response = await fetch('url');             
   const data = await response.json();
 
   return {
-        props : {data : data}
+        props : {data : data}                      //this object will be passed as props to the Home component
     }
 }
 
-
-
 /* 
-    context is an object that has the following properties
-    
-        params: An object that contains route parameters for pages using dynamic routes. 
-                For example, if the page name is pages/posts/[id].js, then params will look like { id: ... }.
-        preview: A boolean value that indicates whether the page is in preview mode or not.
-        previewData: An object that contains the preview data set by setPreviewData().
-        locale: A string that contains the active locale (if i18n is enabled).
-        locales: An array that contains all supported locales (if i18n is enabled).
-        defaultLocale: A string that contains the configured default locale (if i18n is enabled).
-
+    context: {
+            params: An object that contains route parameters for pages using dynamic routes. 
+                    For example, if the page name is pages/posts/[id].js, then params will look like { id: ... }.
+            preview: A boolean value that indicates whether the page is in preview mode or not.
+            previewData: An object that contains the preview data set by setPreviewData().
+            locale: A string that contains the active locale (if i18n is enabled).
+            locales: An array that contains all supported locales (if i18n is enabled).
+            defaultLocale: A string that contains the configured default locale (if i18n is enabled).    
+    }
 */
 
 
@@ -218,12 +230,16 @@ export async function getStaticProps(context) {
 
 
 
-//==================================================== SERVER-SIDE RENDERING WITH DATA ==============================================================================
-// SERVER-SIDE RENDERING is the pre-rendering method that generates the HTML on each page request. New HTML is generated for each page request
-// you can use getServerSideProps() to make fetch requests at page request
-// You should use getServerSideProps() only if you need to pre-render a page whose data must be fetched at page request time.
+//==================================================== SERVER-SIDE RENDERING ==============================================================================
+/*  
+    SERVER-SIDE RENDERING is the pre-rendering method that generates the HTML on each page request. New HTML is generated for each page request.
+    For a page to use server side rendering, the file needs to export getServerSideProps() from the file
+    When a page uses server side rendering, Next.js will call getServerSideProps() to retrieve some kind of data. Once it has the data, it passes the data
+    as props to the page. This process happens everytime the client makes a request to the server to view the page. In other words, everytime you refresh the page, 
+    you are making another request to the server for the page's files. Doing so, will call the getServerSideProps() function everytime.
+*/
 
-export default function Home(props) {           //this component will rely on the data from an API to populate its content when it first loads on the screen
+export default function Home(props) {           //props is sent from getServerSideProps()
     const {userName, userEmail} = props;
     
     return (
@@ -234,14 +250,61 @@ export default function Home(props) {           //this component will rely on th
     )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context) {  
   const data = await fetch('url');
     
   return {
-    props: {
+    props: {                                    //this object is passed as props to the Home component
         data
     },
   };
+}
+
+/* 
+    context: {
+            params: An object that contains route parameters for pages using dynamic routes. 
+                    For example, if the page name is pages/posts/[id].js, then params will look like { id: ... }.
+            preview: A boolean value that indicates whether the page is in preview mode or not.
+            previewData: An object that contains the preview data set by setPreviewData().
+            locale: A string that contains the active locale (if i18n is enabled).
+            locales: An array that contains all supported locales (if i18n is enabled).
+            defaultLocale: A string that contains the configured default locale (if i18n is enabled).    
+    }
+*/
+
+
+
+
+
+
+
+
+
+
+
+//============================================= CLIENT SIDE ROUTING ==================================================================
+/* 
+    By default, Next.js will assign a URL for every file in the ./pages folder of your app. The endpoint for the URL will be the name 
+    of the file
+
+        /pages
+            index.js        /
+            home.js         /home
+            aboutus.js      /aboutus
+            contactus.js    /contactus
+
+    To navigate to a different page in Next.js you will have to use the <Link/> component
+*/
+
+import Link from 'next/link';
+
+function App() {
+    return {
+         <Link href='/'> </Link>
+         <Link href='/home'>  </Link>
+         <Link href='/aboutus'>  </Link>
+         <Link href='/contactus'>  </Link>
+    }
 }
 
 
@@ -259,17 +322,7 @@ export async function getServerSideProps(context) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-//================================================ DYNAMIC ROUTING BASED ON DATA FROM A SERVER ==========================================================================
+//================================================ DYNAMIC ROUTING ==========================================================================
 // You can create dynamic routes in Next.js, which are basically links that are generated dynamically based on external data from an API or server
 // Files in the pages folder that start like this, [id].js are dynamic routes in Next.js
 // Typically, the name of the dynamic route should be the same name as the property of the object that is returned from an API call

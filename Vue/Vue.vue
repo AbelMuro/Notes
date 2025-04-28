@@ -2,7 +2,24 @@
         VUE.JS is a JS framework that is used to build User Interfaces (UI) and has many similarities to the React library
         VUE.JS uses Vite as the build tool to bundle the files of the app into one file ready for production
 
-
+        Bookmarks
+                1) Features
+                2) Single-File Components (dynamic components, importing, exporting)
+                3) Templates (In-DOM templates)
+                4) State
+                5) Props (validating props, child props)
+                6) Directives (v-)
+                7) Dynamic Attributes (v-bind)
+                8) Conditional Rendering (v-if, v-else-if, v-else, v-show)
+                9) List Rendering (v-for)
+                10) Event Handlers (v-on)
+                11) Forms (v-model, two way data binding)
+                12) LifeCycle Hooks (onMount, onUpdate, onUnmount, etc...)
+                13) Debugging Hooks (onRenderTracked, onRenderTriggered, etc...)
+                14) Watchers (side-effects)
+                15) Computed (caching values)
+                16) Template Refs
+                
 
 
                                                 FEATURES OF VUE

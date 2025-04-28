@@ -41,12 +41,12 @@
                               Once the dependency graph is completed, the bundler will use babel to transpile any
                               JSX code used in the files. 
                       
-                      3) Optimization: 
+                      4) Optimization: 
                                The bundler will then implement tree-shaking, which is a process of removing any unused code
                                in the application. All whitespaces will be removed and variable names will be shortened to 
                                optimize the size of the file.
 
-                       4) Bundling: 
+                      5) Bundling: 
                                 Once the steps above have been completed, the bundle will bundle all the files into one 
                                 file, bundle.js. If the developer implemented lazy-loading, the bundler will split the bundle.js
                                 into multiple files, each file will be loaded on the browser when necessary

@@ -359,13 +359,15 @@
         the 'is' attribute can accept a string value containing the name of the component,
         or the actual component object
 
-        <KeepAlive/> is a built in Vue component that can be used on another component to
-        persist on the Virtual DOM. Even if a component has been unmounted because of a 
-        dynamic component, it will remain in the DOM with <KeepAlive/>
+        <KeepAlive/> is a built in Vue component that can be used on dynamic components to
+        persist components on the Virtual DOM. Even if a component has been unmounted because of a 
+        dynamic component, it will remain in the DOM with <KeepAlive/> with its local state in tact.
+        The component will be hidden though
         
         
 -->
 
+<!-- Parent Component-->
 <script setup>
    import {ref} from 'vue';
    import {FirstComponent} from './FirstComponent.vue';
@@ -376,8 +378,11 @@
 </script>
 
 <template>
-    <component :is="state">
+        <KeepAlive>                                <!-- When you use the keepAlive component, all states within the components will be persisted-->
+            <component :is="state">                <!-- but the component will not be removed from the DOM, only hidden-->
+        </KeepAlive>
 </template>
+
 
 
 

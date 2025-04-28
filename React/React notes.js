@@ -25,6 +25,34 @@
 
                                                              FEATURES OF REACT 
 
+                                                            BUNDLING PROCESS      
+                      When a developer finishes developing their React app, they will use a bundler (Webpack, Parcel)
+                      to bundle all of the files into one file, bundle.js. 
+                      
+                      1) File Analysys 
+                              The bundler will look for the entry point of the application (index.js) and will analyze all 
+                              imports and dependencies used in the application. The bundler will also check for syntax errors 
+                      
+                      2) Dependency Graph:
+                              Then the bundler starts a dependency graph by linking all the modules and
+                              assets together. 
+                      
+                      3) Transpilation: 
+                              Once the dependency graph is completed, the bundler will use babel to transpile any
+                              JSX code used in the files. 
+                      
+                      3) Optimization: 
+                               The bundler will then implement tree-shaking, which is a process of removing any unused code
+                               in the application. All whitespaces will be removed and variable names will be shortened to 
+                               optimize the size of the file.
+
+                       4) Bundling: 
+                                Once the steps above have been completed, the bundle will bundle all the files into one 
+                                file, bundle.js. If the developer implemented lazy-loading, the bundler will split the bundle.js
+                                into multiple files, each file will be loaded on the browser when necessary
+
+                                                             
+
                                                             STATE CHANGE PROCESS
                     A component will be re-rendered (updated) when there is a change in the state object.
                     All state updates behave asynchronously in react, and DOM updates also behave asynchronously.

@@ -25,9 +25,26 @@
 
                                                              FEATURES OF REACT 
 
-                                                               STATE CHANGE PROCESS
+                                                            STATE CHANGE PROCESS
                     A component will be re-rendered (updated) when there is a change in the state object.
-                    Keep in mind that all state changes are asynchronous in react, and DOM updates are also asynchronous.
+                    All state updates behave asynchronously in react, and DOM updates also behave asynchronously.
+                    The React will schedule a state-update and re-render in the most optimal time. If you call setState() 
+                    inside of an event handler, React will wait until the event handler finishes executing before applying 
+                    the state updates and the re-render. In the case where we have an an asynchronous operation inside the 
+                    event handler, React will update the state and cause a re-render BEFORE the event handler stops execution 
+                    because of the asynchronous operation
+
+                                            const handleClick = () => {
+                                                    setLoading(true);
+                                                    //some synchronous logic here
+                                            }                                      // once we reach the end here, React will trigger the setLoading(true) and update the state and cause a re-render
+                    
+
+                                            const handleClick = async () => {
+                                                  setLoading(true);                // schedules the state update and re-render after the event handler finishes
+                                                  await fetch();                   // React will immediately call setLoading(true) to update the state and cause a re-render, before the function pauses execution here
+                                                  setLoading(false)                // schedules the state update after the event handler finishes execution
+                                            }                                      // once we reach the end here, React will trigger the setLoading(false) and update the state and cause a re-render
 
                                                                 RECONCILIATION
                    Reconciliation is an algorithm that React uses to efficiently update the DOM. It starts by first mounting a component (and its element). 
@@ -105,8 +122,8 @@
                                                                AUTOMATIC BATCHING 
                     Batching is when React groups multiple setState updates into a single re-render for better performance.
                     Lets say we have 4 setState() being called in succession inside of an event handler. React will automatically
-                    group together these 4 setState() functions into one re-render. Keep in mind that this batching is only available
-                    in concurrent mode and blocking mode
+                    group together these 4 setState() functions into one re-render. Keep in mind, if a setState() is called within a 
+                    promise, setTimeout, or after using await; the setState() will NOT be batched.
 
                                                                  CODE SPLITING
                     Instead of downloading the entire app before users can use it, code-splitting allows you to split your code into 

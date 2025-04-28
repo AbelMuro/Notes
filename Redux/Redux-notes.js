@@ -1,82 +1,45 @@
 import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
-//                   TO INSTALL REDUX IN YOUR APPLICATION
-//
-//      1) npm install redux                        //install the core files for redux
-//      2) npm install react-redux                  //installs the library that react uses to work with redux
-//      3) npm install @reduxjs/toolkit             //installs other useful functions/methods for state management
-
-
-//                  REDUX TERMINOLOGY
-//      Action: an object that usually contains two properties, 'type' and 'payload'    
-//              'type' will tell the reducer what to do with the object, 'type: addItem'
-//              'payload' contains the actual data that we want to add to the state object (you can name the property however you want)
-//      
-//      Reducer: a function that uses action objects to mutate state data
-//
-//      Store: a global object that contains the state of the application, this is the single source of truth
-//
-//      Dispatch: a function that is used to 'dispatch' actions to the reducer
-//
-//      Selectors: a function that can retrieve the state from the store
-
-
-//                  REDUX FLOW
-//
-//       1) an event is triggered in the UI by the user
-//              
-//       2) the event will then dispatch an action to the reducer   
-//            
-//       2.5) if you have a middleware, then the action will first go to the middleware and then to the reducer
-//            if the middleware returns a function, then most likely the function is making an external call to a server with fetch() or axios
-//            the middleware will wait until it gets the requested data from the server, and then it will dispatch an action to the reducer
-//
-//       3) the reducer then receives the action and the old state object in the store and returns the new state if changes occured
-//
-//       4) the components that have useSelector() hook will re-render to show the updated state
-/* 
-
-            REDUX HAS 4 MAIN COMPONENTS
-          1) action
-          
-          2) reducer
-          
-          3) store
-          
-          4) view (DOM)
-
-*/
-
-
-//       KEEP IN MIND that the global store should ONLY have serializable values
-//          serializable values means you can use JSON.parse(JSON.stringify()) WITHOUT losing data (arrays, object)
-//          non-serializable values means that you will lose some data if you use JSON.parse(JSON.stringify())
 
 /* 
-            REDUX USES A VARIATION OF THE FLUX ARCHITECTURE
-         Redux can only have a single global store, but FLUX can have multiple stores
-         Redux doesn't have a dispatcher, but FLUX does have a dispatcher (a dispatcher is an array of callbacks that each connect to a store)
-         Redux can only have a single state, but FLUX can have multiple states
-         
-
-*/
+                                                         FEATURES OF REDUX
 
 
+                                                         STATE UPDATES PROCESS
+            All state updates in Redux are synchronous, but all re-renders behave asynchronously (re-renders will follow the 
+            rules of the library/framework that is using Redux)
+                        
+                                                            ARCHITECTURE
+            Redux has an architecture that consists of dispatching actions to the reducer, these actions are typically dispatched 
+            as a result of an event handler. The reducer will use the actions to update the global state within the Store. 
+            All components that are subscribed to the store will be re-rendered. Redux's architecture follows a similar approach
+            to the FLUX architecture but with some differences. Flux has multiple stores, but Redux has a single store. Flux uses a 
+            dispatcher to receive actions from the application and then sends them to its stores, but Redux allows the application 
+            to directly send the actions to the store.
+                                                                STORE
+            The store in Redux is a centralized object that represents the single source of truth. The entire state object of the application
+            is stored here, and any components subscribed to the store will be re-rendered when the state is updated.
 
+                                                              GLOBAL STATE
+            The global state is the applications entire state object, it is stored within the Store and updated by the Reducer. This
+            state should only have serializable data (objects, arrays, primitive values). Any non-serializable values will not be safely stores
+            (non-serializable = you will lose some data if you use JSON.parse(JSON.stringify()))
 
+                                                                REDUCER
+            The reducer is a function within the Store that is responsible for updating the global state. The reducer will not 
+            mutate the global state directly, instead it will return a new global state. Redux will compare the new state with the 
+            old state, and if the states are different, then a re-render will occur. It is because of this reason the global state 
+            should never be mutated directly. If the global state is mutated directly within the global store and returned, Redux will 
+            compare the old state with the old state, as a result, Redux will not trigger a re-render.
 
+                                                                ACTIONS
+            Actions are objects that contain new data that will be dispatched to the reducer. The reducer will use these actions
+            to update the global state. Actions will typically follow the following format...
 
-
-
-
-
-
-
-
-
-
-
-
+                                                const action = {
+                                                    type: 'UPDATE_NAME',
+                                                    payload: 'new name'
+                                                }
 
 
 
@@ -84,6 +47,14 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
 
 //===================== STEPS TO INTEGRATE REDUX INTO YOUR REACT APPLICATION ==================================================
+
+                   TO INSTALL REDUX IN YOUR APPLICATION
+
+            npm install redux                        //install the core files for redux
+            npm install react-redux                  //installs the library that react uses to work with redux
+            npm install @reduxjs/toolkit             //installs other useful functions/methods for state management
+
+
 
 //                 
 //      1) create a folder called './store' with the file store.js
@@ -187,6 +158,17 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
             
             store.dispatch({type: 'SET_HTTPS_SERVER', payload: {server: httpsServer}})                    //dispatching actions to the store
             const {https_server} = store.getState();                                                      //accessing the state from the store
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -330,6 +312,21 @@ store.subscribe(myComponent);                                              //thi
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //--------------------------------------------------- REDUX HOOKS ---------------------------------------------------
 
 
@@ -426,6 +423,22 @@ function SomeComponent() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //============================================= CONNECT() ==================================================
 //The Connect() function accepts two callbacks, mapStateToProps() and mapDispatchToProps()
 //mapStateToProps() accepts the global state and returns an object that will be the props for a component
@@ -463,6 +476,29 @@ function mapDispatchToProps(dispatch) {
 
 // using the connect function to connect the Counter component with mapStateToProps() and mapDispatchToProps()
 export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -692,6 +728,21 @@ function reducer(state = {}, action) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //================================================ REDUX PROMISE (ASYNC ACTION CREATOR)================================================
 // npm install redux-promise
 
@@ -758,6 +809,16 @@ function reducer(state = {}, action) {
       return state;
   }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

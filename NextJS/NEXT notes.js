@@ -33,18 +33,6 @@
 
 
 
-
-            
-    
-    2) Next.js has pre-rendering, Next.js will pre-render every page in the background, this results in faster routing
-                -The way this works is that NEXT.js will generate HTML for each page in advance, instead of the client side JS creating the HTML.
-                    then, the HTML will be 'hydrated' once the HTML loads onto the browser. This means that the JS code will run and make the page fully interactive
-                -Next.js has two type of pre-rendering; Static Generation and server side rendering (the main difference is WHEN the html is generated)
-                    STATIC GENERATION is the pre-rendering method that generates the HTML at build time. The pre-rendered HTML is then reused on each request.
-                    SERVER-SIDE RENDERING is the pre-rendering method that generates the HTML on each page request. New HTML is generated for each page request
-                 -npm run dev will use static generation, but its possible to use a 'hybrid' app that uses static generation for some pages and server-side rendering for others
-                 -Next.js recommends that you use static generation whenever possible, but if the content of a page is constantly updating, then you should use server-side rendering
-                 -look for the sections static generation and server-side rendering for more info below
                  
     3) Next.js does code-splitting automatically, so each page only loads what’s necessary for that page 
     

@@ -37,7 +37,9 @@
 
                                                 SASS SUPPORT
             Next.js has built in support for SASS
-        
+
+                                                   API
+            Next.js supports 
                  
     
     
@@ -501,33 +503,40 @@ export default ActiveLink
      API Routes let you create an API endpoint inside a Next.js app.
      The naming convention is: 
          /pages/api         
-         /pages/api/firstEndpoint.js                  folder with the name api will use its files as the endpoints
+         /pages/api/login.js                  folder with the name api will use its files as the endpoints
+         /pages/api/register.js
+
+        Rules to know about API Routes
+        
+    1)  Do not fetch an API route from getStaticProps() or getStaticPaths()
+    2)  API Routes do not specify CORS headers, meaning they are same-origin only by default 
+    3)  You can use API routes to securely communicate with a third party api
          
-     For the example below, you can access the route http:localhost/3000/api
 */
 
 
 
-/* 
-        Things to know about API Routes
-        
-    1)  Do not fetch an API route from getStaticProps or getStaticPaths
-    2)  API Routes do not specify CORS headers, meaning they are same-origin only by default 
-    3)  You can use API routes to securely communicate with a third party api
-    4)  Previewing draft content from your CMS
-    5)  Saving data to your database
- */
+//  ---------------- /pages/api/login.js --------------------
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
-
-//  ---------------- /pages/api/firstEndpoint.js --------------------
-
-export default function handler(req, res) {             // req = HTTP incoming message, res = HTTP server response
-    if(req.method === 'POST')
-        const email = req.body.email;
-   
-    const cookies = req.cookies;
+async function handler(req, res) {         
+    if(req.method !== 'POST'){
+        req.status(405).send('Method not allowed');
+        return;
+    }
     
-  // Then save email to your database, etc...
+    const {email, password} = req.body;                          // will automatically parse the JSON into javascript
+    const user = await User.findOne({email});                    // User.findOne() will search for the users account in the MongoDB database
+
+    if(!user || !bcrypt.compareSync(password, user.pasword)){   //account validation
+        res.status(401).send('Invalid Credentials');
+        return;
+    }
+
+    const token = jwt.sign({ username: email }, 'SECRET_KEY', { expiresIn: '1h' });
+
+    res.status(200).json({token});
 }
 
 
@@ -535,21 +544,24 @@ export default function handler(req, res) {             // req = HTTP incoming m
 // ------------------ /pages/index.js -------------------
 
 export default function Home() {
-    const input = useRef();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleClick = () => {
-        fetch('/firstEndpoint', {
+        fetch('/login', {
             method: 'POST'
-            body: {email: input.current.value};
+            body: JSON.stringify({email, password});
+            credentials: 'include'
         })             
     }
 
     return(
             <form>
-                <input type='text' onClick={handleClick} ref={input}> 
+                <input type='text' value={email} onChange={(e) => setEmail(e.target.value)}> 
+                <input type='text' value={password} onChange={(e) => setPassword(e.target.value)}>
+                <button onClick={handleClick}> Submit </button>
            </form>
     )
-
 }
 
 
@@ -558,58 +570,41 @@ export default function Home() {
 
 
 
+//---------------------------------------------DYNAMIC API ROUTES ---------------------------------------------
+/* 
+        API Routes can be dynamic, and follow similar convention to dynamic routes
+        The syntax for dynamic api routes is below...
 
+        /pages
+            /api
+                [endpoint].js                    //it doesnt have to be endpoint
 
+*/       
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//==================================================== DYNAMIC API ROUTES ========================================================================================
-// API Routes can be dynamic, and follow similar convention to dynamic routes
-// You can access the request handler below by typing           http:localhost:3000/api/anythingGoesHere          
-
-//      /pages/api/[endpoint].js
+// ---------------- /pages/api/[endpoint].js ----------------
 
 export default function handler(req, res) {
-  const { pid } = req.query;
-  res.end(`Post: ${pid}`);
+  const { endpoint } = req.query;
+  console.log(endpoint);                                        // if the URL is /123, then the endpoint = 123
 }
 
 
 
 
 
-//      /pages/index.js
+// ---------------- /pages/index.js ----------------
 
 export default function Home() {
-    const input = useRef();
 
     const handleClick = () => {
-        fetch('/api/anythingGoesHere', {                            //this will fetch the api endpoint in /pages/api/[endpoint].js
+        fetch('/anythingGoesHere', {                            //this will make a fetch to the api endpoint in /pages/api/[endpoint].js
             method: 'POST'
-            body: {email: input.current.value};
+            body: JSON.stringify({data: 'anything'});
         })             
     }
 
     return(
-            <form>
-                <input type='text' onClick={handleClick} ref={input}> 
-           </form>
+        <button onClick={handleClick}> Click Here</button>
     )
 }
 

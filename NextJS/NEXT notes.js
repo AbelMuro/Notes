@@ -38,8 +38,11 @@
                                                 SASS SUPPORT
             Next.js has built in support for SASS
 
-                                                   API
-            Next.js supports 
+                                                 RESTful API
+            You can create a Restful API within your Next.js application. Next.js is used primarily for the front end, but you 
+            can make a full-stack appplication in Next.js with API routes. Restful APIs are implemented with API routes, and each
+            of these API routes will be an endpoint. You can make a fetch request to any API route in your Next.js application. 
+            In other words, the front-end will be in the /pages folder, and the back-end will be in the /api folder 
                  
     
     
@@ -133,6 +136,7 @@
             home.js         /home
             aboutus.js      /aboutus
             contactus.js    /contactus
+            404.js          /404 page not found
 
     To navigate to a different page in Next.js you will have to use the <Link/> component
 */
@@ -152,10 +156,7 @@ function App() {
 
 
 
-
-
-
-//============================================= DYNAMIC ROUTING =============================================
+//--------------------------------------------- DYNAMIC ROUTING ---------------------------------------------
 /* 
     You can create dynamic routes in Next.js, which are basically links that are generated dynamically.
     To create a dynamic route, create a file name that starts with the following syntax..
@@ -456,44 +457,6 @@ export async function getStaticProps(context) {
 
 
 
-    
- //======================================================== USE ROUTER() HOOK ===================================================================================
- // There is a hook called useRouter() in Next.js that returns a 'router' object that has data about
- // It can be used to get the current route, navigate between routes, and perform other operations related to routing  
-    
-import { useRouter } from 'next/router'
-
-router.asPath            //returns the current path
-router.push('/aboutme')  //will take you to a different page in the app
-router.query             //this will return an object with the url parameters     (/pages/whatever?ID=1234      ->      {id: 1234}  )        will also return the name of the dynamic route
-
-function ActiveLink() {
-  const router = useRouter();
- 
-  const handleClick = () => {
-    router.push('/aboutme');
-  }
- 
-  return (
-    <a  onClick={handleClick}>
-      'Click Me'
-    </a>
-  )
-}
- 
-export default ActiveLink
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -567,9 +530,6 @@ export default function Home() {
 
 
 
-
-
-
 //---------------------------------------------DYNAMIC API ROUTES ---------------------------------------------
 /* 
         API Routes can be dynamic, and follow similar convention to dynamic routes
@@ -622,26 +582,35 @@ export default function Home() {
 
 
 
+    
+ //====================================================== HOOKS ======================================================
 
 
+//--------------------------------------------- USE ROUTER() HOOK ---------------------------------------------
+ // There is a hook called useRouter() in Next.js that returns a 'router' object that has data about
+ // It can be used to get the current route, navigate between routes, and perform other operations related to routing  
+    
+import { useRouter } from 'next/router'
 
+router.asPath            //returns the current path
+router.push('/aboutme')  //will take you to a different page in the app
+router.query             //this will return an object with the url parameters     (/pages/whatever?ID=1234      ->      {id: 1234}  )        will also return the name of the dynamic route
 
-
-
-
-
-
-
-
-
-// ======================================================== 404 CUSTOM PAGE ===============================================================================================
-// you can create your own custom 404 page
-
-
-//      pages/404.js
-export default function Custom404() {
-  return <h1>404 - Page Not Found</h1>;
+function ActiveLink() {
+  const router = useRouter();
+ 
+  const handleClick = () => {
+    router.push('/aboutme');
+  }
+ 
+  return (
+    <a  onClick={handleClick}>
+      'Click Me'
+    </a>
+  )
 }
+ 
+export default ActiveLink
 
 
 
@@ -660,8 +629,9 @@ export default function Custom404() {
 
 
 
+//====================================================== COMPONENTS ======================================================
 
-//============================================================ LINK COMPONENT ============================================================================================
+//--------------------------------------------- LINK COMPONENT ---------------------------------------------
 // Link component is used to navigate between the pages in a Next.js app
 
 
@@ -687,30 +657,13 @@ export default function FirstPost() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//========================================================= IMAGE COMPONENT ============================================================================================
+//--------------------------------------------- IMAGE COMPONENT ---------------------------------------------
 // Image component is used to display images in Next.js. It will automatically be optimized for different viewports and accepts all image formats
 // Keep in mind that the Image component has ALOT of props that you can use, check out the documentation for <Image>
 
 /* 
-        public
-             rose.jpg                   /rose.jpg
-             images
+        /public
+             /images
                 profile.jpg             /images/profile.jpg
 */
 
@@ -718,7 +671,6 @@ import Image from 'next/image';
 
 export default function Home() {
     return(
-        <>
             <Image 
                 src='/images/profile.jpg'                               //keep in mind that the images must be in the public folder, Next.js will automatically search in the public folder
                 height={144}
@@ -726,7 +678,6 @@ export default function Home() {
                 alt={'Your Name'}
                 priority                                                //this will make the image load faster, images by default are lazy loaded
                 />
-        </>
     )
 }
 
@@ -734,24 +685,7 @@ export default function Home() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//======================================================== HEAD COMPONENT =========================================================================================================
+//--------------------------------------------- HEAD COMPONENT ---------------------------------------------
 //Head component can be used to include meta data for the web app, such as the <title> and <link> tags
 
 import Head from 'next/head';
@@ -771,20 +705,7 @@ export default function Home() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//===========================================================  SCRIPT COMPONENT =============================================================================================
+//---------------------------------------------  SCRIPT COMPONENT ---------------------------------------------
 // Script component can be used to load a third party library with CDN
 
 
@@ -799,105 +720,11 @@ export default function Home() {
                         console.log(`script loaded correctly, window.FB has been populated`)
                 }
             />
-
     )
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//========================================================== MARKDOWN ==========================================================================================
-// Markdown is a lightweight markup language for creating formatted text using a plain-text editor, its used for websites that use alot of text like blogs
-// you can render markdown by using this package
-// npm install remark remark-html
-// npm install grey-matter
-
-
-/*  myMarkdown.md
-
-    ---
-    title: 'When to Use Static Generation v.s. Server-side Rendering'
-    date: '2020-01-02'
-    ---
-
-    We recommend using **Static Generation** (with and without data) whenever possible because your page can be built once and served by CDN, which makes it much faster than having a server render the page on every request.
-
-    You can use Static Generation for many types of pages, including:
-
-    - Marketing pages
-    - Blog posts
-    - E-commerce product listings
-    - Help and documentation
-
-    You should ask yourself: "Can I pre-render this page **ahead** of a user's request?" If the answer is yes, then you should choose Static Generation.
-
-    On the other hand, Static Generation is **not** a good idea if you cannot pre-render a page ahead of a user's request. Maybe your page shows frequently updated data, and the page content changes on every request.
-
-    In that case, you can use **Server-Side Rendering**. It will be slower, but the pre-rendered page will always be up-to-date. Or you can skip pre-rendering and use client-side JavaScript to populate data.
-
-*/
-
-// You can use the following function to parse markdown and display it with HTML
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import { remark } from 'remark';
-import html from 'remark-html';
-
-export async function getMarkdownData() {
-      const postsDirectory = path.join(process.cwd(), 'posts');         //process.cwd() will return a string that displays the current working directory and will look for the posts folder
-      const fullPath = path.join(postsDirectory, 'myMarkdown.md');      //creates the full path to the markdown file
-      const fileContents = fs.readFileSync(fullPath, 'utf8');           //reads the file and stores the content in fileContents
-
-      const matterResult = matter(fileContents);                        // Use gray-matter to parse the post metadata section
-
-      const processedContent = await remark()                           // Use remark to convert markdown into string
-        .use(html)                                                      // convering markdown into HTML
-        .process(matterResult.content);
-
-      const contentHtml = processedContent.toString();
-
-      // Combine the data with the id and contentHtml
-      return {
-        id: 'myMarkdown.md',
-        contentHtml,
-        ...matterResult.data,
-      };
-}
-
-
-
-
-// Using the function getMarkdownData() in the component below
-
-export default function Home({markdown}) {
-     <div dangerouslySetInnerHTML={{__html: markdown.contentHtml}}/>
-}
-
-export async function getStaticProps() {
-    const markdown = await getMarkdownData();    
-    return {
-      props: {
-        markdown
-      },
-    };
-  }
 
 
 

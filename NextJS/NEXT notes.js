@@ -9,7 +9,7 @@
                                           CLIENT-SIDE ROUTING
             Next.js has client-side routing, the pages folder automatically creates a URL for each js file
 
-                                          CLIENT-SIDE RENDERING
+                                          CLIENT-SIDE RENDERING (CSR)
             Next.js has client-side rendering, which means the application will be rendered on the browser after
             the server sends the html and javascript files. Client side rendering is best used for dynamic websites 
             where the data is always changing during runtime. 
@@ -23,7 +23,7 @@
             new data everytime you refresh the page (News websites, E-commerce websites). SSR is also perfect for Search 
             Engine Optimization.
 
-                                         STATIC SITE GENERATION (SSG)
+                                         STATIC-SITE GENERATION (SSG)
             Next.js uses static site generation, which means the applications will also be rendered on the server before
             being sent fo the browser. The HTML will be generated on the server during build time (when the server first 
             builds the next.js app). Next.js will then re-use the HTML with every request made to the server via a CDN. 
@@ -31,12 +31,15 @@
             to make the page interactive. Static site generation is used on websites where the data doesnt change frequently
             (Blog websites, Portfolio websites). SSG is also perfect for Search Engine Optimization.
 
+                                               CODE-SPLITTING
+            Next.js will automatically do code-splitting. The bundle.js will be split into different files, each file will
+            be loaded on the browser when necessary.
 
-
+                                                SASS SUPPORT
+            Next.js has built in support for SASS
+        
                  
-    3) Next.js does code-splitting automatically, so each page only loads what’s necessary for that page 
     
-    4) Next.js has built in support for SASS
     
     5) Next.js has image optimization, this means...
                 -the images are lazy loaded by default, 
@@ -62,12 +65,13 @@
           "start": "next start",
           "lint": "next lint"
           
-    4) create a pages folder in the root of the directory and create an index.js and _app.js file
+    4) create a /src folder in the root directory, and create a /pages folder inside the /src folder. 
+       Then create an index.js and _app.js file inside the /pages folder
     
-          pages
-             index.js               // entry to your app
-             _app.js                // this file will be used by next.js to render each page
-
+           /src
+              /pages
+                 index.js               // entry to your app
+                 _app.js               
 
     5)  The index.js file typically looks like this...
 
@@ -79,7 +83,17 @@
 
             export default App;
 
-     6) Look that the _app.js notes below on more information about this file. 
+     6) The _app.js file typically looks like this...
+        (Next.js will use the _app.js to pass every page as props to this file)
+
+            import '../common/styles.css';
+            
+            export default function MyApp({Component, pageProps}) {         //Component is the page that is passed down to this component
+                return(                                                     //pageProps is the getStaticProps() or getServerSideProps() from the page
+                    <Component {...pageProps} />        
+                )
+            }
+
 
      7) create a public folder in the root of the directory (this will be used for static files, images, icons, etc..)
 
@@ -93,30 +107,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//============================================= _APP.js =============================================
-// The _app.js file is a component that Next.js will use to pass EVERY page as props, 
-// this is useful for having global css or wrapping the app with a <Provider> from redux or Context
-
-import '../common/styles.css';
-
-export default function MyApp({Component, pageProps}) {         //Component is the page that is passed down to this component
-    return(                                                     //pageProps is the getStaticProps() or getServerSideProps() from the page
-        <Component {...pageProps} />        
-    )
-}
 
 
 
@@ -529,7 +519,7 @@ export default ActiveLink
  */
 
 
-//  ---------------- /pages/api.js --------------------
+//  ---------------- /pages/api/firstEndpoint.js --------------------
 
 export default function handler(req, res) {             // req = HTTP incoming message, res = HTTP server response
     if(req.method === 'POST')
@@ -548,7 +538,7 @@ export default function Home() {
     const input = useRef();
 
     const handleClick = () => {
-        fetch('/api', {
+        fetch('/firstEndpoint', {
             method: 'POST'
             body: {email: input.current.value};
         })             

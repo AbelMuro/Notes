@@ -95,6 +95,7 @@
 
      7) create a public folder in the root of the directory (this will be used for static files, images, icons, etc..)
 
+     8) Next.js will follow the same process that React takes to develop an application
 */
 
 
@@ -117,7 +118,7 @@
 
 
 
-//======================================================== _APP.js =========================================================================================
+//============================================= _APP.js =============================================
 // The _app.js file is a component that Next.js will use to pass EVERY page as props, 
 // this is useful for having global css or wrapping the app with a <Provider> from redux or Context
 
@@ -142,69 +143,181 @@ export default function MyApp({Component, pageProps}) {         //Component is t
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//======================================================== STATIC SITE GENERATION =======================================================================
+//============================================= CLIENT SIDE ROUTING =============================================
 /* 
-         STATIC GENERATION is the pre-rendering method that generates the HTML at build time. The pre-rendered HTML is then re-used on each request.
-         For a page to use static site generation, the file needs to export getStaticProps() from the file.
-         When a page uses static site generation, Next.js will call getStaticProps() to retrieve some kind of data. 
-         Once it has the data, it will be passed to the page as props. This process only happens once, and it happens during 
-         build time.
+    By default, Next.js will assign a URL for every file in the ./pages folder of your app. The endpoint for the URL will be the name 
+    of the file
+
+        /pages
+            index.js        /
+            home.js         /home
+            aboutus.js      /aboutus
+            contactus.js    /contactus
+
+    To navigate to a different page in Next.js you will have to use the <Link/> component
+*/
+
+import Link from 'next/link';
+
+function App() {
+    return {
+         <Link href='/'> </Link>
+         <Link href='/home'>  </Link>
+         <Link href='/aboutus'>  </Link>
+         <Link href='/contactus'>  </Link>
+    }
+}
+
+
+
+
+
+
+
+
+//============================================= DYNAMIC ROUTING =============================================
+/* 
+    You can create dynamic routes in Next.js, which are basically links that are generated dynamically.
+    To create a dynamic route, create a file name that starts with the following syntax..
+
+        /pages
+            [id].js                //catches a single variation of the url     /pages/hello    /pages/about
+            [...id].js             //catches all variations of the url         /pages/1/2/3    /pages/2/3/4/5/6
 */
 
 
+//      /pages/index.js
+function Home() {
+    const [data, setData] = useState([]);
 
-export default function Home(props) {           //props will be sent by getStaticProps()
-    const {userName, userEmail} = props;
+    useEffect(() => {
+        fetch('URL').then(response => response.json()).then(data => setData(data));
+    }, [])
     
-    return (
-        <main>
-            {userName}
-            {userEmail}
-        </main>
+    return(   
+        <div>
+            {data.map(data => <Link href={'/pages/${data.id}'}> CLick here </Link>}            <!-- [id].js -->
+            <Link href={'/pages/1/2/3'}> Click Here </Link>                                    <!-- [...id].js -->
+        </div>
     )
 }
 
-export async function getStaticProps(context) {        
-  const response = await fetch('url');             
-  const data = await response.json();
 
-  return {
-        props : {data : data}                      //this object will be passed as props to the Home component
-    }
+
+//     /pages/[id].js
+import {useRouter} from 'next/router';
+
+function DisplayData({post}) {
+    const router = useRouter()
+    const {id} = router.query;
+
+    //you can make a fetch request with the id here
+    
+    return <></>
 }
 
-/* 
-    context: {
-            params: An object that contains route parameters for pages using dynamic routes. 
-                    For example, if the page name is pages/posts/[id].js, then params will look like { id: ... }.
-            preview: A boolean value that indicates whether the page is in preview mode or not.
-            previewData: An object that contains the preview data set by setPreviewData().
-            locale: A string that contains the active locale (if i18n is enabled).
-            locales: An array that contains all supported locales (if i18n is enabled).
-            defaultLocale: A string that contains the configured default locale (if i18n is enabled).    
-    }
+
+//      /pages/[...id].js
+//    this dynamic route can catch all variations of the url 
+import { useRouter } from 'next/router';
+
+function Post() {
+  const router = useRouter();
+  const { id } = router.query;
+
+    // id = ['1','2','3']      if the URL is   /pages/1/2/3
+    // id = ['a', 'b']         if the URL is   /pages/a/b
+
+  return <></>;
+}
+
+
+
+//--------------------------------------------- STATIC SITE GENERATION AND DYNAMIC ROUTING ---------------------------------------------
+/*
+    If you want your dynamic route to use static-site generation, you need
+    to implement the function getStaticPaths(). This function will decide which
+    dynamic routes will have static-site generation
+
+    For more info on static site generation, scroll down for the Static Site Generation section
 */
 
+    // 1) this function will be called first
+        
+            export async function getStaticPaths() {
+                return {
+                    paths: [{ params: {id: '1' } }, { params: {id: '2'}, {params: {id: ['a', 'b', 'c']}} }],      // the dynamic routes that have 1 and 2 will be statically generated            
+                    fallback: false                                                                               // No additional paths will be generated dynamically   
+                }                           
+            }                                                  
+                                                         
+    // 2) then this function will be called second
+        
+            export async function getStaticProps(context) {
+                 const id = context.params.id;                                          //you can use params to get the name of the dynamic route
+                 const res = await fetch(`https://example.com/api/posts/${id}`);
+                 const post = await res.json();
+            
+                 return {                                                               //returning the data that will be used by our component
+                    props: {
+                        post : post
+                 }
+              }
+            }
+
+
+    // 3) then finally the Post component will be called
+
+        function Post({post}) {
+            return {
+                <section>
+                    <h1> 
+                        {post.title}    
+                    </h1>
+                    <p>
+                        {post.author}
+                    </p>
+                </section>
+            }
+        }
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================= CLIENT SIDE RENDERING =============================================
+/* 
+    Next.js will use client side rendering by default, assuming that you dont use 
+    getServerSideProps() or getStaticProps() with your component. 
+
+    You can use React hooks and classes in client side rendering
+*/
+
+function App() {
+    const [state, setState] = useState()
+
+    useEffect(() => {
+        fetch('URL').then(response => response.json).then(data => setState(data));
+    }, [])
+
+    return <>
+        state && state.name
+    </>
+}
 
 
 
@@ -237,6 +350,8 @@ export async function getStaticProps(context) {
     When a page uses server side rendering, Next.js will call getServerSideProps() to retrieve some kind of data. Once it has the data, it passes the data
     as props to the page. This process happens everytime the client makes a request to the server to view the page. In other words, everytime you refresh the page, 
     you are making another request to the server for the page's files. Doing so, will call the getServerSideProps() function everytime.
+
+    DO NOT USE REACT HOOKS OR CLASSES IN SERVER-SIDE RENDERING
 */
 
 export default function Home(props) {           //props is sent from getServerSideProps()
@@ -282,179 +397,68 @@ export async function getServerSideProps(context) {
 
 
 
-//============================================= CLIENT SIDE ROUTING ==================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================= STATIC SITE GENERATION =============================================
 /* 
-    By default, Next.js will assign a URL for every file in the ./pages folder of your app. The endpoint for the URL will be the name 
-    of the file
+         STATIC GENERATION is the pre-rendering method that generates the HTML at build time. The pre-rendered HTML is then re-used on each request.
+         For a page to use static site generation, the file needs to export getStaticProps() from the file.
+         When a page uses static site generation, Next.js will call getStaticProps() to retrieve some kind of data. 
+         Once it has the data, it will be passed to the page as props. This process only happens once, and it happens during 
+         build time.
 
-        /pages
-            index.js        /
-            home.js         /home
-            aboutus.js      /aboutus
-            contactus.js    /contactus
-
-    To navigate to a different page in Next.js you will have to use the <Link/> component
+         DO NOT USE REACT HOOKS OR CLASSES IN STATIC SITE GENERATION
+         
 */
 
-import Link from 'next/link';
-
-function App() {
-    return {
-         <Link href='/'> </Link>
-         <Link href='/home'>  </Link>
-         <Link href='/aboutus'>  </Link>
-         <Link href='/contactus'>  </Link>
-    }
-}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//================================================ DYNAMIC ROUTING ==========================================================================
-// You can create dynamic routes in Next.js, which are basically links that are generated dynamically based on external data from an API or server
-// Files in the pages folder that start like this, [id].js are dynamic routes in Next.js
-// Typically, the name of the dynamic route should be the same name as the property of the object that is returned from an API call
-
-
-// 1) -----------------------        /pages/index.js ----------------------------------------------------------------
-export default function Home({allPostsData}) {
-     //each of the following links point to a dynamic route that is created in [id.js]
-    return(   
-        <>
-            {allPostsData.map((post) => {
-                    return(<Link href={'/pages/${post.id}'}> CLick here</Link>)       
-               })}
-        </>
-    )
-}
-
-export async function getStaticProps() {
-    const allPostsData = fetch('https://example.com/api/posts');
+function Home(props) {           //props will be sent by getStaticProps()
+    const {userName, userEmail} = props;
     
-    return {
-      props: {
-        allPostsData
-      }
-    }
-  }
-
-
-
-
-
-// 2) --------------------------     /pages/[id].js ----------------------------------------------------------------
-export default function Post({post}) {
     return (
-        <Layout>
-            {post.postName}
-            {post.postID}
-        </Layout>    
+        <main>
+            {userName}
+            {userEmail}
+        </main>
     )
 }
 
-//this will generate all the dynamic pages
-export async function getStaticPaths() {
-    const posts = await fetch('https://example.com/api/posts');              //making a fetch request
-                                           
-    const paths = posts.map((path) => {    
-        return {                               // pathsArray MUST be an array of objects
-                 params: {                     // each object MUST have a params property
-                  id: path.author               // each object MUST have the name of the [dynamic route] as a property, the value will be the new name of the dynamic route
-                }                           
-        })
-    }) 
-    return {paths,                            // there MUST be a property called paths here                  
-        fallback: false}                      // false means that any paths not returned by getStaticPaths will result in a 404 page       
-                                              // other values are true and blocking, check out documentation for this      
-}                                                  
-                                                 
+export async function getStaticProps(context) {        
+  const response = await fetch('url');             
+  const data = await response.json();
 
-//this will fetch the actual data and pass it to the post component for formating
-export async function getStaticProps(context) {
-     const id = context.params.id;                                          //you can use params to get the name of the dynamic route
-     const res = await fetch(`https://example.com/api/posts/${id}`);
-     const post = await res.json();
-
-     return {                                                               //returning the data that will be used by our component
-        props: {
-            post : post
-     }
-  }
+  return {
+        props : {data : data}                      //this object will be passed as props to the Home component
+    }
 }
 
-
-
-//--------------------------------------- /pages/[...id].js ----------------------------------------------------------------
-// You can create nested routes by using the following syntax and boilerplate code
-
-export async function getStaticPaths() {
-                                        
-    return { paths: [{params : {id: ['a', 'b', 'c']}}],       //id : ['a', 'b', 'c'] will match the page route       /pages/a/b/c    only         
-        fallback: false}                         
-                                                  
-}  
-
-export async function getStaticProps(context) {
-     const id = context.params.id;                            // id = ['a', 'b', 'c']
-
-    // ...
-}
+/* 
+    context: {
+            params: An object that contains route parameters for pages using dynamic routes. 
+                    For example, if the page name is pages/posts/[id].js, then params will look like { id: ... }.
+            preview: A boolean value that indicates whether the page is in preview mode or not.
+            previewData: An object that contains the preview data set by setPreviewData().
+            locale: A string that contains the active locale (if i18n is enabled).
+            locales: An array that contains all supported locales (if i18n is enabled).
+            defaultLocale: A string that contains the configured default locale (if i18n is enabled).    
+    }
+*/
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=================================================== DYNAMIC ROUTING NOT BASED ON DATA FROM A SERVER ==========================================================================
-//You can create dynamic routes that are no based on data from a server, but you have to use getServerSideProps() instead of getStaticPaths()
-//this dynamic route will catch ALL occurences of /pages/anythingGoesHere
-
-                                                        //just typing any variation of the url below in the browser will take you to this component
-// -----------------  /pages/[userprofile].js                     /pages/RoseCaldwell    /pages/JohnSmith     /pages/JerryHernandez
-
-export default function UserProfile() {
-
-}
-
-
-export function getServerSideProps(context) {
-
-}
 
 
 
@@ -515,9 +519,15 @@ export default ActiveLink
 
 
 //====================================================== API ROUTES =============================================================
-// API Routes let you create an API endpoint inside a Next.js app.
-// The naming convention is: /pages/api     or      /pages/api/firstEndpoint                  folder with the name api will use its files as the endpoints
-// For the example below, you can access the route http:localhost/3000/api
+/* 
+     API Routes let you create an API endpoint inside a Next.js app.
+     The naming convention is: 
+         /pages/api         
+         /pages/api/firstEndpoint.js                  folder with the name api will use its files as the endpoints
+         
+     For the example below, you can access the route http:localhost/3000/api
+*/
+
 
 
 /* 

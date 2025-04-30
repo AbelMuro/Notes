@@ -111,7 +111,7 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
                  )                     
             }
 
-
+*/
 
 
 
@@ -642,83 +642,66 @@ const store = configureStore({
 
 
  //========================================================REDUX THUNK =======================================================
- // configureStore() automatically comes with redux-thunk
+ // npm install redux-thunk
 
- // redux-thunk "teaches" dispatch how to accept functions, 
-//   by intercepting the function and calling it instead of passing it on to the reducers
- // The function it intercepts is used to make AJAX calls and will instead call the dispatch function
+/* 
+     Redux-Thunk "teaches" the dispatch method how to accept functions. Redux Thunk will intercept the function and 
+     call it before sending an action to the reducer. The function it intercepts is used to make AJAX calls 
+     and once its done with the AJAX call, it will dispatch an action to the reducer.
 
+     You want to use Redux-Thunk if you want the global state to be in-sync with the database.
+     You can update the database if the global state changes, or update the global state 
+     if the database changes
 
-//  1)   this function DOESN'T make the dispath method return a promise
-const usingReduxThunk = (URL) => {
-     return async (dispatch) => {
-          dispatch({type: 'FETCH_PENDING'});
-          try {
-            const response = await fetch(URL);
-            const posts = await response.json();
-                      
-            dispatch({type: 'FETCH_SUCCESS', payload: posts};
-         } catch (error) {
-            dispatch({type: 'FETCH_FAILURE', payload: error});
-    }
-  };
-};
+*/
 
 
-// 1.5) this function makes the dispatch method return a promise
- function fetchPosts(subreddit) {
-     return function(dispatch) {
-          dispatch(requestPosts(subreddit));
-          return fetch(`https://www.reddit.com/r/${subreddit}.json`)
-                 .then(response => response.json())
-                 .then(json => dispatch(receivePosts(subreddit, json)));
-  };
+//     /Store/Reducer.js
+
+import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
+
+const fetchData = createAsyncThunk('fetchData', async (URL) => {          //you will need to call this function inside the dispatch method
+      const response = await fetch(URL);                                  
+      return response.json();                                              //this function must return a promise
+});
+
+const initialState = {data: [], loading: false, error: ''};
+
+const dataReducer = createReducer(initialState, (builder) => {
+      builder
+        .addCase(fetchData.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(fetchData.fulfilled, (state, action) => {
+          state.loading = false;
+          state.data = action.payload;
+        })
+        .addCase(fetchData.rejected, (state, action) => {
+          state.loading = false;
+          const message = action.error.message;
+          state.error = message;
+        });
+});
+
+export {fetchData}
+export default dataReducer
+
+
+
+
+//   /src/index.js
+import {useDispatch} from 'react-redux';
+import {fetchData} from '../../Store/reducer.js'
+
+function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+      dispatch(fetchData('URL'))
+  }, [])
+  
+  return(<>Hello World</>)
 }
-
-
-
-//   2)
-function ExampleWithThunk() {
-    const dispatch = useDispatch()
-    
-    const handleClick = () => {
-            dispatch(usingThunk("https://jsonplaceholder.typicode.com/todos/1"));           //remember that 'thunk' is just an action creator that makes an AJAX call 
-                .then((response) => response.json())                                        // (OPTIONAL) it can make the dispatch function return a promise
-                .then((results) => results)                                                 // keep in mind that usingThunk() must return
-    }
-    
-    return(
-            <button onClick={handleClick}>
-                 Click Here
-            </button>
-     )
-}
-
-
-
-
-//    3)  
-function reducer(state = {}, action) {
-  switch (action.type) {
-    case 'FETCH_PENDING':
-            return {...state, loading: true}
-    case 'FETCH_SUCCESS'
-            return {...state, loading: false, posts: action.payload}
-    case 'FETCH_FAILURE'
-            return {...state, loading: false, error: 'error message'}
-                          
-    default:
-      return state;
-  }
-}
-
-
-
-
-
-
-
-
 
 
 

@@ -962,10 +962,26 @@ function HooksTwo() {
 
 
 //------------------------------------- USE EFFECT() HOOK -------------------------------------
-// useEffect() is a combination of ComponentDidMount, ComponentDidUpdate, ComponentWillUnmount
-// this function gets called after the first render, after every re-render, and once the component is unmounted from the DOM
-// you can have multiple useEffect() hooks in the same function component, this is useful for separating unrelated code and uniting related code
-//its a good idea to use the useEffect hook AFTER you call the setState() function
+// useEffect() is a function used to apply side-effect (tasks that are performed outside the scope of react, fetch())
+// This hook is the primary lifecycle hook that is used to call a function during any phases of the lifecycle
+// the second argument of this hook lets you control when the useEffect() will be called
+// When a component is first mounted, the useEffect of the parent component will be called first, then 
+// the useEffect of the child component will be called afterward
+ // When a component is unmounted, the cleanup function in the child component will be called first,
+ // the clean up function in the useEffect of the parent component will be called afterward
+
+ /* 
+         Second argument of useEffect()
+
+         [] means the useEffect will only run when the component mounts
+
+         [state] means the useEffect will run when the component mounts and when the state changes
+
+         the cleanup function in the useEffect will be called after before every re-render, and will
+         also be called before the unmounting phase of the component
+ 
+ */
+
 function HooksThree() {  
         
     useEffect(() => {
@@ -975,7 +991,7 @@ function HooksThree() {
        return () => {                                                                   //unmounting before every re-render
             button.removeEventListener("click", nameOfFunction)            
         }
-    }, [count]); //if you specify a second argument in useEffect(), then useEffect() will only RE-RUN if this variable changes value, if its [] empty, then useEffect() will only run once
+    }, [count]); 
            
     return (
         <>

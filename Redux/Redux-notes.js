@@ -641,7 +641,7 @@ const store = configureStore({
 
 
 
- //========================================================REDUX THUNK =======================================================
+ //======================================================== REDUX THUNK (ASYNC ACTION CREATOR) =======================================================
  // npm install redux-thunk
 
 /* 
@@ -660,9 +660,9 @@ const store = configureStore({
 
 import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 
-const fetchData = createAsyncThunk('fetchData', async (URL) => {          //you will need to call this function inside the dispatch method
+const fetchData = createAsyncThunk('fetchData', async (URL, {getState, dispatch}) => {          //you will need to call this function inside the dispatch method
       const response = await fetch(URL);                                  
-      return response.json();                                              //this function must return a promise
+      return response.json();                                                                    //this function must return a promise
 });
 
 const initialState = {data: [], loading: false, error: ''};

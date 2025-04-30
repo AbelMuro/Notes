@@ -159,9 +159,6 @@ function App() {
 }
 
 
-
-
-
 //--------------------------------------------- DYNAMIC ROUTING ---------------------------------------------
 /* 
     You can create dynamic routes in Next.js, which are basically links that are generated dynamically.
@@ -251,7 +248,6 @@ function Post() {
                  }
               }
             }
-
 
     // 3) then finally the Post component will be called
 

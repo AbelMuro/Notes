@@ -35,22 +35,14 @@
             Next.js will automatically do code-splitting. The bundle.js will be split into different files, each file will
             be loaded on the browser when necessary.
 
-                                                SASS SUPPORT
-            Next.js has built in support for SASS
-
                                                  RESTful API
             You can create a Restful API within your Next.js application. Next.js is used primarily for the front end, but you 
             can make a full-stack appplication in Next.js with API routes. Restful APIs are implemented with API routes, and each
             of these API routes will be an endpoint. You can make a fetch request to any API route in your Next.js application. 
             In other words, the front-end will be in the /pages folder, and the back-end will be in the /api folder 
                  
-    
-    
-    5) Next.js has image optimization, this means...
-                -the images are lazy loaded by default, 
-                -devs can use advanced configuration that includes props such as sizes, quality, loader and priority, etc...
-                -images are optimized on-demand as the users request them, instead of at build time, this improves build time
-                -Next.js can support modern image formats like WebP in supported browsers
+                                                  COMPONENTS
+            Next.js uses components to optimize certain features in an application.
     
     
     
@@ -632,25 +624,25 @@ export default ActiveLink
 //====================================================== COMPONENTS ======================================================
 
 //--------------------------------------------- LINK COMPONENT ---------------------------------------------
-// Link component is used to navigate between the pages in a Next.js app
+/* 
+    Link component can be used for optimized navigation within your application. Only use this 
+    component to navigate to the pages in your next.js app.
 
+        1) this component will provide fast client-side navigation
+
+        2) this component will not create a full page reload
+
+        3) this component will pre-load the pages in the background when the <Link> appears in the viewport
+
+*/
 
 import Link from 'next/link';
 
-export default function FirstPost() {
-  return (
-        <Link href="/"> 'Back to home' </Link>
-  );
+function Home() {
+    return (
+        <Link href="/aboutUs" className={'link_styles'}></Link>
+    )
 }
-
-/* 
-          pages
-             index.js              /
-             posts
-                first-post.js      /posts/first-post
-                second-post.js     /posts/second-post
-             about-me              /about-me
-*/
 
 
 
@@ -658,10 +650,20 @@ export default function FirstPost() {
 
 
 //--------------------------------------------- IMAGE COMPONENT ---------------------------------------------
-// Image component is used to display images in Next.js. It will automatically be optimized for different viewports and accepts all image formats
-// Keep in mind that the Image component has ALOT of props that you can use, check out the documentation for <Image>
-
 /* 
+        The <Image/> component lets next.js optimize an image for performance
+
+            1) The component will format the image into Webp or any modern format if its supported by the browser.  
+    
+            2) This component will also generate multiple versions of an image and serve the most appropriate 
+               version based on the user's device. 
+               
+            3) this component will lazy-load the image
+    
+            4) this component will optimize the image for SEO
+
+        You should use this component for most images, but not for icons, images fetched from a server, or SVG
+
         /public
              /images
                 profile.jpg             /images/profile.jpg
@@ -685,28 +687,21 @@ export default function Home() {
 
 
 
-//--------------------------------------------- HEAD COMPONENT ---------------------------------------------
-//Head component can be used to include meta data for the web app, such as the <title> and <link> tags
-
-import Head from 'next/head';
-
-export default function Home() {
-    return(
-        <>
-            <Head>
-                <title>
-                    'My next.js app'
-                </title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-    )
-}
-
-
 
 
 //---------------------------------------------  SCRIPT COMPONENT ---------------------------------------------
-// Script component can be used to load a third party library with CDN
+/* 
+    Script component can be used to load a third-party libraries with CDN 
+
+        1) this component loads the library faster compared to the <script/> tag in HTML
+
+        2) this component optimizes the scripts for SEO
+
+        3) this component loads the script but doesn't block rendering
+
+        4) this component can also decide when to load the CDN;
+           beforeInteractive, afterInteractive, lazyOnload
+*/
 
 
 import Script from 'next/script';
@@ -715,10 +710,8 @@ export default function Home() {
     return(
             <Script
                 src="https://connect.facebook.net/en_US/sdk.js"
-                strategy="lazyOnload"
-                onLoad={() =>
-                        console.log(`script loaded correctly, window.FB has been populated`)
-                }
+                strategy="beforeInteractive   or  afterInteractive   or   lazyOnload"
+                onLoad={() => console.log(`script loaded correctly, window.FB has been populated`)}
             />
     )
 }
@@ -726,6 +719,139 @@ export default function Home() {
 
 
 
+
+
+
+
+//--------------------------------------------- _DOCUMENT.JS ---------------------------------------------
+/* 
+      The page route _document.js is used to modify the html of your next.js application.
+
+          /pages
+              _document.js
+*/
+
+import { Html, Head, Main, NextScript } from 'next/document';
+
+export default function Document() {
+      return (
+            <Html>
+              <Head />
+              <body>
+                <Main />
+                <NextScript />
+              </body>
+            </Html>
+      );
+}
+
+
+
+
+
+//--------------------------------------------- HTML COMPONENT ---------------------------------------------
+/* 
+    Html component can be used to modify the <html/> tag in your html file
+
+        1) You can set attributes to your <html/> tag  
+
+        2) You can dynamically change data about the <html/>
+
+        3) this component optimizes your app for SEO
+
+        4) this component should only be used inside _document.js
+
+*/
+
+import { Html } from 'next/document';
+
+export default function Document() {
+  return (
+        <Html lang="en">
+        </Html>
+  );
+}
+
+
+
+
+
+//--------------------------------------------- HEAD COMPONENT ---------------------------------------------
+/* 
+         Head component can be used to modify the <head/> tag in your HTML with meta data about the application
+
+            1) this component can help with SEO 
+            
+            2) this component can let you dynamically update the meta-data of the application
+
+            3) Keep in mind, that you can use the <Head/> component for every page.
+*/
+
+
+import Head from 'next/head';
+
+export default function Home() {
+    return(
+        <>
+            <Head>
+                <title>My Awesome Page</title>
+                <meta name="description" content="This is an awesome Next.js page." />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+    )
+}
+
+
+
+
+
+
+//--------------------------------------------- MAIN COMPONENT --------------------------------------------- 
+/*     
+        Main component will load all the components that you wrote in your next.js app
+        This can be useful for applying global options for your components
+        This component should only be used in the _document.js page
+*/
+
+
+import { Html } from 'next/document';
+
+export default function Document() {
+  return (
+        <Main/>
+  );
+}
+
+
+
+
+
+
+
+//--------------------------------------------- NEXT SCRIPT COMPONENT ---------------------------------------------
+/* 
+    NextScipt component will load all the javascript code that makes your app interactive.
+    All the event handlers, useEffects, state, props, etc..., will be loaded with this component.
+    The placement of this component matters, it must be placed inside the <body> tag and after the 
+    <Main/> component
+
+    NextScript component should only be used in the _document.js page route.
+*/
+
+
+import { Html, Head, Main, NextScript } from 'next/document';
+
+export default function Document() {
+  return (
+    <Html>
+      <Head />
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
+}
 
 
 

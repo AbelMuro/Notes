@@ -253,187 +253,23 @@
 
 
 
-
-
-
-
-//=============================================================== EXPRESS WEB FRAMEWORK =================================================================
-// the following code will show you how to run your node.js app with HTTP
- 
-		const express = require('express');
-		const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
-		const multer = require('multer');			      //npm install multer, you can use this to parse incoming files from the front-end
-		const app = express();                                        //creating an object that represents the main app
-		const port = 5000;
-		const path = require('path');
-		const indexFilePath = path.join(__dirname, 'folder/index.html');	//you should always use path.resolve() to load files in a node.js app with the FS module (when deploying the node.js app, some web host may need you to specify the location of the files, like netlify.toml)
-		
-		
-		app.use(express.json());					//this will parse all incoming json data, you will need this if your server expects json data from the front-end
-		app.use(express.urlencoded({extended: true}));			//this will parse all incoming form data, you will need this if your server expects form data from the front-end 		(<form action="/submit-form" method="POST"></form>)
-		app.use(cookieParser());
-		
-		
-		app.use('/', (req, res) => {					//root directory, you can send a message to the client or a index.html file
-		    res.sendFile(indexFilePath);				// you can send an index.html to the client when the user accesses the ./ route
-		})
-		
-		// 'get' requests
-		app.get('/account', (req, res) => {                             // .get() is for handleling 'get' requests from the client
-		    const someObject = {data: 'hello world'}
-		    res.status(200).json(someObject);            		// you must use json to format any JS into json before you send a response                     
-		})
-		
-		// 'post' request
-		app.post('/login', (req, res) => {
-		    const {username, password} = req.body;
-		    res.status(200).send('login info is correct')
-		})
-		
-		// 'delete' request
-		app.delete('/account/:id/:type', (req, res) => {
-		    //you can use formidable module to get user-input from forms
-		    const id = req.params.id;						//you can use :id to send data to an endpoint like this http://localhost:4000/acount/123456
-		    const type = req.params.type;
-		    res.send('data has been deleted')
-		})
-		
-		// app.use will bind a middleware for the path '/contantPage'
-		app.use('/contactPage', () => {                              		// .use() is a function that will 'use' the function on the second argument
-		})                                                         	 	// everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
-		
-		//listens to port 5000
-		const httpServer = app.listen(port, (error) => {			//keep in mind that the listen method is asynchronous
-			if(error)
-			    console.log('Internal Error')
-			else
-			    console.log(`Server is running on port ${port}`)
-		});                                           
-
-
-
-
-
-
-
-
-
-
-
-//======================================================= RUNNING NODE.JS APP WITH HTTPS ============================================================================
-// The following code will show you how to run node.js app with HTTPS
-// The SSL files must be valid SSL files for a domain that you bought
-// you can get these files from ionos, google domains or any other registrar that allows you to buy domains
-// you must change the DNS settings for the domain to make sure that the domain points to your computer
-// For the DNS settings, add the following records
+//================================================ FILE PATHS ================================================        
 /* 
-	A record
- 		Host name: @
-   		Points to: ipv4 address of the computer hosting the node.js app
-     
-	AAAA record
- 		Host name: @
-   		Points to: ipv6 address of the computer hosting the node.js app
-
-     Once you implement the instructions above, you can access your app with your domain
-     
-     https://my-domain.com
-
-*/
-
-	 	const options = {
-		    key: fs.readFileSync(privateKeyFilePath),			//SSL file for private.key
-		    cert: fs.readFileSync(certificateFilePath),			//SSL file for certificate.cer
-		}								
-										
-									
-		const httpsServer = https.createServer(options, app).listen(443, (error) => {		//if you are planning on exporting httpsServer, keep in mind that the 'listen' method is async
-		    if(error){
-		        console.log('HTTPS error occurred: ', error);
-		        return;
-		    }
-		    console.log('HTTPS server is running on port 443')
-		});
-
-  		
-
-
-
-
-
-
-
-
-
-	
-//============================================================== CORS ======================================================================
-/* 
-	CORS: Cross origin resource sharing
-
- 	CORS is basically a way for servers to allow browsers of different origins to load resources
-   	If the browser is making a get-request from a different origin, the you will need cors
-    
-	//npm install cors
-
-    	const cors = require('cors');
-     	const corsOptions = {
-        	origin: 'http://example.com',						//Access-Control-Allow-Origin
-		methods: ['GET', 'POST'],
-		allowedHeaders: ['Content-Type', 'Authorization'],			//Access-Control-Allow-Headers
-		credentials: true,
-		maxAge: 3600,
-		optionsSuccessStatus: 200
-	}
-	app.use(cors(corsOptions));							// Enabling cors for all routes using app.use()
-
-	app.get('/', cors(corsOptions), (req, res) => { 				// Alternatively, we can enable cors for specific routes using app.get(), app.post(), etc.
- 
-	});
+    You can use the built-in path module to resolve file paths in node.js
+    This makes is easier to load files in your application
 */
 
 
+const path = require('path');
+const indexFilePath = path.join(__dirname, 'folder/index.html');	
 
-
-
-
-
-//======================================================== HTTP only cookies ==============================================================
-//Cookies are a type of storage that is send with every request and response
-//HTTP-only cookies can only be viewed on the server
-// KEEP IN MIND that every fetch request that sends cookies MUST have credentials: 'include'
-// this includes the fetch requests that sets the cookies in the route as well as the requests that accesses the cookie in the route
-// you need to make sure that the user has third-party cookies enabled and cross-site tracking enabled in their browser
-// usually, its best if the front end has some timer that will automatically expire the http-only cookie and log the user out.
-
-fetch('/login', {
-	method: 'POST',
-	credentials: 'include'
+app.use('/', (req, res) => {
+	res.sendFile(indexFilePath)
 })
+ 
 
-fetch('/account', {
-	method: 'GET',
-	credentials: 'include'
-})
 
-app.post('/login', (req, res) => {
-    	const {email, password} = req.body;
-	const access_token = 'access token';
 
-	res.cookie('accessToken', access_token, {
-            httpOnly: true,
-            secure: true,      					//http only cookies will only be used throught https 
-            sameSite: 'Strict or None',				//Strict only allows sites from the same orgins to make requests, None allows cross-site requests
-            maxAge: 1000 * 60 * 60,				//you can have an expiration date for these cookies, but for auth, you shouldnt use this, instead let the front end handle the expiration for these cookies		
-        })
-});
-
-app.get('/account', (req, res) => {
-	const accessToken = req.cookies.accessToken;		//accessing the http only cookie
-
-	if(!accessToken)
-		return res.status(401).send('User does not have third-party cookies enabled or cross-site tracking enabled');
-	
-});
 
 
 

@@ -60,94 +60,73 @@
     
 													
 					
-    
+        How to create a Restful api with Node.js
+
+		1) Create a folder structure like this 
+	
+	   		--node_modules
+	     		--src
+	       		   --Config					//any technology that requires configuration goes here
+		           --Routes
+		    		--POST
+	       			     /add-data.js
+	       			--GET
+		  		     /get-data.js
+		  		--PUT
+	     			    /update-data.js
+		           /index.js
+		        /.gitignore
+		        /package.json
+	
+		2) npm init -y
+	
+	 		in your package.json, create a script like this..
+	
+	   			"start" : "node index.js"
+	
+	 	3) npm install express 
+	
+	  	4) Copy the following lines of code to the index.js
+	
+			const express = require('express');
+			const app = express();                                        //creating an object that represents the main app
+			const port = 4000;
+	
+			app.get('/', (req, res) => {
+			    res.send('Hello World')
+			})
+			
+			app.listen(port, (error) => {
+			    if(error){
+			        console.log(error, 'error occured');
+			        return;
+			    }
+			    console.log(`Server is running on port ${port}`);
+			});                                         
+	
+		5) run the command
+	 		
+	   		npm start
+	
+	 	6) The server should be running on localhost:4000 and will display a Hello World Message
+	
+	  	7) If you want browsers of different origins to make fetch requests to the server, you must implement CORS
+	
+	   	8) Now create a front end app that you can use to interact with the server
+	
+	    	9) You will need to use fetch requests to send requests and receive respponses from the server
+	
+			const response = await fetch('http://localhost:4000/add-data', {
+		            method: 'POST',
+		            headers: {
+		                "Content-Type": "application/json"
+		            },
+		            body: JSON.stringify({data: 'my data'})
+		        });
 
 
 
 */
-//Node.js uses asynchronous programming
-
-// Below is how Node.js handles file requests
-
-// 1) sends the task to the computers file system
-// 2) ready to handle the next request
-// 3) when the file system has opened and read the file, the server returns the content to the client 
-
-// Node.js eliminates the waiting and simply continues to the next request
-
-// modules are like javascript libraries, a set of pre-built functions that you can use.
-// typically, you will use the require() function to access the functions in the modules
-
-
-
-
-
-/* 
-    How to create a server with node.js (keep in mind that some localhosts may not work in your browser)
-
-	1) Create a folder structure like this 
-
-   		--node_modules
-     		--src
-       		   --Config					//any technology that requires configuration goes here
-	           --Routes
-	    		--POST
-       			     /add-data.js
-       			--GET
-	  		     /get-data.js
-	  		--PUT
-     			    /update-data.js
-	           /index.js
-	        /.gitignore
-	        /package.json
-
-	2) npm init -y
-
- 		in your package.json, create a script like this..
-
-   			"start" : "node index.js"
-
- 	3) npm install express 
-
-  	4) Copy the following lines of code to the index.js
-
-		const express = require('express');
-		const app = express();                                        //creating an object that represents the main app
-		const port = 4000;
-
-		app.get('/', (req, res) => {
-		    res.send('Hello World')
-		})
-		
-		app.listen(port, (error) => {
-		    if(error){
-		        console.log(error, 'error occured');
-		        return;
-		    }
-		    console.log(`Server is running on port ${port}`);
-		});                                         
-
-	5) run the command
- 		
-   		npm start
-
- 	6) The server should be running on localhost:4000 and will display a Hello World Message
-
-  	7) If you want browsers of different origins to make fetch requests to the server, you must implement CORS
-
-   	8) Now create a front end app that you can use to interact with the server
-
-    	9) You will need to use fetch requests to send requests and receive respponses from the server
-
-		const response = await fetch('http://localhost:4000/add-data', {
-	            method: 'POST',
-	            headers: {
-	                "Content-Type": "application/json"
-	            },
-	            body: JSON.stringify({data: 'my data'})
-	        });
-*/
-
 
 
 
@@ -531,6 +510,16 @@ app.get('/account', (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
 //================================================== JSON WEB TOKENS ==========================================================
 /* 
 	json web tokens are a popular method for implementing authentication in a node.js/react.js app
@@ -743,6 +732,24 @@ app.get('/account', (req, res) => {
 	})
 	
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
 //========================================================= AuthO =============================================================
 /* 
 	AuthO is a way to authenticate users in your node.js app

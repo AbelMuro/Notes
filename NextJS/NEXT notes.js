@@ -4,6 +4,19 @@
     code that can be used by developers.
 
 
+    Bookmarks
+        1) Features
+        2) Client-Side Routing (routing, dynamic routing)
+        3) Client-Side Rendering 
+        4) Server-Side Rendering
+        5) Static-Site Generation
+        6) Html Document (_document.js, Head component, Main component)
+        7) Api Routes (dynamic routes)
+        8) Hooks (useRouter())
+        9) Misc Components (Link, Script, Image)
+
+
+
                                            FEATURES OF NEXT.JS
 
 
@@ -254,6 +267,8 @@ function Post() {
                 </section>
             }
         }
+
+
 
 
 
@@ -580,6 +595,15 @@ export default function Document() {
 
 
 
+
+
+
+
+
+
+
+
+
 //====================================================== API ROUTES =============================================================
 /* 
      API Routes let you create an API endpoint inside a Next.js app.
@@ -748,7 +772,7 @@ export default ActiveLink
 
 
 
-//====================================================== COMPONENTS ======================================================
+//====================================================== MMISC COMPONENTS ======================================================
 
 //--------------------------------------------- LINK COMPONENT ---------------------------------------------
 /* 

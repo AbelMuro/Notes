@@ -1,9 +1,10 @@
 /*  
-    Next.js is a framework for React. A framework is a collection of pre-written JavaScript code libraries 
-    that provide developers with pre-written JS code to use for routine programming features and tasks
+    Next.js is a framework for React. A framework is a collection of pre-built tools, rules, and structure
+    that helps developers develop applications and website. In other words, frameworks contain pre-written 
+    code that can be used by developers.
 
 
-                                        FEATURES OF NEXT.JS
+                                           FEATURES OF NEXT.JS
 
 
                                           CLIENT-SIDE ROUTING
@@ -51,50 +52,50 @@
 
     Steps for initializing Next.js
     
-    1) npm init -y
+        1) npm init -y
+        
+        2) npm install --save react react-dom next
+        
+        3) use the following scripts for package.json
+        
+              "dev": "next dev",
+              "build": "next build",
+              "start": "next start",
+              "lint": "next lint"
+              
+        4) create a /src folder in the root directory, and create a /pages folder inside the /src folder. 
+           Then create an index.js and _app.js file inside the /pages folder
+        
+               /src
+                  /pages
+                     index.js               // entry to your app
+                     _app.js                // used for client-side routing
     
-    2) npm install --save react react-dom next
+        5)  The index.js file typically looks like this...
     
-    3) use the following scripts for package.json
+                import React from 'react';
     
-          "dev": "next dev",
-          "build": "next build",
-          "start": "next start",
-          "lint": "next lint"
-          
-    4) create a /src folder in the root directory, and create a /pages folder inside the /src folder. 
-       Then create an index.js and _app.js file inside the /pages folder
+                function App() {
+                    return(<> hello world </>)
+                }
     
-           /src
-              /pages
-                 index.js               // entry to your app
-                 _app.js               
-
-    5)  The index.js file typically looks like this...
-
-            import React from 'react';
-
-            function App() {
-                return(<> hello world </>)
-            }
-
-            export default App;
-
-     6) The _app.js file typically looks like this...
-        (Next.js will use the _app.js to pass every page as props to this file)
-
-            import '../common/styles.css';
-            
-            export default function MyApp({Component, pageProps}) {         //Component is the page that is passed down to this component
-                return(                                                     //pageProps is the getStaticProps() or getServerSideProps() from the page
-                    <Component {...pageProps} />        
-                )
-            }
-
-
-     7) create a public folder in the root of the directory (this will be used for static files, images, icons, etc..)
-
-     8) Next.js will follow the same process that React takes to develop an application
+                export default App;
+    
+         6) The _app.js file typically looks like this...
+            (Next.js will use the _app.js to pass every page as props to this file)
+    
+                import '../common/styles.css';
+                
+                export default function MyApp({Component, pageProps}) {         //Component is the page that is passed down to this component
+                    return(                                                     //pageProps is the getStaticProps() or getServerSideProps() from the page
+                        <Component {...pageProps} />        
+                    )
+                }
+    
+    
+         7) create a public folder in the root of the directory (this will be used for static files, images, icons, etc..)
+    
+         8) Next.js will follow the same process that React takes to develop an application
 */
 
 
@@ -446,6 +447,132 @@ export async function getStaticProps(context) {
 
 
 
+//============================================= HTML DOCUMENT =============================================
+/* 
+      The page _document.js is used to modify the html document of your next.js application.
+
+          /pages
+              _document.js
+*/
+
+import { Html, Head, Main, NextScript } from 'next/document';
+
+export default function Document() {
+      return (
+            <Html>
+              <Head />
+              <body>
+                <Main />
+                <NextScript />
+              </body>
+            </Html>
+      );
+}
+
+
+
+//--------------------------------------------- HTML COMPONENT ---------------------------------------------
+/* 
+    Html component can be used to modify the <html/> tag in your html file
+
+        1) You can set attributes to your <html/> tag  
+
+        2) You can dynamically change data about the <html/>
+
+        3) this component optimizes your app for SEO
+
+        4) this component should only be used inside _document.js
+
+*/
+
+import { Html } from 'next/document';
+
+export default function Document() {
+  return (
+        <Html lang="en">
+        </Html>
+  );
+}
+
+
+//--------------------------------------------- HEAD COMPONENT ---------------------------------------------
+/* 
+         Head component can be used to modify the <head/> tag in your HTML with meta data about the application
+
+            1) this component can help with SEO 
+            
+            2) this component can let you dynamically update the meta-data of the application
+
+            3) Keep in mind, that you can use the <Head/> component for every page.
+*/
+
+
+import Head from 'next/head';
+
+export default function Home() {
+    return(
+        <>
+            <Head>
+                <title>My Awesome Page</title>
+                <meta name="description" content="This is an awesome Next.js page." />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+    )
+}
+
+
+
+//--------------------------------------------- MAIN COMPONENT --------------------------------------------- 
+/*     
+        Main component will load all the components that you wrote in your next.js app
+        This can be useful for applying global options for your components
+        This component should only be used in the _document.js page
+*/
+
+
+import { Html } from 'next/document';
+
+export default function Document() {
+  return (
+        <Main/>
+  );
+}
+
+
+
+//--------------------------------------------- NEXT SCRIPT COMPONENT ---------------------------------------------
+/* 
+    NextScipt component will load all the javascript code that makes your app interactive.
+    All the event handlers, useEffects, state, props, etc..., will be loaded with this component.
+    The placement of this component matters, it must be placed inside the <body> tag and after the 
+    <Main/> component
+
+    NextScript component should only be used in the _document.js page route.
+*/
+
+
+import { Html, Head, Main, NextScript } from 'next/document';
+
+export default function Document() {
+  return (
+    <Html>
+      <Head />
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -716,142 +843,6 @@ export default function Home() {
     )
 }
 
-
-
-
-
-
-
-
-//--------------------------------------------- _DOCUMENT.JS ---------------------------------------------
-/* 
-      The page route _document.js is used to modify the html of your next.js application.
-
-          /pages
-              _document.js
-*/
-
-import { Html, Head, Main, NextScript } from 'next/document';
-
-export default function Document() {
-      return (
-            <Html>
-              <Head />
-              <body>
-                <Main />
-                <NextScript />
-              </body>
-            </Html>
-      );
-}
-
-
-
-
-
-//--------------------------------------------- HTML COMPONENT ---------------------------------------------
-/* 
-    Html component can be used to modify the <html/> tag in your html file
-
-        1) You can set attributes to your <html/> tag  
-
-        2) You can dynamically change data about the <html/>
-
-        3) this component optimizes your app for SEO
-
-        4) this component should only be used inside _document.js
-
-*/
-
-import { Html } from 'next/document';
-
-export default function Document() {
-  return (
-        <Html lang="en">
-        </Html>
-  );
-}
-
-
-
-
-
-//--------------------------------------------- HEAD COMPONENT ---------------------------------------------
-/* 
-         Head component can be used to modify the <head/> tag in your HTML with meta data about the application
-
-            1) this component can help with SEO 
-            
-            2) this component can let you dynamically update the meta-data of the application
-
-            3) Keep in mind, that you can use the <Head/> component for every page.
-*/
-
-
-import Head from 'next/head';
-
-export default function Home() {
-    return(
-        <>
-            <Head>
-                <title>My Awesome Page</title>
-                <meta name="description" content="This is an awesome Next.js page." />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-    )
-}
-
-
-
-
-
-
-//--------------------------------------------- MAIN COMPONENT --------------------------------------------- 
-/*     
-        Main component will load all the components that you wrote in your next.js app
-        This can be useful for applying global options for your components
-        This component should only be used in the _document.js page
-*/
-
-
-import { Html } from 'next/document';
-
-export default function Document() {
-  return (
-        <Main/>
-  );
-}
-
-
-
-
-
-
-
-//--------------------------------------------- NEXT SCRIPT COMPONENT ---------------------------------------------
-/* 
-    NextScipt component will load all the javascript code that makes your app interactive.
-    All the event handlers, useEffects, state, props, etc..., will be loaded with this component.
-    The placement of this component matters, it must be placed inside the <body> tag and after the 
-    <Main/> component
-
-    NextScript component should only be used in the _document.js page route.
-*/
-
-
-import { Html, Head, Main, NextScript } from 'next/document';
-
-export default function Document() {
-  return (
-    <Html>
-      <Head />
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
-  );
-}
 
 
 

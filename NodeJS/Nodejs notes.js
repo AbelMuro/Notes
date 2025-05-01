@@ -292,236 +292,6 @@ app.use('/', (req, res) => {
 
 
 
-//================================================== JSON WEB TOKENS ==========================================================
-/* 
-	json web tokens are a popular method for implementing authentication in a node.js/react.js app
- 	The example below will use mongoDB and json web tokens to implement authentication
-*/
-
-// 1)   npm install mongoose bcryptjs jsonwebtoken crypto
-
-	// bcrypt is a module that we can use to hash and encrypt a password for more security
-	// jsonwebtoken
-
-	const mongoose = require('mongoose');
-	const {Schema} = require('mongoose');
-	const bcrypt = require('bcryptjs');
-	const crypto = require('crypto');						//build in module
-	
-	const userSchema = new Schema({
-	    email: {type: String, required: true, unique: true},    			//remember to set the unique property here to true
-	    password: {type: String, required: true},
-	    resetPasswordToken: {type: String},			   			//you will need this property for reseting passwords
-    	    resetPasswordExpires: {type: Date}
-	});
-	
-	userSchema.pre('save', async function (next) {              			//pre() is a middleware that will execute a function that will hash a password BEFORE the save method is called
-	    if(!this.isModified('password'))                        		        //if the password has NOT been modified
-	        return next();                                      			//will execute the next middleware, if there are no more middlewares, then save() will be called
-	
-	    const salt = await bcrypt.genSalt(10);                  			//generates a salt 
-	    this.password = await bcrypt.hash(this.password, salt); 			//we hash the password
-	    next();
-	});
-	
-	userSchema.methods.matchPassword = async function (enteredPassword) { 		//this will check the user's password to see if its correct
-	    return await bcrypt.compare(enteredPassword, this.password)
-	};
-
-	userSchema.methods.createPasswordResetToken = function() {       
-	    const resetToken = crypto.randomBytes(32).toString('hex'); 			// we generate 32 bytes of random binary data and return it as a 'buffer', then the buffer is converted into a HEX string
-	    this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');  // We hash the token with the sha256 algorithm and convert the token into a HEX string
-	    this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;                	// Token expires in 10 minutes
-	    return resetToken;
-	}  
-
-	const User = mongoose.model('user', userSchema, 'accounts')        		//create a model that will be used to create documents
-	
-	module.exports = {
-	    User
-	}
-
-
-
-
-// ------------------------------2) 
-	const jwt = require('jsonwebtoken');
-	const crypto = require('crypto');
-	const bcrypt = require('bcryptjs');
-	const {User} = require('../../Models/Models.js');
-
-
-	router.post('/register', async (req, res) => {
-	    const {email, password} = req.body;
-	
-	    try{
-	        const user = new User({email, password});
-	        const userData = await user.save();		//userData is a document that contains _id and other meta data about the users' account
-	
-	        res.status(200).send('User has created account');
-	    }
-	    catch(error){
-	        const message = error.message;
-	        if(message.includes('E11000 duplicate key error collection:')){
-			if(message.includes('email'))
-			    res.status(401).send('Email already exists');
-			else if(message.includes('username'))
-			     res.status(401).send('Username already exists')
-		}
-	            
-	        else
-	            res.status(500).send(message);
-	    }
-	});
-
-
-	router.post('/login', async (req, res) => {
-	    const {email, password} = req.body;
-	    const JWT_SECRET = process.env.JWT_SECRET;    				//you will need to create your own secret key here
-	
-	    try{
-	        const user = await User.findOne({email});				//we look for the user based on their email
-	
-	        if(!user || !(await user.matchPassword(password))){			//we check if the email exists and/or if their password is correct
-	            res.status(401).send('Invalid Credentials');
-	            return;
-	        }
-	            
-	        const token = jwt.sign({id: user._id, email: email}, JWT_SECRET, {expiresIn: '1h'}); //create the json web token (you must add the data manually to the json web token)
-	
-	        res.cookie('accessToken', token, {					//using http only cookies to store the json web token
-	            httpOnly: true,
-	            secure: true,
-	            sameSite: 'None',
-	            maxAge: 1000 * 60 * 60
-	        });
-	
-	        res.status(200).send('User is logged in');
-	    }
-	    catch(error){
-	        const message = error.message;
-	        res.status(500).send(message);
-	    }
-	});
-
-
-	router.get('/account', async (req, res) => {
-	    const token = req.cookies.accessToken;			//access the json web token
-	    const JWT_SECRET = process.env.JWT_SECRET;
-	
-	    if(!token){
-	        res.status(401).send('User has been logged out');
-	        return;
-	    }
-	
-	    try{
-	        const decoded = jwt.verify(token, JWT_SECRET);		//decode the json web token
-	        const email = decoded.email;				//access account info through the decoded token
-	        const user = await User.findOne({email});
-	        res.status(200).json(user);
-	    }
-	    catch(error){
-	        const message = error.message;
-	        res.status(500).send(message);
-	    }
-	
-	
-	})
-
-
-	app.post('forgot_password', (req, res) => {
-	    const {email} = req.body;
-	
-	    try{
-	        const user = await User.findOne({email});				//we look for the user's account with their email
-	
-	        if(!user){
-	            res.status(404).send('Email is not registered');
-	            return;
-	        }
-	
-	        const resetToken = user.createPasswordResetToken();			//we call this method that will generate a random reset token, will hash the reset token and store it into the users account
-	        await user.save({ validateBeforeSave: false});			
-	        const resetPasswordLink = `http://localhost:3000/reset/${resetToken}`; //we create a link that has the hashed token in the url (in your react app, you will need to retrieve the token with the useLocation() hook)
-	
-	        const transporter = nodemailer.createTransport({			//nodemailer is a module we can use to send an email to the user
-	            service: 'Gmail',
-	            auth: {
-	                user: process.env.email,
-	                pass: process.env.app_password                          	//you must create an app password for an app in your gmail acount
-	            }
-	        })
-	
-	        const mailOptions = {
-	            from: process.env.email,
-	            to: email,
-	            subject: 'Reset Link for Note-taking app',
-	            text: `Please click on the following link to reset your password ${resetPasswordLink}`    //you can either use html or text here
-	        }
-	
-	        transporter.sendMail(mailOptions, (error, info) => {
-	            if(error){
-	                res.status(401).send(error.message);
-	                return;
-	            }
-	            
-	            res.status(200).send('Email sent successfully');
-	        })
-	
-	    }
-	    catch(error){
-	        const message = error.message;
-	        res.status(500).send(message);
-	    }
-	});
-
-
-	app.post('/reset_password', () => {
-		    const {token, password} = req.body;
-		
-		    try{
-		        const hashedToken = crypto.createHash('sha256').update(token).digest('hex');	//we hash the token
-		        const user = await User.findOne({
-		            resetPasswordToken: hashedToken,
-		            resetPasswordExpires: {$gt: Date.now()}	//$gt means greater than        //we check the current time and compare it to the time the hashedToken was initially placed in the users account
-		        });
-		
-		        if(!user){
-		            res.status(400).send('Token is invalid or has expired');			
-		            return;
-		        }
-		        user.password = password;
-		        user.resetPasswordToken = null;
-		        user.resetPasswordExpires = null;
-		        await user.save();
-			    
-		        res.status(200).send('Password changed successfully');
-		    }
-		    catch(error){
-		        const message = error.message;
-		        res.status(500).send(message);
-		    }
-	})
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   	
 
 
@@ -834,6 +604,10 @@ var fs = require("fs");
 
 
 
+
+
+
+
 //============================================================== EVENTS MODULE=============================================================================
 //this module handles all types of events that are received from the client 
 
@@ -845,6 +619,8 @@ eventEmitter.on('scream', function() {          //event handler for 'scream' eve
 })
 
 eventEmitter.emit('scream')                     //triggerring the event 
+
+
 
 
 
@@ -901,55 +677,43 @@ var formidable = require('formidable');                                     //np
 
     })
 
-//============================================================= NODEMAILER MODULE ===========================================================
 
+
+
+
+
+
+
+//============================================================= NODEMAILER MODULE ===========================================================
 //you can use this mail module to send emails from the server
+
 var nodemailer = require('nodemailer');
 
+app.put('/send_email', () => {
+	const transporter = nodemailer.createTransport({			//nodemailer is a module we can use to send an email to the user
+	    service: 'Gmail',
+	    auth: {
+		user: process.env.email,
+		pass: process.env.app_password                          	//you must create an app password for an app in your gmail acount
+	    }
+	})
 
-http.createServer(function (req, res) {
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',                       //keep in mind that google doesnt support less secure apps using its service
-        auth: {                                 //so you have to use an app password to make this work
-            user: "abelmuro93@gmail.com",       
-            pass: "vewyvdjgpbdckqak"                        
-        }
-    })
+	const mailOptions = {
+	    from: process.env.email,
+	    to: email,
+	    subject: 'Reset Link for Note-taking app',
+	    text: `Please click on the following link to reset your password ${resetPasswordLink}`    //you can either use html or text here
+	}
 
-    var mailOptions = {                         
-        from: 'abelmuro93@gmail.com',          
-        to: 'abelmuro93@gmail.com, anotherEmail@gmail.com',
-        subject: 'Subject',
-        text: 'Content'                                             // keep in mind that you can remove 'text:' and use 'html:' to include html in the body of the email
-    };                                                              // html: '<h1> Welcome </h1> <p> Hello World! </p>'
-
-    transporter.sendMail(mailOptions, function(err, info){          //sending the actual email
-        if(err){
-            console.log(err)
-            res.writeHead(200, {"Content-Type" : "text/html"});
-            res.write("email was not sent");
-            res.end()
-        }
-        else{
-            console.log("Email sent: " + info.response)
-            res.writeHead(200, {"Content-Type" : "text/html"});
-            res.write("email was sent");
-            res.end();
-        }
-    })
-   
-}).listen(8080);   
-
-
-
-
-
-//============================================================== NPM MODULES ==============================================================
-//keep in mind that you can also include packages/modules from NPM
-
-var uc = require('upper-case');                     //npm install upper-case
-uc.upperCase("hello world");
-
+	transporter.sendMail(mailOptions, (error, info) => {
+	    if(error){
+		res.status(401).send(error.message);
+		return;
+	    }
+	    
+	    res.status(200).send('Email sent successfully');
+	})
+})
 
 
 

@@ -13,80 +13,77 @@
         they reach the route. Middlewares are functions that get called before a route
         is used in Express.
 
-*/
-
-/* 
- 
-        const express = require('express');
-        const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
-        const multer = require('multer');			      //npm install multer, you can use this to parse incoming files from the front-end
-        const app = express();                                        //creating an object that represents the main app
-        const port = 5000; 
-        
-        app.use(express.json());					//this will parse all incoming json data, you will need this if your server expects json data from the front-end
-        app.use(express.urlencoded({extended: true}));			//this will parse all incoming form data, you will need this if your server expects form data from the front-end 		(<form action="/submit-form" method="POST"></form>)
-        app.use(cookieParser());
-                                                
-*/
 
 
 
+ 				
+        How to create a Restful api with Express.js
 
-/* 
+		1) npm init -y
+	
+	 		in your package.json, create a script like this..
+	
+	   			"start" : "node index.js" 
 
+		2) Create a folder structure like this 
+	
+	     		--src
+	       		   --Config					//any technology that requires configuration goes here
+		           --Routes
+		    		--POST
+	       			     /add-data.js
+	       			--GET
+		  		     /get-data.js
+		  		--PUT
+	     			    /update-data.js
+		           /index.js
+		        /.gitignore
+		        /package.json
+	
 
-
-        const express = require('express');
-        const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies that are send along with each request
-        const multer = require('multer');			      //npm install multer, you can use this to parse incoming files from the front-end
-        const app = express();                                        //creating an object that represents the main app
-        const port = 5000;
-        const path = require('path');
-        const indexFilePath = path.join(__dirname, 'folder/index.html');	//you should always use path.resolve() to load files in a node.js app with the FS module (when deploying the node.js app, some web host may need you to specify the location of the files, like netlify.toml)
-        
-        
-        app.use(express.json());					//this will parse all incoming json data, you will need this if your server expects json data from the front-end
-        app.use(express.urlencoded({extended: true}));			//this will parse all incoming form data, you will need this if your server expects form data from the front-end 		(<form action="/submit-form" method="POST"></form>)
-        app.use(cookieParser());
-        
-        
-        app.use('/', (req, res) => {					//root directory, you can send a message to the client or a index.html file
-            res.sendFile(indexFilePath);				// you can send an index.html to the client when the user accesses the ./ route
-        })
-        
-        // 'get' requests
-        app.get('/account', (req, res) => {                             // .get() is for handleling 'get' requests from the client
-            const someObject = {data: 'hello world'}
-            res.status(200).json(someObject);            		// you must use json to format any JS into json before you send a response                     
-        })
-        
-        // 'post' request
-        app.post('/login', (req, res) => {
-            const {username, password} = req.body;
-            res.status(200).send('login info is correct')
-        })
-        
-        // 'delete' request
-        app.delete('/account/:id/:type', (req, res) => {
-            //you can use formidable module to get user-input from forms
-            const id = req.params.id;						//you can use :id to send data to an endpoint like this http://localhost:4000/acount/123456
-            const type = req.params.type;
-            res.send('data has been deleted')
-        })
-        
-        // app.use will bind a middleware for the path '/contantPage'
-        app.use('/contactPage', () => {                              		// .use() is a function that will 'use' the function on the second argument
-        })                                                         	 	// everytime the user opens an url with /contactPage, EXAMPLE: www.example.com/contactPage
-        
-        //listens to port 5000
-        const httpServer = app.listen(port, (error) => {			//keep in mind that the listen method is asynchronous
-            if(error)
-                console.log('Internal Error')
-            else
-                console.log(`Server is running on port ${port}`)
-        });         
+	
+	 	3) npm install express 
+	
+	  	4) Copy the following lines of code to the index.js
+	
+			const express = require('express');
+			const app = express();                                        //creating an object that represents the main app
+			const port = 4000;
+	
+			app.get('/', (req, res) => {
+			    res.send('Hello World')
+			})
+			
+			app.listen(port, (error) => {
+			    if(error){
+			        console.log(error, 'error occured');
+			        return;
+			    }
+			    console.log(`Server is running on port ${port}`);
+			});                                         
+	
+		5) run the command
+	 		
+	   		npm start
+	
+	 	6) The server should be running on localhost:4000 and will display a Hello World Message
+	
+	  	7) If you want browsers of different origins to make fetch requests to the server, you must implement CORS
+	
+	   	8) Now create a front end app that you can use to interact with the server
+	
+	    	9) You will need to use fetch requests to send requests and receive respponses from the server
+	
+			const response = await fetch('http://localhost:4000/add-data', {
+		            method: 'POST',
+		            headers: {
+		                "Content-Type": "application/json"
+		            },
+		            body: JSON.stringify({data: 'my data'})
+		        });
 
 */
+
 
 
 
@@ -304,10 +301,10 @@
     To use cookies, the fetch requests that set and get cookies must use the 
     credentials property.
 
-    fetch('/login', {
-        method: 'POST',
-        credentials: 'include'
-    })
+	    fetch('/login', {
+	        method: 'POST',
+	        credentials: 'include'
+	    })
 */
 
 
@@ -400,15 +397,9 @@ app.get('/accessing_httpOnlyCookies', (req, res) => {
 const jwt = require('jsonwebtoken');
 
 app.post('/login', (req, res) => {
-    const {email, password} = req.body;
-
-    //we use some database function here to check if the password is correct
-
     const JWT_SECRET = 'my secret key goes here';    		
-
+	
     const token = jwt.sign({email: email, otherAccountData: {}}, JWT_SECRET, {expiresIn: '1h'});
-
-    // put the token in an HTTP-only cookie and sent it with the response
 })
 
 
@@ -424,6 +415,153 @@ app.post('/login', (req, res) => {
 
 
 //======================================================== AUTHENTICATION ========================================================
+/* 
+	Authentication is the process of enabling or disabling a user to access resources on a database.
+ 	Typically, we use JSON web tokens to authenticate the user by storing account data in the token.
+	We use the token as a way to verify if the user is logged in or not.
+*/
+
+
+// --------------------------------------------------- REGISTER------------------------------------------------
+/* 
+	When a user wants to register for an account in the database, we can store their credentials
+ 	in the database by hashing the password with the 'bcrypt' module. Hashing passwords is a 
+  	secure way of storing a password in a database. Look at the cryptography section of your 
+   	Node.js notes on more info about hashing.
+*/
+
+const bcrypt = require('bcryptjs');
+
+app.post('/register', async (req, res) => {
+    const {email, password} = req.body;
+	
+    const salt = await bcrypt.genSalt(10);							//we use the bcrypt module to hash the password
+    const hashedPassword = await bcrypt.hash(password, salt)
+	
+    createAccountInDatabase(email, hashedPassword);				
+	
+    res.status(200).send('Account has been created')
+})
+
+
+// --------------------------------------------------- LOGIN ------------------------------------------------
+/* 
+	Once the user has an account and they want to login. We can continue to use the bcrypt module
+ 	to compare a hashed password to a password that the user has entered in a form.	If the password 
+  	they entered is correct, then we can proceed to create a JSON web token to store their account info.
+   	The JSON web token can either be stored in an HTTP-only cookie, or be sent to the front-end and stored
+    	in a global state
+*/
+
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+app.post('/login', async (req, res) => {
+    const {email, password} = req.body;\
+    const {hashedPassword} = getAccountDataFromDatabase(email);					// 1) we get the hashed password from the database
+    const JWT_SECRET = 'my secret key goes here';    		
+	
+    const passwordsMatch = await bcrypt.compare(password, hashedPassword);			// 2) we compare the hashed password with the password the user entered
+    if(!passwordsMatch){									
+	 res.status(401).send('Password is invalid');
+	 return;
+    }
+
+    const token = jwt.sign({email: email, otherAccountData: {}}, JWT_SECRET);			// 3) we create a JSON web token and store the account data in it	
+    res.cookies('accessToken', token, {httpOnly: true, secure: true, sameSite: 'None'});	// 4) we can use http-only cookies to securely store the json web token
+	
+    res.status(200).send('User has successfully logged in');					// 5) or we can send the token to the front-end to be stored in some global state
+})
+
+
+
+// --------------------------------------------------- ACCOUNT ------------------------------------------------
+/* 
+	We can access account data using JSON web tokens and HTTP-only cookies
+*/
+
+
+app.get('/account', async (req, res) => {
+     const JWT_SECRET = 'my secret key goes here'; 
+     const token = req.cookies.accessToken;
+
+     const decoded = jwt.verify(token, JWT_SECRET);
+     const email = decoded.email;
+
+     const accountData = getAccountDataFromDatabase(email);
+
+     res.status(200).json(accountData)
+})
+
+
+// --------------------------------------------------- FORGOT PASSWORD ------------------------------------------------
+/* 
+	If the user has forgotten their password, we can create a reset token they can use to reset their password
+ 	The reset token must be stored in their account in the database, it will also have an expiration date.
+  	We can use the crypto module to create the reset token.
+
+   	The process will go like this.. we create the reset token and store it in the user's account in database.
+    	We then send the user an email with the reset link. The reset link will take them to another page in 
+     	the application where they can reset their password
+
+      	Look at the nodemailer section of your Node.js notes for more info on sending emails
+*/
+
+const crypto = require('crypto');
+
+app.put('/forgot_password', async (req, res) => {
+	const resetToken = crypto.randomBytes(32).toString('hex');
+	const resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');		//we create the reset token
+	const resetPasswordExpires = Date.now() + 10 * 60 * 1000;						//we set the expiration date for the token
+
+	updateAccountDataInDatabase(resetPasswordToken, resetPasswordExpires);
+
+	const resetPasswordLink = `http://localhost:3000/reset/${resetToken}`
+
+	sendEmailToUserWithResetLink(resetPasswordLink);							//use nodemailer to send emails (go to node.js )
+
+	res.status(200).send('Email sent successfully');
+})
+
+
+
+
+// --------------------------------------------------- RESET PASSWORD ------------------------------------------------
+/* 
+	Once the email has been sent to the user, the page in the application should be able to get the 
+ 	reset token from the URL and send it to the back-end
+*/
+
+app.put('/reset_password', (req, res) => {
+	const {token, newPassword} = req.body;
+
+	const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+	const accountData = findUserAccountInDatabase({resetPasswordToken: hashedToken})	//we look for an account that has the value hashedToken and property resetPasswordToken
+	const resetPasswordExpires = accountData.resetPasswordExpires;
+
+	if(resetPasswordExpires < Data.now()){
+		res.status(401).send('Token has expired');
+		return;
+	}
+	
+	accountData.password = newPassword;
+	accountData.resetPasswordToken = null;
+	accountData.resetPasswordExpires = null;
+
+	updateUserAccountDataInDatabase(accountData)
+
+	res.status(200).send('Password changed successfully')
+	
+})
+
+
+
+
+
+
+
+
+
 
 
 

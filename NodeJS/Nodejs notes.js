@@ -73,95 +73,98 @@
    				sudo apt install nodejs -y
 
 
-*/
-
-
-
-/* 
-	HOW TO DEPLOY YOUR NODE.JS APP WITH HEROKU
-		(this service uses serverless functions)
-  
-	1) Go to your apps page in heroku and click on New button to create a new app
-
-	2) Type in a name for the app and click on create
-
-	3) Open the app and go to Deploy tab -> Deployment method -> Connect with Github and find the github repo for your project
-
-	4) Enable Automatic deploys and click on deploy branch
-
-	5) On the top right corner, click on Open App
-
-	6) KEEP IN MIND, make sure your listen route in node.js looks like the following
-
-	      app.listen(process.env.PORT || port, () => {
-		    console.log(`Server is running on this port ${port}`);
-	       });     
-	7) To add env variables, go to Settings -> Config vars and add your env variables there
-*/
 
 
 
 
-/* 
-	How to deploy node.js app with NETLIFY
- 		(this service uses serverless functions)
 
- 	1) create a functions folder
-
-  		node_modules
-    		src
-      		functions
-			/app.js
-		package.json
-  		...
-
-    	2) in the app.js file...
-
-	     	const serverless = require('serverless-http'); 
-		const app = require('../src/index.js'); 		//make sure you export the app module from the index.js
-  		const connectDB = require('../src/Database/db.js');	//if you are using mongoose
+		HOW TO DEPLOY YOUR NODE.JS APP WITH HEROKU
+			(this service uses serverless functions)
+	  
+			1) Go to your apps page in heroku and click on New button to create a new app
 		
-		const handler = serverless(app);  		       //you can use     module.exports.handler = handler       as well
-		module.exports.handler = async (e, context) => {	//you can use a callback to connect to databases or some other async logic that must be implemented before every request
-  		    await connectDB();					// you will need to call the connectDB() everytime there is a request made by the front end
-		    const result = await handler(e, context);
-		    return result;
-		};
-
-  	3) Then create a netlify.toml file
-
-		[build]
-		    functions = "functions"
+			2) Type in a name for the app and click on create
 		
-		[[redirects]] 
-		    from = "/*" 
-		    to = "/.netlify/functions/app/:splat" 
-		    status = 200 
-		    force = true
-
-  		[functions]														//use this if your app uses files to load
-		    included_files = ["src/Config/MongoDB/Models/PemFiles/cert.pem", "src/Config/MongoDB/Models/PemFiles/key.pem"]
+			3) Open the app and go to Deploy tab -> Deployment method -> Connect with Github and find the github repo for your project
 		
-
-      	4) npm install serverless-http
+			4) Enable Automatic deploys and click on deploy branch
+		
+			5) On the top right corner, click on Open App
+		
+			6) KEEP IN MIND, make sure your listen route in node.js looks like the following
+		
+			      app.listen(process.env.PORT || port, () => {
+				    console.log(`Server is running on this port ${port}`);
+			       });     
+			7) To add env variables, go to Settings -> Config vars and add your env variables there
        
-       		...if you haven't already, use npm install netlify-cli -g
 
-  	5) In your package.json file, use script
-   
-     		"scripts": {
-   			"build": "netlify deploy --prod"
-      		}
+
+
+
+
+
+	  	HOW TO DEPLOY YOUR NODE.JS APP WITH NETLIFY
+	 		(this service uses serverless functions)
 	
-	6) In your .gitignore file...
+		 	1) create a functions folder
+		
+		  		node_modules
+		    		src
+		      		functions
+					/app.js
+				package.json
+		  		...
+		
+		    	2) in the app.js file...
+		
+			     	const serverless = require('serverless-http'); 
+				const app = require('../src/index.js'); 		//make sure you export the app module from the index.js
+		  		const connectDB = require('../src/Database/db.js');	//if you are using mongoose
+				
+				const handler = serverless(app);  		       //you can use     module.exports.handler = handler       as well
+				module.exports.handler = async (e, context) => {	//you can use a callback to connect to databases or some other async logic that must be implemented before every request
+		  		    await connectDB();					// you will need to call the connectDB() everytime there is a request made by the front end
+				    const result = await handler(e, context);
+				    return result;
+				};
+		
+		  	3) Then create a netlify.toml file
+		
+				[build]
+				    functions = "functions"
+				
+				[[redirects]] 
+				    from = "/*" 
+				    to = "/.netlify/functions/app/:splat" 
+				    status = 200 
+				    force = true
+		
+		  		[functions]														//use this if your app uses files to load
+				    included_files = ["src/Config/MongoDB/Models/PemFiles/cert.pem", "src/Config/MongoDB/Models/PemFiles/key.pem"]
+				
+		
+		      	4) npm install serverless-http
+		       
+		       		...if you haven't already, use npm install netlify-cli -g
+		
+		  	5) In your package.json file, use script
+		   
+		     		"scripts": {
+		   			"build": "netlify deploy --prod"
+		      		}
+			
+			6) In your .gitignore file...
+		
+		 		.netlify
+		
+			7) npm run build 
+		 		the command above will ask you a few questions, make sure the publish directory is set to .
+		   		it will then generate a url that you can use to make fetch requests
 
- 		.netlify
-
-	7) npm run build 
- 		the command above will ask you a few questions, make sure the publish directory is set to .
-   		it will then generate a url that you can use to make fetch requests
 
 */
+
 
 
 
@@ -243,7 +246,7 @@ app.use('/', (req, res) => {
   	A Password will be more secure if it has been hashed with a different set of characters
 
 	In Node.js, whenever you have authentication, its crucial to hash the passwords of the users account
-	You can use the BCRYPTJS and CRYPTO modules to do just that
+	You can use the BCRYPT and CRYPTO modules to do just that
 
  	key concepts:
 
@@ -257,15 +260,14 @@ app.use('/', (req, res) => {
 
 	//HASH FUNCTIONS: a function that takes input data and generates a fixed-sized string of characters
 			const message = 'Hello World'
-
     			const hashedMessage = crypto.createHash('sha256').update(message).digest('hex');
 				// 1) we create a hash object (instance of the crypto.Hash() class) and specify the 'sha256' hashing algorithm
     				// 2) we update the hash object with data we want to hash
 				// 3) we finalize the hashing process by converting the hash object into a HEX string
 				// 4) the message 'Hello World' will be displayed in Hexadecimal format after it has been hashed
 
-	//BUFFER: a temporary location in memory that has raw binary data
-			
+
+	//BUFFER: a temporary location in memory that has raw binary data	
 			const token = crypto.randomBytes(32).toString('hex');
 				// 1) we create a buffer that has 32 random bytes
 				// 2) We then convert the raw binary data into a HEX string
@@ -273,13 +275,14 @@ app.use('/', (req, res) => {
 
 	//SALTS: a random generated value that can be added to the data to ensure the hashed value is unique
 			const password = 'password123'
-
 			const salt = await bcrypt.genSalt(10);
-			const password = await bcrypt.hash(password, salt);
+			const hashedPassword = await bcrypt.hash(password, salt);
 				// 1) we create a salt of random generated values
 				// 2) the password is then hashed with the generated salt to ensure security and uniqueness.
-
-
+			const match = await bcrypt.compare(hashedPassword, password)
+				// the compare() method can compare a hashed password with a JS string
+				// it will automatically decode the hashed password and then compare it
+				// this is useful for validating if the user entered the correct password
 
 
 
@@ -324,7 +327,9 @@ app.use('/', (req, res) => {
 
 
 
-//======================================================== MULTER MODULE ======================================
+
+
+//---------------------------------------- MULTER MODULE ----------------------------------------
 //Multer module is used for handling multi-part/form data, particularly file uploads
 // (look at the Fetch API notes on how to send files from the front-end with a fetch request)
 
@@ -337,7 +342,7 @@ app.use('/', (req, res) => {
 	    const {username, email, password} = req.body;	
 	    const image = req.file;					     // this is how you receieve files from the front end ( look at the fetch api notes for more info on how to send files from the front-end to the back-end  )
 
-	    //look at mongoDB notes for the GridFsBucket module on how to get the binary string of req.file and store it within a database
+	    // look at mongoDB notes for the GridFsBucket module on how to get the binary string of req.file and store it within a database
 		
 	    res.status(200).send('data has been received')
 	})
@@ -425,7 +430,7 @@ app.use('/', (req, res) => {
 
 
 
-//======================================================= WEBSOCKET MODULE =========================================================
+//---------------------------------------- WEBSOCKET MODULE ----------------------------------------
 //you can create a WEBSOCKET in your node.js app that creates a connection between the front-end and the back-end
 //typically this connection is used to automatically send data between front-end and back-end when theres a changes in the
 //database or an event that is triggered in the front end
@@ -539,7 +544,7 @@ app.use('/', (req, res) => {
 
 
 
-//=========================================================URL MODULE=========================================================
+//---------------------------------------- URL MODULE ----------------------------------------
 var url = require('url');                                       //used for formating the url of the website
     var adr = 'http://localhost:8080/default.htm?year=2017&month=february';  //normally you would use 'req.url' to get the url
     var q = url.parse(adr, true)                                //parsing the url into an object
@@ -558,7 +563,10 @@ var url = require('url');                                       //used for forma
 
 
 
-//=========================================================FILE SYSTEM MODULE=========================================================
+
+
+
+//---------------------------------------- FILE SYSTEM MODULE ----------------------------------------
 var fs = require("fs");
     //updating files (be careful with writeFile())
 
@@ -608,7 +616,7 @@ var fs = require("fs");
 
 
 
-//============================================================== EVENTS MODULE=============================================================================
+//---------------------------------------- EVENTS MODULE ----------------------------------------
 //this module handles all types of events that are received from the client 
 
 var events = require('events');
@@ -627,7 +635,7 @@ eventEmitter.emit('scream')                     //triggerring the event
 
 
 
-//============================================================= FORMIDABLE MODULE =========================================================================
+//---------------------------------------- FORMIDABLE MODULE ----------------------------------------
 //this module was designed to read form data
 
 var formidable = require('formidable');                                     //npm install formidable
@@ -684,7 +692,7 @@ var formidable = require('formidable');                                     //np
 
 
 
-//============================================================= NODEMAILER MODULE ===========================================================
+//---------------------------------------- NODEMAILER MODULE ----------------------------------------
 //you can use this mail module to send emails from the server
 
 var nodemailer = require('nodemailer');
@@ -731,78 +739,6 @@ app.put('/send_email', () => {
 
 
 
-
-
-// ======================================================  JSON WEB TOKENS ==================================================================
-// JSON web token is an open-standard that defines a way for securely transmitting information between parties
-// It is a JSON object that is mainly used for authorization and authentication.
-	       
-// AUTHORIZATION:  When a user successfully logs in using their credentials, an ID token is returned. An ID token is always a JWT.
-	       
-// AUTHENTICATION: Once a user is successfully logged in, an application may request to access routes, services, or resources (e.g., APIs) on behalf of that user. 
-//    To do so, in every request, it must pass an Access Token, which may be in the form of a JWT
-	              
-// How a JSON web token approximately looks like...
-	       header : {
-	       	  "alg" : "HS4564",
-	          "typ" : "JWT"
-       	       }
-	       
-	       payload : {
-                  "sub" : "123456789",
-	          "name" : "John Doe",
-	      	  "admin" : true
-       	       }
-			
-	       HMACSHA256 : {
-             	   base64UrlEncoded(header) + '.' + base64UrlEncode(payload), 'secret'
-               }
-       
-       
-// How to use JSON web tokens in node.js
-// Typically, using JSON web tokens are used for the back end to authorize users in an application
-
-const jwt = require("jsonwebtoken");		//npm install jsonwebtoken
-	
-// 1) ---------------- endpoint when the user requests to login
-app.post("/login", (req, res) => {
-    const { username, password } = req.body;				// 1) Getting the username and password of the user
-    if (username === "admin" && password === "admin") {			// 2) checking to see if the username/password is correct
-        const token = jwt.sign({ username }, 				// 3) creating a json web token
-        'secret key for the app only', {				// make sure to use a .env variable to hide the secret key here
-            expiresIn: 86400						// the token will expire in 24 hours, then the user will be automatically logged off
-        });
-        return res.json({ username, token, msg: "Login Success" });	// returning a response to the user, indicating that the login has been successful
-    }
-    return res.json({ msg: "Invalid Credentials" });
-});
-	       
-// 2) ------------------- Before this endpoint gets called, the middleware will verify if the JSON web token
-app.get("/home", verifyTokenMiddleware, (req, res) => {
-    const { user } = req;					// req is the object that is received from the middleware
-    res.json({ msg: `Welcome ${user.username}`});
-});       
-	
-			
-// 3) -------------------- this function will verify the web token
-function verifyTokenMiddleware (req, res, next) {
-    const { token } = req.body;
-    if (!token) return res.status(403).json({ 
-        msg: "No token present" 
-    })
-    try {
-        const decoded = jwt.verify(token, 				// jwt.verify() will automatically verify the token for you
-            'secret key for the app only');				// rememeber to use an .env variable for this
-        req.user = decoded;
-    } catch (err) {
-        return res.status(401).json({ 
-            msg: "Invalid Token" 
-        });
-    }
-    next();								//next() will automatically call the callback on the third argument in app.get('/home;
-};
-  
-       
 	       
 	       
 	       

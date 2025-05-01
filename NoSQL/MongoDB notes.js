@@ -25,7 +25,7 @@
 
 
 
-//=========================================================================== How to intergrate MONGOOSE in a Node.js ============================================================================
+//=========================================================================== MONGOOSE ============================================================================
 /*
         Mongoose is a library that uses mongoDB with schemas and models
         -Schemas is like a template that we use to define how a document is going to look like
@@ -35,120 +35,173 @@
 
         Go to mongoDB atlas -> select project -> Database -> Clusters -> Select your cluster -> Click on Collections -> Create Database
 
-        //insertOne() will insert a single document in the collection
-        //insertMany() will insert multiple documents in the collection
         //find() will return a cursor that has a single or multiple documents that satisfy the query            this will return NULL if it doesn't find the document in the collection
             // toArray() will return an array with all the documents        
             // next() will return an object with the first document that satisfies the query
         //findOne() will return the document that satisfies the query
-        //updateOne() will look for the first document that satisfies the query and update its properties
-        //updateMany() will look for ALL documents that satisfies the query and update its properties
         //deleteOne() will look for the first document that satisfies the query and delete it
         //deleteMany() will look for ALL documents that satisfies the query and delete them all
+
+
+
+        STEPS TO INTEGRATE MONGOOSE
+
+                1) npm install mongoose
+
+                2) Write the following lines of code in ./Database/db.js
+        
+                            const mongoose = require('mongoose');
+                            const url = `mongodb+srv://${accountname}:${password}@cluster0.5k5vu.mongodb.net/${name-of-database}?retryWrites=true&w=majority&appName=${name-of-cluster}`;
+                                                    //the account name and password can be found in the atlas, SECURITY -> quickstart -> create a user for the database and save the username and password (if one already exists, just use that one)    
+                                                    //you may need to check the password in your env variables file in your desktop if you forgot it
+        
+                            async function connectDB() {
+                                try{
+                                  await mongoose.connect(url);
+                                  console.log('You have connected to the database')
+                                }
+                                catch(error){
+                                  console.log('error', error.message);
+                                }
+                            }
+                            
+                            module.exports = connectDB;                                                        //make sure you call this function in the index.js
+        
+            
+                3) Next write the following lines of code in ./Model/Model.js
+        
+                            const mongoose = require('mongoose');
+                            const {Schema} = require('mongoose');
+                            
+                            const userSchema = new Schema({
+                                name: {type: String, required: true},
+                                age: {type: Number, required: true},
+                                birthday: {type: String, default: 'any string value goes here'}
+                            })
+        
+                            userSchema.pre('save', function(next) {                                              //you can apply middleware to built in methods in mongoose
+                                    this.isModified('password');                                                  // build in function that checks if a property in a document has been changed
+                            
+                                    this.name;
+                                    this.age;
+                            })
+                            
+                            const User = mongoose.model('name-of-model', userSchema, 'name-of-collection')        //create a model that will be used to create documents, name of model doesnt have to match
+                            
+                            module.exports = {
+                                User
+                            }
 */
 
 
-                //1) npm install mongoose
+//-------------------------------------- OBJECT ID  -----------------------------------------------
+/* 
+    Mongoose uses ObjectId to generate a unique ID for every document in the database. 
+    If you dont explicitly call this function constructor for a document, Mongoose will 
+    do it for you.
 
-                //2) Write the following lines of code in ./Database/db.js
+    new ObjectId('24 character id string goes here');     or       new ObjectId()
+*/
 
-                                    const mongoose = require('mongoose');
-                
-                                     //the account name and password can be found in the atlas, SECURITY -> quickstart -> create a user for the database and save the username and password (if one already exists, just use that one)    
-                                    //you may need to check the password in your env variables file in your desktop if you forgot it
-                                    const url = `mongodb+srv://${accountname}:${password}@cluster0.5k5vu.mongodb.net/${name-of-database}?retryWrites=true&w=majority&appName=${name-of-cluster}`
-                
-                                    async function connectDB() {
-                                        try{
-                                          await mongoose.connect(url);
-                                          console.log('You have connected to the database')
-                                        }
-                                        catch(error){
-                                          console.log('error', error.message);
-                                        }
-                                    }
-                                    
-                                    module.exports = connectDB;                            //make sure you call this function in the index.js
 
+
+        const ObjectId = mongoose.Types.ObjectId;   
+        
+        const idOne = new ObjectId();
+        const idTwo = new ObjectId();
+        idOne.equals(idTwo);                             // when comparing two ObjectId, you must use the equals() method
+
+
+
+//-------------------------------------- CREATING DOCUMENTS  -----------------------------------------------
+/* 
+    insertOne() will insert a single document in the collection
+    insertMany() will insert multiple documents in the collection
+*/
+
+        app.post('/create_document', async (req, res) => {
+            const body = req.body;
+            const id = new ObjectId(id);
             
-                    //3) Next write the following lines of code in ./Model/Model.js
+            try{
+                const newUserTwo = new User({_id: id});                        //you can create a document with a specified _id
+                const newUserOne = new User({name: 'Johnathan', age: 2223});
+                /* 
+                    newUserOne = {
+                        _id: new ObjectId('123456789')
+                        name: 'Johnathan',
+                        age: 2223
+                    }
+                */
+                await newUserOne.save();                                       //the save() method will create a new document in the collection     
+                
+                const object = await User.insertOne({name: 'whatever', age: 234})
+                const array = await User.insertMany([{name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}]);    //this will return an array of the documents(objects), these documents have already been saved into the database                                
+                         
+            }
+            catch(error){
+                if(error.message.includes('E11000 duplicate key error collection'))
+                    console.log('Document with the specified _id already exists')
+                else if(error.message.includes('user validation failed'))
+                    console.log('Validation error, document is missing required properties')
+            }     
+        });
 
-                                    const mongoose = require('mongoose');
-                                    const {Schema} = require('mongoose');
-                                    
-                                    const userSchema = new Schema({
-                                        name: {type: String, required: true},
-                                        age: {type: Number, required: true},
-                                        birthday: {type: String, default: 'any string value goes here'}
-                                    })
-                                    
-                                    const User = mongoose.model('name-of-model', userSchema, 'name-of-collection')        //create a model that will be used to create documents, name of model doesnt have to match
-                                    
-                                    module.exports = {
-                                        User
-                                    }
+
+//-------------------------------------- UPDATE DOCUMENTS  -----------------------------------------------
+/* 
+    updateOne() will look for the first document that satisfies the query and update its properties
+    updateMany() will look for ALL documents that satisfies the query and update its properties
+    find() will return a cursor that has a single or multiple documents that satisfy the query                //this will return NULL if it doesn't find the document in the collection
+            toArray() will return an array with all the documents                                             //you can chain this method with find()   
+            next() will return an object with the first document that satisfies the query                     //you can chain this method with find()
+    findOne() will return the document that satisfies the query
+*/
 
 
-                    //4) Now you can perform CRUD operations
+        app.put('/update_documents', async (req, res) => {
+            const id = new ObjectId(id);
+            
+            try{
+                const user = await User.findOne({id});                                                /* you can also change the properties of a document by using the properties directly*/
+                user.name = 'new name';
+                user.age = 'new age';
+                await user.save();                            
+                
+                const resultOne = await User.updateOne( { name: 'Alice' }, { $set: { age: 29 } });       // we update the first document that has the property name = 'Alice', and we 'set' the age property to 29
+                const resultTwo = await User.updateOne( {_id: id}, { $set: { age: 45 }});                // you can also look for a document with its _id
+                const resultThree = await User.updateMany( {name: 'Alice' }, { $set: { age: 56} });      // same as updateOne, but updates all documents that match they query
+                
+                if(resultOne.modifiedCount === 0)
+                    console.log('Document doesnt exist')
+            }
+            catch(error){
+                console.log(error.message)
+            }
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------- CRUD OPERATIONS  -----------------------------------------------
+
                                     const mongoose = require('mongoose');
                                     const {connectDB} = require('./Database/db.js')
-                                    const {User} = require('./Model/Model.js');
-                                    const user = new User({email: '', password: ''});
-                                    const userData = await user.save();
-                                    /* 
-                                        userData = {
-                                            email: '',
-                                            password: '',
-                                            _id: new ObjectId()
-                                        }
-                                    */
-                                    const ObjectId = mongoose.Types.ObjectId;              //new ObjectId('24 character id string goes here');     or       new ObjectId()
-                                    /*    when comparing two ObjectId, you must use     */
-                                    const idOne = new ObjectId();
-                                    const idTwo = new ObjectId();
-                                    idOne.equals(idTwo); 
-                                    
+                                    const {User} = require('./Model/Model.js');                   
                                     
                                     connectDB();
         
-                                    app.post('/create_document', async (req, res) => {
-                                        const body = req.body;
-                                        const id = new ObjectId(id);
-                                        
-                                        try{
-                                            const newUserOne = new User({name: 'Johnathan', age: 2223});
-                                            const newUserTwo = new User({_id: id});                        //you can create a document with a specified _id
-                                            const result = await User.insertMany([{name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}, {name: 'Johnathan', age: 22}]);    //this will return an array of the documents(objects), these documents have already been saved into the database                                
-                                            await newUserOne.save();                                       //the save() method will create a new document in the collection                                
-                                        }
-                                        catch(error){
-                                            if(error.message.includes('E11000 duplicate key error collection'))
-                                                console.log('Document with the specified _id already exists')
-                                            else if(error.message.includes('user validation failed'))
-                                                console.log('Validation error, document is missing required properties')
-                                        }     
-                                    });
         
-                                    app.put('/update_documents', async (req, res) => {
-                                        const id = new ObjectId(id);
-                                        
-                                        try{
-                                            const user = await User.findOne({id});                                            /* you can also change the properties of a document using property and object syntax*/
-                                            user.name = 'new name';
-                                            user.age = 'new age';
-                                            await user.save();                            
-                                            
-                                            const resultOne = await User.updateOne( { name: 'Alice' }, { $set: { age: 29 } });      //keep in mind that you can only update the properties that are in the schema
-                                            const resultTwo = await User.updateOne( {_id: id}, { $set: { age: 45 }});                 //you can also look for a document with its _id
-                                            const resultThree = await User.updateMany( {name: 'Alice' }, { $set: { age: 56} });   //first object is the document that we look for, we update the properties with the second object
-                                            
-                                            if(resultOne.modifiedCount === 0)
-                                                console.log('Document doesnt exist')
-                                        }
-                                        catch(error){
-                                            console.log(error.message)
-                                        }
-                                    })
         
                                     app.get('/get_documents', async () => {
                                         const id = new ObjectId('24 character id string goes here');
@@ -293,6 +346,11 @@
                                         res.status(500).send(message);
                                     }
                                 })
+
+
+
+
+
 
 
 //======================================================= WEB SOCKETS AND MONGODB ======================================================================

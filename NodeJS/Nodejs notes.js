@@ -58,9 +58,19 @@
 				    ----------			The Queue will complete all microtasks before completing macrotasks
 
     
-													
-	
+		HOW TO INSTALL NODE.JS
 
+			For current user only
+	  			1) sudo apt update		 // updates the package manager
+	     
+			        2) sudo apt install curl -y	 // install curl
+	
+	    			3) curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash		// installs nvm
+		
+				4) nvm install node		// installs the latest version of Node
+
+			Globally
+   				sudo apt install nodejs -y
 
 
 */
@@ -214,6 +224,13 @@ app.use('/', (req, res) => {
 
 
 
+
+
+
+
+
+
+	
 
 
 

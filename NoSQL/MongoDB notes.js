@@ -35,15 +35,6 @@
 
         Go to mongoDB atlas -> select project -> Database -> Clusters -> Select your cluster -> Click on Collections -> Create Database
 
-        //find() will return a cursor that has a single or multiple documents that satisfy the query            this will return NULL if it doesn't find the document in the collection
-            // toArray() will return an array with all the documents        
-            // next() will return an object with the first document that satisfies the query
-        //findOne() will return the document that satisfies the query
-        //deleteOne() will look for the first document that satisfies the query and delete it
-        //deleteMany() will look for ALL documents that satisfies the query and delete them all
-
-
-
         STEPS TO INTEGRATE MONGOOSE
 
                 1) npm install mongoose
@@ -184,168 +175,187 @@
 
 
 
+//-------------------------------------- GET DOCUMENTS -----------------------------------------------
+/* 
+        find() will return a cursor that has a single or multiple documents that satisfy the query                this will return NULL if it doesn't find the document in the collection
+             toArray() will return an array with all the documents        
+             next() will return an object with the first document that satisfies the query
+        findOne() will return the document that satisfies the query
+*/
 
 
-
-
-
-
-
-
-
-//-------------------------------------- CRUD OPERATIONS  -----------------------------------------------
-
-                                    const mongoose = require('mongoose');
-                                    const {connectDB} = require('./Database/db.js')
-                                    const {User} = require('./Model/Model.js');                   
-                                    
-                                    connectDB();
+        app.get('/get_documents', async () => {
+            const id = new ObjectId('24 character id string goes here');
+            
+            try{
+                const user = await User.findOne({name: 'John'});                //looks for the first occurence of a document that has a property name and value john
+                const anotherUser = await User.findOne({_id: id});                //you can also look for a document with its _id
+                const users = await User.find({age: 22});                        //looks for ALL occurences of the document that has a property name and value john                                                 
+                const users = await User.find();                                 //gets ALL documents within a collection
+                
+                if(!user)
+                    console.log('document doesnt exist');
+            }
+            catch(error){
+                if(error.message.includes('user validation failed'))
+                    console.log('Validation error, document is missing required properties')
+            }
         
+        })
+
+
+//-------------------------------------- DELETE DOCUMENTS -----------------------------------------------
+/* 
+        deleteOne() will look for the first document that satisfies the query and delete it
+        deleteMany() will look for ALL documents that satisfies the query and delete them all
+        findOneAndDelete() will look for the first document that satisfies the query, delete it, 
+            and return the deleted object
+*/
+
+        app.delete('/delete_document:id', async (req, res) => {
+            const id = req.params.id;
+            const idToDelete = new ObjectId(id);
+            
+            try{
+                const resultOne = await User.deleteOne({_id: idToDelete});                //this will delete the first occurence of the specified document
+                const resultTwo = await User.deleteOne({name: 'John'});
+                const resultTwo = await User.deleteMany({name: 'Johnathan'});             //this will delete ALL occurences of the specified document
+                const resultThree = await User.deleteMany({});                            //this will delete ALL documents in the collection
+                const documentDeleted = await User.findOneAndDelete({_id: 'some id'})     //this will delete the document and return it
+                
+                if(resultOne.deletedCount === 0)
+                    console.log('document doesnt exist');
+            }
+            catch(error){ 
+                if(error.message.includes('user validation failed'))
+                    console.log('Validation error, document is missing required properties')
+            }     
+        })  
+
+
+
+
+
+//-------------------------------------- UPLOADING FILES -----------------------------------------------
+/* 
+    You can upload images and files in a document with GridFSBucket module in mongoDB
+    GridFSBucket will split a file into chunks and store them in MongoDB
+    The chunks are grouped into two collections in the mongoDB database,  fs.files and fs.chunks
+    fs is the default bucket name, you can specify a different name in     new GridFSBucket(conn.db, {bucketName: 'image'});
+    fs.files contains all the metadata of the file; filename, upload date, content type
+    fs.chunks contains all the binary data of the file
+    once the collections have been made, we save a reference (writestream.id) of the image into a document in mongoDB
+*/
+
+        const mongoose = require('mongoose');
+        const { GridFSBucket} = require('mongodb');
+
+        const initializeGridFs = (req, res, next) => {                      // 1) we create a middleware that initiates the GridFSBucket
+            const conn = mongoose.connection;
+            const gfs = new GridFSBucket(conn.db, {bucketName: 'image'});
+            req.gfs = gfs;
+            next();
+        };
+
+        app.post('/add_files_to_document', initializeGridFs, async (req, res) => {
+            const image = req.file;                                         // 2) look at your fetch notes on how to receive files from the front-end
+            const gfs = req.gfs;
+
+            try{
+                const user = new User({email, password});
+
+                if(image){
+                      const writestream = gfs.openUploadStream(            // 3) we create a writestream, its a way of handling data by diving it into smaller chunks
+                          image.originalname, {                               
+                          contentType: image.mimetype
+                      });
+                    
+                      writestream.end(image.buffer);                        // 4) Once the writestream has finished, we get the image buffer(the raw binary data for the image) and store the data into the database
+                    
+                      writestream.on('finish', async () => {
+                            user.imageId = writestream.id;           // 5) we update the user document with the ID of the writestream (this returns a string) )
+                            const userData = await user.save();
+                            console.log('Image uploaded to MongoDB');                            
+                      });
+                    
+                      writestream.on('error', (err) => {
+                            console.log('Error uploading image:', err);
+                     });
+                }
+            }
+            catch(error){
+                const message = error.message;
+                if(message.includes('E11000 duplicate key error collection:'))
+                    res.status(401).send(message);
+                else
+                    res.status(500).send(message);
+            }
+        })
+
+
+
+
+//-------------------------------------- DOWNLOAD FILES  -----------------------------------------------
+/* 
+    You can download the files from the document with the GridFSBucket module in mongoDB
+
+*/
+
+        const mongoose = require('mongoose');
+        const { GridFSBucket} = require('mongodb');
+
+        const initializeGridFs = (req, res, next) => {
+            const conn = mongoose.connection;
+            const gfs = new GridFSBucket(conn.db, { bucketName: 'images' });
+            req.gfs = gfs;
+            next();
+        }
         
+        router.get('/get_account', initializeGridFs, async (req, res) => {
+            const gfs = req.gfs;
         
-                                    app.get('/get_documents', async () => {
-                                        const id = new ObjectId('24 character id string goes here');
-                                        
-                                        try{
-                                            const user = await User.findOne({name: 'John'});                //looks for the first occurence of the document in the collection
-                                            const anotherUser = await User.findOne({_id: id});                //you can also look for a document with its _id
-                                            const users = await User.find({age: 22});                        //looks for ALL occurences of the document in the collection                                                 
-                                            const users = await User.find();                                 //gets ALL documents within a collection
-                                            
-                                            if(!user)
-                                                console.log('document doesnt exist');
-                                        }
-                                        catch(error){
-                                            if(error.message.includes('user validation failed'))
-                                                console.log('Validation error, document is missing required properties')
-                                        }
-                                    
-                                    })
+            try{
+                const user = await User.findOne({email});
+                const imageId = user.imageId;                            //this contains the id for the image (its just a 'new ObjectId()')
         
+                if(image){
+                    const _id = new mongoose.Types.ObjectId(imageId);    //convert the _id into an objectId
+                    const cursor = gfs.find({_id});                      //we look for the file in the files collection (cursor is just a pointer to the file in the collecton)
+                    const files = await cursor.toArray();                //we get all the metadata from the file and store it within an array
+                    const file = files[0];                        
+                    const chunks = [];                                   //the use the chunks array to retrieve each chunk of the file
+                    const readstream = gfs.openDownloadStream(_id);      //we initialize a read stream that is used to download the file from the chunks collection
         
-                                    app.delete('/delete_document:id', async (req, res) => {
-                                        const id = req.params.id;
-                                        const idToDelete = new ObjectId(id);
-                                        
-                                        try{
-                                            const resultOne = await User.deleteOne({_id: idToDelete});                //this will delete the first occurence of the specified document
-                                            const resultTwo = await User.deleteOne({name: 'John'});
-                                            const resultTwo = await User.deleteMany({name: 'Johnathan'});            //this will delete ALL occurences of the specified document
-                                            const resultThree = await User.deleteMany({});                            //this will delete ALL documents in the collection
-                                            const documentDeleted = await User.findOneAndDelete({_id: 'some id'})    //this will delete the document and return it
-                                            
-                                            if(resultOne.deletedCount === 0)
-                                                console.log('document doesnt exist');
-                                        }
-                                        catch(error){ 
-                                            if(error.message.includes('user validation failed'))
-                                                console.log('Validation error, document is missing required properties')
-                                        }     
-                                    })  
+                    readstream.on('data', (chunk) => {                   //we get each chunk of the file and store it in the array
+                        chunks.push(chunk);
+                    })
+        
+                    readstream.on('end', () => {
+                        const fileBuffer = Buffer.concat(chunks);       //Buffer.concat() puts together all the binary data chunks into a single chunk
+                        res.status(200).json({
+                            username,
+                            email,
+                            contentType: file.contentType,
+                            image: fileBuffer.toString('base64')        //we convert the binary data into a text format (base 64) that can be transmitted safely with JSON
+                        })
+                    })
+        
+                    readstream.on('error', (err) => {
+                        console.log('Error reading file from MongoDB', err);
+                    })
+                }  
+                else
+                    res.status(200).json({username, email});
+                 
+            }
+            catch(error){
+                const message = error.message;
+                res.status(500).send(message);
+            }
+        })
 
-                        //4)  Uploading files to a document in MongoDB
-                             // GridFS will split a file into chunks and store them in MongoDB
-                             // The chunks are grouped into two collections in the mongoDB database,  fs.files and fs.chunks
-                            //          fs is the default bucket name, you can specify a different name in     new GridFSBucket(conn.db, {bucketName: 'image'});
-                             // fs.files contains all the metadata of the file; filename, upload date, content type
-                             // fs.chunks contains all the binary data of the file
-                             // once the collections have been made, we save a reference (writestream.id) of the image into the document in mongoDB
 
-                                    const { GridFSBucket} = require('mongodb');
 
-                                    const initializeGridFs = (req, res, next) => {                    //middleware
-                                        const conn = mongoose.connection;
-                                        const gfs = new GridFSBucket(conn.db, {bucketName: 'image'});
-                                        req.gfs = gfs;
-                                        next();
-                                    }
-
-                                    app.post('/add_files_to_document', initializeGridFs, async (req, res) => {
-                                        const image = req.file;                                    //look at your node.js notes on how to receive files from the front-end
-                                        const gfs = req.gfs;
-
-                                        try{
-                                            const user = new User({email, password});
-
-                                            if(image){
-                                                const writestream = gfs.openUploadStream(image.originalname, {        //we create a writestream, its a way of handling data by diving it into smaller chunks
-                                                    contentType: image.mimetype
-                                                });
-                                                
-                                                  writestream.end(image.buffer);                        //we use the writestream by getting the image buffer(the raw binary data for the image) and store the data into the database
-                                                
-                                                  writestream.on('finish', async () => {
-                                                        user.profileImageId = writestream.id;           // we update the user document with the ID of the writestream (this returns a string) )
-                                                        const userData = await user.save();
-                                                        console.log('Image uploaded to MongoDB');                            
-                                                  });
-                                                
-                                                  writestream.on('error', (err) => {
-                                                        console.log('Error uploading image:', err);
-                                                 });
-                                            }
-                                        }
-                                        catch(error){
-                                            const message = error.message;
-                                            if(message.includes('E11000 duplicate key error collection:'))
-                                                res.status(401).send(message);
-                                            else
-                                                res.status(500).send(message);
-                                        }
-                                    })
-                            
-                          // 5) Get files from MongoDB documents and send them to the front end 
-
-                                const initializeGridFs = (req, res, next) => {
-                                    const conn = mongoose.connection;
-                                    const gfs = new GridFSBucket(conn.db, { bucketName: 'images' });
-                                    req.gfs = gfs;
-                                    next();
-                                }
-                                
-                                router.get('/get_account', initializeGridFs, async (req, res) => {
-                                    const gfs = req.gfs;
-                                
-                                    try{
-                                        const user = await User.findOne({email});
-                                        const imageId = user.profileImageId;                    //this contains the id for the image (its just a 'new ObjectId()')
-                                
-                                        if(image){
-                                            const _id = new mongoose.Types.ObjectId(imageId); //convert the _id into an objectId
-                                            const cursor = gfs.find({_id});                 //we look for the file in the files collection (cursor is just a pointer to the file in the collecton)
-                                            const files = await cursor.toArray();           //we get all the metadata from the file and store it within an array
-                                            const file = files[0];                        
-                                            const chunks = [];                             //the use the chunks array to retrieve each chunk of the file
-                                            const readstream = gfs.openDownloadStream(_id);  //we initialize a read stream that is used to download the file from the chunks collection
-                                
-                                            readstream.on('data', (chunk) => {            //we get each chunk of the file and store it in the array
-                                                chunks.push(chunk);
-                                            })
-                                
-                                            readstream.on('end', () => {
-                                                const fileBuffer = Buffer.concat(chunks);   //Buffer.concat() puts together all the binary data chunks into a single chunk
-                                                res.status(200).json({
-                                                    username,
-                                                    email,
-                                                    contentType: file.contentType,
-                                                    image: fileBuffer.toString('base64')    //we convert the binary data into a text format (base 64) that can be transmitted safely with JSON
-                                                })
-                                            })
-                                
-                                            readstream.on('error', (err) => {
-                                                console.log('Error reading file from MongoDB', err);
-                                                res.status(200).json({username, email})
-                                            })
-                                        }  
-                                        else
-                                            res.status(200).json({username, email});
-                                         
-                                    }
-                                    catch(error){
-                                        const message = error.message;
-                                        res.status(500).send(message);
-                                    }
-                                })
 
 
 
@@ -388,6 +398,14 @@
                      ws.send('data must be in json format')                     //This is where you send the changes to the front-end 
                 })    
     	})
+
+
+
+
+
+
+
+
 
 
 

@@ -255,7 +255,7 @@
 
 //---------------------------------------- MULTER MODULE ----------------------------------------
 /* 
-	Multer module is used for handling multi-part/form data, particularly file uploads
+	Multer module is used for uploading files from the front-end
 	(look at the Fetch API notes on how to send files from the front-end with a fetch request)
 
 	You can use the multer module to get a file(image) from the front end
@@ -271,7 +271,7 @@
 */
 
 	const multer = require('multer');
-	const storage = multer.memoryStorage();			       	  
+	const storage = multer.memoryStorage();				    // you can use the diskStorage() function here as well		       	  
 	const upload = multer({ storage: storage}); 		      
 	
 	app.put('/upload_file', upload.single('image'), (req, res) => {      // in upload.single('image'), it will look for the property 'image' in the FormData object that you created on the front-end
@@ -552,13 +552,99 @@
 
 //-------------- READ STREAMS
 /* 
-
+	createReadStream() will read a file by using a stream to load the content
+ 	in chunks(a part of the content). This is usefull for reading large files
 */
 
-    var rs = fs.createReadStream("./demofile.txt");             //createReadStream fires an event everytime the file opens or closes
-    rs.on("open", function() {
-        //do something here
+    const rs = fs.createReadStream("./demofile.txt");             //createReadStream fires an event everytime the file opens or closes
+    const chunks = []
+
+    rs.on("open", () => {
+        console.log('stream has opened')
     })
+
+    rs.on('data', (chunk) => {
+	 chunks.push(chunk);    
+    })
+
+    rs.on('error', (e) => {
+	 console.log('Error has occurred', e);   
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------- FORMIDABLE MODULE ----------------------------------------
+/* 
+	Formidable module is used for parsing incoming Form data.
+
+ 	The Front-end can send form data in two ways. Inside a <form/> tag or with a fetch request
+
+	<form/>
+	    	<form action="/upload" method="POST" enctype="multipart/form-data">
+		    <input type="text" name="username" placeholder="Enter your name">
+		    <input type="file" name="profilePic">
+		    <button type="submit">Upload</button>
+		</form>
+
+	Fetch Request:
+  		const formData = new FormData();
+		formData.append("username", "Abel");
+		formData.append("profilePic", document.querySelector("#fileInput").files[0]);
+		
+		fetch("/upload", {
+		    method: "POST",					   //no need to specify headers here
+		    body: formData
+		})
+*/
+
+var formidable = require('formidable');                                     //npm install formidable
+
+app.post("/upload", (req, res) => {
+    const form = new formidable.IncomingForm();				   // Parses the incoming Form from the front-end and extracts the form fields
+    form.uploadDir = path.join(__dirname, "uploads"); 			   // Set upload directory
+    form.keepExtensions = true; 					   // Keep file extensions
+
+    form.parse(req, (err, fields, files) => {				   // files can be an array if uploading multiple files
+        if (err) {
+            res.status(400).json({ error: "Error processing upload" });
+            return;
+        }
+        /* 
+	  fields = {
+	      name: 'Carlos',
+	      age: 34,
+	   }	
+  	   files = {
+      		filepath, 		Full path where the uploaded file is temporarily stored.
+		originalFilename,  	The original name of the file as submitted by the user.
+		mimeType,		The MIME type of the file (e.g., "image/png", "application/pdf").
+		size, 			File size in bytes.
+		newFilename, 		Generated name for the file when stored.
+		hash, 			Hash of the file (if hashing is enabled).
+		lastModifiedDate,	Timestamp of when the file was last modified.
+	   }
+	 */
+    });
+});
+
+
+
 
 
 
@@ -599,56 +685,6 @@ eventEmitter.emit('scream')                     //triggerring the event
 
 
 
-
-//---------------------------------------- FORMIDABLE MODULE ----------------------------------------
-//this module was designed to read form data
-
-var formidable = require('formidable');                                     //npm install formidable
-
-    //getting files from client
-    http.createServer(function (req, res) {
-        if(req.url == "/fileupload"){
-            var form = new formidable.IncomingForm();                       //creating a form object to read form data
-            form.parse(req, function (err, fields, files) {                 //'files' object is for files uploaded by the client, and 'fields' object are for user input sent by the client
-                var oldpath = files.filetoupload.filepath;                  //getting the name of the file that was uploaded
-                var newpath = "C:/Users/abelm/" + files.filetoupload.originalFilename; //defining a directory for the file to be stored onto local pc
-                fs.rename(oldpath, newpath, function (err) {                //using fs.rename() to place the uploaded file onto the local machine
-                    if(err) throw err;
-                    res.write('File has been uploaded and moved to a different directory!');
-                    res.end();
-                })
-            })
-        }
-        else{
-            res.writeHead(200, {"Content-Type": "text/html"});
-            res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
-            res.write('<input type="file" name="filetoupload"><br>');
-            res.write('<input type="submit">');
-            res.write('</form>');
-            return res.end();        
-        }
-    }).listen(8080);      
-    
-
-    //getting user-input from client
-    http.createServer(function (req, res) {
-        if(req.url == "/sendInput"){
-            var form = new formidable.IncomingForm();                       //creating a form object to read form data                
-            form.parse(req, function (err, fields, files) {                 //'files' object is for files uploaded by the client, and 'fields' object are for user input sent by the client
-                res.write("you entered" + fields.userInput)                 //using the name property of the input element to retrieve user input   
-                return res.end();
-            })
-        }
-        else{
-            res.writeHead(200, {"Content-Type": "text/html"});
-            res.write('<form action="sendInput" method="post">');
-            res.write('<input type="text" name="userInput">');              //this works for all inputs, as long as the input has a name attribute
-            res.write('<input type="submit">');
-            res.write('</form>');
-            return res.end();        
-        }
-
-    })
 
 
 

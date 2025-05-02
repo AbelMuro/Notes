@@ -203,6 +203,12 @@
 
 
 
+
+
+
+
+
+
 //---------------------------------------- NODEMAILER MODULE ----------------------------------------
 //you can use this mail module to send emails from the server
 
@@ -242,6 +248,11 @@
 
 
 
+
+		
+
+
+
 //---------------------------------------- MULTER MODULE ----------------------------------------
 /* 
 	Multer module is used for handling multi-part/form data, particularly file uploads
@@ -277,6 +288,11 @@
 		    }
 		*/
 	});
+
+
+
+
+
 
 
 
@@ -455,66 +471,89 @@
 
 
 
-//---------------------------------------- URL MODULE ----------------------------------------
-var url = require('url');                                       //used for formating the url of the website
-    var adr = 'http://localhost:8080/default.htm?year=2017&month=february';  //normally you would use 'req.url' to get the url
-    var q = url.parse(adr, true)                                //parsing the url into an object
-    q.host;                                                     //returns 'localhost:8080' (domain name)
-    q.pathname;                                                 //returns 'default.htm'
-    q.search;                                                   //returns '?year=2017&month=february'
-    q.query;                                                    //returns an object { year: 2017, month: february}
-
-
-    let filename = q.pathname;                                              
-    formattedUrl = formattedUrl.year + " " + formattedUrl.month; 
-
-
-
-
-
-
-
-
-
-
-
 
 //---------------------------------------- FILE SYSTEM MODULE ----------------------------------------
-var fs = require("fs");
-    //updating files (be careful with writeFile())
+/*
+	You can use the File System module to manipulate files on the server and from the front-end
+*/
 
-    fs.appendFile("./nameOfFile.html", 'Hello World!', function (err) { //appending content "hello world "to the end of a file, if the file doesnt exist, then a new one will be created 
-        if(err) throw err;
+//---------------  UPDATING FILES
+/* 
+	appendFile() will add the specified content to the end of the file
+ 	writeFile() will replace the file's content with the specified content 
+   	For both functions above, if the file doesnt exist, then a new one will be created
+*/
+    var fs = require("fs");
+
+    fs.appendFile("./nameOfFile.html", 'Hello World!', (err) => { 
+        if(err) 
+	   console.log(err)
     })
 
-    fs.writeFile("./nameOfFile.html", "hello World", function (err) { //replacing a file with the same name as the first argument and appending 'hello world' at the end of the new file, 
-        if(err) throw err;                                            //if the file doesnt exist, then a new one will be created
+    fs.writeFile("./nameOfFile.html", "hello World", (err) => { 	
+        if(err) 
+	   console.log(err)                                           
     })
 
-    //reading files
-    fs.readFile('./nameOfFile.html', function(err, data) {      //reads a file
+
+
+//--------------- READING FILES
+/* 
+	readFile() will read the contents of a file
+*/
+
+
+    fs.readFile('./nameOfFile.html', (err, data) => {      //reads a file
         if(err){
             res.writeHead(404, {'Content-Type': 'text/html'})
             return res.end("404 Not Found");
         }
         res.writeHead(200, {'Content-Type' : 'text/html'})
         res.write(data);                                        //data is the actual html that you want to send to the client
-        return res.end();                                       //should return the res.end()
+        return res.end();                                       
     })
 
-    fs.open("./nameOfFile.html", function(err, file) {          //opening a file, if the file doesnt exist, then a new one will be created   (you can add a second argument 'w', it stands for 'writing')
-        if (err) throw err;
+
+//--------------- OPENING FILES
+/* 
+	open() will open the contents of a file
+ 	if the file doesnt exist, then a new one will be created
+*/
+
+    fs.open("./nameOfFile.html", (err, file) => {          // (you can add a second argument 'w', it stands for 'writing')
+	if(err) 
+	   console.log(err) 
     })
 
-    //deleting files
-    fs.unlink("./nameOfFile.html", function(err){               //deleting a file
-        if(err) throw err;
+
+
+
+//--------------- DELETING FILES
+/* 
+	unlink() will delete a specified file
+*/
+    fs.unlink("./nameOfFile.html", (err) => {               //deleting a file
+        if(err) 
+	   console.log(err) 
     })
 
-    //renaming files
-    fs.rename("./nameOfFile.html", "./newFileName.html", function(err) { //renaming an existing file
-        if(err) throw err;
+
+
+//--------------- RENAMING FILES
+/* 
+	rename() will change the name of an existing file
+*/
+    fs.rename("./nameOfFile.html", "./newFileName.html", (err) => {
+        if(err) 
+	   console.log(err) 
     })
+
+
+
+//-------------- READ STREAMS
+/* 
+
+*/
 
     var rs = fs.createReadStream("./demofile.txt");             //createReadStream fires an event everytime the file opens or closes
     rs.on("open", function() {
@@ -618,7 +657,18 @@ var formidable = require('formidable');                                     //np
 
 
 
+//---------------------------------------- URL MODULE ----------------------------------------
+var url = require('url');                                       //used for formating the url of the website
+    var adr = 'http://localhost:8080/default.htm?year=2017&month=february';  //normally you would use 'req.url' to get the url
+    var q = url.parse(adr, true)                                //parsing the url into an object
+    q.host;                                                     //returns 'localhost:8080' (domain name)
+    q.pathname;                                                 //returns 'default.htm'
+    q.search;                                                   //returns '?year=2017&month=february'
+    q.query;                                                    //returns an object { year: 2017, month: february}
 
+
+    let filename = q.pathname;                                              
+    formattedUrl = formattedUrl.year + " " + formattedUrl.month; 
 
 
 
@@ -681,9 +731,10 @@ var formidable = require('formidable');                                     //np
  	key concepts:
 
   	Hexadecimal string: a way of representing binary data using letters and numbers
-   		Binary: 01000101 0100111010 01001010 10011001 
-     		Hex: 48 65 62 3F
-       		English: Hello
+   
+   	Binary: 01000101 0100111010 01001010 10011001 
+     	Hex: 48 65 62 3F
+       	English: Hello
 
 */
 

@@ -359,41 +359,49 @@
 
 
 
-//======================================================= WEB SOCKETS AND MONGODB ======================================================================
+//======================================================= CHANGE STREAMS ======================================================================
 /* 
-    Look at the Websocket module in node.js notes for more info on how websockets work
-    You can use an event handler that detects changes in a collection from a mongoDB database,
-    you can send those changes though a websocket to the front end
-*/
+    You can use the watch() method to detect any changes made to a collection.
+    Typically, the watch() method is used with a Schema before assigning it to
+    a model. The watch() method will return an 'change stream', this stream will 
+    have its event handlers that will be triggered when something happens to 
+    the collection (add new document, delete document, change document).
 
+    Look at the Websocket module in Node.js notes for more info on how to integrate
+    a mongoDB change-stream with a websocket.
+
+            wss.on('connection', ws => {                                       
+                changeStream.on('change', (change) => {                         //once the connection has been established
+                    const fullDocument = change.fullDocument;                   //contains the whole document that was added to the collection
+                    const operationType = change.operationType;                 //insert document or delete document
+                    
+                    if(operationType === 'delete'){
+                        ws.close();                                             //you can close the websocket connection
+                        changeStream.close();                                   //you can close the change stream connection
+                    }
+                    else
+                        ws.send('data must be in json format')                  //This is where you send the changes to the front-end 
+                })    
+    	    })
+*/
 
         const {Schema} = require('mongoose');
         
         const queueSchema = new Schema({
             player: {type: String, required: true},
         })
-        
-        const Queue = mongoose.model('player', queueSchema, 'queue')        //first create your model for the collection you want to detect changes
 
-        const changeStream = Queue.watch();                                 //this is an event handler that detects any changes made to the collection(new document, or delete document)
-        const changeStream = Queue.watch([
+        const changeStream = Queue.watch();                                 // this will detect any changes made to the collection (new document, delete document, change document)
+        const changeStream = Queue.watch([                                  // this will detect any changes made to a specific document in a collection
                 { $match: { 'fullDocument.username' : username } }
-            ], { fullDocument: 'updateLookup' });                            //this will detect any changes made to a specific document in a collection
-        
+            ], { fullDocument: 'updateLookup' });                            
 
-        wss.on('connection', ws => {                                        //look at the websocket module in node.js notes for more info
-            changeStream.on('change', (change) => {                         //once the connection has been established
-                const fullDocument = change.fullDocument;                    //contains the whole document that was added to the collection
-                const operationType = change.operationType;                 //insert document or delete document
-                
-                if(operationType === 'delete'){
-                    ws.close();                                                //you can close the websocket connection
-                    changeStream.close();                                        //you can close the change stream connection
-                }
-                    
-                     ws.send('data must be in json format')                     //This is where you send the changes to the front-end 
-                })    
-    	})
+                                                                            
+        changeStream.on('change', (change) => {                             // change event will be triggered when the document or collection is updated
+            const fullDocument = change.fullDocument;                       // contains the whole document that was updated or added to the collection
+            const operationType = change.operationType;                     // will return 'insert' or 'delete'
+            changeStream.close();                                           // you can close the change stream connection
+        })  
 
 
 
@@ -404,6 +412,9 @@
 
 
 
+
+
+            
 
 
 

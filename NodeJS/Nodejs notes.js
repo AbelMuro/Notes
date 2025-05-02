@@ -387,6 +387,7 @@ app.post("/upload", (req, res) => {
 	npm install @aws-sdk/client-s3
 	npm install multer
 	npm install aws-sdk
+ 	npm install multer-s3
 
 */    
 	const aws = require('aws-sdk');

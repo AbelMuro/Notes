@@ -258,7 +258,7 @@ import {configureStore} from '@reduxjs/toolkit';
 
 const store = configureStore({              //creating a 'store' that will contain our state data
     reducer: rootReducer,                   //our custom reducer
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(myMiddleware)                     //adding a new middleware to our store
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(myMiddleware)  //adding a new middleware to our store
 }); 
 
 export default store;

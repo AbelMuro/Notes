@@ -512,12 +512,14 @@ app.post("/upload", (req, res) => {
 
         const connectToWebSocket = () => {         
             const socket = new WebSocket(WEBSOCKET_URL);            	   // make sure the port is the same on the web socket in the back-end
-        
+
+	    socket.send('sending data to the back-end');		   // socket.send() will send data to the back-end
+
+	    socket.close();						   // socket.close() will close the connection between the front-end and the back-end
+		
             socket.onopen = () => {                                        // onopen() event will be triggered when the front-end has connected to the back-end
                 console.log('Connected to WebSocket server');
             };
-
-	    socket.send('sending data to the back-end');		   // socket.send() will send data to the back-end
         
             socket.onmessage = (e) => {					   // onmessage() event will be triggered when the back-end sends data to the front-end 	
 		const change = e.data;

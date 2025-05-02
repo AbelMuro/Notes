@@ -168,26 +168,456 @@
 
 
 
+//=========================================================== MODULES ==================================================================
 
 
-
-
-
-
-//================================================ FILE PATHS ================================================        
+//---------------------------------------- CUSTOM MODULE ----------------------------------------
 /* 
-    You can use the built-in path module to resolve file paths in node.js
-    This makes is easier to load files in your application
+	You can create your own custom modules in Node.js
 */
 
 
-const path = require('path');
-const indexFilePath = path.join(__dirname, 'folder/index.html');	
+ 	1)   //addBill.js
 
-app.use('/', (req, res) => {
-	res.sendFile(indexFilePath)
-})
+		const express = require('express');
+		const router = express.Router();
+		
+		router.post('/add_bill', async (req, res) => {
+		    //router logic goes here
+		});
+
+		module.exports = router;			//module.exports = {router, ...}
+
+ 	2)   //server.js
+
+	 	const addBill = require('./addBill.js');		
+	  	const express = require('express');
+		const app = express();
+	
+		app.use(addBill);
+
+
+
+
+
+
+
+
+//---------------------------------------- NODEMAILER MODULE ----------------------------------------
+//you can use this mail module to send emails from the server
+
+	var nodemailer = require('nodemailer');
+	
+	app.put('/send_email', () => {
+		const transporter = nodemailer.createTransport({			//nodemailer is a module we can use to send an email to the user
+		    service: 'Gmail',
+		    auth: {
+			user: process.env.email,
+			pass: process.env.app_password                          	//you must create an app password for an app in your gmail acount
+		    }
+		})
+	
+		const mailOptions = {
+		    from: process.env.email,
+		    to: email,
+		    subject: 'Reset Link for Note-taking app',
+		    text: `Please click on the following link to reset your password ${resetPasswordLink}`    //you can either use html or text here
+		}
+	
+		transporter.sendMail(mailOptions, (error, info) => {
+		    if(error){
+			res.status(401).send(error.message);
+			return;
+		    }
+		    
+		    res.status(200).send('Email sent successfully');
+		})
+	})
+
+
+
+
+
+
+
+
+
+//---------------------------------------- MULTER MODULE ----------------------------------------
+/* 
+	Multer module is used for handling multi-part/form data, particularly file uploads
+	(look at the Fetch API notes on how to send files from the front-end with a fetch request)
+
+	You can use the multer module to get a file(image) from the front end
+ 	and store it as a buffer in memory.
+
+	multer.memoryStorage();					// this method will temporarily save the file in RAM
+	multer.diskStorage(					// this method will save the file in the servers disk
+ 	    destination: './uploads/',					// first argument is the location of the folder that will store the file
+	    filename: (req, file, cb) => {				// second argument is the name of the file being uploaded to the ./uploads folder in your node.js app	
+		cb(null, `${Date.now()}-${file.originalname}`)	
+	    });		
+ 	
+*/
+
+	const multer = require('multer');
+	const storage = multer.memoryStorage();			       	  
+	const upload = multer({ storage: storage}); 		      
+	
+	app.put('/upload_file', upload.single('image'), (req, res) => {      // in upload.single('image'), it will look for the property 'image' in the FormData object that you created on the front-end
+	    const {username, email, password} = req.body;	
+	    const image = req.file;					    
+		/* 
+		  req.file = {
+			fieldname,			The name of the form field <input name='image'>
+			originalname,			The original name of the uploaded file
+			encoding,			The encoding type (7bit or base64)
+			mimetype,			The file's MIME type (e.g., 'image/png', 'image/jpeg')
+			size,				The size of the file in bytes
+			buffer,				The raw binary data as an object
+		    }
+		*/
+	});
+
+
+
+
+
+
+
+
+//---------------------------------------- MULTER-S3 MODULE ----------------------------------------
+/* 
+	You can also use the multer module to upload files into an S3 Bucket
+	Go to the AWS Console and create an S3 bucket. Then go to your 
+ 	account on the top right corner and click on Security Credentials.
+  	Create a new access key, and then copy the secret access key that is 
+   	also generated. The signature version should be v4
+
+	Make sure that the IAM user that is using the S3 bucket has full access
+ 	to that bucket
  
+	npm install @aws-sdk/client-s3
+	npm install multer
+	npm install aws-sdk
+
+*/    
+	const aws = require('aws-sdk');
+	const multer = require('multer')
+	const multerS3 = require('multer-s3')
+
+	const s3 = new aws.S3({
+	    region: 'us-west-1',
+	    accessKeyId: process.env.ACCESS_KEY_ID,
+	    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+	    signatureVersion: process.env.SIGNATURE_VERSION,
+	});
+	
+	const upload = multer({
+	    storage: mutlerS3({
+		s3: s3,
+		bucket: 'personal-finance-app',
+		key: (req, file, cb) => {
+		    cb(null, `${Date.now()}-${file.originalname}`);
+		}
+	    })
+	});
+
+	app.post('/add_transaction', upload.single('image'), (req, res) => {		
+		const image = req.file									
+			/* 
+			  req.file = {
+     				location			The URL of the uploaded file in S3
+				fieldname,			The name of the form field <input name='image'>
+				originalname,			The original name of the uploaded file
+				encoding,			The encoding type (7bit or base64)
+				mimetype,			The file's MIME type (e.g., 'image/png', 'image/jpeg')
+				size,				The size of the file in bytes
+				bucket,				The name of the s3 bucket used to store the file
+    				key,				The unique file name assigned to the file in S3
+				acl,				The access control level (public read, private)
+    				metadata,			The meta data of the file uploaded
+				etag,				A unique hash representing the uploaded file in S3.
+			    }
+			*/
+	})
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------- WEBSOCKET MODULE ----------------------------------------
+/* 
+	You can create a WEBSOCKET in your node.js app that creates a connection between the front-end and the back-end
+	typically this connection is used to automatically send data between front-end and back-end when theres a changes in the
+	database or an event that is triggered in the front end
+
+	If you are using https, you will need an event handler to handle the upgrade event
+ 	Place the following code in your index.js file...
+
+		httpsServer.on('upgrade', (request, socket, head) => {
+		    const wss = global.webSocketHandlers[request.url];      // we access a list of websockets we already created
+		    
+		    if (wss) {						   // if the request url already has a websocket
+			wss.handleUpgrade(request, socket, head, (ws) => {
+			    wss.emit('connection', ws, request);
+			});
+		    } else 
+			socket.destroy();                                   // Gracefully close invalid connections
+		});
+*/
+
+//----------- CREATING WEBSOCKETS
+
+	const WebSocket = require('ws');
+
+	const createWebSocket = (server) => {	//development		//production
+	        const wss = new WebSocket.Server({port: 8000}   or   {noServer: true});     //make sure the port is the same for the back-end and the front-end
+
+		global.webSocketHandlers[`/${path}`] = wss;			    //we save the websocketHandler in our global list
+		
+	        wss.on('connection', ws => {                                        // you establish the connection between the back end and the front end
+	            ws.on('message', (e) => {					    // message event will be triggered when the front-end sends a message through the websocket
+			const data = e.data;
+		    })    
+	            ws.send('data must be in json format')                         // ws.send() will send data to the front-end (YOU have to call this function, its best to use it in some event handler)
+		    ws.close();							   // ws.close() will close the websocket
+	            ws.on('close', () => {                                         // close event will be triggered when the front-end and back-end are disconnected
+	                console.log('Client disconnected')
+	            })
+		})	
+	}
+
+//------------ CLOSING WEBSOCKETS
+
+	const CloseWebSocket = (path) => {
+	    global.webSocketHandlers[`/${path}`].close();
+	}
+
+	const CloseAllWebSockets = () => {
+		const websockets = global.webSocketHandlers;
+
+	        for(let wss of Object.values(websockets)){
+	            wss.clients.forEach((client) => {				// disconnecting any client connections, before we close the websockets
+	                if(client.readyState === WebSocket.OPEN)		// const WebSocket = require('ws')
+	                    client.close();
+	            });  
+	
+	            wss.close();
+	        }     
+	        global.webSocketHandlers = {};
+	}
+
+
+
+//------------- CONNECTING TO THE WEBSOCKET FROM THE FRONT-END
+	
+				//development			//production (443 is the default port for https)
+        const WEBSOCKET_URL = 'ws://localhost:8000'  or   'wss//my-back-end-domain.com:443/queue'       
+
+        const connectToWebSocket = () => {         
+            const socket = new WebSocket(WEBSOCKET_URL);            	   // make sure the port is the same on the web socket in the back-end
+        
+            socket.onopen = () => {                                        // onopen() event will be triggered when the front-end has connected to the back-end
+                console.log('Connected to WebSocket server');
+            };
+
+	    socket.send('sending data to the back-end');		   // socket.send() will send data to the back-end
+        
+            socket.onmessage = (e) => {					   // onmessage() event will be triggered when the back-end sends data to the front-end 	
+		const change = e.data;
+	    };                          
+        
+            socket.onclose = () => {					   // onclose() event will be triggered when the front-end disconnects from the back-end
+                console.log('Disconnected from WebSocket server');
+            };
+        
+            socket.onerror = (error) => {				   // onerror() event will be triggered when an error occurred
+                console.error('WebSocket error:', error);
+            };
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------- URL MODULE ----------------------------------------
+var url = require('url');                                       //used for formating the url of the website
+    var adr = 'http://localhost:8080/default.htm?year=2017&month=february';  //normally you would use 'req.url' to get the url
+    var q = url.parse(adr, true)                                //parsing the url into an object
+    q.host;                                                     //returns 'localhost:8080' (domain name)
+    q.pathname;                                                 //returns 'default.htm'
+    q.search;                                                   //returns '?year=2017&month=february'
+    q.query;                                                    //returns an object { year: 2017, month: february}
+
+
+    let filename = q.pathname;                                              
+    formattedUrl = formattedUrl.year + " " + formattedUrl.month; 
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------- FILE SYSTEM MODULE ----------------------------------------
+var fs = require("fs");
+    //updating files (be careful with writeFile())
+
+    fs.appendFile("./nameOfFile.html", 'Hello World!', function (err) { //appending content "hello world "to the end of a file, if the file doesnt exist, then a new one will be created 
+        if(err) throw err;
+    })
+
+    fs.writeFile("./nameOfFile.html", "hello World", function (err) { //replacing a file with the same name as the first argument and appending 'hello world' at the end of the new file, 
+        if(err) throw err;                                            //if the file doesnt exist, then a new one will be created
+    })
+
+    //reading files
+    fs.readFile('./nameOfFile.html', function(err, data) {      //reads a file
+        if(err){
+            res.writeHead(404, {'Content-Type': 'text/html'})
+            return res.end("404 Not Found");
+        }
+        res.writeHead(200, {'Content-Type' : 'text/html'})
+        res.write(data);                                        //data is the actual html that you want to send to the client
+        return res.end();                                       //should return the res.end()
+    })
+
+    fs.open("./nameOfFile.html", function(err, file) {          //opening a file, if the file doesnt exist, then a new one will be created   (you can add a second argument 'w', it stands for 'writing')
+        if (err) throw err;
+    })
+
+    //deleting files
+    fs.unlink("./nameOfFile.html", function(err){               //deleting a file
+        if(err) throw err;
+    })
+
+    //renaming files
+    fs.rename("./nameOfFile.html", "./newFileName.html", function(err) { //renaming an existing file
+        if(err) throw err;
+    })
+
+    var rs = fs.createReadStream("./demofile.txt");             //createReadStream fires an event everytime the file opens or closes
+    rs.on("open", function() {
+        //do something here
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------- EVENTS MODULE ----------------------------------------
+//this module handles all types of events that are received from the client 
+
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+
+eventEmitter.on('scream', function() {          //event handler for 'scream' events
+    //do something here
+})
+
+eventEmitter.emit('scream')                     //triggerring the event 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------- FORMIDABLE MODULE ----------------------------------------
+//this module was designed to read form data
+
+var formidable = require('formidable');                                     //npm install formidable
+
+    //getting files from client
+    http.createServer(function (req, res) {
+        if(req.url == "/fileupload"){
+            var form = new formidable.IncomingForm();                       //creating a form object to read form data
+            form.parse(req, function (err, fields, files) {                 //'files' object is for files uploaded by the client, and 'fields' object are for user input sent by the client
+                var oldpath = files.filetoupload.filepath;                  //getting the name of the file that was uploaded
+                var newpath = "C:/Users/abelm/" + files.filetoupload.originalFilename; //defining a directory for the file to be stored onto local pc
+                fs.rename(oldpath, newpath, function (err) {                //using fs.rename() to place the uploaded file onto the local machine
+                    if(err) throw err;
+                    res.write('File has been uploaded and moved to a different directory!');
+                    res.end();
+                })
+            })
+        }
+        else{
+            res.writeHead(200, {"Content-Type": "text/html"});
+            res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+            res.write('<input type="file" name="filetoupload"><br>');
+            res.write('<input type="submit">');
+            res.write('</form>');
+            return res.end();        
+        }
+    }).listen(8080);      
+    
+
+    //getting user-input from client
+    http.createServer(function (req, res) {
+        if(req.url == "/sendInput"){
+            var form = new formidable.IncomingForm();                       //creating a form object to read form data                
+            form.parse(req, function (err, fields, files) {                 //'files' object is for files uploaded by the client, and 'fields' object are for user input sent by the client
+                res.write("you entered" + fields.userInput)                 //using the name property of the input element to retrieve user input   
+                return res.end();
+            })
+        }
+        else{
+            res.writeHead(200, {"Content-Type": "text/html"});
+            res.write('<form action="sendInput" method="post">');
+            res.write('<input type="text" name="userInput">');              //this works for all inputs, as long as the input has a name attribute
+            res.write('<input type="submit">');
+            res.write('</form>');
+            return res.end();        
+        }
+
+    })
+
+
+
+
+
+
+
+
 
 
 
@@ -299,429 +729,6 @@ app.use('/', (req, res) => {
 
 
 
-
-//=========================================================== MODULES ==================================================================
-
-	//MODULES are separate files with functions and classes that can be used(imported) in other files in node.js
-
- 	1)   //addBill.js
-
-		const express = require('express');
-		const router = express.Router();
-		
-		router.post('/add_bill', async (req, res) => {
-		    //router logic goes here
-		});
-
-		module.exports = router;			//module.exports = {router, ...}
-
- 	2)   //server.js
-
-	 	const addBill = require('./addBill.js');		
-	  	const express = require('express');
-		const app = express();
-	
-		app.use(addBill);
-
-
-
-
-
-
-
-//---------------------------------------- MULTER MODULE ----------------------------------------
-//Multer module is used for handling multi-part/form data, particularly file uploads
-// (look at the Fetch API notes on how to send files from the front-end with a fetch request)
-
-	// --------------The example below is how you receive files in the back-end
-	const multer = require('multer');
-	const storage = multer.memoryStorage();			       	    // Set up multer for file handling
-	const upload = multer({ storage: storage}); 		      
-	
-	app.put('/upload_file', upload.single('image'), (req, res) => {      // in upload.single('image'), it will look for the property 'image' in the FormData object that you created on the front-end
-	    const {username, email, password} = req.body;	
-	    const image = req.file;					     // this is how you receieve files from the front end ( look at the fetch api notes for more info on how to send files from the front-end to the back-end  )
-
-	    // look at mongoDB notes for the GridFsBucket module on how to get the binary string of req.file and store it within a database
-		
-	    res.status(200).send('data has been received')
-	})
-
-
-
-
-	// ----------------The example below will send an image from an <input type='file'> to the server, the server will then get the file and store it in a folder './uploads'
- 
-		// BACK-END
-			const multer = require('multer')
-		 
-			const storage = multer.diskStorage({
-			    destination: './uploads/',
-			    filename: (req, file, cb) => {
-			        cb(null, `${Date.now()}-${file.originalname}`)				//second argument is the name of the file being uploaded to the ./uploads folder in your node.js app
-			    }
-			});
-			
-			const upload = multer({ storage });
-		
-			app.post('/add_transaction', upload.single('image') ,async (req, res) => {	
-        		    if(req.file){									//you can check if the user uploaded a file or not, mutlers3 will still work if the user never uploaded a file
-			    	const fileData = req.file;
-	      		    	const imageURL = req.file.location;
-	      		     }
-       			    const formData = req.body;	
-			})
-		
-		
-		 // FRONT-END
-			const image = document.querySelector('input[type='file']').files[0];
-			const formData = new FormData();						//you MUST use a FormData() to store all data, and send it to the server
-		        formData.append('image', image);
-		
-		        const response = await fetch('http://localhost:4000/add_transaction', {		//file will be uploaded automatically
-		            method: 'POST',
-		            body: formData,
-		        });
-
-
-	//-------------- The example below will send an image from an <input type='file'> to the server, the server will then upload the image to an s3 bucket
-
-		//BACK END
-	 		//npm install @aws-sdk/client-s3
-			//npm install multer
-	  		//npm install aws-sdk
-	    
-			const s3 = new aws.S3({
-			    region: 'us-west-1',
-			    accessKeyId: process.env.ACCESS_KEY_ID,
-			    secretAccessKey: process.env.SECRET_ACCESS_KEY,
-			    signatureVersion: process.env.SIGNATURE_VERSION,
-			});
-			
-			const upload = multer({
-			    storage: mutlerS3({
-			        s3: s3,
-			        bucket: 'personal-finance-app',
-			        key: (req, file, cb) => {
-			            cb(null, `${Date.now()}-${file.originalname}`);
-			        }
-			    })
-			});
-	
-	  		app.post('/add_transaction', upload.single('image'), async (req, res) => {		//image upload happens automatically
-     			    if(req.file)									//you can check if the user uploaded a file or not
-	    		    	const imageURL = req.file.location;
-			})
-	
-		//FRONT END
-	 		const image = document.querySelector("input[type='file']").files[0];
-			const formData = new FormData();							//you MUST use a FormData() to store all data, and send it to the server
-			formData.append('image', image);							//make sure you use the same property here and in upload.single()
-			
-			const response = await fetch('http://localhost:4000/add_transaction', {			//file will be uploaded automatically
-				method: 'POST',
-			        body: formData,
-			});
-
-
-
-	//-------------- The example below will receive a file from the back end and store the file in base
-
-
-
-
-//---------------------------------------- WEBSOCKET MODULE ----------------------------------------
-//you can create a WEBSOCKET in your node.js app that creates a connection between the front-end and the back-end
-//typically this connection is used to automatically send data between front-end and back-end when theres a changes in the
-//database or an event that is triggered in the front end
-
-
-
-//------------------------------------------BACK END CODE
-        const WebSocket = require('ws');
-        
-	/* 
-		./src/index.js
-  
-	 	const options = {
-		    key: fs.readFileSync(privateKeyFilePath),			//these files must be valid SSL files for a domain that you bought
-		    cert: fs.readFileSync(certificateFilePath),
-		}
-		
-		const httpsServer = https.createServer(options, app).listen(443, (error) => {
-		    if(error){
-		        console.log('HTTPS error occurred: ', error);
-		        return;
-		    }
-		    console.log('HTTPS server is running on port 443')
-		});
-
-		global.webSocketHandlers = {};                              // this global variable will be used to store all websocket handlers (wss)
-
-		httpsServer.on('upgrade', (request, socket, head) => {
-		    const wss = global.webSocketHandlers[request.url];      //we access a list of websockets we already created
-		    
-		    if (wss) {						   //if the request url already has a websocket
-		        wss.handleUpgrade(request, socket, head, (ws) => {
-		            wss.emit('connection', ws, request);
-		        });
-		    } else {
-		        socket.destroy();                                   // Gracefully close invalid connections
-		    }
-		});
-
-  		createWebSocket(httpsServer);
- 		
- 	*/
-
-	//dont forget to add the upgrade event handler above
-	const createWebSocket = (server) => {
-						  //development		//production
-	        const wss = new WebSocket.Server({port: 8000}  or   {noServer: true});     //make sure the port is the same for the back-end and the front-end
-
-		global.webSocketHandlers[`/${path}`] = wss;				 //we save the websocketHandler in our global list
-		
-	        wss.on('connection', ws => {                                        //you establish the connection between the back end and the front end
-	            console.log('Front-end and back-end are connected');        
-	            ws.send('data must be in json format')                         //This is where you send the changes to the front-end (YOU have to call this function, its best to use it in some event handler)
-		    ws.close();							   //you can manually close the websocket whenever you want	
-	            ws.on('close', () => {                                        //Event listener that is triggered when the front-end is disconnected from the back-end
-	                console.log('Client disconnected')
-	            })
-		})	
-	}
-
-
-	const CloseWebSocket = (path) => {
-	    global.webSocketHandlers[`/${path}`].close();
-	}
-
-	const CloseAllWebSockets = () => {
-		const websockets = global.webSocketHandlers;
-
-	        for(let wss of Object.values(websockets)){
-	            wss.clients.forEach((client) => {				//disconnecting any client connections, before we close the websockets
-	                if(client.readyState === WebSocket.OPEN)		// const WebSocket = require('ws')
-	                    client.close();
-	            });  
-	
-	            wss.close();
-	        }     
-	
-	        global.webSocketHandlers = {};
-	}
-
-
-//--------------------------------------------FRONT END CODE
-
-        const WEBSOCKET_URL = 'ws://localhost:8000'  or   'wss//my-back-end-domain.com:443/queue'        //first string is for development, the second is for production (port 443 is the default port for https)
-
-        const onmessageFunction = (event) => {
-            const change = JSON.parse(event.data);
-            console.log(change);			           	//data received from the back-end
-        }
-
-        const connectToWebSocket = (onmessageFunction) => {         
-            const socket = new WebSocket(WEBSOCKET_URL);            	//make sure the port is the same on the web socket in the back-end
-        
-            socket.onopen = () => {                                        //These are all event listeners
-                console.log('Connected to WebSocket server');
-            };
-        
-            socket.onmessage = onmessageFunction;                          // Update your front-end application with the received change
-        
-            socket.onclose = () => {
-                console.log('Disconnected from WebSocket server');
-            };
-        
-            socket.onerror = (error) => {
-                console.error('WebSocket error:', error);
-            };
-        }
-
-
-
-
-
-
-//---------------------------------------- URL MODULE ----------------------------------------
-var url = require('url');                                       //used for formating the url of the website
-    var adr = 'http://localhost:8080/default.htm?year=2017&month=february';  //normally you would use 'req.url' to get the url
-    var q = url.parse(adr, true)                                //parsing the url into an object
-    q.host;                                                     //returns 'localhost:8080' (domain name)
-    q.pathname;                                                 //returns 'default.htm'
-    q.search;                                                   //returns '?year=2017&month=february'
-    q.query;                                                    //returns an object { year: 2017, month: february}
-
-
-    let filename = q.pathname;                                              
-    formattedUrl = formattedUrl.year + " " + formattedUrl.month; 
-
-
-
-
-
-
-
-
-
-
-//---------------------------------------- FILE SYSTEM MODULE ----------------------------------------
-var fs = require("fs");
-    //updating files (be careful with writeFile())
-
-    fs.appendFile("./nameOfFile.html", 'Hello World!', function (err) { //appending content "hello world "to the end of a file, if the file doesnt exist, then a new one will be created 
-        if(err) throw err;
-    })
-
-    fs.writeFile("./nameOfFile.html", "hello World", function (err) { //replacing a file with the same name as the first argument and appending 'hello world' at the end of the new file, 
-        if(err) throw err;                                            //if the file doesnt exist, then a new one will be created
-    })
-
-    //reading files
-    fs.readFile('./nameOfFile.html', function(err, data) {      //reads a file
-        if(err){
-            res.writeHead(404, {'Content-Type': 'text/html'})
-            return res.end("404 Not Found");
-        }
-        res.writeHead(200, {'Content-Type' : 'text/html'})
-        res.write(data);                                        //data is the actual html that you want to send to the client
-        return res.end();                                       //should return the res.end()
-    })
-
-    fs.open("./nameOfFile.html", function(err, file) {          //opening a file, if the file doesnt exist, then a new one will be created   (you can add a second argument 'w', it stands for 'writing')
-        if (err) throw err;
-    })
-
-    //deleting files
-    fs.unlink("./nameOfFile.html", function(err){               //deleting a file
-        if(err) throw err;
-    })
-
-    //renaming files
-    fs.rename("./nameOfFile.html", "./newFileName.html", function(err) { //renaming an existing file
-        if(err) throw err;
-    })
-
-    var rs = fs.createReadStream("./demofile.txt");             //createReadStream fires an event everytime the file opens or closes
-    rs.on("open", function() {
-        //do something here
-    })
-
-
-
-
-
-
-
-
-
-//---------------------------------------- EVENTS MODULE ----------------------------------------
-//this module handles all types of events that are received from the client 
-
-var events = require('events');
-var eventEmitter = new events.EventEmitter();
-
-eventEmitter.on('scream', function() {          //event handler for 'scream' events
-    //do something here
-})
-
-eventEmitter.emit('scream')                     //triggerring the event 
-
-
-
-
-
-
-
-
-//---------------------------------------- FORMIDABLE MODULE ----------------------------------------
-//this module was designed to read form data
-
-var formidable = require('formidable');                                     //npm install formidable
-
-    //getting files from client
-    http.createServer(function (req, res) {
-        if(req.url == "/fileupload"){
-            var form = new formidable.IncomingForm();                       //creating a form object to read form data
-            form.parse(req, function (err, fields, files) {                 //'files' object is for files uploaded by the client, and 'fields' object are for user input sent by the client
-                var oldpath = files.filetoupload.filepath;                  //getting the name of the file that was uploaded
-                var newpath = "C:/Users/abelm/" + files.filetoupload.originalFilename; //defining a directory for the file to be stored onto local pc
-                fs.rename(oldpath, newpath, function (err) {                //using fs.rename() to place the uploaded file onto the local machine
-                    if(err) throw err;
-                    res.write('File has been uploaded and moved to a different directory!');
-                    res.end();
-                })
-            })
-        }
-        else{
-            res.writeHead(200, {"Content-Type": "text/html"});
-            res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
-            res.write('<input type="file" name="filetoupload"><br>');
-            res.write('<input type="submit">');
-            res.write('</form>');
-            return res.end();        
-        }
-    }).listen(8080);      
-    
-
-    //getting user-input from client
-    http.createServer(function (req, res) {
-        if(req.url == "/sendInput"){
-            var form = new formidable.IncomingForm();                       //creating a form object to read form data                
-            form.parse(req, function (err, fields, files) {                 //'files' object is for files uploaded by the client, and 'fields' object are for user input sent by the client
-                res.write("you entered" + fields.userInput)                 //using the name property of the input element to retrieve user input   
-                return res.end();
-            })
-        }
-        else{
-            res.writeHead(200, {"Content-Type": "text/html"});
-            res.write('<form action="sendInput" method="post">');
-            res.write('<input type="text" name="userInput">');              //this works for all inputs, as long as the input has a name attribute
-            res.write('<input type="submit">');
-            res.write('</form>');
-            return res.end();        
-        }
-
-    })
-
-
-
-
-
-
-
-
-//---------------------------------------- NODEMAILER MODULE ----------------------------------------
-//you can use this mail module to send emails from the server
-
-var nodemailer = require('nodemailer');
-
-app.put('/send_email', () => {
-	const transporter = nodemailer.createTransport({			//nodemailer is a module we can use to send an email to the user
-	    service: 'Gmail',
-	    auth: {
-		user: process.env.email,
-		pass: process.env.app_password                          	//you must create an app password for an app in your gmail acount
-	    }
-	})
-
-	const mailOptions = {
-	    from: process.env.email,
-	    to: email,
-	    subject: 'Reset Link for Note-taking app',
-	    text: `Please click on the following link to reset your password ${resetPasswordLink}`    //you can either use html or text here
-	}
-
-	transporter.sendMail(mailOptions, (error, info) => {
-	    if(error){
-		res.status(401).send(error.message);
-		return;
-	    }
-	    
-	    res.status(200).send('Email sent successfully');
-	})
-})
 
 
 

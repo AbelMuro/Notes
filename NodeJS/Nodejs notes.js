@@ -447,8 +447,8 @@ app.post("/upload", (req, res) => {
 	typically this connection is used to automatically send data between front-end and back-end when theres a changes in the
 	database or an event that is triggered in the front end
 
-	If you are using https, you will need an event handler to handle the upgrade event
- 	Place the following code in your index.js file...
+	For both HTTP and HTTPS, you will need the 'upgrade' event to be defined. The upgrade event will
+ 	upgrade an HTTP request into a websocket connection
 
 		httpsServer.on('upgrade', (request, socket, head) => {
 		    const wss = global.webSocketHandlers[request.url];      // we access a list of websockets we already created
@@ -466,8 +466,8 @@ app.post("/upload", (req, res) => {
 
 	const WebSocket = require('ws');
 
-	const createWebSocket = (server) => {	//development		//production
-	        const wss = new WebSocket.Server({port: 8000}   or   {noServer: true});     //make sure the port is the same for the back-end and the front-end
+	const createWebSocket = (path = 'queue') => {	
+	        const wss = new WebSocket.Server({noServer: true});     	    //we use the same server that our node.js app is running on for the websocket
 
 		global.webSocketHandlers[`/${path}`] = wss;			    //we save the websocketHandler in our global list
 		
@@ -508,7 +508,7 @@ app.post("/upload", (req, res) => {
 //------------- CONNECTING TO THE WEBSOCKET FROM THE FRONT-END
 	
 				//development			//production (443 is the default port for https)
-        const WEBSOCKET_URL = 'ws://localhost:8000'  or   'wss//my-back-end-domain.com:443/queue'       
+        const WEBSOCKET_URL = 'ws://localhost:8000/queue'  or   'wss//my-back-end-domain.com:443/queue'       
 
         const connectToWebSocket = () => {         
             const socket = new WebSocket(WEBSOCKET_URL);            	   // make sure the port is the same on the web socket in the back-end

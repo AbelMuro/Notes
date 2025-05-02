@@ -653,6 +653,9 @@ const store = configureStore({
      You can update the database if the global state changes, or update the global state 
      if the database changes
 
+     KEEP IN MIND, when you use Redux Thunk on the dispatch method (dispatch(useThunk()))
+     the dispatch method will return a promise, making the dispatch method asynchronous
+
 */
 
 
@@ -660,10 +663,23 @@ const store = configureStore({
 
 import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 
-const fetchData = createAsyncThunk('fetchData', async (URL, {getState, dispatch}) => {          //you will need to call this function inside the dispatch method
+const fetchData = createAsyncThunk('fetchData', async (URL, thunkAPI) => {          //you will need to call this function inside the dispatch method
       const response = await fetch(URL);                                  
       return response.json();                                                                    //this function must return a promise
 });
+
+/* 
+    thunkAPI = {
+        dispatch,            // Allows dispatching additional actions within the async function.
+        getState,            // Provides access to the current Redux store state.
+        extra,               // Contains any extra argument passed when configuring the store.
+        requestId,           // A unique identifier for the current async request.
+        signal,              // An AbortSignal that can be used to cancel the async operation.
+        rejectWithValue,     // Enables returning a custom error payload when rejecting the promise.
+        fulfillWithValue,    // Allows returning a custom success payload.   
+        abort,               // A function to manually abort the async operation.
+    }
+*/
 
 const initialState = {data: [], loading: false, error: ''};
 

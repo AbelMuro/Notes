@@ -682,7 +682,7 @@ app.post("/upload", (req, res) => {
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
 
-eventEmitter.on('scream', function() {          //event handler for 'scream' events
+eventEmitter.on('scream', () => {          //event handler for 'scream' events
     //do something here
 })
 

@@ -1007,13 +1007,13 @@ function App() {
 //   state.prop1    state.prop1.prop2  ....
 
 import { getPersistConfig } from 'redux-deep-persist';
+import RootReducer from './Reducers'; 
 
 // 1)
 const config = getPersistConfig({
     key: 'root',
     storage,
     whitelist: ['theme', 'theme.color', 'theme.color.saturation'],  
-    rootReducer: Reducer
 });
 
 // 2)

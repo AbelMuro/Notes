@@ -748,8 +748,8 @@ function App() {
 /* 
      npm install redux-promise
 
-     Redux-promise will "teach" the dispatch function how to accept a promise. It will
-     intercept the promise and dispatch an action when the promise is fulfilled or rejected
+     Redux-promise will "teach" the dispatch function how to accept a promise. Redux-promise will 
+     intercept the Promise, and wait for it to resolve or reject before sending an action to the reducer.
      Redux-promise does NOT come pre-installed with configureStore, so you have to manually 
      configure it in the store.js file
 
@@ -771,8 +771,8 @@ function App() {
 //------------------ reducer.js
 
 const userReducer = createReducer(initialState, builder => {
-  builder
-    .addCase(fetchUserData, (state, action) => {                     // Fulfilled: The action payload contains the resolved data
+  builder                                                             // The name of the case is the name of the function that returns the promise
+    .addCase(usingReduxPromise, (state, action) => {                  // Fulfilled: The action payload contains the resolved data
         state.user = action.payload;
         state.error = null;
     })
@@ -788,7 +788,7 @@ const userReducer = createReducer(initialState, builder => {
 
 //------------------ /index.js
 
-const usingReduxPromise = async (URL) => {               
+const usingReduxPromise = async (URL) => {                           // usingReduxPromise() will be the name of the case in the reducer that received the resolved value
       const response = await fetch(URL);
       return response.json();
 };

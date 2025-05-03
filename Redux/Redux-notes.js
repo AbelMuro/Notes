@@ -655,33 +655,34 @@ const store = configureStore({
 
      KEEP IN MIND, when you use Redux Thunk on the dispatch method (dispatch(useThunk()))
      the dispatch method will return a promise, making the dispatch method asynchronous
+    
+
+     createAsyncThunk(arg, (_, thunkAPI) => {          //the callback is going to be returned by createAsyncThunk
+     
+     })
+        
+            thunkAPI = {
+                  dispatch,            // Allows dispatching additional actions within the async function.
+                  getState,            // Provides access to the current Redux store state.
+                  extra,               // Contains any extra argument passed when configuring the store.
+                  requestId,           // A unique identifier for the current async request.
+                  signal,              // An AbortSignal that can be used to cancel the async operation.
+                  rejectWithValue,     // Enables returning a custom error payload when rejecting the promise.
+                  fulfillWithValue,    // Allows returning a custom success payload.   
+                  abort,               // A function to manually abort the async operation.
+              }
 
 */
 
 
-//     /Store/Reducer.js
+//------------------ /Reducer.js
 
 import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 
 const fetchData = createAsyncThunk('fetchData', async (URL, thunkAPI) => {          //you will need to call this function inside the dispatch method
       const response = await fetch(URL);                                  
-      return response.json();                                                                    //this function must return a promise
+      return response.json();                                                       //this function must return a promise
 });
-
-/* 
-    thunkAPI = {
-        dispatch,            // Allows dispatching additional actions within the async function.
-        getState,            // Provides access to the current Redux store state.
-        extra,               // Contains any extra argument passed when configuring the store.
-        requestId,           // A unique identifier for the current async request.
-        signal,              // An AbortSignal that can be used to cancel the async operation.
-        rejectWithValue,     // Enables returning a custom error payload when rejecting the promise.
-        fulfillWithValue,    // Allows returning a custom success payload.   
-        abort,               // A function to manually abort the async operation.
-    }
-*/
-
-const initialState = {data: [], loading: false, error: ''};
 
 const dataReducer = createReducer(initialState, (builder) => {
       builder
@@ -705,7 +706,8 @@ export default dataReducer
 
 
 
-//   /src/index.js
+//------------------ /index.js
+
 import {useDispatch} from 'react-redux';
 import {fetchData} from '../../Store/reducer.js'
 
@@ -742,44 +744,60 @@ function App() {
 
 
 
-//================================================ REDUX PROMISE (ASYNC ACTION CREATOR)================================================
-// npm install redux-promise
+//================================================ REDUX PROMISE (ASYNC ACTION CREATOR) ================================================
+/* 
+     npm install redux-promise
 
-// redux-promise "teaches" dispatch function how to accept actions that have a promise
-// by intercepting the promise and dispatching another action of the same type 
-
-
-
-
-//1)   store.js
-import {configureStore} from '@reduxjs/toolkit';
-import promiseMiddleware from 'redux-promise';
-import rootReducer from './reducers';
-
-const store = configureStore( 
-   rootReducer,
-   middleware: (defaultMiddleware) => {defaultMiddleware().concat(promiseMiddleware)}
-);
-
-export default store;
+     Redux-promise will "teach" the dispatch function how to accept a promise. It will
+     intercept the promise and dispatch an action when the promise is fulfilled or rejected
+     Redux-promise does NOT come pre-installed with configureStore, so you have to manually 
+     configure it in the store.js file
 
 
+     /store.js
+          import {configureStore} from '@reduxjs/toolkit';
+          import promiseMiddleware from 'redux-promise';
+          import rootReducer from './reducers';
+          
+          const store = configureStore( 
+             rootReducer,
+             middleware: (defaultMiddleware) => {defaultMiddleware().concat(promiseMiddleware)}
+          );
+          
+          export default store;
+*/
 
 
-// 2)   app.js
-const usingReduxPromise = (URL) => {               
-       return {
-           type: 'FETCH',
-           payload: fetch(URL).then(response => response.json())                    //remember that response.json() returns a promise
-       };
+//------------------ reducer.js
+
+const userReducer = createReducer(initialState, builder => {
+  builder
+    .addCase(fetchUserData, (state, action) => {                     // Fulfilled: The action payload contains the resolved data
+        state.user = action.payload;
+        state.error = null;
+    })
+    .addMatcher(
+        (action) => action.payload instanceof Error,                   // Rejected: If the promise failed, handle the error
+        (state, action) => {
+          state.error = action.payload.message;
+        }
+    );
+});
+
+
+
+//------------------ /index.js
+
+const usingReduxPromise = async (URL) => {               
+      const response = await fetch(URL);
+      return response.json();
 };
-
 
 function App() {
        const dispatch = useDispatch();
             
        const handleClick = () => {
-            dispatch(usingReduxPromise('https://someApi/'))        //usingReduxPromise() will return a promise, and redux promise will intercept the promise and return a new action when the promise resolves
+            dispatch(usingReduxPromise('https://someApi/'))       
        }     
        
        return(
@@ -789,25 +807,6 @@ function App() {
        )
 }
 
-
-
-//  3)    reducer.js
-
-function reducer(state = {}, action) {
-  switch (action.type) {
-    case 'FETCH':
-         if (action.error)                                                 //if promise has an error property, then the promise has been rejected
-           return { ...state, error: action.payload };
-      
-         else if (action.payload instanceof Promise)                       // If the action payload is a promise, it means the promise is pending
-           return { ...state, loading: true };
-
-        else
-           return { ...state, loading: false, user: action.payload };        // Otherwise, the promise was resolved and the payload is the user data
-    default:
-      return state;
-  }
-}
 
 
 

@@ -29,14 +29,27 @@
 						     }
 						}
 
+							       HOISTING
+			Hoisting is the process of taking the declaration of variables and hoisting them up to the top of its scope, javasscript 
+   			will automatically assigned undefined as the value to those variables. The initial values of the variables are not hoisted. 
+      			Var variables are hoisted up and can be used before its declaration. Let and Const variables are also hoisted up, but they
+	 		can't be used before its declaration because of the temporal dead zone. The area between the declaration of the Let/Const 
+    			variables and the top of its scope is known as the temporal dead zone, if the Let/Const variable is used in this zone, 
+       			then an Error will be thrown.
+
+
+   						function hoising() {
+						   console.log(x)		// will log undefined
+     						   var x = 5;
+						}
+
       							       PROMISES
-		    	A promise is an object that represents the eventual completion or failure of a task. A promise is a way of telling us when
-       			an asynchronous operation has been completed. The promise will have one of three states; pending, fulfilled or rejected. 
-	  		Promises are the modern way of handling asynchronous operations. Before the invention of promises, asynchronous operations 
-     			were handled by callbacks. But it was easy to fall into the callback hell (unmanagable mess of code). Promises solve the problem 
-			of the callback hell. In javascript, we use the Promise constructor to create a promise object. These promise objects
-			have .then() and catch() methods that each handle the fulfilled and rejected states of the promise. Keep in mind, that the promise 
-   			constructor is synchronous, but the callback argument is asynchronous.
+		    	A promise is an object that tells us when an asynchronous operation has been completed, or if something went wrong in the operation. 
+       			The promise will have one of three states; pending, fulfilled or rejected. Promises are the modern way of handling asynchronous operations. 
+	  		Before the invention of promises, asynchronous operations were handled by callbacks. But it was easy to fall into the callback hell 
+     			(unmanagable mess of code). Promises solve the problem of the callback hell. In javascript, we use the Promise constructor to 
+			create a promise object. These promise objects have .then() and catch() methods that each handle the fulfilled and rejected 
+   			states of the promise. Keep in mind, that the promise constructor is synchronous, but the callback argument is asynchronous.
 
 					const promise = new Promise((resolve, reject) => {
      						const success = true;
@@ -218,18 +231,6 @@
 
 
 //==================================================================== DATA TYPES =================================================================================
-//Expressions: are lines of code that produces a value
-"hello";                            //produces "hello"
-2 == 2;                             //produces true
-4 < 1;                              //produces false
-
-
-
-//Statement: are lines of code that DON'T produce a value
-let hi = 6;
-
-
-
 //primitive types
 null;                               // a placeholder that is used to assign a variable when we dont need it or when we are debugging
 undefined;                          // a placeholder that is automatically assigned to a variable that is not assign a value
@@ -316,25 +317,6 @@ import data, {func1, func2} from './Module.js';
 
 func1();
 func2();
-
-
-
-
-
-
-
-//=============================================== NAMESPACE ===============================================================
-/* 
-	Namespaces group together a bunch of variables, objects, and functions under one roof
-*/
-
-let obj = {};
-
-obj.name = 'abel';
-obj.method = function(){
-	console.log('hi');
-}
-
 
 
 
@@ -473,8 +455,8 @@ myEmitter.emit('customEvent');			//emit() can trigger the event
 
 
 
-// ====================================================================== LEXICAL SCOPE ====================================================================== 
-// Scope is the area around a variable that can be used.
+// ====================================================================== SCOPE ====================================================================== 
+// Scope is the area that a variable can be used
 // note, any variable defined outside a function or {} will have global scope, 
 // any variables defined inside a function or {} will have local scope
 

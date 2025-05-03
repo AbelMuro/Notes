@@ -656,28 +656,29 @@ const store = configureStore({
      KEEP IN MIND, when you use Redux Thunk on the dispatch method (dispatch(useThunk()))
      the dispatch method will return a promise, making the dispatch method asynchronous
      
-
-     createAsyncThunk(arg, (_, thunkAPI) => {              // this callback is going to be returned by createAsyncThunk
-             return fulfillWithValue();                    // action sent to reducer will be action.payload
-             return rejectWithValue();                     // action sent to reducer will be action.payload
-             return Promise.resolve();                     // action sent to reducer will be action.payload
-             return Promise.reject();                      // action sent to reducer will be action.error
-             return new Promise((resolve, reject) => {     // If promise is resolve, then action.payload
-                resolve();                                 // If promise is rejected, then action.error
-                reject();
+     createAsyncThunk() must ALWAYS return a promise!
+     
+           createAsyncThunk(arg, (_, thunkAPI) => {              // this callback is going to be returned by createAsyncThunk
+                   return fulfillWithValue();                    // action sent to reducer will be action.payload
+                   return rejectWithValue();                     // action sent to reducer will be action.payload
+                   return Promise.resolve();                     // action sent to reducer will be action.payload
+                   return Promise.reject();                      // action sent to reducer will be action.error
+                   return new Promise((resolve, reject) => {     // If promise is resolve, then action.payload
+                      resolve();                                 // If promise is rejected, then action.error
+                      reject();
+                   })
              })
-       })
-        
-            thunkAPI = {
-                  dispatch,            // Allows dispatching additional actions within the async function.
-                  getState,            // Provides access to the current Redux store state.
-                  extra,               // Contains any extra argument passed when configuring the store.
-                  requestId,           // A unique identifier for the current async request.
-                  signal,              // An AbortSignal that can be used to cancel the async operation.
-                  rejectWithValue,     // Enables returning a custom error payload when rejecting the promise.
-                  fulfillWithValue,    // Allows returning a custom success payload.   
-                  abort,               // A function to manually abort the async operation.
-              }
+              
+                  thunkAPI = {
+                        dispatch,            // Allows dispatching additional actions within the async function.
+                        getState,            // Provides access to the current Redux store state.
+                        extra,               // Contains any extra argument passed when configuring the store.
+                        requestId,           // A unique identifier for the current async request.
+                        signal,              // An AbortSignal that can be used to cancel the async operation.
+                        rejectWithValue,     // Enables returning a custom error payload when rejecting the promise.
+                        fulfillWithValue,    // Allows returning a custom success payload.   
+                        abort,               // A function to manually abort the async operation.
+                    }
 
 
 */

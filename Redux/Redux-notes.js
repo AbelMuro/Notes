@@ -655,7 +655,7 @@ const store = configureStore({
 
      KEEP IN MIND, when you use Redux Thunk on the dispatch method (dispatch(useThunk()))
      the dispatch method will return a promise, making the dispatch method asynchronous
-    
+     
 
      createAsyncThunk(arg, (_, thunkAPI) => {          //the callback is going to be returned by createAsyncThunk
      
@@ -671,6 +671,9 @@ const store = configureStore({
                   fulfillWithValue,    // Allows returning a custom success payload.   
                   abort,               // A function to manually abort the async operation.
               }
+
+     if you use rejectWithValue(), the reducer will have an action with payload as the property
+     if you use Promise.resolve(), the reducer will have an action with the error as the property
 
 */
 

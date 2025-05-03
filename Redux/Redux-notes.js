@@ -657,9 +657,16 @@ const store = configureStore({
      the dispatch method will return a promise, making the dispatch method asynchronous
      
 
-     createAsyncThunk(arg, (_, thunkAPI) => {          //the callback is going to be returned by createAsyncThunk
-     
-     })
+     createAsyncThunk(arg, (_, thunkAPI) => {              // this callback is going to be returned by createAsyncThunk
+             return fulfillWithValue();                    // action sent to reducer will be action.payload
+             return rejectWithValue();                     // action sent to reducer will be action.payload
+             return Promise.resolve();                     // action sent to reducer will be action.payload
+             return Promise.reject();                      // action sent to reducer will be action.error
+             return new Promise((resolve, reject) => {     // If promise is resolve, then action.payload
+                resolve();                                 // If promise is rejected, then action.error
+                reject();
+             })
+       })
         
             thunkAPI = {
                   dispatch,            // Allows dispatching additional actions within the async function.
@@ -672,8 +679,6 @@ const store = configureStore({
                   abort,               // A function to manually abort the async operation.
               }
 
-     if you use rejectWithValue(), the reducer will have an action with payload as the property
-     if you use Promise.resolve(), the reducer will have an action with the error as the property
 
 */
 

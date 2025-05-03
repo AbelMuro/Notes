@@ -645,8 +645,8 @@ const store = configureStore({
  // npm install redux-thunk
 
 /* 
-     Redux-Thunk "teaches" the dispatch method how to accept functions. Redux Thunk will intercept the function and 
-     call it before sending an action to the reducer. The function it intercepts is used to make AJAX calls 
+     Redux-Thunk "teaches" the dispatch method how to accept functions. Redux Thunk will call 
+     the function before sending an action to the reducer. The function it calls is used to make AJAX calls 
      and once its done with the AJAX call, it will dispatch an action to the reducer.
 
      You want to use Redux-Thunk if you want the global state to be in-sync with the database.
@@ -749,7 +749,7 @@ function App() {
      npm install redux-promise
 
      Redux-promise will "teach" the dispatch function how to accept a promise. Redux-promise will 
-     intercept the Promise, and wait for it to resolve or reject before sending an action to the reducer.
+     wait for the promise to resolve or reject before sending an action to the reducer.
      Redux-promise does NOT come pre-installed with configureStore, so you have to manually 
      configure it in the store.js file
 
@@ -829,61 +829,50 @@ function App() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 //=================================================== REDUX SAGA ====================================================
-//npm install redux-saga -D
-
-//Redux-saga will intercept an action of a specific type
-
-
-// store.js
-import createSagaMiddleware from 'redux-saga'
-import { configureStore } from '@reduxjs/toolkit'
-import rootReducer from '../reducers'
-import rootSaga from './saga.js'                                        //this function is coming from the 'file' below
-
-const sagaMiddleware = createSagaMiddleware();
-
-export default const store = configureStore({
-        reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => {getDefaultMiddleware().concat(sagaMiddleware)}
-})
-
-sagaMiddleware.run(rootSaga);
+/* 
+      npm install redux-saga -D
+  
+      Redux-saga will intercept an action of a specific type, and will use generator functions to 
+      implement a logic before dispatching the action it intercepted to the reducer.
 
 
+      /store.js
+            import createSagaMiddleware from 'redux-saga'
+            import { configureStore } from '@reduxjs/toolkit'
+            import rootReducer from '../reducers'
+            import rootSaga from './saga.js'                                        //this function is coming from the 'file' below
+            
+            const sagaMiddleware = createSagaMiddleware();
+            
+            export default const store = configureStore({
+                    reducer: rootReducer,
+                    middleware: (getDefaultMiddleware) => {getDefaultMiddleware().concat(sagaMiddleware)}
+            })
+            
+            sagaMiddleware.run(rootSaga);      
+      
+*/
 
 
-
-
-// sagas.js
-import {takeEvery,                                          // takeEvery allows concurrent actions to be handled (user clicks on add cart like 10 times or something)
+//------------------ /sagas.js
+import {
+        takeEvery,                                          // takeEvery allows concurrent actions to be handled (user clicks on add cart like 10 times or something)
         takeLatest,                                         // takeLatest will get the last action that is dispatched from a list of concurrent actions, any previous concurrent actions before the first one will be ignored
         takeLeading,                                        // takeLeading will get the first action that is dispatched froma list of concurrent actions, any other concurrent actions after the first one will be ignored
         all, 
         call, 
-        put} from 'redux-saga/effects';   
+        put
+  } from 'redux-saga/effects';   
 
-// define a function that returns a promise
+// 1) define a function that returns a promise
 function fetchData() {
   return fetch('https://example.com/api/data')
     .then(response => response.json())
 }
 
-// define a generator function that uses the 'call' effect to invoke the fetchData function
-// and the 'put' effect to dispatch an action with the data
+// 2)  define a generator function that uses the 'call' effect to invoke the fetchData function
+//     and the 'put' effect to dispatch an action with the data
 function* fetchSaga() {
   try {
         const data = yield call(fetchData)
@@ -894,24 +883,26 @@ function* fetchSaga() {
   }
 }
 
-// use the takeEvery effect to intercept all actions with type 'FETCH_REQUEST'
+// 3) use the takeEvery effect to intercept all actions with type 'FETCH_REQUEST'
 function* rootSaga() {
   yield takeEvery('FETCH_REQUEST', fetchSaga)
 }
 
-// export the root saga
+// 4) export the root saga to the store.js file
 export default rootSaga
 
 
 
-// app.js 
+
+
+//------------------ /app.js 
 import {sagaMiddleware} from './store.js';
 
 function App() {
       const dispatch = useDispatch()     
                                                                         //to my future self: if redux saga isnt working, try to create a function that returns an action for dispatch()
       const handleFetch = () => {
-            dispatch({type: 'FETCH_REQUEST'})                        // will be intercepted by redux-saga
+            dispatch({type: 'FETCH_REQUEST'})                           // will be intercepted by redux-saga
       }
 
       return(
@@ -934,20 +925,13 @@ function App() {
 
 
 
-
-
-
-
-
-
-
 //==================================================== REDUX PERSIST ====================================================
 // redux persist is a library that you can use to 'persist' the state in a redux application. The library lets you use either
 // local storage or session storage to store the state
 // npm install redux-persist
 
 
-// store.js 
+//------------------ /store.js 
 import {configureStore} from '@reduxjs/toolkit';
 import RootReducer from './Reducers';                                               //KEEP IN MIND, that RootReducer must be an instance of CombineReducers({})
 import {                
@@ -962,20 +946,22 @@ import {
 import storage from 'redux-persist/lib/storage';                                    //using the local storage to store the state
 import storageSession from 'reduxjs-toolkit-persist/lib/storage/session'            //using the session storage to store the state
 
-                               
-1) const persistedReducer = persistReducer({key: 'root', storage}, RootReducer);       //creating a persisted reducer and specifying the local storage to be used to persist the state
+// 1)  creating a persisted reducer and specifying the local storage to be used to persist the state                            
+const persistedReducer = persistReducer({key: 'root', storage}, RootReducer);      
 
-2) export const store = configureStore({                      
-    reducer: persistedReducer,                                                     // {serializableCheck} will make sure that redux doesn't check to see if redux-persist actions are serializable
+// 2) {serializableCheck} will make sure that redux doesn't check to see if redux-persist actions are serializable
+export const store = configureStore({                      
+    reducer: persistedReducer,                                                   
     middleware : getDefaultMiddleware => getDefaultMiddleware({serializableCheck: {ignoredActions: [PERSIST, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]}})
 })
 
-3) export const persistedStore = persistStore(store);                                  //this function will make the global store persist and rehydrate the store
+// 3) this function will make the global store persist and rehydrate the store
+export const persistedStore = persistStore(store);                                  
 
 
 
 
-// app.js
+//------------------ /app.js
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, peristedStore} from './'
@@ -999,6 +985,10 @@ function App() {
 
 
 
+
+
+
+
 //======================================================== REDUX DEEP PERSIST ===========================================================================
 // You can use redux-deep-persist to persist a part of the state. 
 // The only difference below is that there is one extra step we do before we create a persisted reducer
@@ -1009,14 +999,16 @@ function App() {
 
 import { getPersistConfig } from 'redux-deep-persist';
 
-1) const config = getPersistConfig({
+// 1)
+const config = getPersistConfig({
     key: 'root',
     storage,
     whitelist: ['theme', 'theme.color', 'theme.color.saturation'],  
     rootReducer: Reducer
 });
-                               
-2) const persistedReducer = persistReducer(config, RootReducer);       
+
+// 2)
+const persistedReducer = persistReducer(config, RootReducer);       
 
 
 

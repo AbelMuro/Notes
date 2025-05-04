@@ -231,11 +231,16 @@
 
 
 //==================================================================== DATA TYPES =================================================================================
+/* 
+	Javascript has primitive types and reference types. 
+
+*/
+
 //primitive types
-null;                               // a placeholder that is used to assign a variable when we dont need it or when we are debugging
-undefined;                          // a placeholder that is automatically assigned to a variable that is not assign a value
+null;                               // a falsy value that represents an empty value, we use this value for variables we are done using
+undefined;                          // a falsy value  that is automatically assigned to a variable that is not assign a value
 Boolean;                            // true or false
-Number;                             // a whole number or fraction
+Number;                             // represents integer
 BigInt;                             // an extremely large number or extremely small number
 String;                             // a string 
 Symbol;                             // gives a unique value to a variable with an optional description, let x = Symbol("description");   x will always have a unique value
@@ -280,9 +285,12 @@ let x = [1,2,3];
 
 
 //=================================================== WINDOW OBJECT ========================================================
-// The window object represents the browsers window or the tab that displays the app or website. It is the parent of all objects
-// that are created in JS. All objects, variables, functions and classes are automatically members of the window object
-// Some useful properties in the window object are the following...
+/* 
+	 The window object represents the browsers window or the tab that displays the app or website. It is the parent of all objects
+	 that are created in JS. All objects, variables, functions and classes are automatically members of the window object
+	 Some useful properties in the window object are the following...
+*/
+
 
 
 window.navigator; 		//this will return an object that contains data relative to the operating system of the user (read-only)
@@ -299,21 +307,34 @@ window.addEventListener('scroll', () => {})
 	
 
 
-//================================================= MODULES ==============================================================
+//================================================= IMPORT AND EXPORT ==============================================================
 /* 
-	Modules are a way of breaking down code into smaller parts
+	Modules are files with their own scope, you can use the import and export statements to
+ 	make the functions and classes within the module reusable
 */
 
 
 // Module.js
-export const func1 = () => {}
-export const func2 = () => {}
-export default {myData: 34};
+
+function func1() {
+   console.log('func1')	
+}
+
+function func2() {
+   console.log('func2');
+}
+
+function func3() {
+    console.log('func3');
+}
+
+export {func1, func2}
+export default func3;
 
 
 
 // Index.js
-import data, {func1, func2} from './Module.js';
+import func3, {func1, func2} from './Module.js';
 
 func1();
 func2();
@@ -335,73 +356,190 @@ func2();
 
 
 //============================================================== DOM ==============================================================
+/*
+	The DOM (Document Object Model) is an tree-like structure that represents the actual website. This structure is
+ 	made of nodes that each represents a section/part of the website. In Javascript, we have the Document object that
+  	has a collection of methods and properties that we can use to manipulate the DOM and update the actual website.
 
-//keep in mind that every element in a document is considered a "node" and the text inside an element are called text nodes
-document.getElementById("random_ID").childNodes[0];                             //you can use .childNodes[] as an array to reference any child elements
-const node = document.getElementById("random_ID");                              //this returns a reference to an element                      
-document.querySelector("class/tagName").removeChild(node.childNodes[0]);           //removing a nested child element from the parent container
-document.querySelector("class/tagName").removeChild(parent);
-document.querySelector("class/tagName").appendChild(new_node);                     //inserts a child node AT THE END of an parent element
-document.querySelector("class/tagName").insertBefore(new_node, existing_child_node);//inserts a new child element/node before an existing child element/node
-
-
-
-//the different ways to reference an element from the DOM
-document.getElementById("random_ID");                                           
-document.getElementsByTagName("div");                                            //this will return an array of references
-document.getElementsByTagName("div")[0];                                        //you can use array syntax to get the first, second,... element of a specific tag type, this can be used by ALL methods
-document.getElementsByClassName("my_class");                   
-document.querySelector("p.class_name");                                         //this follows the same syntax as css , this will return the first occurance within the document that matches the specified selector
-document.querySelectorAll("p.class_name");                                      //this will return an array with all the elements that have <p class="class_name">
-//you can use either id or name attributes here
-document.forms["form_id"];                                                      //this returns a reference to a form with the ID "form_ID"     
-document.forms["form_id"]["input_name"];                                        //getting a child element <input> that has the attribute name = "input_name" 
-document.forms["form_id"]["input_name"].value;                                  //getting the value inputted by the user
-
-
-//changing the content and attributes of elements
-document.querySelector("class/tagName").innerHTML = "adding text";                 //innerHTML is inside the tags of the element
-document.querySelector("class/tagName").innerHTML;                                 //this will return a text node that contains the text inside the tag elements
-document.querySelector("class/tagName").height = "100px";                           //you can assign a different value to ANY ATTRIBUTE by their name directly
-document.querySelector("class/tagName").style.backgroundColor = "red";             //to change a CSS property, this is the syntax you must use, remember that the properties are camel case
-document.querySelector("class/tagName").setAttribute(color, "red");                //you can also add a new attribute to an element
-
-
-//creating and deleting elements, these elements only show up on the document if they are inserted to an existing element in the document
-document.createElement("div");                                                  //creating a <div> </div> element
-document.createTextNode("hello world!");                                        //creating a text node (same as innerHTML) and returns a reference to that node
-document.body.removeChild(node);                                                //this is how you remove an entire element 
+		Node Methods and properties:
+	
+		   	const node = document.querySelector('');
+		
+			const parent = node.parentNode;
+		 	const childNodes = node.childNodes;				//returns all child elements as an array (includes text nodes)
+	   		const children = node.children;					//returns all child elements as an array (excludes text nodes)   
+	   
+	   		const firstChild = node.firstChild;				//returns the first child node of the element (includes text nodes)
+	     		const lastChild = node.lastChild;				//returns the last child node of the element (includes text nodes)
+	     		const firstElementChild = node.firstElementChild;		//returns the first child node of the element (excludes text nodes)
+	       		const lastElementChild = node.lastElementChild;			//returns the last child node of the element (excludes text nodes)       
+	       
+	       		const nextSibling = node.nextSibling;				//returns the next sibling element
+		 	const previousSibling = node.previousSibling;			//returns the previous sibling element
+	
+		 	const innerHTML = node.innerHTML;				//returns the HTML of the element, can also be used to set the HTML of the element
+	   		const textContent = node.textContent;				//returns the text child node of the element, can also be used to set the text of the element
+		
+	       		node.setAttribute('class', 'myNewClass');			//sets an attribute with the specified value
+		 	node.removeAttribute('class');					//removes an attribute
+		 	const attribute = node.getAttribute('class');			//returns an attribute's value as a string
+	
+	   		node.appendChild(node);						//adds a child node to the element
+	     		node.removeChild(node);						//removes the child node from the element
+	       		node.replaceChild(newNode, oldNode);				//replaces an existing node with a new node
+		 
+		 	const clonedNode = node.cloneNode(true)				//clones an exact copy of a node, if argument is true, then the child elements also get cloned
+*/
 
 
-document.getElementById("div").childNodes[0].nodeValue;                         //you can reference a child element with childNodes[0],and nodeValue is the same as .innerHTML              
-document.getElementById("div").firstElementChild;                               //references the first child element nested within
-document.getElementById("div").lastElementChild;                                //references the last child element nested within
-document.getElementById("div").closest(".className")                            //will choose the closest parent/grandparent element that has the specified selector
-document.querySelector("div").scrollIntoView({behavior: 'smooth'});             //you can automatically scroll to a specific element by using scrollIntoView()
 
-// EVENT LISTENERS are triggered by the user
-document.getElementById("id").onclick = function() {                
-    //code goes here
-}
-document.getElementById("id").resize = function() {                             //functions is called when the element is resized
-    //code goes here
-}
-document.getElementById("id").onmouseover = function() {                        //function is called when the user hovers over the element
-    //code goes here
-}
-document.getElementById("id").onload = function() {                             //this function is called when the user enters the page          
-    //code goes here                                                            //this can be used to check cookies on the webpage, and check the visitors browser type and version
-}
-document.getElementById("id").onunload = function() {                           //this function is called when the user leaves the page            
-    //code goes here
-}
-document.getElementById("id").onchange = function() {                           //function is called in conjunction with input fields, when the user inputs something, and leaves the field,           
-    //code goes here                                                                the function will be invoked 
-}
-document.getElementById("id").onfocus = function() {                            //function is called when a user focuses on an input field
-    //code goes here
+
+
+//------------------- querySelector()
+/* 
+	querySelector() will select a node from the DOM in various ways.
+ 	We can use the class, ID, attribute, and tag name.
+*/
+const node = document.querySelector(".myClass");        
+const node = document.querySelector("div");
+const node = document.querySelector("#myID");                     	
+const node = document.querySelector("div[class]");
+const nodes = document.querySelectorAll("p.class_name");		//returns an array of nodes
+
+
+
+
+
+//------------------- getElementById()
+/* 
+	getElementById() will select a node from the DOM by using 
+ 	the ID attribute of the element
+*/
+const node = document.getElementById("random_ID");              
+
+
+
+
+
+//------------------- getElementsByClassName()
+/* 
+	getElementsByClassName() will select multiple node from the DOM by using
+ 	the class attribute of the element. The returned value is an array of nodes
+*/
+const nodes = document.getElementsByClassName("my_class");
+
+
+
+
+
+
+//------------------- getElementsByTagName()
+/* 
+	getElementsByTagName() will select multiple nodes from the DOM by using
+ 	the tag name of the element. The returned value is an array of nodes
+*/
+const nodes = document.getElementsByTagName("div");                                  
+
+
+
+
+
+
+//------------------- forms[]
+/* 
+	forms[] will select a form from the DOM by using the ID attribute 
+ 	of the form element.
+*/
+const node = document.forms["form_id"];                                                       
+const node = document.forms["form_id"]["input_name"];                                
+const inputValue = document.forms["form_id"]["input_name"].value;                    
+
+
+
+
+
+//------------------- Adding Nodes to the DOM
+/* 
+	You can dynamically create nodes with createElement() and put 
+ 	them in the DOM. Keep in mind that to actually place these
+  	nodes, you will need to use append() on a node that already 
+   	exists in the DOM
+*/
+
+const divNode = document.createElement("div");                                               
+const textNode = document.createTextNode("hello world!");                                      
+divNode.append(textNode)
+
+const node = document.querySelector('.myClass');		
+node.append(divNode);
+
+
+
+
+
+
+//------------------- Removing Nodes from the DOM
+/* 
+	You can remove nodes from the DOM by using removeChild()
+ 	You will need to get the reference of the child node first
+  	and pass it as an argument to removeChild
+*/
+
+const childNode = document.querySelector('#childNode');
+const parentNode = document.querySelector('#parentNode');
+parentNode.removeChild(childNode);                
+
+
+
+
+
+
+//------------------- Event Handlers
+/* 
+	Event handlers are functions that are invoked when a certain event was 
+ 	triggered by the user. These event handlers are usually binded to elements 
+  	in the DOM. Each event handler will have an argument 'e' that represents 
+   	the event that was triggered. You can access meta data on the element and 
+    	the event with this argument
+
+     	With event handlers, you can only bind one function
+*/
+
+document.getElementById("id").onclick = (e) => {}                
+document.getElementById("id").resize = (e) => {}                          
+document.getElementById("id").onmouseover = (e) => {}                         
+document.getElementById("id").onload = (e) => {}                                   
+document.getElementById("id").onunload = (e) => {} 
+document.getElementById("id").onchange = (e) => {} 
+document.getElementById("id").onfocus = (e) => {
+	    				//keep in mind that you can access any attribute of an element that you target
+    e.target;                           //targeting the element that triggered the event,
+    e.target.parentElement              //targeting the parent element of the element that triggered the event
+    e.target.value                      //targeting the element that triggered the event and getting their value attribute, this is useful for form elements
+    e.target.children                   //targeting the element that triggered the event and returning all child nodes nested within that element
+    e.target.id                         //targeting the element that triggered the event and getting the value in their ID attribute
+    e.target.classList                  //targetting the element that triggered the event and getting the classlist of the element
+    e.target.src                        //targetting the element that triggered the event and getting the src attribute
+    e.target.style.width = "300px"      //targeting the element that triggered the event and assigning 300px to its width property (setting inline styles)
+    e.target.matches(".someClass");     //this is useful for trying to target an element only if it matches the requested selector (will return true or false)
 } 
-document.getElementById("id").addEventListener("click", myFunction);            //this is the same as the event handlers above, this is useful for adding multiple functions for the same event
+
+
+
+
+
+//------------------- Event Listeners
+/* 
+	Event listeners are functions that wait until an event was triggered
+ 	on a certain element. The event listeners are also binded to the elements
+  	of the DOM. Each event handler will have an argument 'e' that represents 
+   	the event that was triggered. You can access meta data on the element and 
+    	the event with the 'e' argument.
+
+     	With event listeners, you can bind multiple functions.
+*/
+
+document.getElementById("id").addEventListener("click", myFunction);            
 document.getElementById("id").addEventListener("click", mySecondFunction);
 document.getElementById("parent").addEventListener("click", mySecondFunction, false)//third parameter specifies whether the parent element or the child element will have their even handleled first
 document.getElementById("child").addEventListener("click", mySecondFunction, false) //default is false, which means that the child event will be handleled first and then the parent event
@@ -420,20 +558,6 @@ document.getElementById("id").addEventListener("click", (e) => {
     e.target.matches(".someClass");     //this is useful for trying to target an element only if it matches the requested selector (will return true or false)
 })
 
-
-// EVENT EMITTERS are triggered manually by the programmer
-
-const EventEmitter = require('events');
-
-class MyEmitter extends EventEmitter {}
-
-const myEmitter = new MyEmitter();
-
-myEmitter.on('customEvent', () => {
-  console.log('an event occurred!');
-});
-
-myEmitter.emit('customEvent');			//emit() can trigger the event 
 
 
 
@@ -456,276 +580,84 @@ myEmitter.emit('customEvent');			//emit() can trigger the event
 
 
 // ====================================================================== SCOPE ====================================================================== 
-// Scope is the area that a variable can be used
-// note, any variable defined outside a function or {} will have global scope, 
-// any variables defined inside a function or {} will have local scope
+/* 
+	Scope refers to the accessibility of a variable. It determines where a
+ 	variable can be used. Javascript has 3 types of scope; Global, Function 
+  	and Block scope
 
-// let variables can be used ANYWHERE inside the {}, where it is declared (BLOCK SCOPE)
+   	We use the three keywords; let, const and var, to assign a specific scope
+    	to a variable
+*/
+
+//------------------- LET variables
+/* 
+	LET variables can be used ANYWHERE inside {}
+ 	This is BLOCK scope
+*/
 function LET_variables() {
       let x = 10;                                                       // let variables are block scope     
       let x = 11;                                                       // you CAN'T redeclare a let variable
             
       if(true) {
            let y = 10                                                   // 'y' can ONLY be used here
-           x;                                                           // 'x' can be used here
+           console.log(x);                                                           // 'x' can be used here
       }             
-      x;                                                                // 'x' can be used here  
-      y;                                                                // 'y' CANT be used here
+      console.log(x);                                                                // 'x' can be used here  
+      console.log(y);                                                                // 'y' CANT be used here
 }
 
 
-//  var variables can be used ANYWHERE inside the function, where it is declared (FUNCTION SCOPE)
+
+//------------------- VAR variables
+/* 
+	VAR variables can be used ANYWHERE inside the function, 
+ 	This is FUNCTION scope
+*/
 function VAR_variables() {
        var x = 10;                                                      // var variables have function scope
        var x = 11;                                                      // you can redeclare a var variable
             
        if(true){
             var y = 10;                                                
-            x;                                                          // x can be used here
+            console.log(x);                                              // x can be used here
        }    
             
-       x;                                                               // x can be used here
-       y;                                                               // y can be used here
+       console.log(x);                                                    // x can be used here
+       console.log(y);                                                    // y can be used here
             
-      function more_VAR_variables() {                                   // nested function
-            x;                                                          // x can be used here      
+      function more_VAR_variables() {                                     // nested function
+            console.log(x);                                               // x can be used here      
             var z = 10;
       }
           
-     z;                                                                 // z CANT be used here           
+     console.log(z);                                                       // z CANT be used here           
 }
 
-// const variables can be used ANYWHERE inside the {}, where it is declared
+
+
+
+//------------------- CONST variables
+/* 
+	CONST variables can be used ANYWHERE inside the {}, 
+  	This is BLOCK scope. Keep in mind that if you assign
+    	a primitive value to a CONST variable, you cannot update 
+      	or change the value. If you assign an object to a CONST variable
+       	you cannot change the reference to the object, but you can change 
+	the values of the object
+*/
+
 function CONST_variables() {
-       const x = 10;                                                    // const variables have block scope
-       x = 11;                                                          // you CANNOT reassign a value to a const variable          
+      const x = 10;                                                      
+      const x = 11;                                                       // you CAN'T redeclare a let variable
+            
+      if(true) {
+           const y = 10                                                   // 'y' can ONLY be used here
+           console.log(x);                                                // 'x' can be used here
+      }             
+      console.log(x);                                                     // 'x' can be used here  
+      console.log(y);                                                     // 'y' CANT be used here
 }
 
-//-------------------------------------------------------HOISTING----------------------------------------------------
-//hoisting is a process where javascript hoists all variable declarations to the top of its scope, however, their values do not get hoisted
-//keep in mind that functions also get hoisted up with their definitions
-//all var, let and const variables get hoisted to the top of the functions scope and assigned the value of undefined
-//function declarations also get hoisted up, but they all get hoisted up WITH its definition
-//but let and const cannot be accessed before its declaration because everything before the declaration is the temporal dead zone
-
-Hoisting();                                               // this is still legal, but if you use a function expression, then it wont work
-function Hoisting() {                                     // this is how hoisting really looks like    
-     //var x = undefined;                                 // var variables get assigned the value of undefined
-     //let y;                                             // this will throw a reference error                                
-     //const z;                                           // this will throw a reference error
-       
-      console.log(x);                                     // x will be undefined    
-      console.log(y);                                     // will return a reference error
-      console.log(z);                                     // will return a reference error
-      
-      var x = 10;                                         // this will be hoisted to the top of the top of this function
-      let y = 4;                                          // this will be hoisted to the top of the top of this function
-      const z = 5;                                        // this will be hoisted to the top of the top of this function
-}
-
-//-------------the reason we have hoisting in js ----------------
-//in the functions below, we have functions that are calling other functions BEFORE they are being declared and defined.
-//This is possible because JS hoists the definitions and declarations of the functions to the top of the current scope
-//If hoisting wasn't possible in JS, then the developer would have to refactor the code to make sure the function calls
-// happen after the declaration and definitions of the functions
-
-function a() {
-	b();
-  	console.log('a')
-}
-function b() {
-  	c();
-	console.log('b')
-}
-function c() {
-	console.log('c')
-}
-a();
-
-//--------------variables without let, const and var---------------
-// By omitting let, const and var, you are creating a property in the window object
-// keep in mind that these variables do NOT get hoisted up
-
-foo = 5;			//window.foo
-console.log(foo)
-			
-
-
-//-------------------------------------------------------------- TEMPORAL DEAD ZONE ------------------------------------------------
-//Temporal dead zone is the term used to describe the state of a variable that is within the scope but has not yet been declared
-//This usually applies to let and const variables
-
-{
- 	// This is the temporal dead zone for the age variable!
-	// This is the temporal dead zone for the age variable!
-	// This is the temporal dead zone for the age variable!
- 	// This is the temporal dead zone for the age variable!
-	let age = 25; // Whew, we got there! No more TDZ
-	console.log(age);
-}
-
-//-------------------------------------------------------------- SCOPE CHAIN RESOLUTION-------------------------------------------------------------------------
-/* 
-      Scope Chain Resolution is the process of functions that look for a declaration/definiton of a variable starting from the local scope,
-      and work their way outward towards the global scope
-
-      Take a look at the example below
-*/
-
-
-function outer() {
-      var x = 4;
-      function inner(){
-            console.log(x);               // this will console log undefined because the function will not look at the parent function scope for 'x' 
-            var x = 10;                   // because 'x' is already declared in the local scope of this function
-      }
-      console.log(x);                     //this will console log 4
-}
-
-
-function outerMost() {                       //outerMost has a declaration for x, so it uses x for the closure in innerMost()
-      var x = 3;
-      function outer(){                      //outer() doesnt have a declaration for x, so it searches for x in the grandparent scope
-            function inner() {
-                  function innerMost() {     //innerMost() doesnt have a declaration for x, so it searches for x in the parent scope
-                        console.log(x);      //this will console log 3
-                  }
-            }
-      }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//====================================================================== PROTOTYPE ===================================================================
-// Prototype is basically the mechanism that allows objects to inherit methods and properties from another object
-// Keep in mind that prototype is an object that contains methods and properties that are inherited by another object
-
-// All objects in javascript have two default properties, __proto__ and prototype
-// Prototype is used to add new methods and properties to an object after its declaration and initialization
-// _proto_ is used to look up methods and properties that have been inherited by other objects
-
-
-function Constructor(){
-      this.name = "abel";
-      this.last = "muro";
-      this.age = 678;
-}
-
-Constructor.prototype.birthplace = "san francisco";
-Constructor.prototype.getName = function() {		    //you can also add new methods to constructors like this
-      return this.name
-}                                  
- 
-
-let myObject = new Constructor();                           //everytime you use constructor, the object will also have the new property birthplace
-object.getName();    
-
-
-
-//------------------------------------------------------------------- PROTOTYPE CHAIN ------------------------------------------------------------------
-// visual example... (myArray is an object that has the property Prototype)
-
-// let myArray = new Array([1,2,3])                               
-//       |
-//       |   
-//       -> [[prototype]]: -> pop() 
-//                         -> forEach()
-//                         -> push()
-//                         -> ...
-//                         -> [[prototype]]: -> toString()
-//                                           -> hasOwnProperty()
-//                                           -> valueOf()
-//                                           -> ...
-//					     -> [[Prorotype]]: null	
-      
-
-
-
-
-//----------------------------------------------------- setPrototypeOf() and getPrototypeOf()--------------------------------------------------------
-//The two methods setPrototypeOf() and getPrototypeOf() enable you to manually inherit methods and properties from one object to another
-
-
-var objOne = {
-    x: 1
-}
-
-var objTwo = {
-    getX() {
-  	return x;
-    }
-}	            
-
-Object.setPrototypeOf(objOne, objTwo);	//objOne will inherit the methods and properties from objTwo
-console.log(objOne);		
-/* 				
-       var objOne = {			//this is what will be displayed in the console
-  	   getX: getX() {
-    		return x;
-  	   },
-  	   x: 1
-	}
-*/
-
-const currentProto = Object.getPrototypeOf(objOne);	//this function will display all the methods and properties that have been inherited to objOne
-console.log(currentProto)
-/* 
-	var objOne = {			//this is what will be displayed in the console
-  	   getX: getX() {		//getX has been inherited from objTwo
-    		return x;
-  	   }
-	}
-*/
-
-//------------------------------------------------ USING PROTOTYPE PROPERTY -------------------------------------------------------------------------
-//With the prototype property, you can add new methods and properties to an object that has already been declared
-
-
-//adding methods and properties to function constructors
-function Person(name) {
-    this.name = name;
-}
-
-Person.prototype.sayHello = function () {		//adding a new method for the Person constructor
-	console.log('hello world')
-}
-
-const person = new Person('David');
-
-person.sayHello();
 
 
 
@@ -844,10 +776,15 @@ console.log(employeeName()); // Jane Smith
 //meaning that if you use 'this' in an arrow function, then it will refer to the scope in which the function was defined
 
 
-(a, b) => {return "something"};                                                 //This is an arrow function, it has different syntax but it does the same thing as a function
+(a, b) => {return "something"};                         // This is an arrow function, it has different syntax but it does the same thing as a function
 
-e => e + 1;                                                                      //this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
+e => e + 1;                                             // this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
 
+
+this;							// 'this' is the same as the 'this' in the function below
+const myArrowFunc = () => {
+	this;
+}
 	
 	
 //-------------------------------------------- Generator functions -----------------------------------------
@@ -872,15 +809,6 @@ console.log(myIterator.next()); // {value: "undefined", done: true}
 
 
 
-//-------------------------------------------------- THIS in functions ------------------------------------------------
-//keep in mind that arrow functions dont have 'this' binded, but regular functions do
-
-this;					// 'this' is the same as the 'this' in the function below
-const myArrowFunc = () => {
-	this;
-}
-
-myArrowFunc();
 
 
 
@@ -891,72 +819,7 @@ myArrowFunc();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//================================================================ CLOSURES ===========================================================
-// Closures are functions that maintain a REFERENCE to the variables/objects that are defined outside of its local scope
-// Keep in mind that in other programming languages, a function does not have access to variables defined outside of its scope
-// but its possible in Javascript because of closures
-// Remember that a closure is stored in the heap memory and NOT the call stack, this can consume alot of memory if the closure contains alot of variables
-// Variables inside of a closure cannot be garbage collected because the variables will be needed for the closure
-
-//If you console log the name of a function, it will give you the definition of a function and a property called closure
-//this 'property' will have a list of all the variables and objects that the function can use in its lifetime
-
-      
-let y = 2;
-
-function inner(){            //inner() formed a closure with is surrounding scope, the closure consists of just the global variable y = 2;
-      let x = 3;
-      return x + y; 
-}
-   
-
-// ----------------another example of closure------------------------------------
-//in the example below, we call outerFunction() in two different instances,
-//one instance has the closure with the variables x = 5, y = 2
-//the other instance has the closure with the variables x = 10, y = 2
-      
-      
-function outerFunction(x) {
-      return function innerFunction(y) {                                  //keep in mind that makeAdder will return a reference to another function
-            return x + y;                                                 // but it will NOT call the inner function
-      };
-}
-
-const add5 = outerFunction(5);                                            // calling outerFunction will make innerFunction "remember" that x is 5                            
-const add10 = outerFunction(10);                                          // calling outerFunction will make innerFunction "remember" that x is 10
-
-console.log(add5(2));                                                     // will console log 7 because innerFunction remembers that x is 5
-console.log(add10(2));                                                    // will console log 12 because innerFunction remembers that x is 10
-     
-      
-      
-         
-          
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-	     
-	       
+  
 	       
 	       
 	       
@@ -968,7 +831,7 @@ console.log(add10(2));                                                    // wil
       
       
 //============================================================== THIS ============================================================== 
-//THIS is a keyword that refers to an object in javascript
+//THIS is a keyword that refers to an object that owns a function that was called in javascript
 
 //-----------------------------THIS in the global scope----------------------------
 
@@ -979,8 +842,8 @@ this;                                       //if you use THIS in the global scop
 
 //------------------------------THIS in regular functions------------------------------
 //THIS in functions refers to the object that calls/invokes the function
-//remember, for an function to be owned by an object you made, 
-//you must assign the function to one of the properties inside the object
+//For an object to 'own' a function, the function must be one of the 
+//properties of the object
 
 //myObject 'owns' the function 'myMethod'
 let myObject = {
@@ -1023,11 +886,11 @@ let myObject = {
 //innerFunction is still owned by the window object
 window.innerFunction();
 function outerFunction() {
-      let innerFunction = () => {console.log(this)}                       //this arrow functions doesnt belong to myFunction()
+      let innerFunction = () => {console.log(this)}    //this arrow function doesnt belong to myFunction()
 }
 
 
-//
+//arrow functions inside regular functions
 window.myObject.myMethod()
 let myObject = {
       name: "john",
@@ -1038,7 +901,7 @@ let myObject = {
 }
 
 function example() {
-      let x = () => {console.log(this)}               //THIS will refer to the global object because THIS will refer to the scope of the object that owns it
+      let x = () => {console.log(this)}               //THIS will refer to the global object because THIS refers to the scope of the arrow function, and thats the example function scope
       x();
 }
 

@@ -63,17 +63,19 @@
         A component will be re-rendered (updated) when there is a change in the state object.
         All updates to the state are synchronous, but all updates to the DOM behave asynchronously.
         Vue updates the state immediately when the value property is changed, but will schedule 
-        the most optimal time to trigger the re-render.
+        the most optimal time to trigger the re-render. Typically, Vue will batch all the re-renders and 
+        place them in the Queue. Vue will then wait until the callstack is empty to trigger the re-render, 
+        but if the callstack has an asynchronous function (fetch, promise) Vue will then get all the batched 
+        re-renders and trigger one re-render
 
                                 const handleClick = () => {
-                                    loading.value = true;           // Vue will schedule the re-render after the callstack is empty
-                                    //some synchronous logic here
-                                }                                   // Vue will now cause the re-render from 'loading.value = true'
+                                    loading.value = true;           // Vue will schedule the re-render 
+                                }                                   // Vue will now cause the re-render
 
                                 const handleClick = async () => {
-                                    loading.value = true;           // Vue will schedule the re-render after the callstack is empty
+                                    loading.value = true;           // Vue will schedule the re-render 
                                     await fetch();                  // Vue will immediately trigger the scheduled re-render from 'loading.value = true' 
-                                    loading.value = false;          // Vue will schedule the re-render after the callstack is empty
+                                    loading.value = false;          // Vue will schedule the re-render 
                                 }                                   // Vue will now trigger the re-render from 'loading.value = false'
                                         
 
@@ -115,7 +117,7 @@
 
                                                        PATCHING
         Patching is the process in Vue that updates nodes in the Real DOM when the state changes.
-        This process is seen more commonly in React lists, where each item in a list is identified by 
+        This process is seen more commonly in Vue lists, where each item in a list is identified by 
         the 'key' prop. Vue will track the list with the 'key' prop to see if the state/list has changed.
 
                         const state = ref(['apple', 'orange', 'pineapple']);

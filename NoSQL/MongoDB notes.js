@@ -93,22 +93,60 @@
     You can assign any value to the _id property, but it's recommended to use ObjectId()
 
             const document = {
-                _id: new ObjectId('24 character string'),    // keep in mind, _id is NOT a string, its just an object
+                _id: new ObjectId('24 character string'),      // keep in mind, _id is NOT a string, its just an object
                 name: 'abel',
                 location: 'richmond'
             }
-        
-            const _id = document._id.toString()                // to get the unique identifier, you need to convert the object into a string
-            console.log(_id);                                  // this will display '24 character string'
 */
 
 
+        const mongoose = require('mongoose');
+        const ObjectId = mongoose.Types.ObjectId; 
 
-        const ObjectId = mongoose.Types.ObjectId;   
+
+//---------------- Converting ObjectId() into a string representation
+/* 
+    If you have an ObjectId(), you need to convert the object into a 
+    string representation to be able to use it to identify a document 
+    in javascript.
+*/
+        const document = {
+            _id: new ObjectId('24 character string'),      // keep in mind, _id is NOT a string, it's just an object
+            name: 'abel',
+            location: 'richmond'
+        }
+
+        const _id = document._id.toString()                // to get the unique identifier, you need to convert the object into a string
+        console.log(_id);                                  // this will display '24 character string'
+
+
+
+
+//---------------- Searching with a string representation of ObjectId()
+/*
+    If you have a string representation of an ObjectId(), you need to convert the
+    string into ObjectId() before you can search for documents with it.
+*/
+
+        const stringRepresentation = document._id.toString();
+        const _id = new ObjectId(stringRepresentation)
+        const account = new Account.findOne({_id})
+
+
+
+//---------------- Comparing two ObjectId()
+/* 
+    If you have two ObjectId(), you can compare them by using the .equals() prototype method
+*/  
         
         const idOne = new ObjectId();                    //you dont have to pass an argument to the constructor
         const idTwo = new ObjectId('24 character string');
         idOne.equals(idTwo);                             // when comparing two ObjectId, you must use the equals() method
+
+
+
+
+
 
 
 

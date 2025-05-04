@@ -236,7 +236,7 @@
 
 */
 
-//primitive types
+//------------------- primitive types
 null;                               // a falsy value that represents an empty value, we use this value for variables we are done using
 undefined;                          // a falsy value  that is automatically assigned to a variable that is not assign a value
 Boolean;                            // true or false
@@ -246,7 +246,7 @@ String;                             // a string
 Symbol;                             // gives a unique value to a variable with an optional description, let x = Symbol("description");   x will always have a unique value
 
 
-//reference types
+//------------------- reference types
 Object;                             // a collection of properties and values that are used to organize data
 Array;                              
 Set;
@@ -256,7 +256,7 @@ Function;                           //functions are objects in javascript
 RegExp;
 Math;
 
-//keep in mind that the non-primitive types (except function) above are actually constructors(functions) 
+//keep in mind that the non-primitive types (except function) above are actually constructors
 let x = new Object({name: "abel"});                               //these two lines have the same effect                          
 let x = {name: "abel"};
 
@@ -635,7 +635,6 @@ function VAR_variables() {
 
 
 
-
 //------------------- CONST variables
 /* 
 	CONST variables can be used ANYWHERE inside the {}, 
@@ -802,9 +801,9 @@ console.log(employeeName()); // Jane Smith
 //meaning that if you use 'this' in an arrow function, then it will refer to the scope in which the function was defined
 
 
-(a, b) => {return "something"};                         // This is an arrow function, it has different syntax but it does the same thing as a function
+const arrowFunction = (a, b) => {return "something"};                         // This is an arrow function, it has different syntax but it does the same thing as a function
 
-e => e + 1;                                             // this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
+const arrowFunction = e => e + 1;                                             // this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
 
 
 this;							// 'this' is the same as the 'this' in the function below
@@ -1008,7 +1007,33 @@ console.log(x[0]);			//will display the first character of the string
 
 
 
+//------------------- String prototype methods
+/* 
+	Strings have a variety of methods and properties that 
+ 	you can use to mutate the string.
+*/
 
+let str = 'hello world';
+
+str.length;				//Returns the length of a string.
+str.charAt(index);	 		//Returns the character at the specified index.
+str.charCodeAt(index); 			//Returns the Unicode value of the character at the given index.
+str.concat(string1, string2, ...);	 //Joins two or more strings with str
+str.includes(searchString, atIndex);	//Checks if a string contains another string.
+str.indexOf(searchString, fromIndex);	//Returns the index of the first occurrence of a specified value.
+str.lastIndexOf(searchString, fromIndex); //Returns the index of the last occurrence of a specified value.
+str.match(regex);			 //Searches a string for a match against a regular expression.
+str.replace(searchValue, replaceValue);	 //Replaces part of the string with another value.
+str.search(regex); 			 //Searches for a specified pattern and returns the index.
+str.slice(startIndex, endIndex);	//Extracts a section of a string and returns it as a new string.
+str.split(separator, limit);		//Splits a string into an array of substrings.
+str.substring(startIndex, endIndex); 	//Returns the part of the string between the given indexes.
+str.toLowerCase();		 	//Converts the string to lowercase.
+str.toUpperCase();			//Converts the string to uppercase.
+str.trim();				//Removes whitespace from both ends of a string.
+str.trimStart() / str.trimEnd();	//Removes whitespace from the start or end of a string.
+str.padStart(targetLength, padString);	//Adds the specified 'padString' to the start of the string until the string reaches the length specified with 'targetLength'
+str.padEnd(targetLength, padString)	//Adds the specified 'padString' to the end of the string until the string reaches the length specified with 'targetLength'
 
 
 
@@ -1025,25 +1050,36 @@ console.log(x[0]);			//will display the first character of the string
 
 
 //============================================================== OBJECTS ============================================================== 
+/* 
+	Objects are a container of data that organizes the data with properties (keys) and values.
+ 	The properties identify what a value is about. The values are the actual data.
+*/
 
-let obj = new Object();				              // you can create objects using the constructor notation
-let obj = {name: 'abel', age: '30'};			      // the typical way of creating objects in JS
+//------------------- Creating Objects
+/* 
+	You can create objects in javascript by using the Object Constructor
+ 	or using an object literal. Keep in mind that the Javascript engine 
+  	will compile the object literal into the Object Constructor.
+*/
+let obj = new Object();				              // Object Constructor
+let obj = {name: 'abel', age: '30'};			      // Object Literals
+
+
+
+//------------------- Updating properties in Objects
+let obj = {name: 'abel', age: '30'};
 obj['name'] = 'muro';				              // you can use array-notation to change values of objects
 obj.age = 45;						      // the typical syntax of accessing a value of an object
-'name' in objectOne;					     // returns true if 'name' is a property in objectTwo
-delete objectOne['name'];				     // deletes a property from the object
+obj.location = 'Richmond';				      // you can dynamically add new properties to the object
 
 
-//Rememeber that Object is a CLASS with its own methods that can be used for objects
-let objectOne = {name: "abel"};				    
-let objectTwo = {age: "29"};
-Object.assign(objectOne, ObjectTwo);                         // assign will add all the properties from the second argument to the first argument (creates a shallow copy)
-Object.freeze(objectOne);                                    // freeze will prevent you from adding or changing properties on the object
-Object.seal(objectOne);                                      // seal will let you change the properties of an object, but wont let you add new ones 
-Object.defineProperty(objectOne, "birthplace", value: "richmond", writable: false) //lets you add a new property to the object, writable means that you cant change the value
+//------------------- Deleting properties in objects
+delete obj['name'];				     	      // deletes a property from the object
+delete obj.name;
 
 
-//------------------------------------------------------------Object literal----------------------------------------------------------
+
+//------------------- Object methods
 let test_scores = { 
     math: 23, 
     science: 45, 
@@ -1052,45 +1088,78 @@ let test_scores = {
     my_method: function(){                                                  // you can also add functions/methods inside objects
         return this.math + this.science;}
 };  
-test_scores.math = 56;                                                      //this is how you access the elements of an object
-test_scores['math'];                                                        //you can use array notation to access a property from the object
-test_scores.my_method();                                                    // this is how you access an objects' method
-test_scores.prototype.english = "45";                                       // all objects have this property called prototype that lets you add properties and methods 
+
+test_scores.my_method()
 
 
 
-//---------------------------------------------------------SPREAD OPERATOR with objects-----------------------------
-//keep in mind that the spread operator will return a SHALLOW copy of the original object, 
-//meaning that changes made to the new object will affect the original object
 
-//clever way of joining two objects together
+//------------------- Spread operator with objects
+/* 
+	You can use the spread operator to get all the properties
+ 	of an object and assign them to another object.
+  	If the object has reference-type values, then any changes
+   	made to these values are going to reflect on both objects
+	
+*/
+
 let example = {valueOne: 1, valueTwo: 2};
-let anotherExample = {...example, valueThree: 3};                        
+let anotherExample = {...example, valueThree: 3};    			   // anotherExample = {valueOne: 1, valueTwo: 2, valueThree: 3}                    
 
 
+
+//------------------- Deconstructing Objects
+/* 
+	You can deconstruct objects by using the 'equal' sign 
+ 	operator and the properties of the object.
+  	Once the properties are deconstructed, you can use them 
+   	like variables
+*/
 //you can also destructure objects.
-let randomness = {value: 1, value: 2}
-let {exampleOne, exampleTwo} = randomness;                                  //exampleOne and exampleTwo can be used like variables
-let result = exampleOne + exampleTwo;
+let randomness = {valueOne: 1, valueTwo: 2}
+let {valueOne, valueTwo = otherValue} = randomness;     		 // valueOne and otherValue will be treated as variables                             
 
 
 
 
-//-------------------------------------------------- CLONING objects------------------------------------------------------
-//to make a DEEP clone of an object, do the following steps below...
+
+//------------------- Cloning objects
+/* 
+	If you assign an object to two variables, those two variables will have 
+ 	a reference to the object in memory. In other words, both variables will
+  	use and update the same object in memory. To avoid this, you can clone
+   	the object and assign it to one of the variables
+*/
+
 
 let data = {name: "alice", age: "26"};   
 
-const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of data
-
-const deepCopyTwo = structuredClone(data);                           //creates a deep copy of data
+const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of the 'data' object
 
 
 
 
 
 
-//-------------------------------------------------------------------- ARRAYS ------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== ARRAYS ============================================================== 
 //with const arrays, u can change the contents of the elements of the array, but not the order
 //keep in mind that you can also use negative values as an index for an element 
 //array[-1] = 5;

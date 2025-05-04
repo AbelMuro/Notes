@@ -87,19 +87,27 @@
 
 //-------------------------------------- OBJECT ID  -----------------------------------------------
 /* 
-    Mongoose uses ObjectId to generate a unique ID for every document in the database. 
-    If you dont explicitly call this function constructor for a document, Mongoose will 
-    do it for you.
+    Mongoose uses ObjectId() to generate a unique ID for every document in the database. 
+    If you dont explicitly call ObjectId() for a document, Mongoose will do it for you. 
+    Keep in mind, that calling ObjectId() will create an object, not a string.
+    You can assign any value to the _id property, but it's recommended to use ObjectId()
 
-    new ObjectId('24 character id string goes here');     or       new ObjectId()
+            const document = {
+                _id: new ObjectId('24 character string'),    // keep in mind, _id is NOT a string, its just an object
+                name: 'abel',
+                location: 'richmond'
+            }
+        
+            const _id = document._id.toString()                // to get the unique identifier, you need to convert the object into a string
+            console.log(_id);                                  // this will display '24 character string'
 */
 
 
 
         const ObjectId = mongoose.Types.ObjectId;   
         
-        const idOne = new ObjectId();
-        const idTwo = new ObjectId();
+        const idOne = new ObjectId();                    //you dont have to pass an argument to the constructor
+        const idTwo = new ObjectId('24 character string');
         idOne.equals(idTwo);                             // when comparing two ObjectId, you must use the equals() method
 
 

@@ -57,22 +57,24 @@
                     A component will be re-rendered (updated) when there is a change in the state object.
                     All state updates behave asynchronously in react, and DOM updates also behave asynchronously.
                     The React will schedule a state-update and re-render in the most optimal time. If you call setState() 
-                    inside of an event handler, React will wait until the event handler finishes executing before applying 
-                    the state updates and the re-render. In the case where we have an an asynchronous operation inside the 
-                    event handler, React will update the state and cause a re-render BEFORE the event handler stops execution 
-                    because of the asynchronous operation
+                    inside of an event handler, React will wait until the event-handler finishes its execution before starting 
+                    the reconciliation process. The reconciliation process will implement the new state updates and cause the 
+                    re-renders. In the case where we have an an asynchronous operation inside the event handler, React will trigger
+                    the reconciliation process to update the state and cause a re-render BEFORE the function reaches the asynchronous 
+                    operation
 
                                             const handleClick = () => {
-                                                    setLoading(true);
-                                                    //some synchronous logic here
-                                            }                                      // once we reach the end here, React will trigger the setLoading(true) and update the state and cause a re-render
+                                                    setLoading(true);               // we schedule a change in the loading state
+                                            }                                       // once we exit from the function, React will begin the reconciliation process 
+                                                                                    // and update the state and cause a re-render
                     
 
                                             const handleClick = async () => {
-                                                  setLoading(true);                // schedules the state update and re-render after the event handler finishes
-                                                  await fetch();                   // React will immediately call setLoading(true) to update the state and cause a re-render, before the function pauses execution here
-                                                  setLoading(false)                // schedules the state update after the event handler finishes execution
-                                            }                                      // once we reach the end here, React will trigger the setLoading(false) and update the state and cause a re-render
+                                                  setLoading(true);                // scheduling a state update 
+                                                  await fetch();                   // React will immediately trigger the reconciliation process for setLoading(true), and will update the state and cause a re-render
+                                                  setLoading(false)                // scheduling another state update
+                                            }                                      // once we exit from the function, React will trigger the reconciliation process for setLoading(false) 
+                                                                                   // and update the state and cause a re-render
 
                                                                 RECONCILIATION
                    Reconciliation is an algorithm that React uses to efficiently update the DOM. It starts by first mounting a component (and its element). 

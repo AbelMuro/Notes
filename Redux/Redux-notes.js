@@ -4,11 +4,12 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 /* 
                                                          FEATURES OF REDUX
 
-
-                                                         STATE UPDATES PROCESS
-            All state updates in Redux are synchronous, but all re-renders behave asynchronously (re-renders will follow the 
-            rules of the library/framework that is using Redux)
-                        
+                                              STATE UPDATES PROCESS (Using Redux with React)
+            All state updates in Redux behave asynchronously, and all re-renders behave asynchronously.
+            Redux will batch all the asynchronous dispatch() calls, and wait until the callstack is empty to apply the state updates
+            and the re-render. If the callstack has an asynchronous function (fetch, Redux-Thunk), then all the batched dispatch()
+            calls will trigger the state update and cause a re-render BEFORE the asynchronous function is taken out of the callstack.
+            
                                                             ARCHITECTURE
             Redux has an architecture that consists of dispatching actions to the reducer, these actions are typically dispatched 
             as a result of an event handler. The reducer will use the actions to update the global state within the Store. 

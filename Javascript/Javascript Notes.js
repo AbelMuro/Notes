@@ -685,7 +685,7 @@ function CONST_variables() {
 //keep in mind that the return statement should be on the same line as the output being returned from the function                
 
 
-//------------------------------------------------------pure function----------------------------------------------------------------
+//------------------- Pure function
 //The function does not rely on external variables in a closure
 //The function produces the same result if the same arguments are passed to the function
 //The function doesn't make any HTTP calls to a server
@@ -698,7 +698,7 @@ function myFunction(a, b){                                      	     //a and b 
 function_with_parameters(1, 2);                                               // this is how you call a function
 
 
-//-------------------constructor function; this function lets you create objects---------------------------------
+//------------------- Constructor function
 function myConstructor(name, age, city){                                     //This is a constructor function, it allows us to create objects
     this.name = name;
     this.age = age;
@@ -710,7 +710,7 @@ function myConstructor(name, age, city){                                     //T
 let myObject = new myConstructor("abel", 29, "San Francisco");
 
 
-//---------------------------------different ways of accepting arguments in function-----------------
+//------------------- Function arguments-----------------
 function destructuring({valueOne, valueTwo})                                  //you can pass an object that has two properties to this function
 function defaultValues(a, b, c = "string")				      //you can initialize a parameter if the function call doesnt have enough arguments
 function manyArguments(...nums){                                              //you can use the REST operator to group together all the arguments into an array
@@ -720,12 +720,18 @@ function manyArguments(...nums){                                              //
 }
       
       
-//--------------------------------- CALL(), APPLY(), BIND()------------------------------------------------------------
-// Call(), Apply(), Bind() will	'tie' a function into an object as if it belonged to that object.
+//------------------- CALL(), APPLY(), BIND()
+// Call(), Apply(), Bind() will	'bind' a function into an object as if it belonged to that object.
 // Traditionally in JavaScript, you can have objects that have their own properties and methods. 
 // For example, object1 cannot use the methods of object2 and vice versa.
 // Call(), Apply() and Bind() can solve this problem
-	
+
+
+//------------------- call()
+/* 
+	call() will bind the 'this' context of an object to a function.
+ 	The arguments passed to the function must be separated by commas
+*/
 var obj = { 
 	num: 2,
 	//add: function (a = 1) {					      //this is what it looks like when we use call() below 
@@ -736,12 +742,28 @@ function add(a = 1){						  	      //call() can also work if add() was a method 
      return this.num + a;
 }
 	
-add.call(obj, 2);							     //the Add constructor will access all the properties and methods from 'obj' in this call()
+add.call(obj, 2);	
+
+
+
+
+//------------------- apply()
+/* 
+	apply() does the same thing as call(). The main difference
+ 	is that the arguments to the function must be inside of an array
+*/
+
 add.apply(obj, [2,3,4])	
 
-	
-//-------- bind() works a little different, it was design to bind 'this' to a function and returns a new function -------------------
-// The reason you want to do this is to pass a function that uses 'This' into another function because 'This' will lose its value
+
+
+
+//------------------- bind() 
+/* 
+	Bind() was design to bind 'this' of an object to a function and 
+ 	then returns a new function. The returned function will permanently have 
+  	a new 'this' context
+*/
 
 const person = {
   firstName: "John",						//this value will be replaced by the value in the employee object
@@ -761,7 +783,9 @@ let employeeName = person.method.bind(employee);		//all properties in 'person' w
 console.log(employeeName()); // Jane Smith
 	
 
-//---------------------------------IIFE: immediately invoked function expression------------------------
+
+
+//-------------------IIFE (immediately invoked function expression)
 //IIFE are functions that get called on the spot
 
 //keep in mind that IIFE functions are now part of a block scope
@@ -770,7 +794,9 @@ console.log(employeeName()); // Jane Smith
 })();
 
 
-//------------------------------------------ arrow functions--------------------------------------------
+
+
+//------------------- Arrow functions
 //Arrow functions help reduce the syntax of a regular function
 //another thing to note is that arrow functions dont have their own 'this'
 //meaning that if you use 'this' in an arrow function, then it will refer to the scope in which the function was defined
@@ -786,8 +812,9 @@ const myArrowFunc = () => {
 	this;
 }
 	
-	
-//-------------------------------------------- Generator functions -----------------------------------------
+
+
+//------------------- Generator functions 
 //Generators are functions that can be paused during execution and resumed, 
 // instead of executing all of a function’s statements in one pass.
 //When you invoke a generator function, it will return an iterator object,
@@ -831,16 +858,16 @@ console.log(myIterator.next()); // {value: "undefined", done: true}
       
       
 //============================================================== THIS ============================================================== 
-//THIS is a keyword that refers to an object that owns a function that was called in javascript
+//THIS is a keyword that refers to an object that owns a function that was called
 
-//-----------------------------THIS in the global scope----------------------------
+//-------------------THIS in the global scope
 
 
 this;                                       //if you use THIS in the global scope, then it refers to the global object Window
 
 
 
-//------------------------------THIS in regular functions------------------------------
+//-------------------THIS in regular functions
 //THIS in functions refers to the object that calls/invokes the function
 //For an object to 'own' a function, the function must be one of the 
 //properties of the object
@@ -862,7 +889,9 @@ function myFunction(){
 
 window.myFunction();                       //all functions are part of the window object
 
-//-------------------------------THIS in arrow functions------------------------------------
+
+
+//------------------- THIS in arrow functions
 //THIS in arrow functions refers to the parent object of the object that owns the arrow function
 //remember, that functions in javascript are also objects
 
@@ -940,132 +969,43 @@ function example() {
 
 
 //====================================================================== STRINGS ====================================================================== 
-
-let name = "abel"
-`You can add variables to strings like this ${name}`;                  //string interpolation
-"this is a string";
-let x = "hello" + "world" + 67;                                        //strings can be concantenated, 67 will be converted into a string
-x[0]                                                                   //characters in strings can be accessed as if it was an array, but you can't mutate the string by doing x[0] = 'r'                
-let z = "4" - 3;                                                       //this will return a number 1 because - will convert the string into a number;
-
-'a' < 'b';                                                             // We are comparing the hexadecimal value of the letters in the string                                                                         
-'!' < 'x';                                                             // the hexadecimal value of '!' is 0021, and the hexadecimal value of 'x' is 0078
-                                                                       // '!' is lower in the hexadecimal chart than 'x' so this will return TRUE
-'string' >= 'strong';                                                //keep in mind that EVERY letter in the string will be compared until a comparison returns false
-                                                                       // 's', 't', 'r' are the same, so at this point, everything is true
-                                                                       // but 'i' is less than 'o' in the hexadecimal chart, so the whole comparison return false
-
-let num = 123123                                                        //.toLocaleString() will add commas to a number, but keep in mind that the number will be converted into a string
-console.log(num.toLocaleString());                                      //will display '123,123'
-num.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})		//.toLocaleString() has two arguments that you can use
-
-
-
-
-//the following function enables adding two extremely large numbers without BigInt(not all versions of node.js and browsers can support BigInt)
-//the logic of the following functions goes like this..
-
-//elementary style adding...
-
-//         111                //all the carries
-//   345675366745             //we must iterate through the largest number, if both numbers are the same length, then no difference will be made
-//         453323
-//----------------
-//   345675820068
-
-function addNumbers(first = "9999523423423423435", second = "2762342342342342345") {
-      let longestString;
-      let shortestString;
-    	if(first.length < second.length){                                 //you want to figure out if one string is bigger than the other
-        	shortestString = first;
-            longestString = second;
-        }
-        else{
-        	shortestString = second;
-            longestString = first;
-        }
-        	
-        let carry = 0;
-        let totalSum = "";
-             
-        for(let x = 0; x < longestString.length; x++){                           
-        	let a = parseInt(longestString.charAt(first.length - 1 - x));
-            let b = parseInt(shortestString.charAt(second.length - 1 - x));
-            b = b ? b : 0;									
-            let currentSum = a + b + carry;
-            if(currentSum >= 10){
-            	currentSum = currentSum.toString();
-                carry = 1;
-                totalSum += (currentSum.charAt(1).toString())
-            }
-            else{
-                carry = 0;
-                totalSum += (currentSum.toString());
-            }  
-        }   
-        if(carry){
-        	totalSum += carry;
-        }
-        totalSum = Array.from(totalSum).reverse();
-        totalSum = totalSum.toString().replaceAll(",", "")
-        console.log(totalSum);
-            
-    } 
-
-
-
-
-
-
-// ==================================================== BASE (RADIX) ==========================================================================
-
 /* 
-	A base is a numerical system that uses symbols to represent numbers, the base that everyone is used to is base 10 (1, 2, 3, 4, ..... infinity);
-
- 	Base 36
-  		
-		0
-	 	1
-	  	2
-	   	3
-	    	4
-	     	5
-	        6
-	        7
-	      	8
-	        9
-	        A		represents 10
-	        B		represents 11
-	        C		represents 12
-		D		represents 13
-
-
-
-
-	There are two functions that you can use to utilize these bases (the second argument has to be the same symbol that is used in the base)
-
-  	const base36A = parseInt('a', 36)		//we get the number that is represented by 'a' in BASE 36, and that is 10
-   	const letter = (13).toString(36)		//we get the number that is represents by '13' in BASE 36, and that is D
-
-    
-
-    	The only time that i ever used these bases was in leetcode to convert letters to numbers and vice versa
-     	What you can do is create a mapping like this.. 
-
-      		a -> 1
-		b -> 2
-  		c -> 3
-        	..
-
-  	you can use parseInt() and toString() to convert a to 1 and vice versa
-
-	parseInt('a', 36) - 9							//this will convert 'a' into 1, this is useful for finding the location of a letter in the alphabet  a -> 1  b -> 2   c -> 3 ....  y -> 25  z -> 26
-	
-	const index = 2
-	const letter = (index + 9).toString(36)					//this will convert 2 into 'b', this is usefull for getting letters in the alphabet based on their position   1 -> a   b -> 2   3 -> c  ....  25 -> y   26 -> z
-
- 
+	Strings are a primitive data type that groups together a sequence of characters.
 */
+
+let name = "abel";
+
+
+//------------------- String interpolation
+/* 
+	String interpolation lets you create a string with the value of a variable
+*/
+let interpolation = `You can add variables to strings like this ${name}`;       
+
+
+
+//------------------- String concantenation
+/* 
+	String concantenatiion lets you use the '+' operator to put together
+ 	two or more strings, you can also put together certain data types with
+  	strings as well.
+*/
+let x = "hello" + "world" + 67;                                        //67 will be converted into a string
+let x = "hello" + null;						       //null will be converted into a string	
+let x = "hello" + {name: 'abel'}				       //{name: 'abel'} will be converted into a string [object Object]
+
+
+
+//------------------- Strings and array notation
+/* 
+	You can use array notation to access a certain character
+ 	in a string. Keep in mind that you cannot mutate the character
+  	with this notation
+*/
+let x = 'hello world';
+console.log(x[0]);			//will display the first character of the string                                                                              
+
+
 
 
 

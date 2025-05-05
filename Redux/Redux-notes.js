@@ -25,12 +25,13 @@
             calls will trigger the state update and cause a re-render BEFORE the asynchronous function is taken out of the callstack.
             
                                                             ARCHITECTURE
-            Redux has an architecture that consists of dispatching actions to the reducer, these actions are typically dispatched 
-            as a result of an event handler. The reducer will use the actions to update the global state within the Store. 
-            All components that are subscribed to the store will be re-rendered. Redux's architecture follows a similar approach
-            to the FLUX architecture but with some differences. Flux has multiple stores, but Redux has a single store. Flux uses a 
-            dispatcher to receive actions from the application and then sends them to its stores, but Redux allows the application 
-            to directly send the actions to the store.
+            Redux has an architecture that consists of waiting for an event to be triggered in the UI by the user. This event
+            will dispatch an action to the reducer. The reducer will use the action to return a new updated state. Redux will then 
+            compare the new returned state with the old state, if they differ, then Redux will re-render all components that are 
+            subscribed to the store. Redux's architecture follows a similar approach to the FLUX architecture but with some differences. 
+            Flux has multiple stores, but Redux has a single store. Flux uses a dispatcher to receive actions from the application and 
+            then sends them to its stores, but Redux allows the application to directly send the actions to the store.
+            
                                                                 STORE
             The store in Redux is a centralized object that represents the single source of truth. The entire state object of the application
             is stored here, and any components subscribed to the store will be re-rendered when the state is updated.

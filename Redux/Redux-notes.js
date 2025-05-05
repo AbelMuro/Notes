@@ -20,7 +20,7 @@
 
                                                        STATE UPDATES PROCESS 
             All state updates in Redux behave asynchronously, and all re-renders behave asynchronously.
-            Redux will batch all the asynchronous dispatch() calls, and wait until the callstack is empty to apply the state updates
+            Redux will batch all the synchronous dispatch() calls, and wait until the callstack is empty to apply the state updates
             and the re-render. If the callstack has an asynchronous function (fetch, Redux-Thunk), then all the batched dispatch()
             calls will trigger the state update and cause a re-render BEFORE the asynchronous function is taken out of the callstack.
             
@@ -121,58 +121,6 @@
                                           </Provider>
                                    )                     
                               }
-
-
-
-
-
-
-
-            STEPS TO INTEGRATE REDUX IN YOUR NODE.JS API
-
-            
-                    1)  create a folder called './store' with the file store.js
-                  
-                    2) store.js will have the following boilerplate code
-                       
-                              const {configureStore} = require('@reduxjs/toolkit');
-                              const Reducer = require('./Reducers');
-                  
-                              const store = configureStore({                      //this will create the store with a reducer
-                                  reducer: Reducer,
-                                  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})                      //you may need to use this if you are storing unserializable data in the store
-                              })
-                  
-                              module.exports = store;
-                  
-                  
-                   3) Create a ./Reducers folder and create a serverReducer.js file
-                  
-                              const { createAction, createReducer } = require('@reduxjs/toolkit');
-                                          
-                              const setHttpsServer = createAction('SET_HTTPS_SERVER');
-                              const setHttpServer = createAction('SET_HTTP_SERVER');
-                              const initialState = { https_server: null, http_server: null }
-                              
-                              const serverReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
-                                builder
-                                  .addCase(setHttpsServer, (state, action) => {                      
-                                    state.https_server = action.payload.server;
-                                  })
-                                  .addCase(setHttpServer, (state, action) => {
-                                    state.http_server = action.payload.server;                         
-                                  })
-                              })
-                              
-                              module.exports = serverReducer;
-                  
-                   4) Now you can start dispatching actions and accessing the store anywhere in your node.js app
-                   
-                              const store = require('./Config/Store/Store.js');
-                              
-                              store.dispatch({type: 'SET_HTTPS_SERVER', payload: {server: httpsServer}})                    //dispatching actions to the store
-                              const {https_server} = store.getState();                                                      //accessing the state from the store
-
 */
 
 

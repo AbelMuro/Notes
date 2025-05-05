@@ -599,6 +599,11 @@ document.getElementById("id").addEventListener("click", (e) => {
 
 
 
+
+
+
+
+
 // ====================================================================== SCOPE ====================================================================== 
 /* 
 	Scope refers to the accessibility of a variable. It determines where a
@@ -676,6 +681,10 @@ function CONST_variables() {
       console.log(x);                                                     // 'x' can be used here  
       console.log(y);                                                     // 'y' CANT be used here
 }
+
+
+
+
 
 
 
@@ -866,7 +875,13 @@ console.log(myIterator.next()); // {value: "undefined", done: true}
 
 
   
-	       
+
+
+
+
+
+
+
 	       
 	       
 	       
@@ -1069,6 +1084,18 @@ str.padEnd(targetLength, padString)	//Adds the specified 'padString' to the end 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 //============================================================== OBJECTS ============================================================== 
 /* 
 	Objects are a container of data that organizes the data with properties (keys) and values.
@@ -1155,6 +1182,13 @@ let {valueOne, valueTwo = otherValue} = randomness;     		 // valueOne and other
 let data = {name: "alice", age: "26"};   
 
 const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of the 'data' object
+
+
+
+
+
+
+
 
 
 
@@ -1621,50 +1655,81 @@ _object.otherMethod();
 
 
 //============================================================== LOOPS ==============================================================
+/* 
+	Loops allow us to repeat a certain logic. You can traverse through iterable objects like arrays and 
+ 	re-use code.
+*/
 
-//Do not use "for in" over an Array if the index order is important.
-//It is better to use a "for loop", a "for of loop", or Array.forEach() when the order is important.
 
-      
-//ITERATING THROUGH ARRAYS AND ITERATORS
-let my_array = ["hello", "world", "how", "are", "you"];
-      
-for(let x of my_array){                                    
-      console.log(x);                                                  //x will be the values of the array ("hello", "world", "how", etc...)      
-};      
-for(let x in my_array){
-      console.log(x);                                                  //x will be the indices of the array (0, 1, 2, etc...)
-      console.log(my_array[x]);                                        //my_array[x] will be the values of the array ("hello", "world", "how", etc...)
+
+//------------------- While Loop
+/* 
+	You can use the while loop to iterate a certain logic. The loop
+ 	will continue until the conditional expression returns false
+	
+*/
+let count = 0;
+
+while(count < 10){
+    count++;
 }
-      
-      
-//ITERATING THROUGH OBJECTS (you can't use 'for of' with objects because they are not iterable)
-let my_object = {name: "abel", age: 28};                           
-for(let y in my_object){                                              
-       console.log(y);                                                //y will be the properties of the object (name, age, etc...)
-       console.log(my_object[y]);                                     //my_object[y] will be the values of the object ("abel", 28)
-};
-
-      
-      
-//you can use break statements to break out of a loop
-//you can use continue statements to "skip" the full iteration of one loop
-for (let i = 0; i < my_array.length(); i++){                         //you can declare more than one variable next to i = 0, these variables can be used outside the loop
-    //code you can use with i variable
-};
-
-let d = 0;
-while(d < 10){
-    //if(true){ continue;}                                            //continue will skip the code below and continue to the next iteration of the loop
-    d++;
-};
 
 
-do{
-    //code goes here
+
+
+
+//------------------- For Loop
+/* 
+	You can use the For loop to iterate a certain logic. The loop
+ 	uses a counter and will continue to iterate until the counter
+  	doesn't meet a certain condition
+
+   	'for of' will iterate through the values of an object/array
+    	'for in' will iterate through the keys/properties/index of an object/array
+*/
+
+for(let i = 0; i < 10; i++){
+    console.log(i);
 }
-while(false);
 
+for(let val of array){				
+     console.log(val)
+}
+
+for(let index in array){
+      console.log(index);
+}
+
+
+
+
+
+//------------------- Do While Loop
+/* 
+	Do While loops are similar to while loops. The main difference
+ 	is that the loop will iterate at least once
+*/
+
+do{ 
+   count++;
+}
+while(count < 10);
+
+
+
+
+//------------------- Break and Continue Statements
+/* 
+	You can use Break statement to exit from the loop
+ 	You can use a continue statement to skip a block of code
+  	in the current iteration and skips to the next iteration
+*/
+for(let i = 0; i < 10; i++){
+    if(i === 4)
+	 continue;
+    else if(i === 6)
+	 break;
+}
 
 
 
@@ -1692,72 +1757,102 @@ while(false);
 
 
 //==============================================================  PROMISES ============================================================== 
-
-
-//SYNCHRONOUS:  by default, javascript is synchronous... which means all the lines are placed in a stack and executed one by one
-
-	console.log("a");                                           //all these lines of code are placed on a stack and executed in order
-	console.log("b");                             
-	console.log("c");
-	
-	//output: a b c
-
-
-
-
-//ASYNCHRONOUS means NOT simultaneously. if a line of code is async, then it will be taken out of the stack, and will wait until the stack
-//finishes executing before the async operation starts executing
-
-	console.log(setTimeout("a", 0);                             //because setTimeout is async, it will be taken out of the stack 
-	console.log("b");                                           //and will wait until the code below finishes executing
-	console.log("c");
-	
-	//output: b c a
+/* 
+	Promises are objects that tells use when an asynchronous operation has been completed.
+ 	You can create a promise by using the Promise constructor
+*/
+const promise = new Promise((resolve, reject) => {
+	if(true)
+	    resolve('any value goes here')
+	else
+	   reject('error message can go here')
+})
 
 
 
 
-//Promise objects were designed to handle async events (calls to a server), and it will be resolved when the event is successful
-//Promises are also useful for chaining callbacks together, which in turn prevent callback hell
-//The reason why you want to use promises for an operation that takes a while to complete is because
-// you may want to chain callbacks with then() AFTER the operation has finished executing
-// All synchronous events are taken out of the normal stack of execution and will wait until 
-// the stack finishes executing
 
-//Some methods to use for Promises
-const result = Promise.resolve(123);			//resolve() will automatically resolve a value to a promise
+//------------------- .then() method
+/* 
+	You can use the .then() method to call a function when the promise
+ 	resolves. Keep in mind that you can chain together as many .then()
+  	methods that you want. The .then() must return a promise for you to be 
+   	able to chain them together
+*/
+promise.then((result) => {console.log(result)})
+promise.then((result) => Promise.resolve(result)).then((result) => console.log(result));
+
+
+
+
+
+
+//------------------- .catch() method
+/* 
+	You can use the .catch() method to call a function if the promise 
+ 	was rejected. This method will also catch any errors that are thrown 
+  	inside .then()
+*/
+promise.then((response) => {
+	if(response.status !== 200)
+		throw new Error('error has occurred');
+})
+.catch((error) => {
+    const message = error.message;
+    console.log(message);
+})
+
+
+
+
+
+//------------------- Async and Await
+/* 
+	You can use Async and Await to make it easier to write promises.
+ 	It lets you write asynchronous code in a synchronous way.
+  	Keep in mind, that declaring a function with async will not
+   	automatically take the function out of the callstack.
+    	When the await keyword is executed, everything below the await
+     	keyword will be taken out of the callstack. But every above the await
+      	keyword will NOT be taken out of the callstack
+
+  	Async will make the function return a promise
+   	Await will also return a promise
+*/
+
+async function usingAsyncAwait() {
+	const response = await fetch('URL');					// expression on the right side of await MUST return a promise
+	return response.json();
+}
+
+const promise = usingAsyncAwait();
+promise.then(() => {})
+
+
+
+
+
+
+//------------------- Prototype methods for Promises
+/* 
+	Promises have alot of usefull methods and properties that you can use
+*/
+
+const result = Promise.resolve(123);							//resolve() will automatically resolve a value to a promise
 result.then(() => {});
 
-const result = Promise.reject('error');			//reject() will automatically reject the returning promise with the given message
+const result = Promise.reject('error');							//reject() will automatically reject the returning promise with the given message
 result.catch(() => {})
 
-const results  = Promise.all([Promise.resolve('hello'), Promise.resolve('world')]);  // all() will accept an array of promises that must ALL be resolved for all() to be resolved
-results.then((arrResults) => { console.log(arrResults)});	 	             // arrResults is an array that contains the results of the promises		    					
-results.catch(() => {});						             //if one of the promises in the array is rejected, then all() will be rejected
+const results  = Promise.all([Promise.resolve('hello'), Promise.resolve('world')]);   // all() will accept an array of promises that must ALL be resolved for all() to be resolved
+results.then((arrResults) => { console.log(arrResults)});	 	              // arrResults is an array that contains the results of the promises		    					
+results.catch(() => {});						              // if one of the promises in the array is rejected, then all() will be rejected
 
-const results = Promise.allSettled([Promise.resolve('hello'), Promise.reject('word')]); // .allSettled() will accept an array of promises, .allSettled() will ALWAYS resolve once all promises have been settled
-results.then((arrResults) => {console.log(arrResults)});				//arrResults is an array that contains the results of the promises
+const results = Promise.allSettled([Promise.resolve('hello'), Promise.reject('word')]); // .allSettled() will accept an array of promises, .allSettled() will ALWAYS resolve 
+results.then((arrResults) => {console.log(arrResults)});				// arrResults is an array that contains the results of the promises
 
 
-//The code below will return a "promise" object, 
-//in this case, it will take 5 seconds for the promise to resolve, 
-//just assume that it will take 5 seconds for the server to respond
-let myPromise = new Promise((resolve, reject) => {   
-    setTimeout(() => {                  
-        resolve("ok")                              //once this line of code has been reached, then the promise has been resolved
-    }, 5000)
-})
 
-myPromise.then((results) => {                       //then() is a function that can be used to access the results of the promise
-    let newResult = doSomethingWith(results);
-    return newResult
-})
-.then((newResult) => {                              //you can also chain callbacks this way to prevent callback hell
-    let newerResult = doSomethingElseWith(newResult);
-    return newerResult;
-})
-
-doSomethingElse();                                  //this function will be called immediately after the Promise constructor is called 
 
 
 
@@ -1805,52 +1900,6 @@ TypeError;                                  //using the wrong type, for example,
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//============================================================== ASYNC/AWAIT ============================================================== 
-//async and await makes promises even easier to write
-//very often we will not need a reject function
-
-//async means that the function will always return a promise
-//await means that the next line of code in the async function will wait until the promise has been resolved or rejected
-
-async function createPromise(number) {                                              
-    let results = await new Promise((resolve) => { setTimeout(() => { results("ok") }, 5000)
-    console.log(results);                 //this line of code will wait for the promise above, so you dont have to use .then() to chain together callbacks
-    
-    return results;                       //the async function will return another promise with these results  
-};                                        //you dont have to return the results 
-
-let promise = createPromise(10);
-promise.then((results)=>{
-    //do something with the results of the promise
-});
-
-doSomethingElse();                                                                  //this line of code will not be read by javascript UNTIL myPromise has been fulfilled or rejected
 
 
 

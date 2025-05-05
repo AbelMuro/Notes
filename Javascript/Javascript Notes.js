@@ -747,7 +747,60 @@ function manyArguments(...nums){                                              //
       })
 }
       
-      
+
+
+
+//-------------------IIFE (immediately invoked function expression)
+//IIFE are functions that get called on the spot
+
+//keep in mind that IIFE functions are now part of a block scope
+(function(){                                          //the moment you define the function, it gets called right away
+    let a = 100;
+})();
+
+
+
+
+//------------------- Arrow functions
+//Arrow functions help reduce the syntax of a regular function
+//another thing to note is that arrow functions dont have their own 'this'
+//meaning that if you use 'this' in an arrow function, then it will refer to the scope in which the function was defined
+
+
+const arrowFunction = (a, b) => {return "something"};                         // This is an arrow function, it has different syntax but it does the same thing as a function
+
+const arrowFunction = e => e + 1;                                             // this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
+
+
+this;							// 'this' is the same as the 'this' in the function below
+const myArrowFunc = () => {
+	this;
+}
+	
+
+
+//------------------- Generator functions 
+//Generators are functions that can be paused during execution and resumed, 
+// instead of executing all of a function’s statements in one pass.
+//When you invoke a generator function, it will return an iterator object,
+// With each call of the iterator’s next() method, the generator’s body 
+// will be executed until the next yield statement, where it will then pause:
+
+	
+function* myGenerator(){
+    let first = yield 'first yield value';
+    let second = yield 'second yield value';
+    return 'third returned value';
+}
+	
+const myIterator = myGenerator()
+console.log(myIterator.next()); // {value: "first yield value", done: false}
+console.log(myIterator.next()); // {value: "second yield value", done: false}
+console.log(myIterator.next()); // {value: "third returned value", done: true}
+console.log(myIterator.next()); // {value: "undefined", done: true}      
+
+
+
 //------------------- CALL(), APPLY(), BIND()
 // Call(), Apply(), Bind() will	'bind' a function into an object as if it belonged to that object.
 // Traditionally in JavaScript, you can have objects that have their own properties and methods. 
@@ -813,54 +866,6 @@ console.log(employeeName()); // Jane Smith
 
 
 
-//-------------------IIFE (immediately invoked function expression)
-//IIFE are functions that get called on the spot
-
-//keep in mind that IIFE functions are now part of a block scope
-(function(){                                          //the moment you define the function, it gets called right away
-    let a = 100;
-})();
-
-
-
-
-//------------------- Arrow functions
-//Arrow functions help reduce the syntax of a regular function
-//another thing to note is that arrow functions dont have their own 'this'
-//meaning that if you use 'this' in an arrow function, then it will refer to the scope in which the function was defined
-
-
-const arrowFunction = (a, b) => {return "something"};                         // This is an arrow function, it has different syntax but it does the same thing as a function
-
-const arrowFunction = e => e + 1;                                             // this arrow function will automatically return e + 1, no return keyword is nesessary                                                                          
-
-
-this;							// 'this' is the same as the 'this' in the function below
-const myArrowFunc = () => {
-	this;
-}
-	
-
-
-//------------------- Generator functions 
-//Generators are functions that can be paused during execution and resumed, 
-// instead of executing all of a function’s statements in one pass.
-//When you invoke a generator function, it will return an iterator object,
-// With each call of the iterator’s next() method, the generator’s body 
-// will be executed until the next yield statement, where it will then pause:
-
-	
-function* myGenerator(){
-    let first = yield 'first yield value';
-    let second = yield 'second yield value';
-    return 'third returned value';
-}
-	
-const myIterator = myGenerator()
-console.log(myIterator.next()); // {value: "first yield value", done: false}
-console.log(myIterator.next()); // {value: "second yield value", done: false}
-console.log(myIterator.next()); // {value: "third returned value", done: true}
-console.log(myIterator.next()); // {value: "undefined", done: true}      
 
 
 
@@ -1878,25 +1883,62 @@ results.then((arrResults) => {console.log(arrResults)});				// arrResults is an 
 
 
 
-//============================================================== ERROR CATCHING ============================================================== 
+//============================================================== ERROR HANDLING ============================================================== 
+/* 
+	In javascript, we have errors that are thrown automatically by a line of code if
+ 	a logic doesn't follow the rules of javascript. Javascript will throw an instance
+  	object of the Error() constructor
 
-//this will try a block of code, if there is any error within this block, then the catch(err) block will execute
+	   	const error = new Error('custom error message', {cause: 'custom cause'})
+		error.name = 'custom error name'
+	 	error.message = 'update message'
+	  	console.log(error.stack);		// displays the stack trace and shows where exactly the error occurred
+	   	console.log(error.cause);		
+	
+	    	throw error;
+    
+
+	  	Syntax Errors: 	These are errors thrown by Javascript if we 
+	   			are not using the right syntax
+	
+	        Reference Error: These are errors thrown by javascript if we
+				 use a variable or function that hasn't been declared 
+	    			
+		Type Error: 	 These are errors thrown by javascript if we
+	 			 perform an operation with an incompatible type
+	     
+	     			 	null()  or  '23.toUpperCase()
+	
+	  	Range Error:     These are errors thrown by javascript if we
+	   			 use a value that is above or below its allowable 
+	       			 range.
+	
+	    				let arr = new Array(-5);		//must be greater than 1
+	
+					let value = 10.12345;
+					console.log(value.toFixed(150))		//argument must be between 1 and 100
+*/
+
+
+
+//------------------ TRY CATCH BLOCK
+/* 
+	You can catch errors thrown by javascript by using the try catch block.	
+*/
+
 try{
     //code goes here
     if(true) throw "anything goes here";                                                          
 }
-catch(err){
-        //err = "anything goes here"
-        //code goes here
+catch(error){					
+	const error = error.message;
+	const name = error.name;
+	console.log(name, error)
 }
 finally{
     //block of code that will be executed regardless of the try/catch result
 
 }
-//Here are the different types of errors, the name of these errors can be accessed by err.name
-SyntaxError;                                //example: "this is a string         
-ReferenceError;                             //using a variable that has not been declared
-TypeError;                                  //using the wrong type, for example, number.toString()
 
 
 

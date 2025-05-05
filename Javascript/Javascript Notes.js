@@ -16,7 +16,7 @@
     		13) Maps
       		14) Classes
  		15) Loops (while, for, do while)
-		16) Promises
+		16) Promises (promise, constructor, then, catch, async await)
 
 
 					                FEATURES OF JAVASCRIPT

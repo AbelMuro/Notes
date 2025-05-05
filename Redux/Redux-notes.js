@@ -1,6 +1,6 @@
 
 /* 
-            Redux is a state management library that can be used to centralize the state of an application.
+            Redux is a state management library that is be used to centralize the state of an application in a React application.
 
             Bookmarks:
                 1) Features of Redux
@@ -18,7 +18,7 @@
 
                                                          FEATURES OF REDUX
 
-                                              STATE UPDATES PROCESS (Using Redux with React)
+                                                       STATE UPDATES PROCESS 
             All state updates in Redux behave asynchronously, and all re-renders behave asynchronously.
             Redux will batch all the asynchronous dispatch() calls, and wait until the callstack is empty to apply the state updates
             and the re-render. If the callstack has an asynchronous function (fetch, Redux-Thunk), then all the batched dispatch()

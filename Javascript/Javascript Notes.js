@@ -1,5 +1,25 @@
 /* 
-					             FEATURES OF JAVASCRIPT
+
+	Bookmarks:
+ 		1) Features of Javascript
+   		2) Data types (primitive types, reference types)
+     		3) Window Object
+       		4) Import and Export (Modules)
+	 	5) DOM
+   		6) Scope (function scope, block scope, global scope, let, var, const)
+     		7) Functions (pure functions, constructors, generators, arrow functions, etc...)
+       		8) THIS (context)
+	 	9) Strings
+   		10) Objects 
+		11) Arrays
+  		12) Sets
+    		13) Maps
+      		14) Classes
+ 		15) Loops (while, for, do while)
+		16) Promises
+
+
+					                FEATURES OF JAVASCRIPT
 
 
        							  DYNAMICALLY TYPED
@@ -1600,31 +1620,50 @@ _object.otherMethod();
 
 
 
+//============================================================== LOOPS ==============================================================
 
-//============================================================== ERROR CATCHING ============================================================== 
+//Do not use "for in" over an Array if the index order is important.
+//It is better to use a "for loop", a "for of loop", or Array.forEach() when the order is important.
 
-//this will try a block of code, if there is any error within this block, then the catch(err) block will execute
-try{
+      
+//ITERATING THROUGH ARRAYS AND ITERATORS
+let my_array = ["hello", "world", "how", "are", "you"];
+      
+for(let x of my_array){                                    
+      console.log(x);                                                  //x will be the values of the array ("hello", "world", "how", etc...)      
+};      
+for(let x in my_array){
+      console.log(x);                                                  //x will be the indices of the array (0, 1, 2, etc...)
+      console.log(my_array[x]);                                        //my_array[x] will be the values of the array ("hello", "world", "how", etc...)
+}
+      
+      
+//ITERATING THROUGH OBJECTS (you can't use 'for of' with objects because they are not iterable)
+let my_object = {name: "abel", age: 28};                           
+for(let y in my_object){                                              
+       console.log(y);                                                //y will be the properties of the object (name, age, etc...)
+       console.log(my_object[y]);                                     //my_object[y] will be the values of the object ("abel", 28)
+};
+
+      
+      
+//you can use break statements to break out of a loop
+//you can use continue statements to "skip" the full iteration of one loop
+for (let i = 0; i < my_array.length(); i++){                         //you can declare more than one variable next to i = 0, these variables can be used outside the loop
+    //code you can use with i variable
+};
+
+let d = 0;
+while(d < 10){
+    //if(true){ continue;}                                            //continue will skip the code below and continue to the next iteration of the loop
+    d++;
+};
+
+
+do{
     //code goes here
-    if(true) throw "anything goes here";                                                          
 }
-catch(err){
-        //err = "anything goes here"
-        //code goes here
-}
-finally{
-    //block of code that will be executed regardless of the try/catch result
-
-}
-//Here are the different types of errors, the name of these errors can be accessed by err.name
-SyntaxError;                                //example: "this is a string         
-ReferenceError;                             //using a variable that has not been declared
-TypeError;                                  //using the wrong type, for example, number.toString()
-
-
-
-
-
+while(false);
 
 
 
@@ -1744,6 +1783,50 @@ doSomethingElse();                                  //this function will be call
 
 
 
+//============================================================== ERROR CATCHING ============================================================== 
+
+//this will try a block of code, if there is any error within this block, then the catch(err) block will execute
+try{
+    //code goes here
+    if(true) throw "anything goes here";                                                          
+}
+catch(err){
+        //err = "anything goes here"
+        //code goes here
+}
+finally{
+    //block of code that will be executed regardless of the try/catch result
+
+}
+//Here are the different types of errors, the name of these errors can be accessed by err.name
+SyntaxError;                                //example: "this is a string         
+ReferenceError;                             //using a variable that has not been declared
+TypeError;                                  //using the wrong type, for example, number.toString()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1836,70 +1919,6 @@ let name = (password == "Darkness33") ? "correct pwd": "incorrect pwd";      //i
       
       
       
-      
-      
-      
-      
-      
-      
-      
-
-
-
-
-
-
-//============================================================== LOOPS ==============================================================
-
-//Do not use "for in" over an Array if the index order is important.
-//It is better to use a "for loop", a "for of loop", or Array.forEach() when the order is important.
-
-      
-//ITERATING THROUGH ARRAYS AND ITERATORS
-let my_array = ["hello", "world", "how", "are", "you"];
-      
-for(let x of my_array){                                    
-      console.log(x);                                                  //x will be the values of the array ("hello", "world", "how", etc...)      
-};      
-for(let x in my_array){
-      console.log(x);                                                  //x will be the indices of the array (0, 1, 2, etc...)
-      console.log(my_array[x]);                                        //my_array[x] will be the values of the array ("hello", "world", "how", etc...)
-}
-      
-      
-//ITERATING THROUGH OBJECTS (you can't use 'for of' with objects because they are not iterable)
-let my_object = {name: "abel", age: 28};                           
-for(let y in my_object){                                              
-       console.log(y);                                                //y will be the properties of the object (name, age, etc...)
-       console.log(my_object[y]);                                     //my_object[y] will be the values of the object ("abel", 28)
-};
-
-      
-      
-//you can use break statements to break out of a loop
-//you can use continue statements to "skip" the full iteration of one loop
-for (let i = 0; i < my_array.length(); i++){                         //you can declare more than one variable next to i = 0, these variables can be used outside the loop
-    //code you can use with i variable
-};
-
-let d = 0;
-while(d < 10){
-    //if(true){ continue;}                                            //continue will skip the code below and continue to the next iteration of the loop
-    d++;
-};
-
-
-do{
-    //code goes here
-}
-while(false);
-
-
-
-
-
-
-
 
 
 

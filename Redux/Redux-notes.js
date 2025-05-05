@@ -1,7 +1,21 @@
-import { configureStore, combineReducers, applyMiddleware } from 'redux';
-
 
 /* 
+            Redux is a state management library that can be used to centralize the state of an application.
+
+            Bookmarks:
+                1) Features of Redux
+                2) Reducer
+                3) Store
+                4) Redux Hooks for react
+                5) Connect()
+                6) Redux Toolkit (createSlice, createReducer)
+                7) Middleware
+                8) Redux Thunk
+                9) Redux Promise
+                10) Redux Saga
+                11) Redux Persist
+                12) Redux Deep Persist
+
                                                          FEATURES OF REDUX
 
                                               STATE UPDATES PROCESS (Using Redux with React)
@@ -47,118 +61,123 @@ import { configureStore, combineReducers, applyMiddleware } from 'redux';
 
 
 
-//===================== STEPS TO INTEGRATE REDUX INTO YOUR REACT APPLICATION ==================================================
+         STEPS TO INTEGRATE REDUX INTO YOUR REACT APPLICATION 
+         
+                  0)  npm install redux                        //install the core files for redux
+                      npm install react-redux                  //installs the library that react uses to work with redux
+                      npm install @reduxjs/toolkit             //installs other useful functions/methods for state management
+                      
+                  1) create a folder called './store' with the file store.js
+          
+                  2) store.js will have the following boilerplate code
+                
+                              import {configureStore} from '@reduxjs/toolkit';
+                              import Reducer from './Reducers';
+                  
+                              const store = configureStore({                      //this will create the store with a reducer
+                                  reducer: Reducer,
+                                  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})                      //you may need to use this if you are storing unserializable data in the store
+                              })
+                  
+                              export default store;
+                      
+                   3) then create another folder inside './store' and name it './Reducers'. Then place the file 'Reducers.js' inside of it
+          
+                   4) Reducers.js will have the following boilerplate code
+                
+                              import { createAction, createReducer } from '@reduxjs/toolkit'
+                              
+                              const increment = createAction('counter/increment')
+                              const decrement = createAction('counter/decrement')
+                              const incrementByAmount = createAction('counter/incrementByAmount')
+                              const initialState = { value: 0 }
+                              
+                              const counterReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
+                                builder
+                                  .addCase(increment, (state, action) => {                            //the 'case'
+                                    state.value++
+                                  })
+                                  .addCase(decrement, (state, action) => {
+                                    state.value--                         
+                                  })
+                                  .addCase(incrementByAmount, (state, action) => {
+                                    state.value += action.payload
+                                  })
+                              })
+                  
+                              export default counterReducer;
+          
+          
+                   5) Go to your app.js and import the following
+          
+                              import {Provider} from 'react-redux';
+                              import store from './store';
+                              
+                              function App() {
+                                   return(
+                                         <Provider store={store}>
+                                               
+                                          </Provider>
+                                   )                     
+                              }
 
-                   TO INSTALL REDUX IN YOUR APPLICATION
-
-            npm install redux                        //install the core files for redux
-            npm install react-redux                  //installs the library that react uses to work with redux
-            npm install @reduxjs/toolkit             //installs other useful functions/methods for state management
 
 
 
-//                 
-//      1) create a folder called './store' with the file store.js
-//
-//      2) store.js will have the following boilerplate code
-//      
-            import {configureStore} from '@reduxjs/toolkit';
-            import Reducer from './Reducers';
 
-            const store = configureStore({                      //this will create the store with a reducer
-                reducer: Reducer,
-                middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})                      //you may need to use this if you are storing unserializable data in the store
-            })
 
-            export default store;
-//  
-//      3) then create another folder inside './store' and name it './Reducers'. Then place the file 'Reducers.js' inside of it
-//
-//      4) Reducers.js will have the following boilerplate code
-//      
-            import { createAction, createReducer } from '@reduxjs/toolkit'
+
+            STEPS TO INTEGRATE REDUX IN YOUR NODE.JS API
+
             
-            const increment = createAction('counter/increment')
-            const decrement = createAction('counter/decrement')
-            const incrementByAmount = createAction('counter/incrementByAmount')
-            const initialState = { value: 0 }
-            
-            const counterReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
-              builder
-                .addCase(increment, (state, action) => {                            //the 'case'
-                  state.value++
-                })
-                .addCase(decrement, (state, action) => {
-                  state.value--                         
-                })
-                .addCase(incrementByAmount, (state, action) => {
-                  state.value += action.payload
-                })
-            })
-
-            export default counterReducer;
-
-//
-//       5) Go to your app.js and import the following
-//
-            import {Provider} from 'react-redux';
-            import store from './store';
-            
-            function App() {
-                 return(
-                       <Provider store={store}>
-                             
-                        </Provider>
-                 )                     
-            }
+                    1)  create a folder called './store' with the file store.js
+                  
+                    2) store.js will have the following boilerplate code
+                       
+                              const {configureStore} = require('@reduxjs/toolkit');
+                              const Reducer = require('./Reducers');
+                  
+                              const store = configureStore({                      //this will create the store with a reducer
+                                  reducer: Reducer,
+                                  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})                      //you may need to use this if you are storing unserializable data in the store
+                              })
+                  
+                              module.exports = store;
+                  
+                  
+                   3) Create a ./Reducers folder and create a serverReducer.js file
+                  
+                              const { createAction, createReducer } = require('@reduxjs/toolkit');
+                                          
+                              const setHttpsServer = createAction('SET_HTTPS_SERVER');
+                              const setHttpServer = createAction('SET_HTTP_SERVER');
+                              const initialState = { https_server: null, http_server: null }
+                              
+                              const serverReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
+                                builder
+                                  .addCase(setHttpsServer, (state, action) => {                      
+                                    state.https_server = action.payload.server;
+                                  })
+                                  .addCase(setHttpServer, (state, action) => {
+                                    state.http_server = action.payload.server;                         
+                                  })
+                              })
+                              
+                              module.exports = serverReducer;
+                  
+                   4) Now you can start dispatching actions and accessing the store anywhere in your node.js app
+                   
+                              const store = require('./Config/Store/Store.js');
+                              
+                              store.dispatch({type: 'SET_HTTPS_SERVER', payload: {server: httpsServer}})                    //dispatching actions to the store
+                              const {https_server} = store.getState();                                                      //accessing the state from the store
 
 */
 
 
 
-//================================== STEPS TO INTEGRATE REDUX IN YOUR NODE.JS APPLICATION ================================================
 
 
-//  1)  create a folder called './store' with the file store.js
-
-//  2) store.js will have the following boilerplate code
-     
-            const {configureStore} = require('@reduxjs/toolkit');
-            const Reducer = require('./Reducers');
-
-            const store = configureStore({                      //this will create the store with a reducer
-                reducer: Reducer,
-                middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})                      //you may need to use this if you are storing unserializable data in the store
-            })
-
-            module.exports = store;
-
-
-// 3) Create a ./Reducers folder and create a serverReducer.js file
-
-            const { createAction, createReducer } = require('@reduxjs/toolkit');
-                        
-            const setHttpsServer = createAction('SET_HTTPS_SERVER');
-            const setHttpServer = createAction('SET_HTTP_SERVER');
-            const initialState = { https_server: null, http_server: null }
-            
-            const serverReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
-              builder
-                .addCase(setHttpsServer, (state, action) => {                      
-                  state.https_server = action.payload.server;
-                })
-                .addCase(setHttpServer, (state, action) => {
-                  state.http_server = action.payload.server;                         
-                })
-            })
-            
-            module.exports = serverReducer;
-
-// 4) Now you can start dispatching actions and accessing the store anywhere in your node.js app
-            const store = require('./Config/Store/Store.js');
-            
-            store.dispatch({type: 'SET_HTTPS_SERVER', payload: {server: httpsServer}})                    //dispatching actions to the store
-            const {https_server} = store.getState();                                                      //accessing the state from the store
 
 
 
@@ -278,35 +297,28 @@ root.render(
 
 
 
-
-
-
-//================================================ UPDATING THE STORE/ACCESSING THE STORE =================================================
-
-
-// 1)   DISPATCHING ACTIONS TO THE STORE
+//------------------- DISPATCHING ACTIONS TO THE STORE
 import {configureStore} from '@reduxjs/toolkit';
 
 const store = configureStore({reducer: myReducer});
-store.dispatch({type: 'ADD_ITEM', payload: {item: 'milk'}});                                       //Dispatch an action to the store
+store.dispatch({type: 'ADD_ITEM', payload: {item: 'milk'}});                 //Dispatch an action to the store
 
 
 
 
-// 2)    ACCESSING THE STATE FROM THE STORE (this doesn't cause a re-render)
+//------------------- ACCESSING THE STATE FROM THE STORE 
 const state = store.getState();                                              //gets the complete state from the store
 const todos = store.getState(state => state.todos)                           //accessing a slice from the state
 
 
 
 
-// 3)   SUBSCRIBING TO THE STATE CHANGES IN THE STORE 
-
+//------------------- SUBSCRIBING TO THE STATE CHANGES IN THE STORE 
 function myComponent() {            
       return(<></>)
 }
 
-store.subscribe(myComponent);                                              //this will re-render myComponent everytime there is a change in state in the store
+store.subscribe(myComponent);                                               //this will re-render myComponent everytime there is a change in state in the store
 
 
 
@@ -442,8 +454,8 @@ function SomeComponent() {
 
 //============================================= CONNECT() ==================================================
 //The Connect() function accepts two callbacks, mapStateToProps() and mapDispatchToProps()
-//mapStateToProps() accepts the global state and returns an object that will be the props for a component
-//mapDispatchToProps() accepts the dispatch method and returns an object with methods that call the dispatch method
+//mapStateToProps() has access to the global state, the return value of this function will be used as props for a component
+//mapDispatchToProps() has access to the dispatch method, the return value of this function will be used as props for a component
 //Connect() will also subscribe the component to the changes in the store
 
 import { connect } from 'react-redux';

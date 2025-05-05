@@ -1160,163 +1160,330 @@ const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a
 
 
 //============================================================== ARRAYS ============================================================== 
-//with const arrays, u can change the contents of the elements of the array, but not the order
-//keep in mind that you can also use negative values as an index for an element 
-//array[-1] = 5;
+/* 
+	Arrays are a data structure that groups together values of different data types.
+ 	Each value is indexed by an integer
 
-let array = ["first", "second", "third"];   
-array[0] = "reasigned";                                                     //this is how you access the elements of the array
-//keep in mind that changes to j will also affect changes to array
-var j = array;                                                              //you can assign the entire array onto a variable and it will be concantenated   
+*/
+
+
+//------------------- Creating arrays
+const myArr = new Array("first", "second", "third");			    // Creating an array with the Array constructor
+const myArr = ["first", "second", "third"];				    // This will be compiled to new Array()
+
+
+
+//------------------- Updating elements in the array
+const array = ["first", "second", "third"];   
+array[0] = "reasigned";                                                    // replacing the value at index 0
+
+
+
+//------------------- Deleting elements in the array
+const array = ["first", "second", "third"];   
+array.splice(2, 1);							   // deleting element at index 2 from the array
+const deletedElement = array.pop();					   // deleting the last element in the array
+const deletedElement = array.shift();					   // deleting the first element in the array
+
+
+
+
+//------------------- Spread operator with arrays
+/* 
+	You can use the spread operator to get all the values of one array
+ 	and place them in a different array. Keep in mind, that if the values
+  	contain reference types, then any changes made to these values will
+   	reflect on both arrays
+*/
+const arr1 = [1,2,3];
+const arr2 = [4,5,6];
+const arr3 = [...arr1, ...arr2];
+
+
+
+//------------------- Deconstructing arrays
+/* 
+	You can deconstruct an array by assigning the values of an 
+ 	array to different variables. Keep in mind, that if the values 
+  	that were deconstructed have reference types, then any changes made
+   	to the variables will reflect on the original array
+*/
+
+const someArray = [1, 2];
+const [first, second] = someArray;                                    // first and second now reference specific elements in the array 
+
+
+//------------------- Cloning arrays
+/* 
+	You can make a deep clone of an array by using the JSON.stringify()
+ 	and JSON.parse() methods
+*/
+
+const array = [1,2,3,4];
+const deepCopyOne = JSON.parse(JSON.stringify(array));               
+
+
+
+
+//------------------- Traversing through arrays
+/* 
+	Arrays are iterable objects, you can use a for loop or a 
+ 	prototype method to traverse through the elements
+*/
+
+for(let val in array){}
+
+for(let key of array){}
+array.forEach((val, i, origArray) => {                 		    	    //traverses through the array  
+      console.log(val, i);                               		   
+})
+const udpatedArray = myArray.filter((val, i, origArray) => {                //traverses through the array and removes certain elements from the array
+        if(element > 1)                               			    
+             return true;                             			    	//element will be included in the new array
+        else
+             return false;                            			    	//element will be excluded from the new array
+})
+const updatedArray = myArray.map((val, i, origArray) => {                   //traverses through the array and returns an updated array
+        return element + 1;                             		    
+})		
+const result = array.every((val, i, origArray) => {			    //traverses through the array UNTIL the callback returns false 
+	if(val > 2)					
+	   return true;							    //passes the test and will continue the iteration	(if every element returns true, result will be true)		
+	else
+	   return false;						    //doesnt pass the test and will exit the loop	(result will be false)
+})      			
+const result = array.some((val) => {					    //traverses through the array UNTIL the callback returns true
+	if(val === 5)									
+	   return true;							    //once we return true, we exit the loop (result will be true)
+	else
+	   return false;						    //we continue the loop (if every element returns false, result will be false)
+})
+const result = array.find((val) => {				            //traverses through the array UNTIL it the callback returns true
+	if(val === 5)					
+	   return true;							    //once we return true, we exit the loop (result will be the current value)
+	else 
+	   return false;						    //we continue the iteration (if every element returns false, result will be false)
+})		
+const result = array.findIndex((val) => {			            //traverses through the array UNTIL the callback returns true
+	if(val == 5)							   
+	   return true							    //once we return true, we exit the loop (result will be true)
+})
+const result = myArray.reduce((accumulator, currentVal) => {                //traverses through the array and accumulates the values (result will be the total accumulated value)
+      return accumulator + currentVal;                  
+}, initialValue);    							    //initialValue can be a primitive type or non-primitive type
+
+let accumulatedValues myArray.reduceRight((accumulator, currentValue) => {  //same thing as above but the array is iterated from the right instead of left
+	return accumulator + currentValue;
+}, initialValue)
+
+
+
+
+//------------------- Array Prototype methods and properties
+const array = [1,2,3,4,5];                                                             
 array.push("new Element");                                                  //adds a new element to the array at the end of the array, also returns the length of the array
 array.unshift("new element");                                               //adds a new element to the array at the beginning of the array, also returns the length of the array
 array.splice(1, 1);                                                         //removes the element at index 1 and will remove 1 element after that index   
 array.pop();                                                                //deletes the last element of an array, also returns the element that was deleted
 array.shift();                                                              //deletes the FIRST element of an array, also returns the element that was deleted
 array.sort();                                                               //will sort the array based on the first letter of the strings in the elements, keep in mind that JS will convert any number to string if there is no callback function                                        
-array.sort((a,b) => {return a - b});                                        // sorting the array in ascending order
-array.sort((a,b) => {return b - a});                                         //sorts numbers in descending order           
-array.sort((a,b) => {                                                       //you can also sort an array of objects
-      if(a.property < b.property)                                           //this particular function will sort an array of objects (in ascending order) 
-             return -1;                                                     //based on the property that is being compared
-      else if(a.property > b.property)                                  //property must be either a string or number
-            return 1;
-      else
-            return 0;
-})
-Array.from();                                                               //create an array from a string or from a list of DOM elements
+array.sort((a,b) => {return a - b});                                        //sorting the array in ascending order
+array.sort((a,b) => {return b - a});                                        //sorts numbers in descending order           
+array.flat(3);								   //this function will 'flattened' an array 3 levels down
+										/* 	[
+											   [1,2,3, [2,3,4]],
+											   [3,4,5, [2,[3,4]]],
+										           [1,2,3]
+											]
+											
+											[1,2,3,2,3,4,3,4,5,2,3,4,1,2,3]					
+										*/
+	                                
+				
 
 
-//SPREAD OPERATOR, keep in mind that this will create a shallow copy of the arrays,
-//meaning that any changes made to arr3, will affect the affect arr1 and arr2
-let arr1 = [1,2,3];
-let arr2 = [4,5,6];
-let arr3 = [...arr1, ...arr2]    //[1,2,3,4,5,6]
 
 
-//DECONSTRUCTURING ARRAYS
-let someArray = [1, 2];
-const [first, second] = someArray;                                    // first and second now reference specific elements in the array 
-let someValue = first + second;                                       // and they can be used as variables
 
 
-//CLONING arrays
-const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of data
-const deepCopyTwo = structuredClone(data);                           //creates a deep copy of data
 
 
-//Usefull prototype methods for arrays.
-let myArray = [1,2,3,4,5];
 
-myArray.filter((val, i, origArray) => {               //removes certain elements from the array and returns an updated version of the array
-        if(element > 1)                               // however, it will not affect the original array
-             return true;                             //element will be included in the new array
-        else
-             return false;                            //element will be excluded from the new array
-})
 
-myArray.map((val, i, origArray) => {                     //similar to forEach(), but returns an updated array and
-        return element + 1;                             // doesnt affect the original array
-})
 
-myArray.forEach((val, i, origArrat) => {                 //will call a function for each element in the array, the whole point of this method is to access the elements
-      console.log(val, i);                               //forEach() will not return an updated version of the array or affect the original array
-})
-			
-myArray.every((val, i, origArray) => {			// this function will continue iterating through an array UNTIL the callback returns false
-	if(true)					//this function returns true or false
-	   return true;					//passes the test and will continue the iteration			
-	else
-	   return false;				//doesnt pass the test and will exit the loop
-})
-           			
-myArray.some((val) => {					//this function will iterate through the array UNTIL it finds a specific element
-	if(val == 5)					//the function will return true or false				
-	  return true;					//once we return true, we exit the loop
-})
 
-myArray.find((val) => {				        //this function will iterate through the array UNTIL it finds a specific element
-	if(val == 5)					//the function will return the element of the array
-	  return true					//once we return true, we exit the loop
-})
-			
-myArray.findIndex((val) => {				//this function will iterate through the array UNTIL it finds a specific element
-	if(val == 5)					//the function will return the index of the element
-	   return true					//once we return true, we exit the loop
-})
-			
-myArray.flat(3);					//this function will 'flattened' an array 3 levels down
-							/* 	[
-								   [1,2,3, [2,3,4]],
-								   [3,4,5, [2,[3,4]]],
-							           [1,2,3]
-								]
-								
-								[1,2,3,2,3,4,3,4,5,2,3,4,1,2,3]					
-							*/
-		
-let accumulatedValues = myArray.reduce((accumulator, currentVal) => { // reduce() is a method to accumulate the values in an array, the array can also be strings and other primitives
-      return accumulator + currentVal;                  // The first time that the callback is run, there will be no "return value of the previous calculation". So we can supply a second argument
-}, initialValue);                                       // If supplied, the initial value may be used in its place. Otherwise the array element at index 0 is used as     
-                                                        // the initial value and iteration starts from the next element    
-							// the initialValue can be any primitive type or even a reference type
-							// keep in mind that something needs to be returns after EVERY iteration
-			
-let accumulatedValues myArray.reduceRight((accumulator, currentValue) => { //same thing as above but the array is iterated from the right instead of left
-	return accumulator + currentValue;
-}, initialValue)			
-			
+
+
 			
 
-//------------------------------------------------------------- SETS --------------------------------------------------------------------------------------------
+//============================================================== SETS ============================================================== 
+/* 
+	Sets are data structures that organize data with keys and values, very similar to an array.
+ 	Sets do not allow duplicate values in the data structure. If a duplicate value is added, nothing
+  	will happen.
 
-//SETS are similar to arrays, except that the elements can only occur once in the set, if you add the same element to the set, it will not be saved
-//sets are not iterable objects, u must use my_set.values() to return the iterable object of sets, THEN u can use "for of" loops to iterate 
-let my_set = new Set([1 ,2 ,3 ,4 ,5 ,"whatever"]);                         //you dont have to initialize a Set with an array
+   	Never try to mutate the set using array notation
+    
+    	set[2] = 'new value';			// dont do this!
+*/
+
+//------------------- Creating sets
+/* 
+	You can create a set with the Set() constructor
+*/
+let my_set = new Set([1,2,3,4,5,"whatever"]);                        	 
+
+
+
+
+
+//------------------- Adding elements to a set
+/* 
+	You can use the add() method to add a new element
+ 	to the set
+*/
 my_set.add("new element");                                                 // adds an element to the end of the Set
+
+
+
+
+//------------------- Deleting elements in a set
+/* 
+	You can use the delete() and clear() methods to 
+ 	delete all elements or one element in the set
+*/
 my_set.delete("whatever");                                                 // deletes the specified element
-my_set.has(1);                                                             // returns true if the value exists in the 
 my_set.clear();                                                            // removes all elements in the set
-my_set.values();                                                           // returns an iterator that can be used to iterate through the values in the array
-my_set.keys();                                                             // returns an iterator that can be used to iterate through the keys in the array
-my_set.entries();                                                          // returns an iterator that iterates with [key, value] pairs from a set
+
+
+
+
+//------------------- Finding elements in a set
+/* 
+	You can use the has() method to check if a set has
+ 	a certain value
+*/
+my_set.has(1);                                                             // returns true if the value exists in the 
+
+
+
+
+//------------------- Traversing through a set
+/* 
+	Sets are not iterable objects like arrays are, so you
+ 	will need to use the value() method to return an iterator
+  	that can be used to traverse through the values of a set
+*/
+const iteratorValues = my_set.values();                                    // returns an iterator that can be used to iterate through the values in the array
+const iteratorKeys = my_set.keys();                                        // returns an iterator that can be used to iterate through the keys in the array
+const iteratorKeyValue = my_set.entries();                                 // returns an iterator that iterates with [key, value] pairs from a set
+
+for(let val in iteratorValues){
+	//val will be the values of the set
+}
 
 
 
 
 
-//-------------------------------------------------------------- MAPS -------------------------------------------------------------------------------------------
-//MAPS are similar to objects, but the differences are that the properties can be any value type, and the maps remembers the original insertion of each element
-//MAPS are basically linked lists, so that makes them iterable, so you can use a 'for of' to iterate through the map 
-//MAPS cannot contain duplicate keys, if a duplicate key is added to the Map, then it will replace the other key in the map
-let my_map = new Map([["name", "abel"],
-                    ["age", 28],
-                    ["city", "san francisco"]]);
-my_map.get("age");                                                         //this method will return the value associated with the property "age"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== MAPS ============================================================== 
+/* 
+	Maps are the hash tables for Javascript. They are a data structure that maps keys to values.
+ 	Maps remember the original insertion of each element. Maps do not allow duplicate key values.
+  	If a duplicate key is added, it will replace the other key.
+
+   	Never try to mutate the maps using array notation
+    
+    	my_map["propety"] = 2; 				//dont do this!
+
+*/
+
+//------------------- Creating maps
+/* 
+	You can create a map with the Map() constructor
+*/
+let my_map = new Map([["name", "abel"], ["age", 28], ["city", "san francisco"]]);
+
+
+
+//------------------- Adding keys and values to a map
+/* 
+	You can add an a key that maps to a value with the set() method
+*/
 my_map.set("new element", 56);                                             //adding a new element to the map, u can also use this method to change an existing element's value
+
+
+
+
+//------------------- Getting values in a map
+/* 
+	You can get a value from the map with the get() method.
+ 	You have to pass the key to the value as an argument.
+*/
+const value = my_map.get("age");                                           //this method will return the value associated with the key "age"
+
+
+
+
+//------------------- Deleting keys and values in a map
+/* 
+	You can delete a key from the map with the delete() method.
+ 	The value associated with the key will also be deleted.
+*/
 my_map.delete("city");                                                     //deleting the element "city" from the map
-my_map.has("name");                                                        // returns true or false if the map contains the specified element
-my_map.values();                                                           // returns an iterator with all the values of the map (you can use this in a `for of` loop)
-my_map.keys();                                                              // returns an iterator with all the keys of the map
-my_map.entries();
-my_map.forEach(function(value,key) {                                       //forEach() will call a function for EACH element in the map
+
+
+
+
+//------------------- Finding values in a map
+/* 
+	You can find a value in a map with the has() method.
+ 	You have to pass the key as an argument.
+ 	
+*/
+const result = my_map.has("name");                                        // returns true or false if the map contains the specified element
+
+
+
+
+//------------------- Traversing through a map
+/* 
+	To traverse through a map, you have to use the values(), keys() and
+ 	entries() methods. These methods return an iterator that can be used
+  	to traverse throught the keys and values of the map
+*/
+const iteratorValues = my_map.values();                                     // returns an iterator with all the values of the map 
+const iteratorKeys = my_map.keys();                                         // returns an iterator with all the keys of the map
+const iteratorValuesKeys = my_map.entries();				    // returns an iterator with the values and keys in an array [key, val]
+my_map.forEach((value, key) => {                                            // forEach() will call a function for EACH key and value in the map
     //code goes here
 });
 
-//REMEMEBER, you should NOT use the following lines of code
-my_map["propety"] = 2;                                                     //you wont be able to use the get() methods to retrieve this value from the map
-
-
-//although u can use arrays and objects as keys in a map, you must make sure that you use the reference to the objects in your get() and set() methods
-let arr = [1,2,3];                                                         //creating a reference
-
-//OK!
-my_map.set(arr, "value")                                                   //you must save the reference for later use
-my_map.get(arr)   // returns "value"                                      
-
-//NOT OK!
-my_map.set([1,2,3], "value");                                              //this will work
-my_map.get([1,2,3]);                                                       //this will not work because both [1,2,3] are pointing to a different spot in memory
+for(let val in iteratorValues){
+	
+}
 
 
 
@@ -1344,83 +1511,77 @@ my_map.get([1,2,3]);                                                       //thi
 
 
 //==============================================================  CLASSES =============================================================================== 
-//classes are blueprints that you use to define how an object is going to look like
-
-
-//syntax for creating a class                  
+/* 
+	Classes are blueprints that you use to define how an object is going to look like
+*/
+               
 class MyClass{
-    constructor(grade) {                                              //every class MUST have a constructor
-        this.grade = grade;                                           //you declare the properties of the object like this
+    constructor(grade) {                                              // every class MUST have a constructor
+        this.grade = grade;                                           // you declare the properties of the object like this
     }
-    get getGrade() {                                                 //get keyword is used for a method that 'gets' the properties for the class
+	
+    get getGrade() {                                                  // a getter method, this method will return a property of the class
       return this.grade;
     }
       
-    set setGrade(newGrade) {                                          //set keyword is used for a method that 'sets' the properties for the class
+    set setGrade(newGrade) {                                          // a setter method, this method will update a property of the class
       this.grade = newGrade;
     }
       
-    static my_second_method() {                                        //static methods are not part of any object, they can be called my_class.my_other_method()
+    static myMethod() {                                               // a static method, these methods are not part of any object
         return "omg";
     }     
       
-    calculateGrade() {                                                //you can still define a method without any of the above keywords
+    calculateGrade() {                                                // you can still define a method without any of the above keywords
         this.grade += "whatever";
     }
-
 }
-let myObject = new MyClass("F");                                   //declaring an object of my_class by calling the constructor
-MyClass.my_second_method();				            //you can call static methods with this syntax
-myObject.setGrade("B");                                             //calling method inside object
-myObject.new_variable = "t";                                        //you can create new properties for a class like this: 
+
+let myObject = new MyClass("F");                                    // instantiating MyClass and creating an object
+MyClass.myMethod();				            	    // you can call static methods with this syntax
+myObject.setGrade("B");                                             // calling the setted method inside object
+myObject.newVariable = "t";                                         // you can create new properties for the object, but not the class
 
 
 
 
 
 
-//inheritance: other_class will inherit all the methods from my_class
-class other_class extends my_class{
+//------------------- Class inheritance
+/* 
+	Classes can inherit properties and methods from other classes 
+ 	by using the extends keyword
+*/
+class otherClass extends MyClass{
     constructor(one) {
         this.one = one;
-        super(one);                                                     //calling parent constructor in my_class
+        super(one);                                                   //calling parent constructor in MyClass
     }
-    other_method() {
-        return this.my_method();                                        //you can access the parent methods with "this."
-    }
-    get other_member() {                                                //The "get" keyword can be used for a method that will return a member of an object
+
+    get getOne() {                                                    //The "get" keyword can be used for a method that will return a member of an object
         return this.one;
     }
-    set other_member(x) {                                               //The "set" keyword can be used for a method that will change a member of an object
+    set setOne(x) {                                                   //The "set" keyword can be used for a method that will change a member of an object
         this.one = x;
+    }	
+
+    getParentPropert(){
+	return this.grade;					      // accessing the grade property of the parent class
     }
-
-}
-let _object = new other_class("C+");
-_object.my_other_method();
-
-
-
-
-
-
-
-//this is a convenient way of categorizing certain functions/methods
-//this is mostly used with javascript libraries like gsap
-//gsap has functions like gsap.timeline() which require the new keyword
-class class_one {
-    constructor() {
-            this.name="abel";
-     }
- }
-
-class_one.class_two = class {
-      constructor() {
-            this.age="28";
-     }
+	
+    otherMethod() {
+        return this.myMethod();                                       // accessing the methods of the parent class
+    }
 }
 
-let my_variable = new class_one.class_two();
+let _object = new otherClass("C+");
+_object.otherMethod();
+
+
+
+
+
+
 
 
 
@@ -1748,93 +1909,6 @@ while(false);
 
 
      
-// ========================================================== EVENT LOOP: CALL-STACK & QUEUE ==========================================================
-// The event loop is a mechanism that we use as a workaround for javascript's single threaded nature
-// Everytime we call a function in JS, we place the function call on the STACK
-// An execution context is the environment of a function, this includes all the variables/objects, this, and parameters 
-// call-stack is a collection of execution context's
-      
-function multiply(a, b) {                                   
-      return a * b;
-}                                   //this is the order in which the functions will be called (we will use FIFO stack technique)
-                                                                                             ______________________
-function square(n) {                            |                |                          |                      |
-      return multiply(n, n)                     |                |                  |       |         |            v
-}                                               |                |                  |       |         |         multiply() 
-                                                |                |                  |       |         |    
-                                                | multiply()     |                  |       ^         |
-function printSquare(n){                        | squared()      |                  | squared()       |
-      let squared = square(n);                  | printSquared() |                  | printSquared()  |
-      console.log(squared);                     |________________|                  |_________________|
-}
-      
-printSquared(4);
-
-
-// using asynchronous operations with the call stack, keep in mind that when JS encounters an asynchronous line of code, 
-// it is removed from the stack and placed in the webAPI thread, even though JS is single threaded, we can still call concurrent
-// code because the browsers have these API's that are essentially another thread.
-                        
- console.log("Hi");                    
-                        
- setTimeout(() => {
-       console.log("there")
- }, 5000);
-                                                //EVENT LOOP
-  console.log("ho");
-                        
-            //call stack                                                                    //webAPI's
-                                                                    
-       |                   |                                                        |               |
-       | console.log("ho") |  //setTimeout() will be removed from the stack         |               |     //once setTimeout() finishes its delay, 
-       | setTimeout()      |              -------------------------->               |  setTimeout() |     // it will be placed in the task queue    
-       | console.log("hi") |  //and will be placed in the WebAPI 'stack'            |               | 
-       |___________________|                                                        |_______________|
-
-                     ^                                                                     |
-                     |                                                                     |
-                     |                                                                     |
-                     |                                                                     |
-                     |   //task queue                                                      |
-            |                           |  <______________________________________________ |      
-            |                           |
-            |                           | 
-            |    setTimeout()           |
-            |___________________________|
-            //keep in mind that the setTimeout() will only be placed in the call stack ONCE THE STACK IS EMPTY
-
-
-
-//MICROTASK vs MACROTASK
-/* 
-	microtask: task that will complete straightaway after the code block is executed
- 	macrotask: task that will complete AFTER the browser completes all of its tasks(microtasks) in the queue FIRST
-
-  	Microtask has a higher priority compared to the Macrotask
-   	Remember that we have two queues in the event loop
-	Microtask queue and Macrotask queue
- 	JS will first execute all tasks in the Microtask queue and then it will execute all tasks in the Macrotask queue
-*/
-
-		//macrotask (asynchronous)
-	setTimeout(() => {console.log('task 1')}, 0)				
-
-		//microtask (asynchronous)
-	Promise.resolve(3).then((num) => {console.log('task ' + num)})
-
-		//synchronous
-	console.log('task 3')							
-
-
-	// order of console logs
-	1) 'task 3'
-	2) 'task 2'
-	3) 'task 1'
-
-
-
-
-
 
 
 

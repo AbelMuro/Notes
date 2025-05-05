@@ -1,6 +1,6 @@
 
 /* 
-            Redux is a state management library that is be used to centralize the state of an application in a React application.
+            Redux is a state management library that is used to centralize the state of an React application.
 
             Bookmarks:
                 1) Features of Redux

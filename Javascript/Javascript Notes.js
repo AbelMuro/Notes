@@ -326,6 +326,11 @@ window.addEventListener('scroll', () => {})
 
 
 
+
+
+
+
+
 	
 
 
@@ -2093,66 +2098,7 @@ catch(err){
 
 
 
-//============================================================ COOKIES ==========================================================
-// cookies have a capacity of 4kb
-// cookies live on the client side, typically, cookies should be used to store data that is NOT sensitive, such as user's preferences
-// by default, a cookie is deleted when the browser is closed
 
-//keep in mind that cookies should always be assigned data that has 'name and value'
-document.cookie = "username=john doe";                                              //all cookies must be in this format... "property: value"
-document.cookie = "username=jane box";                                              //replacing the value in cookie username 
-document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC";            //you can set the expiration date for cookies
-document.cookie = "username=john doe; expires=Thu, 08 Dec 12:00:00 UTC; path='/'"   //path='/' tells the browser which path/route the cookie belongs to
-document.cookie = "username= ; expires=Thu, 09 Dec 1970 00:00:00 UTC; path='/'"     //to delete a cookie, just put the expiration date before today, also you should include the path="/" because some browsers might need it
-
-
-
-function cookieExists(key) {
-	var cookies = document.cookie;
-	
-	// Check if the cookie name is present in the string
-	if (cookies.indexOf("user=") >= 0) 
-	    return true
-	else 
-	    return false
-	
-}
-
-function addCookie(key, value) {
-	document.cookie = key + '=' value;
-}
-
-function updateCookie(key, newValue) {
-  let oldCookieValue = '';
-  key = key + "=";
-  let allCookies = document.cookie.split(';');					//we split the cookie string into an array
-	
-  for(let i = 0; i < allCookies.length; i++) {
-	    let cookie = allCookies[i];
-	    while (cookie.charAt(0) === ' ') 
-	      cookie = cookie.substring(1);
-	    
-	    if (cookie.indexOf(key) === 0) 
-	      oldCookieValue = cookie.substring(key.length, cookie.length);
-	    
-  }
-  //if you want to get the previous value of a cookie,
-  let newCookieValue = oldCookieValue + newValue;
-  document.cookie = key + "=" + newCookieValue;
-
-
-  //if you want to add new data to a cookie
-  let prevValue = JSON.parse(newCookieValue);	//at this point, you have either an object or an array, you can append data to these objects
-
-}
-
-//using .cookie twice wont overwrite the previous value assigned to .cookie
-document.cookie = "usename=HotStuff69";
-document.cookie = "password=cobra69";                                               //console.log() will display 'username=usename=HotStuff69;password=cobra69'
-   
-
-//it is strongly recommended that you use npm install js-cookies for the set and get methods for cookies, 
-//cookies doesn't have any pre-build set and get methods, but there is an npm package that implements these methods
 
 
 

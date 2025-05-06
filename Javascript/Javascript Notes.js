@@ -2115,36 +2115,6 @@ catch(err){
 
 
 
-//============================================================== SESSION ==============================================================================
-//session is another way of storing data, similar to local storage and cookies
-//sessions have a capacity of 5mb
-//sessions are only for data on the same browser tab, and will be deleted when the browser tab closes
-//sessions are only for the browser, they dont get sent to the server like cookies do with every request
-//sessions are more similar to local storage than cookies
-
-//you should use json.stringify() to pass data to the sessionStorage
-//and json.parse() to get the data from the session
-
-sessionStorage.setItem("key", "value");
-sessionStorage.setItem("data" , JSON.stringify(object));
-      
-sessionStorage.getItem("key");                              //returns a string
-sessionStorage.getItem("data");                             //make sure to JSON.parse() this JSON formatted data
-
-sessionStorage.removeItem("data");
-sessionStorage.clear();
-
-sessionStorage.clickcount = 1;                             //a property that you can use to keep track of the number of clicks of the user
-
-
-
-
-
-
-
-
-
-
 
 
 

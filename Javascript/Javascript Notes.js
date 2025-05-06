@@ -19,6 +19,7 @@
  		16) Loops (while, for, do while)
 		17) Promises (promise, constructor, then, catch, async await)
   		18) Error Handling (try, catch, finally, Error Constructor);
+    		19) Audio
 
 
 					                FEATURES OF JAVASCRIPT

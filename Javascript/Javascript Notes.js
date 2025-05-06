@@ -7,16 +7,18 @@
        		4) Import and Export (Modules)
 	 	5) DOM
    		6) Scope (function scope, block scope, global scope, let, var, const)
-     		7) Functions (pure functions, constructors, generators, arrow functions, etc...)
-       		8) THIS (context)
-	 	9) Strings
-   		10) Objects 
-		11) Arrays
-  		12) Sets
-    		13) Maps
-      		14) Classes
- 		15) Loops (while, for, do while)
-		16) Promises (promise, constructor, then, catch, async await)
+     		7) Strings
+       		8) Boolean 
+     		9) Functions (pure functions, constructors, generators, arrow functions, etc...)
+       		10) Objects
+   		11) THIS (context)
+		12) Arrays
+  		13) Sets
+    		14) Maps
+      		15) Classes
+ 		16) Loops (while, for, do while)
+		17) Promises (promise, constructor, then, catch, async await)
+  		18) Error Handling (try, catch, finally, Error Constructor);
 
 
 					                FEATURES OF JAVASCRIPT
@@ -702,6 +704,163 @@ function CONST_variables() {
 
 
 
+			
+			
+
+
+
+
+
+
+//====================================================================== STRINGS ====================================================================== 
+/* 
+	Strings are a primitive data type that groups together a sequence of characters.
+*/
+
+let name = "abel";
+
+
+//------------------- String interpolation
+/* 
+	String interpolation lets you create a string with the value of a variable
+*/
+let interpolation = `You can add variables to strings like this ${name}`;       
+
+
+
+//------------------- String concantenation
+/* 
+	String concantenatiion lets you use the '+' operator to put together
+ 	two or more strings, you can also put together certain data types with
+  	strings as well.
+*/
+let x = "hello" + "world" + 67;                                        //67 will be converted into a string
+let x = "hello" + null;						       //null will be converted into a string	
+let x = "hello" + {name: 'abel'}				       //{name: 'abel'} will be converted into a string [object Object]
+
+
+
+//------------------- Strings and array notation
+/* 
+	You can use array notation to access a certain character
+ 	in a string. Keep in mind that you cannot mutate the character
+  	with this notation
+*/
+let x = 'hello world';
+console.log(x[0]);			//will display the first character of the string                                                                              
+
+
+
+
+//------------------- String prototype methods
+/* 
+	Strings have a variety of methods and properties that 
+ 	you can use to mutate the string.
+*/
+
+let str = 'hello world';
+
+str.length;				//Returns the length of a string.
+str.charAt(index);	 		//Returns the character at the specified index.
+str.charCodeAt(index); 			//Returns the Unicode value of the character at the given index.
+str.concat(string1, string2, ...);	 //Joins two or more strings with str
+str.includes(searchString, atIndex);	//Checks if a string contains another string.
+str.indexOf(searchString, fromIndex);	//Returns the index of the first occurrence of a specified value.
+str.lastIndexOf(searchString, fromIndex); //Returns the index of the last occurrence of a specified value.
+str.match(regex);			 //Searches a string for a match against a regular expression.
+str.replace(searchValue, replaceValue);	 //Replaces part of the string with another value.
+str.search(regex); 			 //Searches for a specified pattern and returns the index.
+str.slice(startIndex, endIndex);	//Extracts a section of a string and returns it as a new string.
+str.split(separator, limit);		//Splits a string into an array of substrings.
+str.substring(startIndex, endIndex); 	//Returns the part of the string between the given indexes.
+str.toLowerCase();		 	//Converts the string to lowercase.
+str.toUpperCase();			//Converts the string to uppercase.
+str.trim();				//Removes whitespace from both ends of a string.
+str.trimStart() / str.trimEnd();	//Removes whitespace from the start or end of a string.
+str.padStart(targetLength, padString);	//Adds the specified 'padString' to the start of the string until the string reaches the length specified with 'targetLength'
+str.padEnd(targetLength, padString)	//Adds the specified 'padString' to the end of the string until the string reaches the length specified with 'targetLength'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//============================================================== BOOLEAN VALUES ============================================================== 
+/* 
+	Javascript uses truthy and falsy values to represent the boolean values of true and false.
+
+ 	The falsy values of javascript are the following...
+
+  		0
+		0n
+		null
+		undefined
+		false
+		NaN
+		""
+  
+  	The truthy values of javascript is ANY value except for the values above  		
+*/
+
+
+//------------------ True and false
+/*
+	The most basic primitive value, true and false.
+*/
+
+const x = true;
+const y = false;
+
+
+
+
+//------------------ Expressions that return true or false
+/* 
+	Most operators and conditional statements rely on the boolean
+ 	values of true and false
+*/
+
+if(10 > 2)
+if(10 === 2)
+if(10 !== 2)								// logical not
+if(true && false)							// logical and
+if(true || false)							// logical or
+const name = true ? 'abel' : 'carlos';					// ternary operators rely on an expression that resolves to a boolean value
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -882,210 +1041,10 @@ console.log(employeeName()); // Jane Smith
   
 
 
-
-
-
-
-
-	       
-	       
-	       
-	       
-	       
-	       
-	       
-      
-      
-//============================================================== THIS ============================================================== 
-//THIS is a keyword that refers to an object that owns a function that was called
-
-//-------------------THIS in the global scope
-
-
-this;                                       //if you use THIS in the global scope, then it refers to the global object Window
-
-
-
-//-------------------THIS in regular functions
-//THIS in functions refers to the object that calls/invokes the function
-//For an object to 'own' a function, the function must be one of the 
-//properties of the object
-
-//myObject 'owns' the function 'myMethod'
-let myObject = {
-      name: "abel",
-      age: 29,
-      myMethod: function() {                  //since we assigned this function to one of the properties of myObject, this function belongs to myObject 
-            function inner(){}                //this inner function is not owned by myObject, it is owned by Window global object
-            return this.name + this.age;      //THIS refers to myObject
-      }
-}
-
-//Window 'owns' this function
-function myFunction(){
-    return this;                            //this will also return the global window object;
-}
-
-window.myFunction();                       //all functions are part of the window object
-
-
-
-//------------------- THIS in arrow functions
-//THIS in arrow functions refers to the parent object of the object that owns the arrow function
-//remember, that functions in javascript are also objects
-
-
-//arrowFunction doesnt have a parent object, so THIS will just point to the window object
-window.arrowFunction();
-let arrowFunction = () => {
-      console.log(this);                              //this will return the global object
-}
-
-//Parent Object of myObject is the window object
-window.myObject.myMethod();                           //THIS in myMethod will point to the window object because its the parent object
-let myObject = {
-      name: "john",
-      age: "24",
-      myMethod: () => {
-          console.log(this);                          //even though this arrow function is 'owned' by myObject
-      }                                               //THIS will refer to the parent object of myObject, which 
-}
-
-//innerFunction is still owned by the window object
-window.innerFunction();
-function outerFunction() {
-      let innerFunction = () => {console.log(this)}    //this arrow function doesnt belong to myFunction()
-}
-
-
-//arrow functions inside regular functions
-window.myObject.myMethod()
-let myObject = {
-      name: "john",
-      age: "24",
-      myMethod: function() {
-           () => {console.log(this)}                  //the scope of the arrow function is myObject, so this will console.log 'myObject'                                                          
-      }       
-}
-
-function example() {
-      let x = () => {console.log(this)}               //THIS will refer to the global object because THIS refers to the scope of the arrow function, and thats the example function scope
-      x();
-}
-
-
-
-
-      
-
-
-
+		
 			
+		
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-
-
-
-
-
-
-//====================================================================== STRINGS ====================================================================== 
-/* 
-	Strings are a primitive data type that groups together a sequence of characters.
-*/
-
-let name = "abel";
-
-
-//------------------- String interpolation
-/* 
-	String interpolation lets you create a string with the value of a variable
-*/
-let interpolation = `You can add variables to strings like this ${name}`;       
-
-
-
-//------------------- String concantenation
-/* 
-	String concantenatiion lets you use the '+' operator to put together
- 	two or more strings, you can also put together certain data types with
-  	strings as well.
-*/
-let x = "hello" + "world" + 67;                                        //67 will be converted into a string
-let x = "hello" + null;						       //null will be converted into a string	
-let x = "hello" + {name: 'abel'}				       //{name: 'abel'} will be converted into a string [object Object]
-
-
-
-//------------------- Strings and array notation
-/* 
-	You can use array notation to access a certain character
- 	in a string. Keep in mind that you cannot mutate the character
-  	with this notation
-*/
-let x = 'hello world';
-console.log(x[0]);			//will display the first character of the string                                                                              
-
-
-
-
-//------------------- String prototype methods
-/* 
-	Strings have a variety of methods and properties that 
- 	you can use to mutate the string.
-*/
-
-let str = 'hello world';
-
-str.length;				//Returns the length of a string.
-str.charAt(index);	 		//Returns the character at the specified index.
-str.charCodeAt(index); 			//Returns the Unicode value of the character at the given index.
-str.concat(string1, string2, ...);	 //Joins two or more strings with str
-str.includes(searchString, atIndex);	//Checks if a string contains another string.
-str.indexOf(searchString, fromIndex);	//Returns the index of the first occurrence of a specified value.
-str.lastIndexOf(searchString, fromIndex); //Returns the index of the last occurrence of a specified value.
-str.match(regex);			 //Searches a string for a match against a regular expression.
-str.replace(searchValue, replaceValue);	 //Replaces part of the string with another value.
-str.search(regex); 			 //Searches for a specified pattern and returns the index.
-str.slice(startIndex, endIndex);	//Extracts a section of a string and returns it as a new string.
-str.split(separator, limit);		//Splits a string into an array of substrings.
-str.substring(startIndex, endIndex); 	//Returns the part of the string between the given indexes.
-str.toLowerCase();		 	//Converts the string to lowercase.
-str.toUpperCase();			//Converts the string to uppercase.
-str.trim();				//Removes whitespace from both ends of a string.
-str.trimStart() / str.trimEnd();	//Removes whitespace from the start or end of a string.
-str.padStart(targetLength, padString);	//Adds the specified 'padString' to the start of the string until the string reaches the length specified with 'targetLength'
-str.padEnd(targetLength, padString)	//Adds the specified 'padString' to the end of the string until the string reaches the length specified with 'targetLength'
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1188,6 +1147,107 @@ let data = {name: "alice", age: "26"};
 
 const deepCopyOne = JSON.parse(JSON.stringify(data));                //creates a deep copy of the 'data' object
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+	       
+      
+      
+//============================================================== THIS ============================================================== 
+//THIS is a keyword that refers to an object that owns a function that was called
+
+//-------------------THIS in the global scope
+
+
+this;                                       //if you use THIS in the global scope, then it refers to the global object Window
+
+
+
+//-------------------THIS in regular functions
+//THIS in functions refers to the object that calls/invokes the function
+//For an object to 'own' a function, the function must be one of the 
+//properties of the object
+
+//myObject 'owns' the function 'myMethod'
+let myObject = {
+      name: "abel",
+      age: 29,
+      myMethod: function() {                  //since we assigned this function to one of the properties of myObject, this function belongs to myObject 
+            function inner(){}                //this inner function is not owned by myObject, it is owned by Window global object
+            return this.name + this.age;      //THIS refers to myObject
+      }
+}
+
+//Window 'owns' this function
+function myFunction(){
+    return this;                            //this will also return the global window object;
+}
+
+window.myFunction();                       //all functions are part of the window object
+
+
+
+//------------------- THIS in arrow functions
+//THIS in arrow functions refers to the parent object of the object that owns the arrow function
+//remember, that functions in javascript are also objects
+
+
+//arrowFunction doesnt have a parent object, so THIS will just point to the window object
+window.arrowFunction();
+let arrowFunction = () => {
+      console.log(this);                              //this will return the global object
+}
+
+//Parent Object of myObject is the window object
+window.myObject.myMethod();                           //THIS in myMethod will point to the window object because its the parent object
+let myObject = {
+      name: "john",
+      age: "24",
+      myMethod: () => {
+          console.log(this);                          //even though this arrow function is 'owned' by myObject
+      }                                               //THIS will refer to the parent object of myObject, which 
+}
+
+//innerFunction is still owned by the window object
+window.innerFunction();
+function outerFunction() {
+      let innerFunction = () => {console.log(this)}    //this arrow function doesnt belong to myFunction()
+}
+
+
+//arrow functions inside regular functions
+window.myObject.myMethod()
+let myObject = {
+      name: "john",
+      age: "24",
+      myMethod: function() {
+           () => {console.log(this)}                  //the scope of the arrow function is myObject, so this will console.log 'myObject'                                                          
+      }       
+}
+
+function example() {
+      let x = () => {console.log(this)}               //THIS will refer to the global object because THIS refers to the scope of the arrow function, and thats the example function scope
+      x();
+}
 
 
 
@@ -1885,17 +1945,9 @@ results.then((arrResults) => {console.log(arrResults)});				// arrResults is an 
 
 //============================================================== ERROR HANDLING ============================================================== 
 /* 
-	In javascript, we have errors that are thrown automatically by a line of code if
+	In javascript, we have errors that are thrown automatically by javascript if
  	a logic doesn't follow the rules of javascript. Javascript will throw an instance
-  	object of the Error() constructor
-
-	   	const error = new Error('custom error message', {cause: 'custom cause'})
-		error.name = 'custom error name'
-	 	error.message = 'update message'
-	  	console.log(error.stack);		// displays the stack trace and shows where exactly the error occurred
-	   	console.log(error.cause);		
-	
-	    	throw error;
+  	object of the Error() constructor.
     
 
 	  	Syntax Errors: 	These are errors thrown by Javascript if we 
@@ -1924,20 +1976,47 @@ results.then((arrResults) => {console.log(arrResults)});				// arrResults is an 
 //------------------ TRY CATCH BLOCK
 /* 
 	You can catch errors thrown by javascript by using the try catch block.	
+ 	Keep in mind that all errors caught by the catch() block are instances of
+  	the Error() constructor
 */
 
 try{
-    //code goes here
-    if(true) throw "anything goes here";                                                          
+    	const num = 4;
+    	num();					// this will throw a reference error
 }
 catch(error){					
-	const error = error.message;
-	const name = error.name;
-	console.log(name, error)
+	const error = error.message;		// the message of the error
+	const name = error.name;		// the name of the error
+	const stack = error.stack;		// tells you where in the callstack, the error has occurred
 }
 finally{
-    //block of code that will be executed regardless of the try/catch result
+    console.log('the finally block will always be executed')
+}
 
+
+
+//------------------ CUSTOM ERRORS
+/* 
+	You can create and throw a custom error using the Error() constructor.
+ 	Keep in mind, you should not mutate the 'cause' and the 'stack' properties
+  	of the error object. The 'cause' property is read-only, and the 'stack' property
+   	will contain the original stack trace that tells us where the error occurred.
+*/
+
+try{
+	const error = new Error('custom error message', {cause: 'cause of the error'})
+	error.name = 'custom error name';	// assigning a new name to the error
+	error.message = 'update message';	// assigning a new message to the error
+	console.log(error.stack);		// displays the stack trace and shows where exactly the error occurred
+	console.log(error.cause);		// dispays the cause of the error	
+	
+	throw error;				// throw will stop the next line of execution and will skip to the catch() block
+}
+catch(error){
+	const message = error.message;
+	const name = error.name;
+	const stack = error.stack;
+	const cause = error.cause;
 }
 
 
@@ -1955,59 +2034,6 @@ finally{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-//============================================================== BOOLEAN VALUES ============================================================== 
-//falsey values are the following..
-0
-0n
-null
-undefined
-false
-NaN
-""
-//truthy values are anything BUT the values above
-
-
-Boolean(10 > 2);                                                          //pre define function that returns true or false
-10 > 2;                                                                     //using comparison values can have the same effect as above
-10 == 2;                                                                    // this statement will also return true or false
-10 === 2;                                                                    // must have the same value AND the same data type
-10 !== 2;                                                                   // not equal value and not equal data type
-
-&&                                                                       // logical and
-||                                                                       // logical or    
-!                                                                        // logical not
-
-      
-//take note on the line below
-5 < 6 < 7;                                                              //comparison starts at the far left first
-true < 7                                                                //boolean values get converted to 1 when using the < or > operator
-1 < 7                                                                   //true will get converted to 1
-
-//ternary operator
-let password = "Darkness33";
-let name = (password == "Darkness33") ? "correct pwd": "incorrect pwd";      //if (password=="Darkness33") returns true, then "correct pwd" will be assigned to name; if its false, then "incorrect pwd" will be assigned to name
-                                                                            
-
-
-
-
-
-      
-      
-      
-      
-      
       
       
 

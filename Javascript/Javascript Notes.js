@@ -2060,9 +2060,9 @@ catch(error){
 	
 
 
-//============================================================= AUDIO OBJECT ==============================================================================
+//============================================================= AUDIO ==============================================================================
 /* 
-	You can use the Audio constructor in Javascript to load a music file.
+	You can use the Audio constructor in Javascript to load an audio file.
  	The Audio constructor is a way of loading and playing music or sounds
   	without having to use the <audio/> tag
 */
@@ -2073,36 +2073,83 @@ catch(error){
 /* 
 	You can create audio objects with the Audio constructor.
  	You can pass the URL of a music file or the directory that has 
-  	the file.
+  	the file. It's always a good idea to see if the browser can play
+   	a certain type of audio file, you can do this with the .canPlayType()
+    	method...
+
+	const result = audio.canPlayType(type)				//type refers to the mimetype of the audio file	
+
+ 		type = 'audio.mpeg'	if file is an .mp3
+   		type = 'audio/ogg'	if file is an .ogg
+     		type = 'audio/wav'	if file is an .wav
+       		type = 'audio/wav'	if file is an .aac
+
+  		result = 'probably'	means that the browser can play it
+    		result = 'maybe'	means that the browser might support it
+      		result = ''		means the browser doesnt support it
 */
-const audio = new Audio("https://www.computerhope.com/jargon/m/example.mp3");
+
+const audio = new Audio();
 const audio = new Audio("/path/to/file/music.mp3");
 
 
 
 
 
-//------------------ Loading music files
+//------------------ Loading audio files
 /* 
 	You can use the 'src' property to load a music file with the Audio object
 */
 
+const audio = new Audio("/path/to/file/music.mp3");
 audio.src = '/path/to/file/music.mp3'
 
 
 
 
 
-//------------------ Playing the music files
+
+
+
+
+//------------------ Playing audio files
 /* 
 	You can use the .play() method to play the audio file
 */
+
 audio.play();
 
 
 
 
-//------------------ Setting the Volume of the music
+//------------------ Pausing audio file
+/* 
+	You can use the .pause() method to pause the audio file
+*/
+
+audio.pause();
+
+
+
+
+
+
+//------------------ Reloading audio files
+/* 
+	You can use the .load() method to play the audio
+ 	from the beginning
+*/
+
+audio.load();
+
+
+
+
+
+
+
+
+//------------------ Setting the Volume of the audio
 /* 
 	You can use the 'volume' property to increase or decrease the 
  	volume of the music being played. The value must be an integer 
@@ -2113,32 +2160,34 @@ audio.volume = 0.7;
 
 
 
-//------------------ Miscellaneous properties and methods for Audio
-
-console.log(audio.currentTime);					// gets the current time being played in the audio file
 
 
 
+//------------------ Events for Audio
+/* 
+	If you ever need an event listener for an audio object,
+ 	here are the common events that are triggered for audio
+
+  	ended, play, pause, timeupdate.
+*/
+
+audio.addEventListener(event, callback);  
 
 
-//------------------ 
+
+
+//------------------ Miscellaneous properties for Audio
+
+console.log(audio.currentTime);					// gets the current time being played in the audio file in seconds
+console.log(audio.duration);					// gets the total length of the audio file in seconds
+console.log(audio.paused);					// returns true or false, indicating if the audio is paused or not
+console.log(audio.readyState);					// returns an integer (0 - 4), it represents the loading state of the audio file
+audio.loop = true;						// indicates if the audio should replay when it reaches the end
+audio.muted = false;						// indiicates if the audio should be muted or not
+audio.playbackRate = 1.3;					// indicates the speed of playback (1.0 is default)
 
 
 
-//using JS to load audio files
-const audio = new Audio("https://www.computerhope.com/jargon/m/example.mp3");
-audio.type = "audio/mp3";
-audio.addEventListener("play", (e) => {
-         //this event will trigger when the user plays the audio
-})
-
-try{
-    await audio.play();                   //you always want to wait until the client receives the response from the server
-    audio.volume = 4;                     //you can increase or decrease the volume with this property
-}
-catch(err){
-      console.log("could not play audio");
-}
 
 
 

@@ -2061,19 +2061,67 @@ catch(error){
 
 
 //============================================================= AUDIO OBJECT ==============================================================================
-//you can use the audio constructor to load mp3 or wav files.
+/* 
+	You can use the Audio constructor in Javascript to load a music file.
+ 	The Audio constructor is a way of loading and playing music or sounds
+  	without having to use the <audio/> tag
+*/
+
+
+
+//------------------ Creating Audio objects
+/* 
+	You can create audio objects with the Audio constructor.
+ 	You can pass the URL of a music file or the directory that has 
+  	the file.
+*/
+const audio = new Audio("https://www.computerhope.com/jargon/m/example.mp3");
+const audio = new Audio("/path/to/file/music.mp3");
 
 
 
 
-//using HTML audio tag to load audio files
-<audio src={"https://www.computerhope.com/jargon/m/example.mp3"} controls id="#audio" controlsList="nodownload" autoPlay loop></audio>
-//  or
-<audio controls id="audio" controlsList="nodownload" autoPlay loop>
-      <source src="https://www.computerhope.com/jargon/m/example.mp3" />
-</audio>
+
+//------------------ Loading music files
+/* 
+	You can use the 'src' property to load a music file with the Audio object
+*/
+
+audio.src = '/path/to/file/music.mp3'
 
 
+
+
+
+//------------------ Playing the music files
+/* 
+	You can use the .play() method to play the audio file
+*/
+audio.play();
+
+
+
+
+//------------------ Setting the Volume of the music
+/* 
+	You can use the 'volume' property to increase or decrease the 
+ 	volume of the music being played. The value must be an integer 
+  	between 0 and 1
+*/
+
+audio.volume = 0.7;
+
+
+
+//------------------ Miscellaneous properties and methods for Audio
+
+console.log(audio.currentTime);					// gets the current time being played in the audio file
+
+
+
+
+
+//------------------ 
 
 
 
@@ -2091,9 +2139,6 @@ try{
 catch(err){
       console.log("could not play audio");
 }
-
-
-
 
 
 
@@ -2164,56 +2209,6 @@ catch(err){
 
 
 
-
-
-
-//================================================================== API's =====================================================================    
-	       
-// API means Application Programming Interface, it is an interface that is used between two programs to communicate with each other. 
-// The two programs are called the Client and the Server. Typically, the Client will send a request to the server to either request 
-// data or to update the database somehow. The server will receive the request and then will send a response back to the client. The response
-// is either a message telling the client that the request is succefull/rejected, or the actual data that the client requested
-
-// Alot of the times, the API may have alot of resources/data that a user can request. One way to 'organize' this data is by using API endpoint	
-// API endpoints represent a digital location where the API receives requests about a specific resource 
-// With API endpoints, you can request a specific resource from an API that has alot of resources.
-// One good example would be the Twitter API, this API has endpoints for fetching posts, messages, followers, etc.. 
-// Basically, you can use the API endpoint for fetching posts, another API endpoint for fetching messages, etc..
-	       
-
-	       
-	       
-	       
-// We can use URL's to specify an endpoint of an API
-fetch('https://horoscopes-ai.p.rapidapi.com/get_horoscope/aries/today/general/en');    
-fetch('https://horoscopes-ai.p.rapidapi.com/get_horoscope/libra/tomorrow/general/en');
-	       
-	       
-//------------------------------------------------------------ RESTful API's -----------------------------------------------------------------
-// REST stands for REpresentation State Transfer. REST is the way that HTTP should be used. For an API to be restful, 
-// it needs to use the following conventions(keep in mind that there are much more convetions that were not listed below)			
-			
-	       
-/* 
-	1) Separate client and server: any changes made to the code in the client should NOT affect the server in any way, and vice versa
-           different clients can send requests to the same server and they all receive the same response with the same data
-	   
-	2) Stateless: Each request must contain all of the info necessary to be understood by the server WITHOUT being dependent on the
-   	   server remembering prior requests. The server cannot store any session data from the client.
-	 
-	3) Communication between client and server: the server basically uses the HTTP methods to communicate with the client
-
-
-	4) Response Codes: The server must send responses that contain one of the status codes below...
-	
-	200 (OK)			This is the standard response for successful HTTP requests.
-	201 (CREATED)			This is the standard response for an HTTP request that resulted in an item being successfully created.
-	204 (NO CONTENT)		This is the standard response for successful HTTP requests, where nothing is being returned in the response body.
-	400 (BAD REQUEST)		The request cannot be processed because of bad request syntax, excessive size, or another client error.
-	403 (FORBIDDEN)			The client does not have permission to access this resource.
-	404 (NOT FOUND)			The resource could not be found at this time. It is possible it was deleted, or does not exist yet.
-	500 (INTERNAL SERVER ERROR)	The generic answer for an unexpected failure if there is no more specific information available.
-*/	       
 	       
 	       
 	       

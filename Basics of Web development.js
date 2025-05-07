@@ -1,4 +1,6 @@
-                                                            TERMINOLOGY OF WEB DEVELOPMENT
+/* 
+
+						TERMINOLOGY OF WEB DEVELOPMENT
 
                                 FRONT-END-DEVELOPMENT: development of the visual aspect of a website/app
                                 
@@ -30,6 +32,8 @@
                                           3) The server will process the request and decide what content to send to the browser
                                               If the server uses server-side rendering, then the server will generate the website in the server first before sending a response
                                               If the server uses client-side rendering, then the server will first send the HTML files to the browser, then the JS files
+*/
+							
 
 
 
@@ -39,69 +43,74 @@
 
 
 
-'a' < 'b';                                                             // We are comparing the hexadecimal value of the letters in the string                                                                         
-'!' < 'x';                                                             // the hexadecimal value of '!' is 0021, and the hexadecimal value of 'x' is 0078
-                                                                       // '!' is lower in the hexadecimal chart than 'x' so this will return TRUE
-'string' >= 'strong';                                                //keep in mind that EVERY letter in the string will be compared until a comparison returns false
-                                                                       // 's', 't', 'r' are the same, so at this point, everything is true
-                                                                       // but 'i' is less than 'o' in the hexadecimal chart, so the whole comparison return false
 
-let num = 123123                                                        //.toLocaleString() will add commas to a number, but keep in mind that the number will be converted into a string
-console.log(num.toLocaleString());                                      //will display '123,123'
-num.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})		//.toLocaleString() has two arguments that you can use
-
-
+       
+//======================================================= HTTP ===========================================================================     
+// HTTP stands for hyper text transfer protocol, it's a protocol that describes how a web browser and a web server communicates with each other.
+// The web browser will send a request to the web server and will wait for a response from the web server.
+/* HTTP VERBS: are methods that we use to interact with the web server and database
+	      GET method
+	      POST method
+	      DELETE method
+	      PUT method
 
 
-//the following function enables adding two extremely large numbers without BigInt(not all versions of node.js and browsers can support BigInt)
-//the logic of the following functions goes like this..
 
-//elementary style adding...
 
-//         111                //all the carries
-//   345675366745             //we must iterate through the largest number, if both numbers are the same length, then no difference will be made
-//         453323
-//----------------
-//   345675820068
 
-function addNumbers(first = "9999523423423423435", second = "2762342342342342345") {
-      let longestString;
-      let shortestString;
-    	if(first.length < second.length){                                 //you want to figure out if one string is bigger than the other
-        	shortestString = first;
-            longestString = second;
-        }
-        else{
-        	shortestString = second;
-            longestString = first;
-        }
-        	
-        let carry = 0;
-        let totalSum = "";
-             
-        for(let x = 0; x < longestString.length; x++){                           
-        	let a = parseInt(longestString.charAt(first.length - 1 - x));
-            let b = parseInt(shortestString.charAt(second.length - 1 - x));
-            b = b ? b : 0;									
-            let currentSum = a + b + carry;
-            if(currentSum >= 10){
-            	currentSum = currentSum.toString();
-                carry = 1;
-                totalSum += (currentSum.charAt(1).toString())
-            }
-            else{
-                carry = 0;
-                totalSum += (currentSum.toString());
-            }  
-        }   
-        if(carry){
-        	totalSum += carry;
-        }
-        totalSum = Array.from(totalSum).reverse();
-        totalSum = totalSum.toString().replaceAll(",", "")
-        console.log(totalSum);
-            
-    } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//======================================================= CORS ===========================================================================    
+/* 
+	 CORS (Cross Origin Resource Sharing)	is a 'HTTP-header based mechanism' that allows a server to specify which domains/scheme/port are ALLOWED 
+         to get resources from the server. CORS relies on a mechanism called Pre-flight requests and responses. The browser will send a pre-flight request
+	 to the server (The pre-flight request will contain the HTTP method and the domain of the client). The server will receive the pre-flight request 
+         and check if the domain of the client is allowed to make requests to the server and if the client is allowed to use the HTTP method. 
+	 Then the server will send a pre-flight response to the client, notifying them if they are allowed to make fetch requests to the server
+*/
+   
+	       
+/* 
+	Pre-flight request		
+		OPTIONS /resource/foo
+		Access-Control-Request-Method: DELETE					<-------------
+		Access-Control-Request-Headers: origin, x-requested-with
+		Origin: https://foo.bar.org
+
+	Pre-flight response
+		HTTP/1.1 204 No Content
+		Connection: keep-alive
+		Access-Control-Allow-Origin: https://foo.bar.org
+		Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE		<-------------
+		Access-Control-Max-Age: 86400
+		
+	Since the pre-flight response contains the delete method in one of the headers,
+	then that means the client can send delete requests to the server
+
+*/
+
+
+
+
+
+
+
+
+
+
 
 
 

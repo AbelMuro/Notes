@@ -8,19 +8,20 @@
 	 	5) DOM
    		6) Scope (function scope, block scope, global scope, let, var, const)
      		7) Strings
-       		8) Boolean 
-     		9) Functions (pure functions, constructors, generators, arrow functions, etc...)
-       		10) Objects
-   		11) THIS (context)
-		12) Arrays
-  		13) Sets
-    		14) Maps
-      		15) Classes
- 		16) Loops (while, for, do while)
-		17) Promises (promise, constructor, then, catch, async await)
-  		18) Error Handling (try, catch, finally, Error Constructor);
-    		19) Audio
-      		20) Date
+       		8) Regular Expressions (ReqExp)
+       		9) Boolean 
+     		10) Functions (pure functions, constructors, generators, arrow functions, etc...)
+       		11) Objects
+   		12) THIS (context)
+		13) Arrays
+  		14) Sets
+    		15) Maps
+      		16) Classes
+ 		17) Loops (while, for, do while)
+		18) Promises (promise, constructor, then, catch, async await)
+  		19) Error Handling (try, catch, finally, Error Constructor);
+    		20) Audio
+      		21) Date
 
 
 					                FEATURES OF JAVASCRIPT
@@ -796,6 +797,148 @@ str.padEnd(targetLength, padString)	//Adds the specified 'padString' to the end 
 
 
 
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+//=========================================================== REG EXP ============================================================================
+/* 
+	Regular Expressions are used to create a pattern that can be used to select certain
+ 	parts of a string
+
+     	modifiers          /i   perform an case-insensitive matching
+                           /g   perform a global match (doesnt stop at the first match)  
+                           /m   perform a multi-line match
+*/
+
+
+//------------------- Find a letter character
+string.match(/[a-zA-Z]/);
+
+
+//------------------- Find a non-letter character
+string.match(/[^a-zA-Z]/);
+
+	
+//------------------- Find a number character
+string.match(/[0-9]/)
+
+
+//------------------- Find a non-number character
+string.match(/[^0-9]/);
+
+
+//------------------- Find a pattern at the start of a string
+string.match(/^[0-9]/);
+
+
+//------------------- Find a pattern at the end of a string
+string.match(/[0-9]$/);
+	
+
+//------------------- Setting a length for a pattern
+string.match(/[0-9]{2,3}/)			//find 2 to 3 digits
+string.match(/[0-9]{2}/)			//find exactly 2 digits
+
+
+//------------------- Grouping together patterns
+string.match(/([0-9][a-zA-Z])/)			//a number must be placed before a letter '9b'
+string.match(/([A-Z]8)/)				//a capital letter must be placed before 8
+
+
+//------------------- Special Sequences
+/* 
+	Some characters in regular expression have special meaning.
+ 	To use them you need to use \
+
+   	/\w/	    if you took away the \, the regular express would look for the character 'w'
+*/
+
+string.match(/\w/)	             //Find an alphanumeric character (letter and number)  [^a-zA-Z0-9_]
+string.match(/\W/)	             //Find an non-alphanumeric character (letter and number) [^a-zA-Z0-9_]
+string.match(/\d/)	             //Find a digit
+string.match(/\D/)	             //Find a non-digit character
+string.match(/\s/)	             //Find a whitespace character
+string.match(/\S/)                   //Find a non-whitespace character
+string.match(/\b/)	             //Find a match at the beginning/end of a word,    beginning like this: \bHI,      end like this: HI\b
+string.match(/\B/)	             //Find a match, but not at the beginning/end of a word
+string.match(/\0/)	             //Find a NULL character
+string.match(/\n/)	             //Find a new line character
+string.match(/\f/)	             //Find a form feed character
+string.match(/\t/)	             //Find a tab character
+string.match(/\v/)	             //Find a vertical tab character
+
+
+
+//------------------- Conditional patterns
+/* 
+	? is the conditional pattern. The string may or may not have 
+ 	the pattern and still be valid.
+*/
+string.match(/[0-9]?/)
+
+	
+
+/ (.\d \s)? /        // you can group together a pattern like this as well
+/ /[0-9]{2,3} /      // finds 2 to 3 digits in the string
+/ \w /	             //Find an alphanumeric character (letter and number)  [^a-zA-Z0-9_]
+/ \W /	             //Find an non-alphanumeric character (letter and number) [^a-zA-Z0-9_]
+/ \d /	             //Find a digit
+/ \D /	             //Find a non-digit character
+/ \s /	             //Find a whitespace character
+/ \S /               //Find a non-whitespace character
+/ \b /	             //Find a match at the beginning/end of a word,    beginning like this: \bHI,      end like this: HI\b
+/ \B /	             //Find a match, but not at the beginning/end of a word
+/ \0 /	             //Find a NULL character
+/ \n /	             //Find a new line character
+/ \f /	             //Find a form feed character
+/ \t /	             //Find a tab character
+/ \v /	             //Find a vertical tab character
+/ \n+ /              //Find a string that contains at least one n or more
+/ \^n /              //Find a string that contains n at the beginning of it
+/ [^n]/              //find any character that is NOT n
+/ \n$ /              //Find a string with n at the end of it
+/ \a* /              //find zero or more of `a`
+/ . /                //will find all single characters from the string (its basically like splitting the string into an array)
+  
+/ (?=.* \d) /         //?=.* will create a requirement that the specified string MUST have the pattern, in this case, string must have a digit
+/ (?=.* [a-zA-Z]) /   //string must have a letter between a-z and A-Z
+/ (?=.* [@$!%*?&]) /  //string must have a symbol in the specified pattern
+
+//its a good idea to use String.match() to use a reg exp to check if the pattern exists in the string
+//match will return an array with the characters that match the pattern, 
+//if the string doesnt contain characters that match the pattern, then match will return null
+let myString = "this is just an example for reg exp 1 2 3 4 5";
+myString.match( / [1-4] /g);                       //will search for all numbers between 1 and 4 in the string			
+myString.match( / [0-9]{1} /g)		                 //will search for one occurence of a number between 0 and 9 
+myString.match( / [0-9]{1,3} /g )	                 //will search for one, two or three occurences of a number between 0 and 9
+myString.match( / [0-9\s]{19} /g)	                 //will search for 19 occurences of single digits OR spaces (in any combination)
+myString.match( / \never\d+\.\d+ /g)               //you can chain together reg exp, this will select 'never' then any digit, then a period, then another digit
+myString.match( / this /g );                       //will search for 'this' in the string
+myString.match( / (this)|(is) /g );                //will search for 'this' and 'is' in the string, this separates two patterns () | ()
+myString.match( / \d /g);                          //will search for a digit in the string
+myString.match( / greetings\d /g);                 //will search for 'greetings' and the first digit next to it
+myString.match( / greetings\d+ /g);                //will search for 'greetings' and all the digits next to it 
+myString.match( / \bLO /g);                        //will seach for a word that has 'LO' at the beginning of the word (will not select HELLO, but will select LOOK) 
+myString.match( / \.js$ /g);                       //the '$' is used to select the pattern at the END of a string
+
+
+
+//using variables to define patterns with regexp
+const str = "how are you today";
+const p = "a";
+const pattern  = RegExp(p, "g");
+str.match(pattern);
 
 
 

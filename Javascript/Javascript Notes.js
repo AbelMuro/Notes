@@ -867,8 +867,10 @@ string.match(/[0-9]$/);
 	
 
 //------------------- Setting a length for a pattern
-string.match(/[0-9]{2,3}/)			//find 2 to 3 digits
-string.match(/[0-9]{2}/)			//find exactly 2 digits
+string.match(/[0-9]{2,3}/)			//find 2 to 3 digits that are grouped together
+string.match(/[0-9]{2}/)			//find exactly 2 digits grouped together
+string.match(/[0-9]{5,}/)			//find a group of digits that has at least 5 digits
+string.match(/[0-9]{1,4}/);			//find a group of digits that has at most 4 digits
 
 
 //------------------- Grouping together patterns
@@ -898,8 +900,9 @@ string.match(/\f/)	             //Find a form feed character
 string.match(/\t/)	             //Find a tab character
 string.match(/\v/)	             //Find a vertical tab character
 string.match(/./);		     //Finds any character (this character doesnt require \)
-string.match(/+/)		     //Finds one or more patterns of the preceding element (this character doesnt require \)	
+string.match(/m+/)		     //Finds one or more patterns of the preceding element (this character doesnt require \)	
 string.match(/a*/);		     //Finds zero or more of the preceding character
+
 
 
 //------------------- Escaping Special Characters
@@ -917,6 +920,7 @@ string.match(/\./);			//now you can use . in a pattern
 string.match(/\*/);			//now you can use * in a pattern
 string.match(/\+//);			//now you can use + in a pattern
 string.match(/\^/);			//now you can use ^ in a pattern
+
 
 
 //------------------- Conditional patterns (?)
@@ -952,41 +956,47 @@ string.match(/[a-z](?=4)/)		//matches any single lower-case letter, but only if 
 */
 string.match(/hello|world/);			// this will match if the string has 'hello' or 'world'
 string.match(/x|y/)				// this will match if the string has 'x' or 'y'
-string.match(/[a-z]|[0-9]/);			// this will match if the string has at least one lower-case letter or one digit	
+string.match(/[a-z]|[0-9]/);			// this will match if the string has at least one lower-case letter or at leastone digit	
 
 
+
+//------------------- Requirements
+/* 
+	You can use the ?=.* to create a requirement in a string.
+ 	This is most usefull in <input/>
+
+  	syntax:
+   		(?=.*[char-set])		// input must have at least one character from the char-set
+     		(?=.*sequence)			// sequence can be any group of characters
+       		(?=.*m)				// m can be any single character
+*/
+<input type='text' pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{6,}">
 
 	
-/ . /                //will find all single characters from the string (its basically like splitting the string into an array)
-  
-/ (?=.* \d) /         //?=.* will create a requirement that the specified string MUST have the pattern, in this case, string must have a digit
-/ (?=.* [a-zA-Z]) /   //string must have a letter between a-z and A-Z
-/ (?=.* [@$!%*?&]) /  //string must have a symbol in the specified pattern
-
-//its a good idea to use String.match() to use a reg exp to check if the pattern exists in the string
-//match will return an array with the characters that match the pattern, 
-//if the string doesnt contain characters that match the pattern, then match will return null
-let myString = "this is just an example for reg exp 1 2 3 4 5";
-myString.match( / [1-4] /g);                       //will search for all numbers between 1 and 4 in the string			
-myString.match( / [0-9]{1} /g)		                 //will search for one occurence of a number between 0 and 9 
-myString.match( / [0-9]{1,3} /g )	                 //will search for one, two or three occurences of a number between 0 and 9
-myString.match( / [0-9\s]{19} /g)	                 //will search for 19 occurences of single digits OR spaces (in any combination)
-myString.match( / \never\d+\.\d+ /g)               //you can chain together reg exp, this will select 'never' then any digit, then a period, then another digit
-myString.match( / this /g );                       //will search for 'this' in the string
-myString.match( / (this)|(is) /g );                //will search for 'this' and 'is' in the string, this separates two patterns () | ()
-myString.match( / \d /g);                          //will search for a digit in the string
-myString.match( / greetings\d /g);                 //will search for 'greetings' and the first digit next to it
-myString.match( / greetings\d+ /g);                //will search for 'greetings' and all the digits next to it 
-myString.match( / \bLO /g);                        //will seach for a word that has 'LO' at the beginning of the word (will not select HELLO, but will select LOOK) 
-myString.match( / \.js$ /g);                       //the '$' is used to select the pattern at the END of a string
 
 
 
-//using variables to define patterns with regexp
-const str = "how are you today";
-const p = "a";
-const pattern  = RegExp(p, "g");
-str.match(pattern);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

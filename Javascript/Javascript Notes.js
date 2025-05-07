@@ -806,6 +806,18 @@ str.padEnd(targetLength, padString)	//Adds the specified 'padString' to the end 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 	
 
 
@@ -819,6 +831,12 @@ str.padEnd(targetLength, padString)	//Adds the specified 'padString' to the end 
      	modifiers          /i   perform an case-insensitive matching
                            /g   perform a global match (doesnt stop at the first match)  
                            /m   perform a multi-line match
+
+        sequence = any group of characters
+	character-set = a set of characters with a common category (letters, numbers, symbols)
+
+       [] means a character set		
+       () can be used to group together a sequence or patterns
 */
 
 
@@ -840,6 +858,8 @@ string.match(/[^0-9]/);
 
 //------------------- Find a pattern at the start of a string
 string.match(/^[0-9]/);
+string.match(/^sequence/)
+string.match(/^s/)
 
 
 //------------------- Find a pattern at the end of a string
@@ -852,18 +872,18 @@ string.match(/[0-9]{2}/)			//find exactly 2 digits
 
 
 //------------------- Grouping together patterns
-string.match(/([0-9][a-zA-Z])/)			//a number must be placed before a letter '9b'
+string.match(/([0-9][a-zA-Z])/)				//a number must be placed before a letter '9b'
 string.match(/([A-Z]8)/)				//a capital letter must be placed before 8
 
 
-//------------------- Special Sequences
+//------------------- Special characters
 /* 
-	Some characters in regular expression have special meaning.
- 	To use them you need to use \
+	Some characters in regular expression have special meaning and 
+ 	require the \ to use them. Keep in mind, that not all characters 
+  	with special meaning require the \
 
-   	/\w/	    if you took away the \, the regular express would look for the character 'w'
+   	/\w/	    		     if you took away the \, the regular express would look for the character 'w'
 */
-
 string.match(/\w/)	             //Find an alphanumeric character (letter and number)  [^a-zA-Z0-9_]
 string.match(/\W/)	             //Find an non-alphanumeric character (letter and number) [^a-zA-Z0-9_]
 string.match(/\d/)	             //Find a digit
@@ -877,38 +897,66 @@ string.match(/\n/)	             //Find a new line character
 string.match(/\f/)	             //Find a form feed character
 string.match(/\t/)	             //Find a tab character
 string.match(/\v/)	             //Find a vertical tab character
+string.match(/./);		     //Finds any character (this character doesnt require \)
+string.match(/+/)		     //Finds one or more patterns of the preceding element (this character doesnt require \)	
+string.match(/a*/);		     //Finds zero or more of the preceding character
 
 
-
-//------------------- Conditional patterns
+//------------------- Escaping Special Characters
 /* 
-	? is the conditional pattern. The string may or may not have 
- 	the pattern and still be valid.
-*/
-string.match(/[0-9]?/)
+	Some characters in regular expressions have special meaning.
+ 	But if you want to match a pattern with those characters without
+  	the special meaning, you need to escape them with \
 
+   	/./		the . means to match ALL characters
+
+    	/\./		if you want to create a pattern with . 
+     			then you have to escape the character
+*/
+string.match(/\./);			//now you can use . in a pattern
+string.match(/\*/);			//now you can use * in a pattern
+string.match(/\+//);			//now you can use + in a pattern
+string.match(/\^/);			//now you can use ^ in a pattern
+
+
+//------------------- Conditional patterns (?)
+/* 
+	? is the conditional character. The string may or may not have 
+ 	the pattern and still be valid.
+
+  	syntax: 
+   		[char-set]?	        // this means 0 or 1 occurence of the preceding char-set
+		m?			// m represents a single character, this means 0 or 1 occurences of the preceding character
+
+  		[char-set](?=pat)	// this will match if a single character from the char-set has 'pat' right after it (apat)
+     		sequence(?=pat)		// 'sequence' can be any group of characters, this will match only if 'sequence' has 'pat' right after it (wordpat)	
+       		m(?=pat)		// m represents a single character, this will match only if 'm' has 'pat' right after it (mpat)
+     
+*/
+string.match(/[0-9]?/)			//matches 0 or 1 digit
+string.match(/[a-z](?=4)/)		//matches any single lower-case letter, but only if '4' comes right after it
 	
 
-/ (.\d \s)? /        // you can group together a pattern like this as well
-/ /[0-9]{2,3} /      // finds 2 to 3 digits in the string
-/ \w /	             //Find an alphanumeric character (letter and number)  [^a-zA-Z0-9_]
-/ \W /	             //Find an non-alphanumeric character (letter and number) [^a-zA-Z0-9_]
-/ \d /	             //Find a digit
-/ \D /	             //Find a non-digit character
-/ \s /	             //Find a whitespace character
-/ \S /               //Find a non-whitespace character
-/ \b /	             //Find a match at the beginning/end of a word,    beginning like this: \bHI,      end like this: HI\b
-/ \B /	             //Find a match, but not at the beginning/end of a word
-/ \0 /	             //Find a NULL character
-/ \n /	             //Find a new line character
-/ \f /	             //Find a form feed character
-/ \t /	             //Find a tab character
-/ \v /	             //Find a vertical tab character
-/ \n+ /              //Find a string that contains at least one n or more
-/ \^n /              //Find a string that contains n at the beginning of it
-/ [^n]/              //find any character that is NOT n
-/ \n$ /              //Find a string with n at the end of it
-/ \a* /              //find zero or more of `a`
+
+//------------------- Conditional OR (|)
+/* 
+	| is a conditional character. You can use two patterns with this character
+ 	and the regular expression will match if the string contains one or both 
+  	of the patterns
+
+	syntax: 
+ 		/sequence-one|sequence-two/       // this will match if the string has either sequence
+   		/m|m/				  // this will match if the string has either single character
+     		/[char-set]|[char-set]/		   //this will match if the string has at least one character from either char-set
+   
+*/
+string.match(/hello|world/);			// this will match if the string has 'hello' or 'world'
+string.match(/x|y/)				// this will match if the string has 'x' or 'y'
+string.match(/[a-z]|[0-9]/);			// this will match if the string has at least one lower-case letter or one digit	
+
+
+
+	
 / . /                //will find all single characters from the string (its basically like splitting the string into an array)
   
 / (?=.* \d) /         //?=.* will create a requirement that the specified string MUST have the pattern, in this case, string must have a digit

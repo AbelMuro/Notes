@@ -83,6 +83,8 @@ function Circle () {
               delay: 0.5,                                       // can delay the animation in seconds                                        
               ease: [0, 0.71, 0.2, 1.01],                       // defines a timing function, can be 'linear', 'ease-in', 'ease-out', or an array of integers
 
+              type: 'keyframes',                                // Sequence-based animation (typically used for animating css properties through an array)
+
               repeat: 1, 2, 'Infinite',                         // the number of times the transition will occur
               repeatType: 'loop, reverse, mirror',              // loop repeats the animation from the start, reverse alternates between forward and backwards playback
               repeatDelay: 0.3,                                 // the delay between each repeating transition 
@@ -221,6 +223,13 @@ function App() {
             Gestures are event handlers that trigger animation
             when the event is triggered. These props will accept
             an object with css properties
+
+            Event handlers that start with 'while' will provide a built 
+            in way of creating an animation
+
+            Event handlers that start with 'on' are more optimized for
+            creating animations. They trigger animations more smoothly
+            compared to the default event handlers in React
 */
 
 function App() {
@@ -245,11 +254,12 @@ function App() {
 
           whileFocus={{scale: 1.2}}                //gesture for input elements or any element that receives focus
 
-          onPanStart={(e, info) => {}}             //function that fires when the user presses down on an element and then moves away at least 3 pixels  (info = {point: {x, y}})  for mobile -> touch-action: none; this will disabled pan on mobile device
+          onPanStart={(e, info) => {}}             //function that fires when the user presses down on an element and then moves away at least 3 pixels  (info = {point: {x, y}})  for mobile -> touch-action: none; this will disable pan on mobile device
           onPanEnd={(e, info) => {}}               //function that fires when the user stop panning
       />          
     )
 }
+
 
 
 
@@ -311,32 +321,76 @@ function App() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //============================================================================== useAnimate() ==================================================================================
-//useAnimate() works in the same way as <motion/> component
-//the difference here is that useAnimate() allows for a more complex way of handling animations
+/* 
+            useAnimate() can be used to create complex animations. 
+            The hook retuns a ref object that can be assigned to a component,
+            and also returns a function that returns a callback that can
+            be used to trigger animations
+
+            syntax:
+                        const [ref, animate] = useAnimate();
+
+                        const animating = await animate(selector, animateTo, transition)
+
+                                 selector = can be any valid css selector, can also be a ref object returned from useAnimate()
+                                 animateTo = an object that has css properties, the element will animate to these values
+                                 transition = an object that has the transition properties for the animation
+*/
+
 
 import {useAnimate} from 'framer-motion';
 
 function App() {
-    const [ref, animate] = useAnimate();        //ref is an object that must be assigned to the element we want to animate
+    const [ref, animate] = useAnimate();    
 
-    useEffect(() => {
-        const animation = async () => {
-          const animating = await animate(ref.current, { x: 0 }, {duration: 0.5})            //second object is the css properties
-          await animate(ref.current, { x: 100}, {duration: 0.5, delay: 2})                   //third object is the transition properties
+    const createAnimation = () => {
+          await animate(ref.current, { x: 0 }, {duration: 0.5})                      
+          await animate(ref.current, { x: 100}, {duration: 0.5, delay: 2})                   
           await animate(ref.current, { x: 20}, {duration: 0.5})
-          await animate('div', {y: 45}, {duration: 0.4})                                    //you can use a tag selector to animate a group of elements
-        }
-        
-        animation();
-
-      return () =>  {animating.stop;}                     //when the component is unmounted, it will call the stop() function to clean up the animation
-      }, [])
+          await animate('div', {y: 45}, {duration: 0.4})                                   // you can also use any valid css selector in the first argument
+          animating.stop()
+    }
 
     return(    
-        <div className={'box'} ref={ref}></div>
+        <div ref={ref}></div>
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

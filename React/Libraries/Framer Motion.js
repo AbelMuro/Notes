@@ -1,5 +1,9 @@
-//Framer motion is a library used to create animations for react applications
-//npm install framer-motion
+/* 
+            Framer-motion is an animation library used to create animations for React
+
+            npm install framer-motion
+*/
+
 
 
 /* 
@@ -19,35 +23,77 @@
 
 
 //======================================================== DECLARATIVE ANIMATIONS:  <motion/> component ================================================================================================
+/* 
+            The <motion/> component is used to create animation with a component.
+            Most animations that framer-motion uses consist of changing the values
+            of a css property. The <motion/> component changes these css values by 
+            using three props; initial, animate and transition to create the
+            animation
+*/
+
+
+//-------------------------- Initial and Animate Props
+/* 
+            The initial and animate props accept an object that
+            has css properties. The initial prop will have the 
+            initial styles of the component. The animate prop will
+            have the styles the component will animate into.
+*/
+
 import {motion} from 'framer-motion';
 
-// INITIAL AND ANIMATE: this will animate the circle from opacity: 1 to opacity: 2
-// you can animate multiple properties at the same time
+function App() {
+     return(
+            <motion.div 
+                 initial={backgroundColor: 'white', x: 0} 
+                 animate={                                                
+                        backgroundColor: 'red', 
+                        x: [-100, -50, 0, 50, 100, 150]                        //will animate through an array of values
+                 }>
+            </motion.div>
+     )
+}
+
+
+
+
+//-------------------------- Transition Prop
+/* 
+            The transition prop is used to control and specify
+            how an animation will take place.
+*/
+
+
 function Circle () {
   return(
     <> 
-       <motion.div 
-          className='circle' 
-          
+       <motion.div       
           initial={{opacity: 0, scale: 0.5}}                    //you can set false to this attribute and the animation will cancel automatically 
           animate={{opacity: 1, scale: 1.2}}                    //if you set null to one of the css properties, it will use the default value for the property
           transition={{
-              opacity: {duration: 0.2},                         //you can assign a transition to a specific property like this
-              type: 'spring',                                   //use Tween to use DURATION based animation, use Spring for spring based animation(default)
-              bounce: 0.24,                                     //type='spring, 'determines the level of bounciness the animation will be, must be a value between 0 and 1 (if duration is set, then this defaults to 0.25) this property will be overridden if stiffness, damping or mass is set
-              damping: 6,                                       //type='spring', strength of opposing force. If set to 0, spring will oscillate indefinitely. Set to 10 by default.
-              mass: 21,                                         //Mass of the moving object. Higher values will result in more lethargic movement. can be any number
-              stiffness: 150,                                    //Stiffness of the spring. Higher values will create more sudden movement
+              type: 'spring',                                   // Spring-based animation
+              bounce: 0.24,                                     // determines the level of bounciness the animation will be, must be a value between 0 and 1 
+              damping: 6,                                       // Strength of opposing force. If set to 0, spring will oscillate indefinitely. Set to 10 by default.
+              mass: 21,                                         // Mass of the moving object. Higher values will result in more lethargic movement. can be any number
+              stiffness: 150,                                   // Stiffness of the spring. Higher values will create more sudden movement
             
-              type:'tween',
-              duration: 3,                                      //if type=spring, then durarion will be overridden if stiffness, damping or mass are set, and will be defaulted to 0.8 if bounce is set
-              times: [0, 0.2, 1],                               //by default, the animation is spaced evenly, you can override this with the times prop 0 -> 0.2 -------> 1
-              delay: 0.5,                                                                   
-              ease: [0, 0.71, 0.2, 1.01],                       // defines a timing function, similar to transition: all 0.2 linear/ease-in (built in timing functions, linear, ease-in, ease-out)
+              type: 'tween',                                    // Duration-based animation
+              duration: 3,                                      // duration of the animation
+              delay: 0.5,                                       // can delay the animation in seconds                                        
+              ease: [0, 0.71, 0.2, 1.01],                       // defines a timing function, can be 'linear', 'ease-in', 'ease-out', or an array of integers
+
               repeat: 1, 2, 'Infinite',                         // the number of times the transition will occur
               repeatType: 'loop, reverse, mirror',              // loop repeats the animation from the start, reverse alternates between forward and backwards playback
-              repeatDelay: 0.3,                                 // the delay between each repeating transition
-              from: 90,                                         // this defines the initial value for ALL css properties that are in the animate prop, this is similar to initial prop
+              repeatDelay: 0.3,                                 // the delay between each repeating transition 
+
+              when: "beforeChildren or afterChildren",          // parent component transitions will finish before or after childrens transition
+              delayChildren: 0.2,                               // similar to the property above, but it offers a more precise delay
+              staggerChildren: 0.1,                             // first child will be delayed by 0.1, the second child delayed by 0.2, the third child delayed by 0.3 (calculate staggerDelay will be added to delayChildren)
+              staggerDirection: -1,                             // direction in which the children are delayed, -1 means the last child is delayed by 0.1, the second to last child is delayed by 0.2...  
+
+              opacity: {duration: 0.2},                         // you can assign a transition to a specific property like this
+              from: 90,                                         // this defines the initial value for ALL css properties that are in the animate prop, this is similar to initial prop   
+              times: [0, 0.2, 1],                               // by default, the animation is spaced evenly, you can override this with the times prop 0 -> 0.2 -------> 1
           }}                 
         />  
   )
@@ -55,19 +101,56 @@ function Circle () {
 
 
 
-// ARRAYS ANIMATION: this will animate through the values of an array
-function Circle
-    return(
+
+
+
+
+//-------------------------- Variants Prop
+/* 
+            Variants are a way to modularize your props and objects
+            Complex animations can require large objects to be assigned
+            to the initial and animate props of your motion component.
+            You can simplify your code by using variants.
+*/
+const item = {
+      visible: {  
+            opacity: 1,
+            transition: {  
+                duration: 1.2      
+            },
+      },
+      hidden: { 
+            opacity: 0,
+      },
+}
+
+
+function AnimateList() {
+    return (
         <motion.div
-          animate={{   
-            x: [-100, -50, 0, 50, 100, 150],            
-            scale: [null, 2, 2, 1, 1],          //keep in mind that if you use null as one of the values, it will use the default value for the property
-            rotate: [0, 0, 270, 270, 0],
-            borderRadius: ["20%", "20%", "50%", "50%", "20%"],
-          }}
-        />
+            initial="hidden"                        // framer-motion will get the 'hidden' property from the 'item' object and assign it to this prop       
+            animate="visible"                       // framer-motion will get the 'visible' property from the 'item' object and assign it to this prop
+            variants={item}                         // you must assign the object that contains the css properties here             
+        >
+        </motion.div>
     )
-  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -232,41 +315,6 @@ const myVariantsObject = {
 //VARIANTS: you can use the variants prop to create animations in child components
 //Keep in mind that if you use variants for a child component, and the animation is triggered throught the parent component
 // you should not have use any animation for the child components through the initial and animate prop
-
-const list = {
-      visible: {  opacity: 1,
-                  transition: {
-                    when: "beforeChildren or afterChildren",     //parent component transitions will finish before or after childrens transition
-                    delayChildren: 0.2,         // similar to the property above, but it offers a more precise delay
-                    staggerChildren: 0.1,       // first child will be delayed by 0.1, the second child delayed by 0.2, the third child delayed by 0.3 (calculate staggerDelay will be added to delayChildren)
-                    staggerDirection: -1,       // direction in which the children are delayed, -1 means the last child is delayed by 0.1, the second to last child is delayed by 0.2...                  
-                },
-               },
-      hidden: { opacity: 0 ,
-                transition: {
-                    when: "afterChildren",    //parent components animation will finish after the childrens animation ends
-                },
-              },
-}
-
-const item = {
-      visible: { opacity: 1, x: 0 },
-      hidden: { opacity: 0, x: -100 },           
-}
-
-function AnimateList() {
-    return (
-        <motion.ul
-          initial="hidden"                    //this MUST be either visible or hidden
-          animate="visible"                   //this MUST be either visible or hidden
-          variants={list}                     //you can remove this if you dont want the parent element to be animated, the children will still be animated
-        >
-          <motion.li variants={item} />      //variant prop here MUST have visible or hidden properties in the object
-          <motion.li variants={item} />
-          <motion.li variants={item} />
-        </motion.ul>
-    )
-}
 
 
 //DYNAMIC VARIANTS: variants can be a function that can use its parameters to dynamically style a css property

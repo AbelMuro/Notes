@@ -45,6 +45,7 @@ import {motion} from 'framer-motion';
 function App() {
      return(
             <motion.div 
+                 key='1'                                                      // key prop is required for img tags or any element that has a img as a child
                  initial={backgroundColor: 'white', x: 0} 
                  animate={                                                
                         backgroundColor: 'red', 
@@ -113,26 +114,140 @@ function Circle () {
             You can simplify your code by using variants.
 */
 const item = {
+      hidden: { 
+            opacity: 0,
+      },
       visible: {  
             opacity: 1,
             transition: {  
                 duration: 1.2      
             },
-      },
-      hidden: { 
-            opacity: 0,
-      },
+      }
 }
 
 
-function AnimateList() {
+function App() {
     return (
         <motion.div
             initial="hidden"                        // framer-motion will get the 'hidden' property from the 'item' object and assign it to this prop       
             animate="visible"                       // framer-motion will get the 'visible' property from the 'item' object and assign it to this prop
             variants={item}                         // you must assign the object that contains the css properties here             
         >
+              <motion.div                                            
+                  variants={item}                   // the child components of a parent component that has the variants prop will also have
+               />    
         </motion.div>
+    )
+}
+
+
+
+
+
+//-------------------------- Dynamic Variants Prop
+/* 
+            You can also use variants dynamically by using a callback
+*/
+const item = {
+      hidden: {  
+            opacity: 0,
+      }.
+      visible: i => ({                        
+             opacity: 1,
+             transition: {
+                delay: i * 0.3,
+      }) 
+}
+
+function App(){
+    return(
+            array.map((val, i) => {
+                 return(
+                        <motion.div
+                              custom={i}                                    //custom prop is used to pass a value to the dynamic variant callback
+                              initial="hidden"                           
+                              animate="visible"                       
+                              variants={item}>                                 
+                       </motion.div>
+                 )       
+            })
+    )
+}                  
+
+
+
+
+
+//-------------------------- Exit Prop
+/* 
+            The exit prop is used to create 'exit' animations.
+            In other words, before the component is unmounted,
+            it will go through one final animation. Keep in mind,
+            that the 'exit' prop will only work if you wrap the component
+            with AnimatePresence
+*/
+import {motion, AnimatePresence}
+
+function App() {
+    const [remove, setRemove] = useState(false);
+
+    const handleClick = () => {
+        setRemove(!remove);
+    }
+
+    return(
+        <>
+            <AnimatePresence initial={false}>           // you can set initial to false to skip the first initial animation
+                 {
+                 remove &&  
+                      <motion.div                      
+                           initial={opacity: 0}
+                           animate={opacity: 1}
+                           exit={opacity: 0}           // the exit prop will use the exit property from the object in variants
+                  />
+                  } 
+            </AnimatePresence>
+            <button onClick={handleClick}>
+                Remove from dom
+            </button>                            
+        </>     
+    )
+}
+
+
+
+//-------------------------- Gestures
+/* 
+            Gestures are event handlers that trigger animation
+            when the event is triggered. These props will accept
+            an object with css properties
+*/
+
+function App() {
+  return (
+       <motion.div 
+          initial={{opacity: 0}}
+
+          whileHover={{scale: 1.2, transition: {duration: 2}}}   
+          onHoverStart={(e) => {}}                 //function that fires when the user hovers over the element
+          onHoverEnd={(e) => {}}                   //function that fires when the users mouse leaves the element
+
+          whileTab={{scale: 0.9}}                  //gesture for click events
+          onTabStart={(e, info) => {}}             //function that fires when the tab start on the element (info = {point: {x, y}})
+          onTabCancel={(e, info) => {}}            //function that fires when the tab ends (info = {point: {x, y}})
+
+          whileInView={{opacity: 1}}               //gesture for elements that first appear in the viewport
+          viewport={{once: true}}                  //the whileInView gesture will only run once
+
+          whileDrag={{color: 'red'}}               //gesture for elements that are currently being dragged
+          onDragStart={(e, info) => {}}            //function that fires when the user starts dragging the element
+          onDragEnd={(e, info) => {}}              //function that fires when the user stops dragging the element
+
+          whileFocus={{scale: 1.2}}                //gesture for input elements or any element that receives focus
+
+          onPanStart={(e, info) => {}}             //function that fires when the user presses down on an element and then moves away at least 3 pixels  (info = {point: {x, y}})  for mobile -> touch-action: none; this will disabled pan on mobile device
+          onPanEnd={(e, info) => {}}               //function that fires when the user stop panning
+      />          
     )
 }
 
@@ -156,60 +271,24 @@ function AnimateList() {
 
 
 
+//======================================================== useCycle() hook ================================================================================================
+/* 
+            useCycle() hook is similar to useState(), it is used to toggle between two different sets of styles
+*/
 
-
-
-
-
-
-//============================================================== useCycle() =======================================================================================
-//useCycle() works similarly to useState(), it can be used to toggle between two different sets of styles
-//in the example below, we will have a button that will display a circle and a square when it is clicked on
-
-
-
-const variantsForCircle = {                                    //we will toggle between these two objects with useCycle
-      open: {
-          opacity: 1,
-          backgroundColor: 'green'
-      },
-      closed: {
-          opacity: 0,
-          backgroundColor: 'transparent'
-      }
-   }
-
-const variantsForSquare = {                                    //we will toggle between these two objects with useCycle
-      open: {
-          opacity: 0.5,
-          backgroundColor: 'red'
-      },
-      closed: {
-          opacity: 0,
-          backgroundColor: 'transparent'
-      }
-   }
 
 function App() {
-    const [isOpen, toggleOpen] = useCycle(false, true);              //isOpen will have either true or false as the values, toggleOpen() is a function used to toggle between true and false
+    const [toggle, setToggle] = useCycle(false, true);               //toggle will have either true or false as the values, setToggle() is a function used to toggle between true and false
 
     const handleClick = () => {
-        toggleOpen();
+        setToggle();
     }
 
     return(
         <>
             <motion.div
-                className={'circle'}
-                initial={false}
-                animate={isOpen ? 'open' : 'closed'}                    //animate property will toggle between the 'open' styles and the 'closed' styles
-                variants={variantsForCircle}>                           //you must pass an object that has the two properties 'open' and 'closed'
-                  
-                  <motion.div                                            //by clicking on the button below, this child element will also have its styles toggle between 'open' and 'closed'
-                      className={'square'}                              //but it MUST have a variants prop
-                      variants={variantsForSquare}                       //you must pass an object that has the two properties 'open' and 'closed', it doesnt have to be the same object that you pass to the parent component
-                      />    
-                        
+                initial={false}                                          // we have to set initial to false for useCycle to work here
+                animate={toggle ? {color: 'red'} : {color: 'blue'}}>                             
             </motion.div>    
 
             <button onClick={handleClick}>                              //clicking on this button will toggle between the 'open' styles and the 'closed' styles
@@ -219,6 +298,13 @@ function App() {
 
     )
 }
+
+
+
+
+
+
+
 
 
 
@@ -311,32 +397,6 @@ const myVariantsObject = {
 
 
 
-//=======================================================================  VARIANTS ===================================================================================================
-//VARIANTS: you can use the variants prop to create animations in child components
-//Keep in mind that if you use variants for a child component, and the animation is triggered throught the parent component
-// you should not have use any animation for the child components through the initial and animate prop
-
-
-//DYNAMIC VARIANTS: variants can be a function that can use its parameters to dynamically style a css property
-const variants = {
-  visible: i => ({
-      opacity: 1,
-      transition: {
-        delay: i * 0.3,
-      },
-  }),
-  hidden: { opacity: 0 },
-}
-
-function VariantsWithFunctions() {
-    return items.map((item, i) => (
-      <motion.li
-        custom={i}              //here you are calling the visibile function and passing a value
-        animate="visible"
-        variants={variants}    
-      />
-  ))
-}
 
 
 
@@ -348,41 +408,7 @@ function VariantsWithFunctions() {
 
 
 
-//============================================================================= EXIT ANIMATIONS ====================================================================================
 
-//EXIT ANIMATIONS: before an element is removed from the dom, you can use the exit prop to apply some animation before the element is removed
-const variants = {
-    exit: {
-        x: -1000,
-        opacity: 0,
-    }
-};
-
-function App() {
-    const [remove, setRemove] = useState(false);
-
-    const handleClick = () => {
-        setRemove(!remove);
-    }
-
-
-    return(
-        <AnimatePresence initial={false}>  //you can set initial to false to skip the first initial animation
-            {remove ? <></> : 
-            <motion.div                      //before this element is removed, it will run some animation
-                key='1'                      //key prop is required for img tags or any element that has a img as a child
-                className={'box'} 
-                variants={variants} 
-                exit='exit'                  //the exit prop will use the exit property from the object in variants
-              />}
-                
-            <button onClick={handleClick}>
-                remove from dom
-            </button>        
-        </AnimatePresence>
-
-    )
-}
 
 
 
@@ -476,64 +502,6 @@ function DragControls () {
 
 
 
-
-
-
-//======================================================================================= GESTURES =======================================================================================
-// Gestures are similar to click events, focus, events, hover events, etc
-
-function Circle() {
-  return (
-       <motion.div 
-          className='circle' 
-          initial={{opacity: 0}}
-          whileHover={{
-            scale: 1.2,
-            transition: {duration: 2}              //remember that you can use transition with gestures
-          }}      
-          whileTab={{scale: 0.9}}                  //gesture for click events
-          whileInView={{opacity: 1}}               //gesture for elements that first appear in the viewport
-            viewport={{once: true}}                //the whileInView gesture will only run once
-          whileFocus={{scale: 1.2}}                //gesture for input elements or any element that receives focus
-          whileDrag={{color: 'red'}}               //gesture for elements that are currently being dragged
-
-          onHoverStart={(e) => {}}                 //function that fires when the user hovers over the element
-          onHoverEnd={(e) => {}}                   //function that fires when the users mouse leaves the element
-          onTabStart={(e, info) => {}}             //function that fires when the tab start on the element (info = {point: {x, y}})
-          onTabCancel={(e, info) => {}}            //function that fires when the tab ends (info = {point: {x, y}})
-          onPanStart={(e, info) => {}}             //function that fires when the user presses down on an element and then moves away at least 3 pixels  (info = {point: {x, y}})  for mobile -> touch-action: none; this will disabled pan on mobile device
-          onPanEnd={(e, info) => {}}               //function that fires when the user stop panning
-          onDragStart={(e, info) => {}}            //function that fires when the user starts dragging the element
-          onDragEnd={(e, info) => {}}              //function that fires when the user stops dragging the element
-      />          
-    )
-}
-
-
-//GESTURES WITH VARIANTS: you can propagate changes to the child components with variants through gestures
-const variants = {
-  hover: {
-    scale: 1.2,
-    transition: {duration: 2}
-  },
-  tab: {
-    scale: 0.9
-  }
-}
-
-function Circle() {
-  return (
-       <motion.div 
-          className='circle' 
-          whileHover={'hover'}                        
-          whileTab={'tab'}    
-          variants={variants}
-        >                                   //the onPointerDownCapture is used to prevent the child component from firing the gestures on the parent component
-            <motion.div variants={variants} onPointerDownCapture{e => e.stopPropagation()}> 
-            </motion.div>
-        </motion.div>
-    )
-}
 
 
 

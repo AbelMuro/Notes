@@ -6,15 +6,17 @@
                 1) Features of Redux
                 2) Reducer
                 3) Store
-                4) Redux Hooks for react
-                5) Connect()
-                6) Redux Toolkit (createSlice, createReducer)
-                7) Middleware
-                8) Redux Thunk
-                9) Redux Promise
-                10) Redux Saga
-                11) Redux Persist
-                12) Redux Deep Persist
+                4) Accessing the state from the store (without subscribing, store.getState)
+                5) Subscribing components to the store (useSelector, store.subscribe)
+                6) Dispatch actions to the store (useDispatch, store.dispatch)
+                7) Connect()
+                8) Redux Toolkit (createSlice, createReducer)
+                9) Middleware
+                10) Redux Thunk
+                11) Redux Promise
+                12) Redux Saga
+                13) Redux Persist
+                14) Redux Deep Persist
 
                                                          FEATURES OF REDUX
 
@@ -130,25 +132,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //================================================== REDUCER ==============================================
 //The reducer is a function that uses action objects to mutate state data
 //reducer must be a pure function, meaning it must not change the state directly 
@@ -246,13 +229,6 @@ root.render(
 
 
 
-//------------------- DISPATCHING ACTIONS TO THE STORE
-import {configureStore} from '@reduxjs/toolkit';
-
-const store = configureStore({reducer: myReducer});
-store.dispatch({type: 'ADD_ITEM', payload: {item: 'milk'}});                 //Dispatch an action to the store
-
-
 
 
 //------------------- ACCESSING THE STATE FROM THE STORE 
@@ -262,12 +238,114 @@ const todos = store.getState(state => state.todos)                           //a
 
 
 
-//------------------- SUBSCRIBING TO THE STATE CHANGES IN THE STORE 
-function myComponent() {            
-      return(<></>)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//================================================================= ACCESSING THE STATE FROM THE STORE ===================================================================
+/* 
+            You can access the state from the store without subscribing 
+            the component that is using it. The store object that is 
+            returned from configureStore() has the getState() method
+            that retrieves the state.
+*/
+
+
+import {configureStore} from '@reduxjs/toolkit';
+
+const store = configureStore({reducer: myReducer});
+
+const state = store.getState();                                              //gets the complete state from the store
+const todos = store.getState(state => state.todos)                           //accessing a slice from the state
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//================================================================= SUBSCRIBING COMPONENTS TO THE STORE ===================================================================
+/* 
+            By subscribing components to the store, any state updates will re-render those components
+*/
+
+
+//------------------- useSelector() hook
+/* 
+            You can use the useSelector() hook to subscribe a component to the store.
+            It is also possible to subscribe to a very specific part of the store 
+            with this hook
+*/
+
+import {useSelector, shallowEqual} from 'react-redux';  
+import {createSelector} from '@reduxjs/toolkit';              
+
+const selectState = createSelector(                                //createSelector() can help you organize which parts of the state you want to subscribe
+    (state) => state.list,                 
+    (list) => list.names     
+
+)
+
+function App() {
+    const selectOne = useSelector(state => state.name)                // subscribing component to the 'name' property of the global state
+    const selectTwo = useSelector(state => state.list, shallowEqual)  // subscribing component to the first level of properties and values in the 'list' object
+    const selectThree = useSelector(selectState);                     // using a createSelector() to select a specific part of the state
 }
 
-store.subscribe(myComponent);                                               //this will re-render myComponent everytime there is a change in state in the store
+
+
+
+//--------------------- .subscribe() method
+/* 
+            The store object that is returned from configureStore()
+            has the subscribe() method. You can use this method
+            to subscribe components to the store
+*/
+import {configureStore} from '@reduxjs/toolkit';
+
+const store = configureStore({reducer: myReducer});
+
+store.subscribe(Component)
 
 
 
@@ -289,100 +367,56 @@ store.subscribe(myComponent);                                               //th
 
 
 
-//--------------------------------------------------- REDUX HOOKS ---------------------------------------------------
 
 
 
-//USE DISPATCH HOOK (you can use the useDispatch hook to dispatch actions to the reducer)
+
+
+
+
+
+//================================================================= DISPATCHING ACTIONS TO THE STORE ===================================================================
+/* 
+            When you dispatch an action to the store, it will trigger a re-render in 
+            all subscribed components.
+*/
+
+//------------------- useDispatch() hook
+/* 
+            You can dispatch actions to the store by using
+            the useDispatch hook. This hook will return a function
+            that can be used to actually dispatch the actions.
+*/
 import {useDispatch} from 'react-redux';
 
-function ChildComponent() {
+function App() {
     const dispatch = useDispatch();
     
     const handleClick = (e) => {
-        const newItem = e.target.value;
-        dispatch({type: "add item", item: newItem})      //dispatching an action object to the reducer
+        dispatch({type: 'ADD_ITEM', payload: {newItem: 'item'}})     
     }
     return (
-        <><button onClick={handleClick}> Click Me</button></>
+        <button onClick={handleClick}> 
+                Click Me
+        </button>
     )
 }
 
 
 
-// USE SELECTOR HOOK (you can use useSelector() hook to access specific parts of the global state)
-// component will be re-rendered when the state object changes
-
-import {useSelector, shallowEqual} from 'react-redux';             //must be used within a component to cause a re-render when state changes
-import {createSelector} from '@reduxjs/toolkit';     //createSelectors enable us to manipulate how the state properties will be viewed        
-
-
-            //the createSelector below was designed for Apps that only have one reducer
-const selectList = createSelector(
-    (state) => state.list,                          //first callback must return a property from the state
-    (list) => list                                  //second callback can be used to manipulate the property that was pass down from the first callback
-)
-
-            //the createSelector below was designed for Apps that have more than one reducer
-const selectCounter = createSelector(
-    (state) => state.CounterReducer,                 //first callback must return one of the names of the reducer
-    (CounterReducer) => CounterReducer.counter       //second callback you can access the actual property
-
-)
-
-function SomeComponent() {
-    //different ways to access state
-    const selectOne = useSelector(state => state.list)     //useSelector will return the property list from the state object      
-    const selectTwo = useSelector(state => state.list.array, shallowEqual)  //if you are selecting an object from the state, you MUST pass shallowEqual, this will make useSelector compare every property in the object, if any property is different then a rerender happens
-    const selectThree = useSelector(selectCounter);             //useSelector will return the property list after we manipulated it
-}
-
-
+//------------------- .dispatch() method
 /* 
-            USE-SELECTOR source code
-
-
-            const useIsMounted = () => {
-              const isMounted = useRef(false);
-                        
-              useEffect ( () => {
-                isMounted.current = true;
-                          
-                return () => (isMounted.current = false);
-              }, []);
-                        
-              return isMounted;
-            };
-            
-            
-            
-            const refCompare = (a, b) => a === b;
-            
-            const useSelector = (selectFn, compareFn = refCompare) => {
-                 const [state, setState] = useState(() =>
-                   selectFn(store.getState())                                          //returns a slice of the state
-                 );     
-                 const mounted = useIsMounted();
-                        
-                 useEffect (() => {
-                   const unsubscribe = store.subscribe (() => {                        //store.subscribe() returns an unsubscribe function
-                        const currentStoreState = selectFn(store.getState());
-                        
-                        if (!mounted.current) return;
-                        setState((prevState) =>
-                            compareFn(prevState, currentStoreState) ? prevState : currentStoreState
-                        );
-                   });
-                   return unsubscribe;
-                          
-                 }, [compareFn, mounted, selectFn]);
-                        
-                 return state;
-            };
-
+            The store object that is returned from configureStore()
+            has the dispatch() method. You can use this method to 
+            dispatch actions to the store.
 */
 
 
+import {configureStore} from '@reduxjs/toolkit';
+
+const store = configureStore({reducer: myReducer});
+
+store.dispatch({type: 'ADD_ITEM', payload: {item: 'milk'}});                 //Dispatch an action to the store
 
 
 
@@ -401,43 +435,55 @@ function SomeComponent() {
 
 
 
-//============================================= CONNECT() ==================================================
-//The Connect() function accepts two callbacks, mapStateToProps() and mapDispatchToProps()
-//mapStateToProps() has access to the global state, the return value of this function will be used as props for a component
-//mapDispatchToProps() has access to the dispatch method, the return value of this function will be used as props for a component
-//Connect() will also subscribe the component to the changes in the store
+
+
+
+
+
+
+
+
+
+
+
+//================================================================= CONNECT() ===================================================================
+/* 
+            You can subscribe components with the Connect() function in redux.
+            The Connect() function accepts two callbacks as arguments
+            mapStateToProps() and mapDispatchToProps().
+
+            mapStateToProps() will let a component subscribe to a specific part 
+            of the state by passing the state as props to the component
+
+            mapDispatchToProps() will let a component have access to the dispatch
+            method.
+*/
 
 import { connect } from 'react-redux';
 
-function Counter({count, increment, decrement}) {
-  return (
-    <div>
-      <h1>Counter: {props.count}</h1>
-      <button onClick={props.increment}>+</button>
-      <button onClick={props.decrement}>-</button>
-    </div>
-  );
+function App({count, dispatch}) {                        // this component has access to a part of the state and the dispatch method     
+      return (
+           <div>
+              {count}
+           </div>
+       );
 }
 
-// mapStateToProps() also allows you to subscribe to a specific part of the state
-function mapStateToProps(state) {
-  return {
-    count: state.count
-  };
+const mapStateToProps = (state) => {                      // this function has access to the global state
+      return {
+           count: state.count                             // passing a part of the state as props to the <App/>
+      };
 }
 
-// mapDispatchToProps() accepts the dispatch method from the global store and MAPS them to these action creators
-function mapDispatchToProps(dispatch) {
-  return {
-    increment: () => dispatch({type: 'INCREMENT'}),
-    decrement: () => dispatch(({type: 'DECREMENT'})
-  };
+const mapDispatchToProps = (dispatch) => {                // this function has access to the dispatch method
+      return {
+          dispatch: dispatch                              // passing the dispatch method as props to the <App/>
+      };
 }
 
 
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-// using the connect function to connect the Counter component with mapStateToProps() and mapDispatchToProps()
-export default connect(mapStateToProps, mapDispatchToProps)(Counter);
 
 
 

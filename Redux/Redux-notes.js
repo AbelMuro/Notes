@@ -133,18 +133,18 @@
 
 
 //================================================== REDUCER ==============================================
-//The reducer is a function that uses action objects to mutate state data
-//reducer must be a pure function, meaning it must not change the state directly 
-//and must return a new state if change occured, but must return old state if no change occured
-//to make changes to the state object in the reducer, you want to make use of these array functions
-// that return an updated version of the array and doesnt mutate the original array
-
-
+/* 
+            The reducer is a function that uses action objects to mutate state data
+            reducer must be a pure function, meaning it must not change the state directly 
+            and must return a new state if change occured, but must return old state if no change occured
+            to make changes to the state object in the reducer, you want to make use of these array functions
+            that return an updated version of the array and doesnt mutate the original array
+*/
             import { createAction, createReducer } from '@reduxjs/toolkit'
             
-            const increment = createAction('counter/increment')                     //create an action that will be used to update a specific part of the state
-            const decrement = createAction('counter/decrement')
-            const incrementByAmount = createAction('counter/incrementByAmount')
+            const increment = createAction('INCREMENT')                            //create an action that will be used to update a specific part of the state
+            const decrement = createAction('DECREMENT')
+            const incrementByAmount = createAction('INCREMENT_BY_AMOUNT')
             const initialState = { value: 0 }            
             
             const counterReducer = createReducer(initialState, (builder) => {       //builder, as the name implies, is an object that builds the reducer with .addCase
@@ -156,19 +156,20 @@
                   state.value--                         
                 })
                 .addCase(incrementByAmount, (state, action) => {
-                  state.value += action.payload
+                  state.value += action.payload.amount
                 })
             })
 
             export default counterReducer;
 
 
-//--------------You can also split reducers to handle different parts of the state--------------
-// keep in mind that every reducer should 'own' a part of the state
-// in other words, one reducer should handle only ONE property of the state
-// it should not access the property of the state that is 'owned' by another reducer
-
-
+//------------------- Splitting Reducers
+/* 
+            Keep in mind that every reducer can manage a part of the state
+            in other words, one reducer can handle one property of the state
+            it should not access the property of the state that is managed 
+            by another reducer
+*/
             import {combineReducers} from 'redux';
             import ListReducer from './ListReducer';
             import CounterReducer from './CounterReducer';
@@ -227,13 +228,6 @@ root.render(
     </Provider>
 )
 
-
-
-
-
-//------------------- ACCESSING THE STATE FROM THE STORE 
-const state = store.getState();                                              //gets the complete state from the store
-const todos = store.getState(state => state.todos)                           //accessing a slice from the state
 
 
 
@@ -523,9 +517,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 
 //------------------------------------------------------------ CREATE SLICE() ------------------------------------------------------------
-//createSlice() does multiple things for you at once, it creates a reducer, and generates action creators that 
-//correspond to the 'case' or 'types 'in your reducers
-//the whole point of this function is to reduce boilerplate code.
+/* 
+            createSlice() does multiple things for you at once, it creates a reducer, 
+            and generates action creators that correspond to the cases in your reducers
+*/
 
 
 import { createSlice } from '@reduxjs/toolkit'
@@ -539,17 +534,17 @@ const counterSlice = createSlice({
     increment(state) {                                                      // you can think of this as a 'case' in the 'switch' of a reducer function
       state.value++
     },
-    decrement(state) {                                                       // you can think of this as a 'case' in the 'switch' of a reducer function
+    decrement(state) {                                                     
       state.value--
     },
-    incrementByAmount(state, action) {                                       // you can think of this as a 'case' in the 'switch' of a reducer function
+    incrementByAmount(state, action) {                                     
       state.value += action.payload
     },
   },
 })
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions                 //automatically creating action creators to dispatch
-export default counterSlice.reducer                                                             //exporting the reducer
+export const { increment, decrement, incrementByAmount } = counterSlice.actions                 // increment is an action creator function;   dispatch(increment())
+export default counterSlice.reducer                                                             // exporting the reducer
 
 
 
@@ -558,6 +553,9 @@ export default counterSlice.reducer                                             
 
 
 //------------------------------------------------------------ CREATE REDUCER() ------------------------------------------------------------
+/* 
+            createReducer() lets you create a reducer
+*/
 //another way of creating a reducer, although you have to use createActions() from redux tool kit with createReducer()
 
 import { createAction, createReducer } from '@reduxjs/toolkit'
@@ -601,19 +599,20 @@ const counterReducer = createReducer(initialState, (builder) => {       //builde
 
 
 //================================================= MIDDLEWARE ==============================================
-//middleware can be used to interact with a action object BEFORE it dispatches to the reducer
-//redux provides pre built middlewares such as redux-thunk and redux-promise
+/* 
+            Middleware can be used to interact with a action object BEFORE it dispatches to the reducer
+            redux provides pre built middlewares such as redux-thunk and redux-promise
+            
+            Custom middlewares are basically 3 functions that are nested within each other
+            the 'action' function returns the action that is scheduled to be dispatched. 
+            then 'next' function is used to dispatch the action to the reducer or to the next middleware
+            the 'store' function is just there to help us access the state before and after the action is dispatched
 
-//custom middlewares are basically 3 functions that are nested within each other
-//the 'action' function manipulates action somehow... when it finishes doing that... 
-//then 'next' function is called and that same function passes the updated action to the reducer
-//the 'store' function is just there to help us access the state before and after the action is dispatched
+*/
 
-
-//this is the syntax for a middleware
 const myMiddleware = store => next => action => {
-    console.log(store.getState());         //this will log the state BEFORE the action is dispatched to the reducer
-    next(action);                          //we call this function to pass the action to the 'next' middleware
+    console.log(store.getState());          //this will log the state BEFORE the action is dispatched to the reducer
+    next(action);                           //we call this function to dispatch the action to the reducer or next middleware
     console.log(store.getState());          //this will log the state AFTER the action is dispatched to the reducer
 }    
 

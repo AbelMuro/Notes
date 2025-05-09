@@ -561,8 +561,9 @@ function App() {
 
 //-------------------------- useDragControls()
 /* 
-            You can use the useDragControls() hook to control when a component 
-            can be dragged.
+            You can use the useDragControls() hook to control when and how a component 
+            can be dragged. Instead of relying on the user manually dragging the component,
+            you can programmatically enable the dragging.
 
             const dragControls = useDragControls();   // dragControls must be assigned to the dragControls prop of the component you want to enable dragging
 
@@ -614,17 +615,22 @@ function DragControls () {
 
 
 //======================================================== DECLARATIVE ANIMATION: SCROLLING PROPS ================================================================================================
+/* 
+            You can create scrolling animation by using the 'viewport' props in motion components
+*/
 
 
-//VIEWPORT ANIMATION: animation that occurs when the element is first seen in the viewport
-
-function Circle() {
+//-------------------------- whileInView Props
+/* 
+            You can use the whileInView props to enable animation when the 
+            component first enters the screen
+*/
+function App() {
     return(
           <motion.div 
             className={'circle'}    
             initial={{opacity : 0}}
             whileInView={{opacity: 1, transition: {duration: 0.7}}}   
-            viewport={{once: true}}                  //scrolling animation will only occur once
             onViewportEnter={(entry) => {}}          //function that is fired when the element appears in the viewport (Provides the IntersectionObserverEntry with details of the intersection event)
             onViewportLeave=((entry) => {})          //function that is fired when the element leaves the viewport  (Provides the IntersectionObserverEntry with details of the intersection event)
           />
@@ -634,19 +640,15 @@ function Circle() {
 
               
 
-//VIEWPORT PROPS: a prop that enables us to customize the scrolling behavior
+//-------------------------- viewport Props
+/* 
+            You can use viewport props to customize the behavior of
+            scrolling animation
+            
+*/
 
-function Circle() {
+function App() {
     const containerRef = useRef();
-
-    const amount = useMemo(() => {                           //this is a good way to define the amount prop based on the size of the viewport
-          if(mobile)
-              return 0.3;
-          else if (tablet)
-              return 0.6;
-          else 
-              return 0.8;
-    }, [mobile, tablet])
   
     return(
         <div ref={containerRef} style={{overflow: 'hidden'}}> //(this must have a scroll bar)
@@ -657,7 +659,7 @@ function Circle() {
                   once: true,           // animation will only occur once
                   root: containerRef,   // by assigning a ref object here, the container that has this same ref will act as the viewport
                   margin: '100px',      // The more margin, the longer it will take for the viewport to see the element, the less margin, the less it will take to see the element in the viewport                       
-                  amount: 0.6,          // define the percentage of the element that has to be in view for the scrolling animation to occur        
+                  amount: 0.6,          // define the percentage of the element that has to be in view for the scrolling animation to occur  (0 to 1)      
               }}                
             />
        </div>
@@ -670,7 +672,25 @@ function Circle() {
 
 
 
-//you can animate an element based on the scroll position of the user
+
+
+
+
+//======================================================== IMPERATIVE ANIMATION: SCROLLING HOOKS ================================================================================================
+/* 
+            You can use the useScroll() hook to get current progress of scrolling on the x-axis and y-axis
+            within a container that has a scrollbar
+
+
+            const {scrollYProgress, scrollXProgress } = useScroll()
+            
+            ____________
+            |          |
+            |          |
+            |          |            <--- if scroll bar is halfway, then scrollYProgress will be 0.5
+            |          |
+            |__________|
+*/
 
 function Circle() {
     const {scrollYProgress, scrollXProgress } = useScroll();        //we get the current value of the scroll position on the y-axis
@@ -678,7 +698,7 @@ function Circle() {
     return(
           <motion.div 
             className={'circle'}         
-            style={scaleX: scrollYProgress}      //this component will be resized based on the current value of scrollYProgress                                     
+            style={scaleX: scrollYProgress}                         //this component will be resized based on the current value of scrollYProgress                                     
           />
     )    
 }
@@ -699,36 +719,55 @@ function Circle() {
 
 
 
-//========================================================================================= LAYOUTS ==============================================================================================
-// The layout prop in the motion component can add animation to a grid or flex box
-// Layout animations are triggered when a component re-renders and its layout has changed (items are removed, re-arranged, or added)
-// keep in mind, sometimes the child components will have distortion that occurs when the animation occurs
-// to remove this distortion, you can set layout as a prop to the child components
-// if there is a property that you dont want to animate with layout, you will need to set the inline styles for that property style={{borderRadius: 20}}
+//======================================================== DECLARATIVE ANIMATION: GRID/FLEX ANIMATIONS ================================================================================================
+/* 
+            You can also create animation for grids and flex boxes with the 'layout' prop
+*/
+
+//-------------------------- layout Prop
+/* 
+            The 'layout' prop in the motion component can automatially add animation to a grid or flex box
+            Layout animations are triggered when a grid's items has changed because of a re-render (items are removed, re-arranged, or added).
+            If there is a property that you dont want to animate with layout, you will need to set the inline styles for that property
+*/
+
 
 
 function App() {
     const [list, setList] = useState();
 
     return(
-        <motion.div className={'grid'} layout transition={{duration: 0.8}}>        //by using transition={layout: { duration: 0.3 }} you are setting the duration ONLY for the layout animation
-             <motion.div className={'box'} layout></motion.div>    
-             <motion.div className={'box'} layout style={borderRadius: 20}></motion.div>    
-             <motion.div className={'box'} layout></motion.div>
+        <motion.div className='grid' layout>       
+             <motion.div className='box' layout/>          // setting layout to the child components can fix a distortion bug that occurs sometimes
+             <motion.div className='box' layout/>  
+             <motion.div className='box' layout/>
         </motion.div>    
 
-
-        <motion.div className={'gridWithScroll'} layoutScroll style={{overflow: 'scroll'}}>    //if your grid has a scroll bar, you must use the style and layoutScroll prop    
-             <motion.div className={'box'} layout></motion.div>    
-             <motion.div className={'box'} layout></motion.div>    
-             <motion.div className={'box'} layout></motion.div>
-        </motion.div>    
     )
 }
 
 
-//LAYOUT-GROUP: This component ensures that when one component has its layout changed, the other layouts will be smoothly moved
+//-------------------------- layoutScroll
 /* 
+            If a grid/flex container has a scrollbar, then you need to use the 'layoutScroll' prop
+            to trigger animations when the items of the grid have changed
+*/
+function App(){
+     return(
+          <motion.div className={'gridWithScroll'} layoutScroll style={{overflow: 'scroll'}}>     
+             <motion.div className={'box'} layout></motion.div>    
+             <motion.div className={'box'} layout></motion.div>    
+             <motion.div className={'box'} layout></motion.div>
+          </motion.div>    
+     )
+}
+
+
+
+//-------------------------- <LayoutGroup/> Component
+/* 
+    The <LayoutGroup/> component ensures that when one component has its layout changed, the other layouts will be smoothly moved
+    
     [accordion]                  [accordion]
     [accordion]                      content
                                      content

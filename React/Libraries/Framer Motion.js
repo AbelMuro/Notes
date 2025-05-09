@@ -385,11 +385,11 @@ function Animate() {
         }
 
     return (
-            <div 
+            <motion.div 
                custom='3' 
                initial='hidden' 
                animate={controls}>
-            </div> 
+            </motion.div> 
       )
 }
 

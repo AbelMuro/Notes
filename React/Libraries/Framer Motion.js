@@ -280,10 +280,10 @@ function App() {
 
 
 
+//======================================================== IMPERATIVE ANIMATIONS: HOOKS ================================================================================================
 
 
-
-//======================================================== useCycle() hook ================================================================================================
+//-------------------------- useCycle() hook
 /* 
             useCycle() hook is similar to useState(), it is used to toggle between two different sets of styles
 */
@@ -315,29 +315,7 @@ function App() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//============================================================================== useAnimate() ==================================================================================
+//-------------------------- useAnimate() 
 /* 
             useAnimate() can be used to create complex animations. 
             The hook retuns a ref object that can be assigned to a component,
@@ -347,7 +325,7 @@ function App() {
             syntax:
                         const [ref, animate] = useAnimate();
 
-                        const animating = await animate(selector, animateTo, transition)
+                        const promise = animate(selector, animateTo, transition)                       //returns a promise
 
                                  selector = can be any valid css selector, can also be a ref object returned from useAnimate()
                                  animateTo = an object that has css properties, the element will animate to these values
@@ -360,12 +338,16 @@ import {useAnimate} from 'framer-motion';
 function App() {
     const [ref, animate] = useAnimate();    
 
-    const createAnimation = () => {
+    const createSequenceAnimation = async () => {
           await animate(ref.current, { x: 0 }, {duration: 0.5})                      
           await animate(ref.current, { x: 100}, {duration: 0.5, delay: 2})                   
           await animate(ref.current, { x: 20}, {duration: 0.5})
           await animate('div', {y: 45}, {duration: 0.4})                                   // you can also use any valid css selector in the first argument
-          animating.stop()
+    }
+
+    const stoppingAnimation = () => {
+          const animating = animate('#box', {y: -20});
+          animate.stop();                                                                  // you can stop an animation with the .stop() method
     }
 
     return(    
@@ -377,73 +359,38 @@ function App() {
 
 
 
+//-------------------------- useAnimationControls()
+/* 
+            useAnimationControls() hook lets you create complex animations.
+            This hook also provides a way to start and stop animations.
 
+            const controls = useAnimationControls();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//====================================================================== useAnimationControls() =======================================================================================
-// With this hook, you have better control on when the animations can start or end
+            controls.start();                        //starts an animation , returns a promise
+            controls.set();                          //instantly sets a css property and skips the animation, does NOT return a promise
+            controls.stop();                         //stops the ongoing animation, does NOT return a promise
+*/
 
 function Animate() {
     const controls = useAnimationControls();  
-    const [data, setData] = useState();
 
-    const handleClick = () => {
-          setData('new data')               
-    }
-
-    useEffect(() => {
-        //if you want sequential animation, then use async function
-        const animation = async () => {
-            await controls.set({backgroundColor: red});                                    //instantly sets a property and skips the animation
-            await controls.start({ scale: 2 , transition: {type: 'spring'}})                //you can trigger any animation like this
-            await controls.start('variant');                                                 //you can trigger a variant animation like this    
-            await controls.start(custom => ({                                                //you can use a custom prop to pass data to this callback
+    const animation = async () => {
+            await controls.start({ scale: 2 , transition: {type: 'spring'}})                
+            await controls.start('visible');                                                //you can trigger an animation from a variant object  
+            await controls.start(custom => ({                                               //you can use a custom prop to pass data to this callback
                  scale: custom * 3       
             }))
+            controls.set({backgroundColor: red});                                           //instantly sets a property and skips the animation
+            controls.stop();                                                                //stops any ongoing animations
         }
-        animation();
-            
-        return () => controls.stop();               //you can stop any animation with stop()
-    }, [data])
 
     return (
-            <div custom='123' initial='hidden' animate={controls}>
-                 <button onClick={handleClick} variants={myVariantsObject}> 
-                     click me
-                 </button>
-                 <button onClick={handleClick} variants={myVariantsObject}> 
-                    click me
-                 </button>                
-            </div>
-
-    )
-
-
-const myVariantsObject = {
-      hidden: {
-            opacity: 0
-            }
-      show: {
-        opacity: 1
-      }
+            <div 
+               custom='3' 
+               initial='hidden' 
+               animate={controls}>
+            </div> 
+      )
 }
 
 
@@ -479,27 +426,117 @@ const myVariantsObject = {
 
 
 
+//======================================================== DECLARATIVE ANIMATIONS: DRAGGABLE PROPS ================================================================================================
+/* 
+            Framer-motion has alot of 'drag' props that can be used to 
+            animate a draggable component
+*/
 
-//================================================================================= DRAGGABLE COMPONENTS ========================================================================================================
 
-//the circle below can only be dragged 50px to the top, 50 px to the left, etc..
-function Circle() {
+//-------------------------- Draggable Components
+/* 
+       To make a component draggable, you only need to set the 'drag' prop
+       you can set drag='x' or drag='y' to force the element to only drag on the x-axis or y-axis  
+*/
+
+function App() {
     return(
-        <motion.div    
-            drag                           //you can set drag='x' or drag='y' to force the element to only drag on the x-axis or y-axis        
-            dragSnapToOrigin={true}        //this will force the element to go back to its origin when the user stops dragging the element
-            dragElastic={1}                //must be a value between 0 and 1; the degree of movement allowed outside of constraints
+        <motion.div drag> </motion.div>
+    )
+}
+
+
+//-------------------------- Draggable Components with constraints
+/* 
+       You can create constraints on a draggable component.
+       The component can't be dragged past a certain constraint
+*/
+function App(){
+    return(
+        <motion.div
+            drag
+            dragConstraints={{            
+                  top: 50,                    // component can be dragged 50px to the top from the origin                        
+                  left: 50,                   // component can be dragged 50px to the left from the origin  
+                  right: 50,                  // component can be dragged 50px to the right from the origin  
+                  bottom: 50,                 // component can be dragged 50px to the bottom from the origin  
+            }}>
+    )
+}
+
+
+//-------------------------- Draggable Components using Parent Components as Constraints
+/* 
+            You can use a parent component as a constraint for a 
+            draggable child component. You can do this by assigning
+            the same ref object to the parent component and to the child component's
+            dragContraints prop. The child component won't be able to be dragged
+            outside the parent component
+*/
+
+function App() {
+       const constraint = useRef();     
+
+       return (
+            <motion.div ref={contraint}>       
+                   <motion.div
+                         drag
+                         dragConstraints={constraint}
+                   />
+            </motion.div>
+       )
+}
+
+
+
+
+//-------------------------- Drag and Drop Components
+/*
+            You can use the 'onDragEnd' prop to see if a dragged component
+            has been dropped on top of a drop zone. Then you can add the 
+            dragged component as an item to a list with the useState() hook, 
+            and then use the drop zone to display all items that have been dropped.
+*/
+function DragDropExample() {
+  const [droppedItems, setDroppedItems] = useState([])
+
+  const isOnDropZone = (e, info) => { 
+       const dropZone = document.getElementById("drop-zone").getBoundingClientRect();
+              
+       if(info.point.x >= dropZone.left && info.point.x <= dropZone.right && 
+          info.point.y >= dropZone.top && info.point.y <= dropZone.bottom)
+              setDroppedItems([...droppedItems, 'new item'])     
+  }
+
+  return (
+    <div>
+      <motion.div drag onDragEnd={isOnDropZone}>
+             Drag Me
+      </motion.div>
+
+      <motion.div id="drop-zone">
+            Drop Here
+            {droppedItems.map(() => {})}
+      </motion.div>
+    </div>
+  );
+}
+
+
+
+//-------------------------- Miscilleneaous Draggable Props
+
+function App() {         
+    return(
+        <motion.div     
+            dragSnapToOrigin={true}        // this will force the element to go back to its origin when the user stops dragging the element
+            dragElastic={1}                // must be a value between 0 and 1; the degree of movement allowed outside of constraints
             dragMomentum={true}            // applies momentum (element keeps moving) when the user stops dragging the element
             dragPropagation                // if a child component is dragged, it will also drag the parent component with it
             dragListener={false}           // setting this to false will ensure that this element can ONLY be dragged using useDragControls()
-            dragTransition={{              //applies an animation when the user lets go of the draggable element and hits one of the contraints
-                bounceStiffness: 600,      //the animation takes the form of a spring
-                bounceDamping: 10 }}
-            dragConstraints={{
-              top: 50,                                
-              left: 50,
-              right: 50,
-              bottom: 50,
+            dragTransition={{              // applies an animation when the user lets go of the draggable element and hits one of the contraints
+                bounceStiffness: 600,      // the animation takes the form of a spring
+                bounceDamping: 10 
             }}
           />
       )
@@ -508,26 +545,32 @@ function Circle() {
 
 
 
-//DRAGGABLE WITH CONTAINER: you can create a large container and use it as the area in which a draggable item can be dragged
-function Circle() {
-      const contraints = useRef();
-  
-      return(
-         <div>           
-            <motion.div 
-              className={'container'}                        {/* large container that will be used for the draggable item*/}
-              ref={contraints}/>                             {/* you must assign the same ref object to the container and the draggable item*/}
 
-            <motion.div    
-                drag                                         {/* draggable item*/}
-                dragConstraints={contraints}                  
-              />
-        </div>
-      )
-    
-}
 
-//DRAG CONTROLS: you can drag a component by clicking on another component
+
+
+
+
+
+
+
+
+
+//======================================================== IMPERATIVE ANIMATIONS: DRAGGABLE HOOKS ================================================================================================
+
+
+//-------------------------- useDragControls()
+/* 
+            You can use the useDragControls() hook to control when a component 
+            can be dragged.
+
+            const dragControls = useDragControls();   // dragControls must be assigned to the dragControls prop of the component you want to enable dragging
+
+                        dragControls.start();         // start() method enables dragging on a component
+                        dragControls.end();           // end() method prevents dragging on a component
+                        dragControls.isDragging;      // isDragging property tells you if the component is currently being dragged
+*/
+
 function DragControls () {
   const dragControls = useDragControls();
 
@@ -536,12 +579,13 @@ function DragControls () {
   }
   
   return(
-      <button onPointerDown={startDrag}>            //by clicking on this button, you can drag the element below
-          click me
+      <button onPointerDown={startDrag}>            
+          Click here to enable dragging
       </button>
       <motion.div 
         className={'box'} 
         dragControls={dragControls}
+        dragListener={false}                        // prevents default dragging, this component can only be dragged if the .start() method was called
       />
   )
 }
@@ -569,20 +613,7 @@ function DragControls () {
 
 
 
-//==================================================================================== SCROLLING ANIMATION =========================================================================================================
-//you can animate an element based on the scroll position of the user
-
-function Circle() {
-    const {scrollYProgress, scrollXProgress } = useScroll();        //we get the current value of the scroll position on the y-axis
-  
-    return(
-          <motion.div 
-            className={'circle'}         
-            style={scaleX: scrollYProgress}      //this component will be resized based on the current value of scrollYProgress                                     
-          />
-    )    
-}
-
+//======================================================== DECLARATIVE ANIMATION: SCROLLING PROPS ================================================================================================
 
 
 //VIEWPORT ANIMATION: animation that occurs when the element is first seen in the viewport
@@ -633,6 +664,27 @@ function Circle() {
     )
 }
   
+
+
+
+
+
+
+//you can animate an element based on the scroll position of the user
+
+function Circle() {
+    const {scrollYProgress, scrollXProgress } = useScroll();        //we get the current value of the scroll position on the y-axis
+  
+    return(
+          <motion.div 
+            className={'circle'}         
+            style={scaleX: scrollYProgress}      //this component will be resized based on the current value of scrollYProgress                                     
+          />
+    )    
+}
+
+
+
 
 
 

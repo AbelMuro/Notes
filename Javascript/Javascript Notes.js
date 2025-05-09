@@ -1495,6 +1495,7 @@ function example() {
 
 
 //------------------- Creating arrays
+const myArr = new Array(64);						     // creating an array of 64 empty slots
 const myArr = new Array("first", "second", "third");			    // Creating an array with the Array constructor
 const myArr = ["first", "second", "third"];				    // This will be compiled to new Array()
 
@@ -1606,8 +1607,8 @@ let accumulatedValues myArray.reduceRight((accumulator, currentValue) => {  //sa
 
 
 
-//------------------- Array Prototype methods and properties
-const array = [1,2,3,4,5];                                                             
+//------------------- Array Prototype methods and properties  
+Array.from({ length: 64 }, (_, i) => i)					    //creating an array of length 64 and using a callback to populate each element
 array.push("new Element");                                                  //adds a new element to the array at the end of the array, also returns the length of the array
 array.unshift("new element");                                               //adds a new element to the array at the beginning of the array, also returns the length of the array
 array.splice(1, 1);                                                         //removes the element at index 1 and will remove 1 element after that index   

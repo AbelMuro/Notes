@@ -111,8 +111,8 @@ function Circle () {
             Complex animations can require large objects to be assigned
             to the initial and animate props of your motion component.
             You can simplify your code by using variants. Keep in mind, 
-            that certain transitions, like staggerChildren, can only
-            be used with variants
+            the parent component has to trigger the animations first,
+            then the child components animations are triggered
 */
 const item = {
       hidden: { 
@@ -138,7 +138,7 @@ function App() {
             variants={item}                         // you must assign the object that contains the css properties here             
         >
               <motion.div                                            
-                  variants={otherVariant}            // the intial and animate prop will automatically be set by framer-motion, 
+                  variants={otherVariant}            // the initial and animate prop will automatically be set by framer-motion, 
                />    
         </motion.div>
     )

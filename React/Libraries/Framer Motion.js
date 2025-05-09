@@ -61,7 +61,9 @@ function App() {
 //-------------------------- Transition Prop
 /* 
             The transition prop is used to control and specify
-            how an animation will take place.
+            how an animation will take place. Keep in mind, that
+            certain transitions, like staggerChildren, require variants
+            to work
 */
 
 
@@ -87,12 +89,7 @@ function Circle () {
 
               repeat: 1, 2, 'Infinite',                         // the number of times the transition will occur
               repeatType: 'loop, reverse, mirror',              // loop repeats the animation from the start, reverse alternates between forward and backwards playback
-              repeatDelay: 0.3,                                 // the delay between each repeating transition 
-
-              when: "beforeChildren or afterChildren",          // parent component transitions will finish before or after childrens transition
-              delayChildren: 0.2,                               // similar to the property above, but it offers a more precise delay
-              staggerChildren: 0.1,                             // first child will be delayed by 0.1, the second child delayed by 0.2, the third child delayed by 0.3 (calculate staggerDelay will be added to delayChildren)
-              staggerDirection: -1,                             // direction in which the children are delayed, -1 means the last child is delayed by 0.1, the second to last child is delayed by 0.2...  
+              repeatDelay: 0.3,                                 // the delay between each repeating transition  
 
               opacity: {duration: 0.2},                         // you can assign a transition to a specific property like this
               from: 90,                                         // this defines the initial value for ALL css properties that are in the animate prop, this is similar to initial prop   
@@ -113,7 +110,9 @@ function Circle () {
             Variants are a way to modularize your props and objects
             Complex animations can require large objects to be assigned
             to the initial and animate props of your motion component.
-            You can simplify your code by using variants.
+            You can simplify your code by using variants. Keep in mind, 
+            that certain transitions, like staggerChildren, can only
+            be used with variants
 */
 const item = {
       hidden: { 
@@ -122,7 +121,10 @@ const item = {
       visible: {  
             opacity: 1,
             transition: {  
-                duration: 1.2      
+              when: "beforeChildren or afterChildren",          // parent component transitions will finish before or after childrens transition
+              delayChildren: 0.2,                               // similar to the property above, but it offers a more precise delay 
+              staggerChildren: 0.1,                             // first child will be delayed by 0.1, the second child delayed by 0.2, the third child delayed by 0.3 (requires variants to work)
+              staggerDirection: -1,                             // direction in which the children are delayed, -1 means the last child is delayed by 0.1, the second to last child is delayed by 0.2...     
             },
       }
 }
@@ -136,7 +138,7 @@ function App() {
             variants={item}                         // you must assign the object that contains the css properties here             
         >
               <motion.div                                            
-                  variants={item}                   // the child components of a parent component that has the variants prop will also have
+                  variants={otherVariant}            // the intial and animate prop will automatically be set by framer-motion, 
                />    
         </motion.div>
     )

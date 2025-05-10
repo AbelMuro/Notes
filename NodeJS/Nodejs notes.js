@@ -472,8 +472,8 @@ app.post("/upload", (req, res) => {
 		global.webSocketHandlers[`/${path}`] = wss;			    //we save the websocketHandler in our global list
 		
 	        wss.on('connection', ws => {                                        // you establish the connection between the back end and the front end
-	            ws.on('message', (e) => {					    // message event will be triggered when the front-end sends a message through the websocket
-			const data = e.data;
+	            ws.on('message', (message) => {			            // message event will be triggered when the front-end sends a message through the websocket
+			const messageFromFrontEnd = JSON.parse(message);
 		    })    
 	            ws.send('data must be in json format')                         // ws.send() will send data to the front-end (YOU have to call this function, its best to use it in some event handler)
 		    ws.close();							   // ws.close() will close the websocket

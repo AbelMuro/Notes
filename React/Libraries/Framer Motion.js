@@ -1,7 +1,11 @@
 /* 
             Framer-motion is an animation library used to create animations for React
-
             npm install framer-motion
+
+            Bookmarks
+                  1) Motion Component (initial, animate, transition, variants, exit, gestures)
+                  2) Hooks ()
+            
 */
 
 
@@ -101,10 +105,6 @@ function Circle () {
 
 
 
-
-
-
-
 //-------------------------- Variants Prop
 /* 
             Variants are a way to modularize your props and objects
@@ -147,7 +147,6 @@ function App() {
 
 
 
-
 //-------------------------- Dynamic Variants Prop
 /* 
             You can also use variants dynamically by using a callback
@@ -177,8 +176,6 @@ function App(){
             })
     )
 }                  
-
-
 
 
 
@@ -280,40 +277,7 @@ function App() {
 
 
 
-//======================================================== IMPERATIVE ANIMATIONS: HOOKS ================================================================================================
-
-
-//-------------------------- useCycle() hook
-/* 
-            useCycle() hook is similar to useState(), it is used to toggle between two different sets of styles
-*/
-
-
-function App() {
-    const [toggle, setToggle] = useCycle(false, true);               //toggle will have either true or false as the values, setToggle() is a function used to toggle between true and false
-
-    const handleClick = () => {
-        setToggle();
-    }
-
-    return(
-        <>
-            <motion.div
-                initial={false}                                          // we have to set initial to false for useCycle to work here
-                animate={toggle ? {color: 'red'} : {color: 'blue'}}>                             
-            </motion.div>    
-
-            <button onClick={handleClick}>                              //clicking on this button will toggle between the 'open' styles and the 'closed' styles
-                click me
-            </button>    
-        </>
-
-    )
-}
-
-
-
-
+//======================================================== IMPERATIVE ANIMATIONS: Animation Hooks ================================================================================================
 
 //-------------------------- useAnimate() 
 /* 
@@ -358,7 +322,6 @@ function App() {
 
 
 
-
 //-------------------------- useAnimationControls()
 /* 
             useAnimationControls() hook lets you create complex animations.
@@ -394,43 +357,66 @@ function Animate() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//======================================================== DECLARATIVE ANIMATIONS: DRAGGABLE PROPS ================================================================================================
+//-------------------------- useCycle() hook
 /* 
-            Framer-motion has alot of 'drag' props that can be used to 
-            animate a draggable component
+            useCycle() hook is similar to useState(), it is used to toggle between two different sets of styles
 */
+
+
+function App() {
+    const [toggle, setToggle] = useCycle(false, true);               //toggle will have either true or false as the values, setToggle() is a function used to toggle between true and false
+
+    const handleClick = () => {
+        setToggle();
+    }
+
+    return(
+        <>
+            <motion.div
+                initial={false}                                          // we have to set initial to false for useCycle to work here
+                animate={toggle ? {color: 'red'} : {color: 'blue'}}>                             
+            </motion.div>    
+
+            <button onClick={handleClick}>                              //clicking on this button will toggle between the 'open' styles and the 'closed' styles
+                click me
+            </button>    
+        </>
+
+    )
+}
+
+
+
+//-------------------------- useMotionValue() Hook
+/* 
+            The useMotionValue() hook returns an object that is assigned to the style
+            attribute of elements. These objects are known as 'motion values'.
+*/
+
+const x = useMotionValue();              // motion values are objects that are assigned to the style attribute of elements
+                                         // they are used to keep track of a specific css property
+                                         //in this case, x will keep track of the elements position on the x-axis
+                                         // you can assign x to one of the hooks below to apply a different animation to a different css property
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//======================================================== DECLARATIVE ANIMATIONS: Draggable Props ================================================================================================
+
 
 
 //-------------------------- Draggable Components
@@ -524,7 +510,7 @@ function DragDropExample() {
 
 
 
-//-------------------------- Miscilleneaous Draggable Props
+//-------------------------- Miscellaneous Draggable Props
 
 function App() {         
     return(
@@ -556,7 +542,11 @@ function App() {
 
 
 
-//======================================================== IMPERATIVE ANIMATIONS: DRAGGABLE HOOKS ================================================================================================
+
+
+
+
+//======================================================== IMPERATIVE ANIMATIONS: Draggable Hooks ================================================================================================
 
 
 //-------------------------- useDragControls()
@@ -614,10 +604,8 @@ function DragControls () {
 
 
 
-//======================================================== DECLARATIVE ANIMATION: SCROLLING PROPS ================================================================================================
-/* 
-            You can create scrolling animation by using the 'viewport' props in motion components
-*/
+//======================================================== DECLARATIVE ANIMATION: Scrolling Props ================================================================================================
+
 
 
 //-------------------------- whileInView Props
@@ -676,10 +664,25 @@ function App() {
 
 
 
-//======================================================== IMPERATIVE ANIMATION: SCROLLING HOOKS ================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+//======================================================== IMPERATIVE ANIMATION: Scrolling Hooks ================================================================================================
+
+
+//-------------------------- useScroll() hook
 /* 
             You can use the useScroll() hook to get current progress of scrolling on the x-axis and y-axis
-            within a container that has a scrollbar
+            of a container
 
 
             const {scrollYProgress, scrollXProgress } = useScroll()
@@ -692,12 +695,14 @@ function App() {
             |__________|
 */
 
-function Circle() {
-    const {scrollYProgress, scrollXProgress } = useScroll();        //we get the current value of the scroll position on the y-axis
+function App() {
+    const ref = useRef();
+    const {scrollYProgress, scrollXProgress } = useScroll();                  // by default, this will get the current scrolling progress of the body tag
+    const {scrollYProgress, scrollXProgress } = useScroll({container: ref});  // this will get the current scrolling progress of a specific element
   
     return(
-          <motion.div 
-            className={'circle'}         
+          <div      
+            ref={ref}
             style={scaleX: scrollYProgress}                         //this component will be resized based on the current value of scrollYProgress                                     
           />
     )    
@@ -719,12 +724,12 @@ function Circle() {
 
 
 
-//======================================================== DECLARATIVE ANIMATION: GRID/FLEX ANIMATIONS ================================================================================================
+//======================================================== DECLARATIVE ANIMATION: Grid/Flex Animation ================================================================================================
 /* 
             You can also create animation for grids and flex boxes with the 'layout' prop
 */
 
-//-------------------------- layout Prop
+//-------------------------- Layout Prop
 /* 
             The 'layout' prop in the motion component can automatially add animation to a grid or flex box
             Layout animations are triggered when a grid's items has changed because of a re-render (items are removed, re-arranged, or added).
@@ -747,7 +752,7 @@ function App() {
 }
 
 
-//-------------------------- layoutScroll
+//-------------------------- LayoutScroll prop
 /* 
             If a grid/flex container has a scrollbar, then you need to use the 'layoutScroll' prop
             to trigger animations when the items of the grid have changed
@@ -766,66 +771,80 @@ function App(){
 
 //-------------------------- <LayoutGroup/> Component
 /* 
-    The <LayoutGroup/> component ensures that when one component has its layout changed, the other layouts will be smoothly moved
+    The <LayoutGroup/> component is wrapped around child components and is
+    used to create smooth animation transitions between the children when one 
+    child component changes its layout. Keep in mind, that the child components must
+    have the layout prop for this to work. The most common technique used with
+    the <LayoutGroup/> component is with accordians.
+
     
     [accordion]                  [accordion]
     [accordion]                      content
                                      content
-                                  [accordion]              //this accordion will have an animation when its pushed down
+                                  [accordion]            
 */
 
-function Accordion() {                                      //this component will display a drop down
-  const [isOpen, setIsOpen] = useState(false)
-  
+function App() {                                          
+  return (                                                
+    <LayoutGroup>          
+         <Accordion />                                    //if the layout of this component changes..
+         <Accordion />                                    //then this component will smoothly transition to make space for the other component
+    </LayoutGroup>  
+  )
+}
+
+function Accordion() {                                     
+  const [open, setOpen] = useState(false)
+
+   const handleOpen = () => {
+       setOpen(!open);
+   }
+            
   return (
-    <motion.div
-      layout
-      onClick={() => setIsOpen(!isOpen)}>
-        <motion.h2 layout>header</motion.h2>
-        {isOpen ? 'content' : null}
+    <motion.div layout onClick={handleOpen>               //this component will expand when we click on it, triggering a smooth animation
+        <h2> header </h2>
+        {isOpen && 'content'}
     </motion.div>
   )
 }
 
-function App() {                                           // with LayoutGroup, the accordion on the bottom will be pushed down smoothly
-  return (                                                 // when the accordion on the top is spread open
-    <LayoutGroup>          
-      <Accordion />
-      <Accordion />
-    </LayoutGroup>  
-  )
-}
-    
 
 
 
-//LAYOUT-ID: When a new component is added that has a layoutId prop that matches an existing component, 
-//it will automatically animate out from the old component.
-//MAKE SURE TO DISABLE TRANSITION CSS PROPERTY ON THE ELEMENTS THAT HAVE LAYOUTID
-//ALSO MAKE SURE TO USE THE KEY PROP ON THE MOTION COMPONENT WITH LAYOUTID THAT HAS A IMG ELEMENT AS A CHILD ELEMENT TO AVOID VISUAL BUGS
-
+//-------------------------- LayoutId Prop
 /* 
-     [ ________             ]        
+            The LayoutId prop creates an animated transition between two
+            elements that have the same layoutId prop. If one element is removed
+            from the DOM, and another element is added to the DOM, the LayoutId will
+            create the animated transition of moving the removed element to the 
+            new elements position.
 
-              |
-              |            //there will be an animation that occurs here
-              v
+                  <div> was unmounted
+                 [ ________             ]        
+            
+                          |
+                          |                        //there will be an animation that occurs here
+                          v
+                 
+                 [           __________ ]
+                             <div> was mounted
      
-     [           __________ ]
+            If an element with the layoutId has a <img/> child element, make sure to use the key prop
+            on the img tag to avoid any visual bugs
 */
 
 function App() {
-  const [example, setExample] = useState(false)
+  const [state, setState] = useState(false)
 
   return (
-    <div className={'container'}>
-        <div className={'box'}>
-          {example && <motion.div className={'line'} layoutId="underline" />  }   // this line will move to the element on the bottom when it's removed from the dom
+    <>
+        <div>
+              {state && <motion.div layoutId="underline" />  }   // this element will make an animated transition to the div in the bottom when its removed from the DOM
         </div>
-        <div className={'box'}>
-          {!example && <motion.div className={'line'} layoutId="underline" />  }  //this line will move to the element on the top when it's removed from the dom
+        <div>
+              {!state && <motion.div layoutId="underline" />  }    // this element will make an animated transition to the div at the top when its removed from the DOM
         </div>
-    </div>
+    <>
 
   )
 }
@@ -848,16 +867,9 @@ function App() {
 
 
 
-//========================================================================================== HOOKS ======================================================================================
-const x = useMotionValue();              // motion values are objects that are assigned to the style attribute of elements
-                                         // they are used to keep track of a specific css property
-                                         //in this case, x will keep track of the elements position on the x-axis
-                                         // you can assign x to one of the hooks below to apply a different animation to a different css property
+//======================================================== MISCELLANEOUS HOOKS ================================================================================================
 
 
-const {scrollYProgress,                   //current value of the y-axis scroll position
-       scrollXProgress                    //current value of the x-axis scroll position
-      } = useScroll();                    //returns a motion value that contains data about the scrolling position of the webpage
 
 
 const scaleX = useSpring(x, {            // useSpring() accepts a motion value and will return another motion value
@@ -877,25 +889,8 @@ const background = useTransform(         //useTransform() accepts a motion value
 
 
               
-const dragControls = useDragControls();   //useDragControls() can drag an element A by click on another element B
-const startDrag = (e) => {                //you will need an event handler that calls the start() function
-    dragControls.start(e, {snapToCursor: true})//the start() function will drag the element B
-}
-    <button onPointerDown={startDrag}>      //Element A calls the event handler
-       click me
-   </button>
-   <motion.div 
-      className={'box'} 
-      dragControls={dragControls}          //Element B will be dragged
-    />
+
               
-
-
-const [x, cycle] = useCycle({x : -100}, {x: 120});            //hook that lets you cycle between two animations
-
-    <div animate={x} onTapStart={() => cycle()} onTapEnd={() => cycle()}>
-                
-    </div>
 
 
 

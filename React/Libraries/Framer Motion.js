@@ -15,7 +15,6 @@
                         2.1) useAnimate() hook
                         2.2) useAnimationControls() hook
                         2.3) useCycle() hook
-                        2.4) useMotionValue() hook
                         
                   3) Declarative Animations: Draggable Props
                         3.1) Draggable Components
@@ -39,13 +38,14 @@
                         7.2) layoutScroll prop
                         7.3) LayoutGroup component
                         7.4) layoutId prop
-                        
-                        
-*/
+
+                  8) Imperative Animation: Motion Value Hooks
+                        8.1) useMotionValue() hook
+                        8.2) useSpring() hook
+                        8.3) useTransform() hook
 
 
 
-/* 
             A FEW THINGS TO NOTE HERE:
 
             if the website shifts to the left or right, you can fix this bug by using the following selector
@@ -54,10 +54,12 @@
               max-width: 100vw;
               overflow-x: hidden;          //this will prevent the website from being moved to the left or right
               transition: none;            //this can also help prevents bugs with framer motion
-            }
-
-
+            }  
+                        
 */
+
+
+
 
 
 
@@ -422,16 +424,13 @@ function App() {
 
 
 
-//-------------------------- useMotionValue() Hook
-/* 
-            The useMotionValue() hook returns an object that is assigned to the style
-            attribute of elements. These objects are known as 'motion values'.
-*/
 
-const x = useMotionValue();              // motion values are objects that are assigned to the style attribute of elements
-                                         // they are used to keep track of a specific css property
-                                         //in this case, x will keep track of the elements position on the x-axis
-                                         // you can assign x to one of the hooks below to apply a different animation to a different css property
+
+
+
+
+
+
 
 
 
@@ -902,167 +901,78 @@ function App() {
 
 
 
-//======================================================== MISCELLANEOUS HOOKS ================================================================================================
 
 
 
-
-const scaleX = useSpring(x, {            // useSpring() accepts a motion value and will return another motion value
-    stiffness: 100,                      // the returned motion value will be used to create an animation that resembles a spring
-    damping: 30,                         //in this example, any changes made to x will make scaleX grow or shrink
-    restDelta: 0.001
-})
+//======================================================== IMPERATIVE ANIMATION: Motion Value Hooks ================================================================================================
 
 
-const background = useTransform(         //useTransform() accepts a motion value and will return another motion value
-    x,                                   //the returned motion value will be used to create an animation that changes the background color
-    [-100, 0, 100],                                                // we map these values            
-    ["linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",  //to these values
-    "linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
-    "linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"]
-  )
-
-
-              
-
-              
-
-
-
-
-
-
-
-
-
-
-
-//==================================== useScroll() and useSpring() ====================================================
-
-/*  
-    useSpring() is a hook that returns a motion value and will animate a certain css property based on stiffness, damping and restDelta props
-    useScroll() is a hook that returns 4 values; 
-
-    scrollYProgress: the current progress of the scroll position of the viewport (y-axis) 0-1
-    scrollXProgress: the current progress of the scroll position of the viewport (x-axis) 0-1
-
-    In the example below, we are using useScroll() and useSpring() together to create 
-    an animation that expands an element based on the progress of the scroll in the viewport's y-axis
-    We create the illusion of a progress bar that stays fixed to the top of the viewport
-    and will grow or shrink as the user scrolls down or up
+//-------------------------- useMotionValue() Hook
+/* 
+            The useMotionValue() hook returns an object that is assigned to the style
+            attribute of elements. These objects are known as 'motion values'. These objects
+            track the values of certain css properties. Keep in mind that the returned object 
+            should be the same name of the css property that we want to keep track of.
 */
 
-import {motion, useScroll, useSpring}
+function App() {
+    const x = useMotionValue(200);  
+    const opacity = useMotionValue(0.7)
 
-function ProgressBar() {
-    const {scrollYProgress} = useScroll();
-    const scaleX = useSpring(scrollYProgress, {
-        stiffness: 100,         //how fast the animation occurs
-        damping: 30,            //how fast the animation ends
-        restDelta: 0.001
+    return (
+        <motion.div style={{x, opacity}}> </motion.div>
+    )     
+}
+            
+
+
+//-------------------------- useSpring() Hook
+/* 
+            The useSpring() hook returns an object that is assigned to the style 
+            attribute of elements. These objects are known as 'motion values'. These 
+            objects track the values of certain css properties, and this hook will create
+            a spring animation for those css properties.
+*/
+
+function App(){
+    const scale = useSpring(0, {                // useSpring() accepts a motion value and will return another motion value
+           stiffness: 100,                      // the returned motion value will be used to create an animation that resembles a spring
+           damping: 30,                         // in this example, any changes made to x will make scaleX grow or shrink
+           restDelta: 0.001
     })
-
-    return(
-        <motion.div className={'progress-bar'} style={{scaleX}} />  
+ 
+    return (
+        <motion.div style={{scale}}> </motion.div>
     )
 }
 
+
+
+//-------------------------- useTransform() Hook
 /* 
-    .progress-bar{
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 10px;
-        background-color: red;
-        transform-origin: 0%;
-    }
+            The useTransform() hook returns an object that is assigned to the style 
+            attribute of elements. These objects are known as 'motion values'. These 
+            objects track the values of certain css properties. This hook will
+            create a 'motion value' from another 'motion value'.
+
+            syntax: 
+                 const motionValue = useTransform( otherMotionValue, [mapFrom], [mapTo])
+
+                             otherMotionValue:  this is a motion value returned from useMotionValue() hook
+                             [mapFrom]:   this is an array of values that will be mapped to the third argument
+                             [mapTo]:     this is an array of values that will be mapped to the second argument
 */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-//================================== useMotionValue() and useTransform() =============================================================
-//These two hooks are used together to keep track of changes during an animation
-//useMotionValue returns a motion value, a variable that keeps track of the changes of a specific css property
-//Basically, you can change an Element A by assigning a motion value to Element B, any changes made to element B will affect Element A
-
-import {motion, useMotionValue, useTransform } from 'framer-motion';
-
 function App() {
-  const x = useMotionValue(0);                          //this motion value will keep track of changes in the x-axis of an element
-  const background = useTransform(                      //useTransform() will use the motion value and create animations based on the current value
-    x,
-    [-100, 0, 100],                                     // if x is -100, then we will animate to the first linear gradient in th 
-    ["linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
-    "linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
-    "linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"]
-  )
+    const x = useMotionValue(0);
+    const opacity = useTransform(x, 
+                        [0, 100],             // if 'x' is currently at 25
+                        [0, 1]                // then 'opacity' will be at 0.25
+    );
 
-  return(
-      <motion.div className={'container'} style={{background}}> //the background color will change as you drag the child element
-          <motion.div 
-            className={'box'} 
-            style={{x}}                                 //you must assign the motion value to the style prop
-            drag='x'                                     //when this component is dragged, it will cause changed to the motion value
-            dragConstraints={{left: 0, right: 0, top: 0, bottom: 0}}>
-          </motion.div>      
-      </motion.div>
-  )
+    return <motion.div style={{ x, opacity }} />;
 }
-
-
-
-//useTransform() with functions
-function TransformWithFunctions() {
-    const count = useMotionValue(0)
-    const rounded = useTransform(count, latest => Math.round(latest))    //passing a function to the second argument can be used to format the motion values
-    const [,animate] = useAnimate();
-  
-    useEffect(() => {
-        const controls = animate(count, 100, {duration: 1.2})
-        return controls.stop
-    }, [])
-    
-    return <motion.div>{rounded}</motion.div>
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

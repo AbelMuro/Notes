@@ -678,7 +678,7 @@ const store = configureStore({
               
                   thunkAPI = {
                         dispatch,            // Allows dispatching additional actions within the async function.
-                        getState,            // Provides access to the current Redux store state.
+                        getState,            // Provides access to the COMPLETE global state (not just the slice).
                         extra,               // Contains any extra argument passed when configuring the store.
                         requestId,           // A unique identifier for the current async request.
                         signal,              // An AbortSignal that can be used to cancel the async operation.

@@ -2,3 +2,7 @@ dir                            will show all the files in the current directory
 cd someFolder                  will change the current directory to the folder specified
 cd ..                          will go to the previous directory specified
 chmod +x ./path/to/file        will elevate permissions to use the specified file (use this command if you get the error EACCES)
+
+lsof -i :8080                  will display a list of programs, with their PID, that are running on the specified port (for Mac/Linux)
+kill -9 <PID>                  will stop a program running on a port
+

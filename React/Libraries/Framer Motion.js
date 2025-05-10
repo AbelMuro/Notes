@@ -3,9 +3,44 @@
             npm install framer-motion
 
             Bookmarks
-                  1) Motion Component (initial, animate, transition, variants, exit, gestures)
-                  2) Hooks ()
-            
+                  1) Declarative Animations: Motion Component 
+                        1.1) initial and animate prop
+                        1.2) transition prop
+                        1.3) variants prop
+                        1.4) dynamic variants
+                        1.5) exit prop
+                        1.6) gestures props
+                        
+                  2) Imperative Animation: Animation Hooks
+                        2.1) useAnimate() hook
+                        2.2) useAnimationControls() hook
+                        2.3) useCycle() hook
+                        2.4) useMotionValue() hook
+                        
+                  3) Declarative Animations: Draggable Props
+                        3.1) Draggable Components
+                        3.2) Draggable Components with constraints
+                        3.3) Draggable Components using Parent Components as Constaints
+                        3.4) Drag and Drop Components
+                        3.5) Miscellaneous Draggable Props
+                        
+                  4) Imperative Animations: Draggable Hooks
+                        4.1) useDragControls() hook
+                        
+                  5) Declarative Animations: Scrolling Props
+                        5.1) whileInView props
+                        5.2) viewport props
+                        
+                  6) Imperative Animation: Scrolling Hooks
+                        6.1) useScroll() hook
+
+                  7) Declarative Animation: Grid/Flex Animation
+                        7.1) layout prop
+                        7.2) layoutScroll prop
+                        7.3) LayoutGroup component
+                        7.4) layoutId prop
+                        
+                        
 */
 
 

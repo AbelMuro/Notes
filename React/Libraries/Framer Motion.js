@@ -905,14 +905,20 @@ function App() {
 
 
 //======================================================== IMPERATIVE ANIMATION: Motion Value Hooks ================================================================================================
+/* 
+            Motion Values are objects that are used to keep track of a certain css property.
+            Keep in mind that these objects will not initialize an animation, you will
+            have to initialize the animation with initial-animate props, or the useAnimate() hooks.
+            
+*/
+
 
 
 //-------------------------- useMotionValue() Hook
 /* 
-            The useMotionValue() hook returns an object that is assigned to the style
-            attribute of elements. These objects are known as 'motion values'. These objects
-            track the values of certain css properties. Keep in mind that the returned object 
-            should be the same name of the css property that we want to keep track of.
+            The useMotionValue() hook returns a 'motion value' that is assigned to the style
+            attribute of elements. Keep in mind that the motion value should be the same name 
+            of the css property that we want to keep track of.
 */
 
 function App() {
@@ -926,18 +932,52 @@ function App() {
             
 
 
+//-------------------------- useMotionValueEvent() Hook
+/* 
+            The useMotionValueEvent() is similar to the useEffect() hook in React.
+            It lets you call a function when a certain motion value has changed. 
+            You can apply additional animation logic with this hook
+
+            syntax: 
+                 useMotionValueEvent(motionValue, 'event-name', callback)
+
+                             motionValue:   can be an object returned from useMotionValue(), useSpring(), useTransform() hooks
+                             'event-name':  typically can be the 'change' event
+                             callback:      function that has access to the latest value of the motionValue 
+*/
+
+function App() {
+     const y = useMotionValue(0);
+
+     useMotionValueEvent(y, "change", (latest) => {
+         console.log("y changed to:", latest);
+     });
+
+     return (
+        <motion.div style={{x, opacity}}> </motion.div>
+    )         
+}
+
+
+
+
 //-------------------------- useSpring() Hook
 /* 
-            The useSpring() hook returns an object that is assigned to the style 
-            attribute of elements. These objects are known as 'motion values'. These 
-            objects track the values of certain css properties, and this hook will create
-            a spring animation for those css properties.
+            The useSpring() hook returns an motion value that is assigned to the style 
+            attribute of elements. This hook will create a spring animation for those 
+            css properties when the css property value changes.
+
+            syntax:
+                 const motionValue = useSpring(initialValue, transition);
+
+                             initialValue:   can be any integer value or another motionValue
+                             transition:     an object containing the transition properties for the spring animation
 */
 
 function App(){
-    const scale = useSpring(0, {                // useSpring() accepts a motion value and will return another motion value
-           stiffness: 100,                      // the returned motion value will be used to create an animation that resembles a spring
-           damping: 30,                         // in this example, any changes made to x will make scaleX grow or shrink
+    const scale = useSpring(0, {                
+           stiffness: 100,                      
+           damping: 30,                         
            restDelta: 0.001
     })
  
@@ -950,10 +990,9 @@ function App(){
 
 //-------------------------- useTransform() Hook
 /* 
-            The useTransform() hook returns an object that is assigned to the style 
-            attribute of elements. These objects are known as 'motion values'. These 
-            objects track the values of certain css properties. This hook will
-            create a 'motion value' from another 'motion value'.
+            The useTransform() hook returns a 'motion value' that is assigned to the style 
+            attribute of elements. This hook will enable an animation for a css property when 
+            a motion-value (that keeps track of a different css property) is changed.
 
             syntax: 
                  const motionValue = useTransform( otherMotionValue, [mapFrom], [mapTo])

@@ -544,7 +544,7 @@ app.post("/upload", (req, res) => {
 //------------- CONNECTING TO THE WEBSOCKET FROM THE FRONT-END
 	
 				//development			//production (443 is the default port for https)
-        const WEBSOCKET_URL = 'ws://localhost:8000/queue'  or   'wss//my-back-end-domain.com:443/queue'       
+        const WEBSOCKET_URL = 'ws://localhost:8000/queue'  or   'wss//my-back-end-domain.com:443/queue?username=abel'		//keep in mind, that you can also add query params to the url to send data to the back end       
 
         const connectToWebSocket = () => {         
             const socket = new WebSocket(WEBSOCKET_URL);            	   // make sure the port is the same on the web socket in the back-end

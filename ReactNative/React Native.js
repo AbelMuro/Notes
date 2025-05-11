@@ -202,23 +202,6 @@
 
 
 
-//========================================================================== CORE COMPONENTS ==============================================================================
-/* 
-      Core components are the building blocks of React Native. In mobile development, 
-      we can only use these components when we want to render something on the mobile 
-      device.
-
-*/
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -537,6 +520,96 @@ const App = () => {
 
 
 
+//------------------------- Touchable Opacity
+/* 
+        The touchable opacity component is used to make a container
+        into a button, it supports the onPress event handler.
+        This component provides an animation where the child 
+        components become transparent when they are pressed on.
+*/
+import {TouchableOpacity} from 'react-native';
+
+const App = () => {
+
+  const handlePress = () => {
+    console.log('Hello World')
+  }
+  
+  return (
+    <TouchableOpacity onPress={handlePress}>
+      <Text>Tap Me</Text>
+    </TouchableOpacity>
+  )
+}
+
+
+//------------------------- Touchable Highlight
+/* 
+        The touchable opacity component is used to make a container
+        into a button, it supports the onPress event handler.
+        This component provides an animation where the child components' 
+        background-color darkens when pressed on
+*/
+
+import {TouchableHighlight} from 'react-native';
+
+const App = () => {
+
+  const handlePress = () => {
+    console.log('Hello World')
+  }
+  
+  return (
+    <TouchableHighlight onPress={handlePress}>
+      <Text>Tap Me</Text>
+    </TouchableHighlight>
+  )
+}
+
+
+
+//------------------------- Touchable without feedback
+/* 
+        The touchableWithoutFeedback component is used to make a container
+        into a button, it supports the onPress event handler.
+        This component does not provide any visual animation
+*/
+
+import {TouchableWithoutFeedback} from 'react-native';
+
+const App = () => {
+
+  const handlePress = () => {
+    console.log('Hello World')
+  }
+  
+  return (
+    <TouchableWithoutFeedback onPress={handlePress}>
+      <Text>Tap Me</Text>
+    </TouchableWithoutFeedback>
+  )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
 
 
 
@@ -565,6 +638,36 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -836,9 +939,9 @@ function App() {
     }
   
     return (
-        <View onPress={handlePress}>
+        <Touchable onPress={handlePress}>
       
-        <View>
+        </Touchable>
     )
 }
 

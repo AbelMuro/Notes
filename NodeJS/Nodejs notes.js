@@ -542,9 +542,14 @@ app.post("/upload", (req, res) => {
 
 
 //------------- CONNECTING TO THE WEBSOCKET FROM THE FRONT-END
-	
+/* 
+	Keep in mind that the websocket url can be used with query parameters
+ 	This is another useful way for sending data to the back-end
+
+ 		wss//my-back-end-domain.com:443/queue?username=random
+*/
 				//development			//production (443 is the default port for https)
-        const WEBSOCKET_URL = 'ws://localhost:8000/queue'  or   'wss//my-back-end-domain.com:443/queue?username=abel'		//keep in mind, that you can also add query params to the url to send data to the back end       
+        const WEBSOCKET_URL = 'ws://localhost:8000/queue'  or   'wss//my-back-end-domain.com:443/queue'     
 
         const connectToWebSocket = () => {         
             const socket = new WebSocket(WEBSOCKET_URL);            	   // make sure the port is the same on the web socket in the back-end
@@ -705,6 +710,119 @@ app.post("/upload", (req, res) => {
 
 
 
+//---------------------------------------- CRYPTO MODULE ----------------------------------------
+/* 
+	The Crypto module lets you use cryptographic features such as hashing, encryption and 
+ 	decryption.
+
+  	Haxadecimal String: a string that represents binary data
+   
+	    Binary: 01000101 0100111010 01001010 10011001 
+	    Hexadecimal String: 48 65 62 3F
+	    English: Hello
+*/
+
+//-------------- Hashing
+/* 
+	Hashing is the process of obscuring a sequence of characters 
+ 	with a different set of characters. This is particularly useful
+  	for securing a password in a database. You can use the .createHash()
+   	method to do this.
+*/
+
+	app.post('/hash', () => {
+		const message = 'Hello World'
+    		const hashObject = crypto.createHash('sha256')				// we create a hash object (instance of the crypto.Hash() class) and specify the 'sha256' hashing algorithm
+		const updatedHashObject = hashObject.update(message);     		// we update the hash object with the data we want to hash
+		const hashedMessage = updatedHashObject.digest('hex');			// we finalize the hashing process by converting the hash object into a Hexadecimal string
+	})
+
+//-------------- Generating tokens
+/* 
+	Tokens can be generated with the randomBytes() method.
+ 	This method generates random bytes and stores them in a 
+  	buffer. You will then need to convert the buffer into a 
+   	hexadecimal string
+*/
+
+	app.post('/token', () => {
+		const buffer = crypto.randomBytes(32).toString('hex');			// we create a buffer (raw binary data) that has 32 random bytes
+		const token = buffer.toString('hex');					// we convert the buffer into a Hexadecimal string
+	})
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------- BCRYPT MODULE ----------------------------------------
+/* 
+	The bcrypt module also lets you use cryptographic features, but is designed more for password hashing
+*/
+
+
+
+//------------- Salts
+/* 
+	Salts are random generated values that can be added to a set of data 
+ 	during the hashing process. This ensures that the hashed value will
+  	be unique and secure. you can create a Salt by using the genSalt() method
+*/
+
+	app.post('/salt', () => {
+		const data = 'data123'
+		const salt = await bcrypt.genSalt(10);			// we create a salt of random generated values
+		const hashedData = await bcrypt.hash(data, salt);	// the password is then hashed with the generated salt to ensure security and uniqueness.
+	})
+
+
+
+//-------------- Hashing passwords
+/* 
+	You can securely hash passwords with salts by using the .hash() method.
+ 	you can also use the compare() method to compare a hashedPassword with 
+  	any string, useful for authenticating a user
+*/
+
+	app.post('/hash', async () => {
+		const password = 'password123'
+		const salt = await bcrypt.genSalt(10);				// we create a salt of random generated values
+		const hashedPassword = await bcrypt.hash(password, salt);	// the password is then hashed with the generated salt to ensure security and uniqueness.
+		const match = await bcrypt.compare(hashedPassword, password)	// the compare() method can compare a hashed password with a JS string (hashedPassword will be decoded automatically)
+	})
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -747,17 +865,21 @@ eventEmitter.emit('scream')                     //triggerring the event
 
 
 //---------------------------------------- URL MODULE ----------------------------------------
-var url = require('url');                                       //used for formating the url of the website
-    var adr = 'http://localhost:8080/default.htm?year=2017&month=february';  //normally you would use 'req.url' to get the url
-    var q = url.parse(adr, true)                                //parsing the url into an object
-    q.host;                                                     //returns 'localhost:8080' (domain name)
-    q.pathname;                                                 //returns 'default.htm'
-    q.search;                                                   //returns '?year=2017&month=february'
-    q.query;                                                    //returns an object { year: 2017, month: february}
+/* 
+	The url module can be used to manipulate and extract specific parts of the current url.
+ 	Url stands for Uniform Resource Locator, and it is used as the address for every website. 
+  	You can get the current url with 'req.url'	
+*/
+var url = require('url');                                       // used for formating the url of the website
 
-
-    let filename = q.pathname;                                              
-    formattedUrl = formattedUrl.year + " " + formattedUrl.month; 
+app.post('/url', (req, res) => {
+	const full_url = req.url;				// http://example.com/aboutus/contantus?year=2017&month=february
+	const parsed_url = url.parse(full_url);			// parsing the url string into an object
+        const host = parsed_url.host;				// returns the domain name (example.com)
+	const pathname = parsed_url.pathname;			// returns the path (/aboutus/contantus)
+	const search = parsed_url.search;			// returns the query parameters as a string (?year=2017&month=february)
+	const query = parsed_url.query;				// returns the query parameters as an object { year: 2017, month: february}
+})
 
 
 
@@ -788,96 +910,6 @@ var url = require('url');                                       //used for forma
 	3) process.env.apiKey can only be used in the SAME file where you called config()
 
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-//================================================= CRYPTOGRAPHY ============================================================
-/* 
-	Cryptographic is the field of encryption, decryption, hashing, and digital signatures
- 	More specifically, hashing is the process of obscuring a sequence of characters with a different set of characters
-  	A Password will be more secure if it has been hashed with a different set of characters
-
-	In Node.js, whenever you have authentication, its crucial to hash the passwords of the users account
-	You can use the BCRYPT and CRYPTO modules to do just that
-
- 	key concepts:
-
-  	Hexadecimal string: a way of representing binary data using letters and numbers
-   
-   	Binary: 01000101 0100111010 01001010 10011001 
-     	Hex: 48 65 62 3F
-       	English: Hello
-
-*/
-
-
-	//HASH FUNCTIONS: a function that takes input data and generates a fixed-sized string of characters
-			const message = 'Hello World'
-    			const hashedMessage = crypto.createHash('sha256').update(message).digest('hex');
-				// 1) we create a hash object (instance of the crypto.Hash() class) and specify the 'sha256' hashing algorithm
-    				// 2) we update the hash object with data we want to hash
-				// 3) we finalize the hashing process by converting the hash object into a HEX string
-				// 4) the message 'Hello World' will be displayed in Hexadecimal format after it has been hashed
-
-
-	//BUFFER: a temporary location in memory that has raw binary data	
-			const token = crypto.randomBytes(32).toString('hex');
-				// 1) we create a buffer that has 32 random bytes
-				// 2) We then convert the raw binary data into a HEX string
-
-
-	//SALTS: a random generated value that can be added to the data to ensure the hashed value is unique
-			const password = 'password123'
-			const salt = await bcrypt.genSalt(10);
-			const hashedPassword = await bcrypt.hash(password, salt);
-				// 1) we create a salt of random generated values
-				// 2) the password is then hashed with the generated salt to ensure security and uniqueness.
-			const match = await bcrypt.compare(hashedPassword, password)
-				// the compare() method can compare a hashed password with a JS string
-				// it will automatically decode the hashed password and then compare it
-				// this is useful for validating if the user entered the correct password
-
-
-
-
-
-
-
-
-
-
-
-
-  	
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

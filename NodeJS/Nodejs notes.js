@@ -298,6 +298,7 @@ app.post("/upload", (req, res) => {
 	      name: 'Carlos',
 	      age: 34,
 	   }	
+    
   	   files = {
       		filepath, 		Full path where the uploaded file is temporarily stored.
 		originalFilename,  	The original name of the file as submitted by the user.
@@ -451,33 +452,68 @@ app.post("/upload", (req, res) => {
  	upgrade an HTTP request into a websocket connection
 
 		httpsServer.on('upgrade', (request, socket, head) => {
-		    const wss = global.webSocketHandlers[request.url];      // we access a list of websockets we already created
+		    const { pathname } = new URL(request.url, `http://${request.headers.host}`);         //will extract only the path portion of the url, (https://my-socket.com/query    ->     /query)
+		    const wss = global.webSocketHandlers[pathname];      				// we access a list of websockets we already created
 		    
-		    if (wss) {						   // if the request url already has a websocket
+		    if (wss) {						   				// if the request url already has a websocket
 			wss.handleUpgrade(request, socket, head, (ws) => {
 			    wss.emit('connection', ws, request);
 			});
 		    } else 
-			socket.destroy();                                   // Gracefully close invalid connections
+			socket.destroy();                                   				// Gracefully close invalid connections
 		});
 */
 
+
+
+
+
 //----------- CREATING WEBSOCKETS
+/*
+	You can use the Websocket.Server() constructor to create a websocket
+
+	syntax:
+ 		const wss = new WebSocket.Server({noServer: true});
+
+   		wss.on('connection', callback);						// 'connection' event will be triggered when front-end and back-end are connected
+
+     		callback = (ws, req) => {						// 'ws' is an instance of a user that connected to the front-end, every user will have their own instance
+											// 'req' is an object that represents the request sent by the front-end to the back-end
+			ws methods:							// keep in mind, that 'ws' is an object that can store custom properties and methods 
+				ws.send('JSON data');					// ws.send() will send data to the front-end (YOU have to call this function, its best to use it in some event handler)
+				ws.close();				 		// ws.close() will close the websocket
+				ws.on('message', (message) => {			        // 'message' event will be triggered when the front-end sends a message to the back-end
+				     const messageFromFrontEnd = JSON.parse(message);
+				})   				  
+				ws.on('close', () => {})                                 // 'close' event will be triggered when the front-end disconnectsfrom the back-end
+		  
+			req methods:
+				req.url,             					// The URL used to connect, including query params
+				req.headers,     					// Contains request headers (req.headers.cookie) NOT HTTP-ONLY COOKIES
+				req.method,       					// HTTP method (usually "GET" for WebSocket connections)
+				req.connection, 					// Information about the TCP connection
+				req.socket,       					// Raw socket instance
+				req.socket.remoteAddress, 				// Client's IP address
+				req.socket.remotePort 					// Client's port number
+       
+		};					
+*/
 
 	const WebSocket = require('ws');
 
 	const createWebSocket = (path = 'queue') => {	
-	        const wss = new WebSocket.Server({noServer: true});     	    //we use the same server that our node.js app is running on for the websocket
+	        const wss = new WebSocket.Server({noServer: true});     	    // we use the same server that our node.js app is running on for the websocket
 
-		global.webSocketHandlers[`/${path}`] = wss;			    //we save the websocketHandler in our global list
+		global.webSocketHandlers[`/${path}`] = wss;			    // we save the websocketHandler in our global list
 		
-	        wss.on('connection', ws => {                                        // you establish the connection between the back end and the front end
-	            ws.on('message', (message) => {			            // message event will be triggered when the front-end sends a message through the websocket
+	        wss.on('connection', (ws, req) => {      
+		    ws.custom = 'any data';				            // keep in mind that you can save custom properties for each specific instance of the websocket
+	            ws.send('data must be in json format')                          
+		    ws.close();				 			   
+	            ws.on('message', (message) => {			           
 			const messageFromFrontEnd = JSON.parse(message);
-		    })    
-	            ws.send('data must be in json format')                         // ws.send() will send data to the front-end (YOU have to call this function, its best to use it in some event handler)
-		    ws.close();							   // ws.close() will close the websocket
-	            ws.on('close', () => {                                         // close event will be triggered when the front-end and back-end are disconnected
+		    })   				  
+	            ws.on('close', () => {                                         
 	                console.log('Client disconnected')
 	            })
 		})	

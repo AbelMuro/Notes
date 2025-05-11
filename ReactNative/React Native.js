@@ -1,7 +1,11 @@
-//React Native is a library used to develop mobile apps on android and iOS
-// REMEMBER, react native does NOT use className
-
 /*    
+
+        React Native is a library used to develop mobile apps on android and iOS
+
+
+
+                                       FEATURES OF REACT NATIVE
+
                                           NATIVE COMPONENTS:  
                                           
                           In Android development, we use Kotlin or java to write components
@@ -15,23 +19,23 @@
                                      
                       2) npm run start              
 
-                        keep in mind that if you have issues with initializing your react-native app
-                        you may want to run the following lines of code to reset the cache
+                              keep in mind that if you have issues with initializing your react-native app
+                              you may want to run the following lines of code to reset the cache
+      
+                                  cd android
+                                  ./gradlew clean
+                                  cd ..
+                                  npm start --reset-cache
 
-                            cd android
-                            ./gradlew clean
-                            cd ..
-                            npm start --reset-cache
-
-                      ALSO, don't move the files around!
+                              ALSO, don't move the files around!
 
 
-                      if you want to regenerate the android or ios folder, follow these steps
-
-                      npm install react-native-eject
-                      npm install @react-native-community/cli
-
-                      react-native eject
+                              if you want to regenerate the android or ios folder, follow these steps
+        
+                              npm install react-native-eject
+                              npm install @react-native-community/cli
+        
+                              react-native eject
                       
                      ----------------------INSTALLING FONTS INTO PROJECT---------------------------
                     1) To install fonts into your react-native project 
@@ -199,12 +203,44 @@
 
 
 //========================================================================== CORE COMPONENTS ==============================================================================
-import React from 'react';
+/* 
+      Core components are the building blocks of React Native. In mobile development, 
+      we can only use these components when we want to render something on the mobile 
+      device.
+
+*/
 
 
-//-------------------------- VIEW-----------------------------------
-// VIEW is a component that represents a small rectangular element on the screen that can be used to display text, images, and respond to user input
-// it serves as a container for other elements
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================================== CONTAINER COMPONENTS ==============================================================================
+/* 
+    Every element created in React Native must be inside a container component
+*/
+
+
+//------------------------- VIEW 
+/* 
+     VIEW is a component that represents a small rectangular 
+     element on the screen that can be used to display text, 
+     images, and respond to user input. It serves as a 
+     container for other elements
+*/
+
 
 import {View} from 'react-native';
 
@@ -221,11 +257,12 @@ export default App;
 
 
 
+//------------------------- SCROLL VIEW 
+/* 
+    SCROLL VIEW: is a component that is similar to the view component, 
+    the difference is that you can scroll within this container
+*/
 
-
-//------------------------- SCROLL VIEW ----------------------------
-//SCROLL VIEW: is a component that is similar to the view component, 
-// the difference is that you can scroll within this container
 
 import {ScrollView} from 'react-native';
 
@@ -240,8 +277,13 @@ const App = () => {
 export default App;
 
 
-// there will be times where you will need to dynamically load data with scroll view
-// you will need to do the following...
+//------------------------- DYNAMIC SCROLL VIEW
+/* 
+     There will be times where you will need to dynamically load data with scroll view
+     You can use the Dimensions.get() module to dynamically get the size of the device
+     when rendering dynamic data
+*/
+
 
 import {Dimensions} from 'react-native';            //this component lets you access the width and height of the device you are using
 
@@ -251,10 +293,115 @@ import {Dimensions} from 'react-native';            //this component lets you ac
 
 
 
-//-------------------------- FLAT LIST ------------------------------
-// FLAT LIST is a component that displays a long list of data,
-// the content only renders when it is currently on the screen
-// you must use the contentContainerStyle prop to organize the list as a flex box
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+//========================================================================== STYLE COMPONENTS ==============================================================================
+
+//---------------------------- STYLESHEETS 
+/* 
+      STYLESHEET: is a object that lets you create a stylesheet inside a JS file
+      this is another way of modularizing css in your component
+*/
+
+
+import {StyleSheet} from 'react-native';
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingTop: 22,
+    },
+    item: {
+      padding: 10,
+      fontSize: 18,
+      height: 44,
+    },
+});
+
+const App = () => {
+    return(
+      <View style={styles.container}>
+        
+      </View>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+//========================================================================== LIST COMPONENTS ==============================================================================
+/* 
+    You can create a 'react list' with flat-list and section-list
+*/
+
+
+
+//------------------------- FLAT LIST 
+/* 
+     FLAT LIST is a component that displays a long list of data,
+     the content only renders when it is currently on the screen
+     you must use the contentContainerStyle prop to organize the 
+     list as a flex box
+*/
+
 
 import {Text, View} from 'react-native';
 
@@ -284,9 +431,12 @@ const App = () => {
 
 
 
-//----------------------- SECTION LIST --------------------------
-// SECTION LIST is a component that displays a large list of data divided into sections
-// you must use the contentContainerStyle prop to organize the list as a flex box
+//------------------------- SECTION LIST
+/* 
+     SECTION LIST is a component that displays a large list of data divided into sections
+     you must use the contentContainerStyle prop to organize the list as a flex box
+*/
+
 
 import {SectionList, View, Text} from 'react-native';
 
@@ -325,7 +475,7 @@ const App = () => {
                   ]}
                   renderItem={renderItem}
                   renderSectionHeader={renderSectionHeader}
-                  horizontal                                  //by default, FlatList is a vertical list, but you can make a horizonal list with this prop
+                  horizontal                                  //by default, SectionList is a vertical list, but you can make a horizonal list with this prop
                   contentContainerStyle={{justifyContent: 'center', alignItems: 'center', gap: '45px'}}
                   ItemSeparatorComponent={itemSeparator}    
                   SectionSeparatorComponent={sectionSeparator}
@@ -335,9 +485,38 @@ const App = () => {
       )
 }
 
-  
-//------------------------- PRESSABLE ------------------------------
-//PRESSABLE is a button component
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================================== BUTTON COMPONENTS ==============================================================================
+
+//------------------------- PRESSABLE 
+/* 
+    PRESSABLE is a button component
+*/
 
 import {Pressable} from 'react-native';
 
@@ -359,8 +538,20 @@ const App = () => {
 
 
 
-//--------------------------- TEXT ----------------------------------
-//TEXT is a component that can be used to display text onto the screen
+
+
+
+
+
+  
+//========================================================================== TEXT COMPONENTS ==============================================================================
+
+
+//------------------------- TEXT 
+/* 
+    TEXT is a component that can be used to display 
+    text on the screen
+*/
 
 import {Text, View, Linking} from 'react-native';
 
@@ -381,8 +572,14 @@ export default App;
 
 
 
+//========================================================================== LINK COMPONENTS ==============================================================================
 
-//--------------------------- LINKING -------------------------------
+
+//------------------------- LINKING 
+/* 
+    You can create a link with the Linking module and
+    the openURL() method
+*/
 
 import {Text, Linking} from 'react-native';
 
@@ -409,8 +606,34 @@ export default App;
 
 
 
-//--------------------------- IMAGE ----------------------------------
-//IMAGE is a component that can be used to upload an image
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================================== IMAGE COMPONENTS ==============================================================================
+
+
+//------------------------- IMAGE
+/* 
+      IMAGE is a component that can be used to upload an image
+*/
 
 import {Image, View} from 'react-native';
 import icons from './icons';
@@ -430,8 +653,11 @@ const App = () => {
 
 
 
-//------------------------ BACKGROUND IMAGE ---------------------------
-
+//------------------------- IMAGE BACKGROUND
+/* 
+    IMAGE BACKGROUND is a component that is used to create a container
+    that has an image as a background
+*/
 
 import {ImageBackground} from 'react-native';
 import images from './images';
@@ -451,56 +677,54 @@ const App = () => {
 
 
 
-//---------------------------- TEXT-INPUT ---------------------------------
-//INPUT is a component that can be used to receive user input
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================================== INPUT COMPONENTS ==============================================================================
+
+
+//------------------------- TEXT-INPUT 
+/* 
+    INPUT is a component that can be used to receive user input
+*/
+
 
 import {TextInput, View} from 'react-native';
 
-const App = () => {
+function App ()  {
     const [text, setText] = useState('');
-    const [error, setError] = useState(false);
-
-    const styles = {
-       input: {
-           width: 100,
-           height: 90,
-           borderColor: error ? 'red' : 'grey',              //you can change the styles of the input with the error state
-           borderStyle: 'solid',
-           borderRadius: 5,
-       }
-    }
 
     const handleText = (newText) => {
         setText(newText)
     }
 
-    const handleBlur = () => {
-        if(text === '')                                   //we can't use 'e.target.validity' in react-native, so we have to validate the state ourselves
-          setError(true)  
-        else if(text.includes('a'))
-          setError(true)
-    }
 
-    const handleSubmit = () => {
-        if(text === '' && text.includes('a')) return;
-        //submit to server
-    }
-
-    useEffect(() => {
-        setError(false)
-    }, [Text])
+    const handleSubmit = () => {}
   
     return (
         <View>
             <TextInput
                 placeholder='Type here'
-                placeholderTextColor={error ? 'red' : 'grey'}
-                secureTextEntry={true}                      //hides input, useful for password
+                placeholderTextColor={'grey'}
+                secureTextEntry={true}                      // hides input, useful for password
                 value={text}
-                onChangeText={handleChange}                //we dont use onChange event handler here
-                onBlur={handleBlur}
-                 multiline={true}
-                style={styles.input}
+                onChangeText={handleChange}                
+                onBlur={() => {}}
+                multiline={true}
             />
               <Pressable onPress={handleSubmit}> 
                   <Text> Submit </Text>
@@ -511,7 +735,37 @@ const App = () => {
 
 
 
-//-------------------------- CIRCULAR PROGRESS BAR -----------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================================== LOADING ICON COMPONENTS ==============================================================================
+
+//------------------------- CIRCULAR PROGRESS BAR 
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 
 function App() {
@@ -527,31 +781,120 @@ function App() {
 
 
 
-//---------------------------- STYLESHEETS -----------------------------
-//STYLESHEET: is a object that lets you create a stylesheet inside a JS file
-//this is another way of modularizing css in your component
 
-import {StyleSheet} from 'react-native';
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingTop: 22,
-    },
-    item: {
-      padding: 10,
-      fontSize: 18,
-      height: 44,
-    },
-});
 
-const App = () => {
-    return(
-      <View style={styles.container}>
-        
-      </View>
+
+
+
+
+
+
+
+//========================================================================== EVENT HANDLERS ==============================================================================
+/* 
+        Every event handler has access to the event object, it is a synthetic event
+        that wraps around all browser events with a API to ensure consistent behavior 
+        across different browsers. Keep in mind that React-native doesnt use the same 
+        event handler names as React, it has its own list of event handlers.
+
+        React native uses the following event names
+
+              onPress
+              onLongPress              
+              onPressIn              
+              onPressOut
+              onChangeText
+              onEndEditing             
+              onFocus            
+              onBlur            
+              onSubmitEditing            
+              onKeyPress
+              onScroll
+              onMomentumScrollBegin
+              onMomentumScrollEnd
+              onScrollBeginDrag
+              onScrollEndDrag
+              onKeyboardDidShow
+              onKeyboardDidHide
+*/
+
+function App() {
+
+    const handlePress = (e) => {
+      /* 
+        e.nativeEvent.changedTouches           // An array of touch points that have changed.
+        e.nativeEvent.locationX                // X-coordinate of the touch relative to the element.
+        e.nativeEvent.locationY                // Y-coordinate of the touch relative to the element.  
+        e.nativeEvent.pageX                    // X-coordinate relative to the entire screen.        
+        e.nativeEvent.pageY                    // Y-coordinate relative to the entire screen.        
+        e.nativeEvent.timestamp                // Time when the event was triggered.        
+        e.nativeEvent.target                   // The React Native element that triggered the event.       
+        e.nativeEvent.touches                  // An array of all active touch points.      
+      */
+
+    }
+  
+    return (
+        <View onPress={handlePress}>
+      
+        <View>
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================================== MODULES ===============================================================
+
+
+//------------------------- Platform
+/* 
+      You can use the platform module to apply certain styles to elements based on the current OS
+*/
+
+
+import {Platform} from 'react-native';
+
+Platform.OS;                                                 //detects the current OS (android, iOS)
+Platform.select();                                           //returns an object depending on the current OS
+Platform.Version === 25;                                     //this can be used to detect the current version of android
+parseInt(Platform.Version, 10);                              //this can be used to detect the current version of iOS
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -599,48 +942,9 @@ const App = () => {
 
 
 
-//---------------------------------------------- e.NativeEvent------------------------------------------------------------------------
 
 
 
-
-
-
-
-
-
-
-
-
-//========================================================================== MODULES ===============================================================
-//you can use the platform module to apply certain styles to elements based on the current OS
-
-import {Platform, StyleSheet} from 'react-native';
-
-Platform.OS;                                                 //detects the current OS (android, iOS)
-Platform.select();                                           //returns an object depending on the current OS
-Platform.Version === 25;                                     //this can be used to detect the current version of android
-parseInt(Platform.Version, 10);                              //this can be used to detect the current version of iOS
-
-const styles = StyleSheet.create({
-    container: {
-       height: Platform.OS === 'ios' ? 200 : 100,             // OS will return the current operating system of the device (android or ios)
-       ...Plaform.select({                                    // depending on the current OS, .select() will return a set of properties with their values
-           ios: {
-             backgroundColor: 'red'
-           },
-           android: {
-             backgroundColor: 'blue'
-           },
-           default: {                                        //any other plaforms, like web for example
-              backgroundColor: 'green'
-           }
-       })
-    }
-})
-
-Platform.OS        
-Platform
 
 
 

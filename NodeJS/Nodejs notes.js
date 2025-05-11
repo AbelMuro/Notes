@@ -874,7 +874,7 @@ var url = require('url');                                       // used for form
 
 app.post('/url', (req, res) => {
 	const full_url = req.url;				// http://example.com/aboutus/contantus?year=2017&month=february
-	const parsed_url = url.parse(full_url);			// parsing the url string into an object
+	const parsed_url = url.parse(full_url, true);		// parsing the url string into an object (if second argument is true, url will be parsed into object, if its false, then it will be parsed into a string )
         const host = parsed_url.host;				// returns the domain name (example.com)
 	const pathname = parsed_url.pathname;			// returns the path (/aboutus/contantus)
 	const search = parsed_url.search;			// returns the query parameters as a string (?year=2017&month=february)

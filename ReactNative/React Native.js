@@ -1337,6 +1337,8 @@ export default App;
 */
 
 
+
+
 //------------------------- NavigationContainer Component
 /* 
         NavigationContainer is a component that serves as a container
@@ -1374,11 +1376,10 @@ function App(){
                                 animationEnabled={}                         // Toggles animation for screen transitions.
                         />
 
-
                         <Stack.Screen   
                                 name={}                                      // Defines the unique name of the screen used for navigation.
                                 component={}                                 // Specifies the React component to render for the screen.
-                                initialParams={}                             // Passes default parameters to the screen.
+                                initialParams={}                             // Passes default parameters to the screen components.
                                 options={{
                                         title,                               // Sets the header title.
                                         headerShown,                         // Controls the visibility of the header (true or false).
@@ -1388,14 +1389,12 @@ function App(){
                                         gestureEnabled,                      // Enables/disables swipe gestures.                                       
                                         animationTypeForReplace,             // Determines animation when replacing a screen (push, pop, etc.).
                                 }}
-                        />
-                        
+                        />                   
 */
 
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 const Stack = createNativeStackNavigator();
+
 
 function App() {
         return (
@@ -1406,6 +1405,39 @@ function App() {
                </NavigationContainer>
         )
 }
+
+
+
+function Home({navigation, route}) {                 // Every stack component will have access to the navigation and route prop 
+        /*
+                navigation.navigate('aboutus', {        // navigate() will navigate to a different page  
+                     someParams: 'whatever'                 // You can pass any data as props to the page we are navigating to
+                }); 
+                navigation.push('ProductDetails', {     // Creates a new instance of the page. The instance will be ON TOP of the current instance
+                     productName: 'New Product'            // You can pass any data as props to the page we are navigating to
+                });          
+                navigation.goBack();                 // goBack() will navigate to the previous page
+
+                route.key;                           // A unique identifier for the screen.
+                route.name;                          // The name of the route ("home", "about_us").
+                route.params;                        // An object containing any parameters sent to this screen.
+                route.path;                          // The path associated with the route, useful in deep linking.
+                
+        */
+        
+    return(<></>)
+}
+
+
+
+
+
+
+
+//------------------------- useNavigation() Hook
+/* 
+
+*/
 
 
 
@@ -1446,17 +1478,6 @@ function App() {
     );
 }
 
-// 1)  every stack component will have access to the navigation prop which can be used to navigate to different pages
-function Home({navigation}) {          
-
-    const handleNavigate = () => {
-       navigation.navigate('aboutus', {       //you can pass any data to another web page like this
-         someParams: 'whatever'
-       }); 
-    }
-  
-    return(<></>)
-}
 
 //2) you can use the useNavigation() hook to navigate through different pages
 function AboutUs({route}) {
@@ -1504,6 +1525,28 @@ function MyComponent({navigate}){
   const route = navigate.current?.getCurrentRoute();
   route.name;                                                            //you can get the name of the current route like this
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

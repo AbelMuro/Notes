@@ -54,7 +54,7 @@ export default App;
 
 
 
-//================================================== SHARED VALUE =========================================================
+//================================================== useSharedValue() HOOK =========================================================
 // useSharedValue() creates a variable that represents a css property, this variable can be changed to create an animation
 // You must use an animating function (withTiming, withSpring, withDecay) to actually create the animation
 // Easing is an object that specifies the timing function for the animation

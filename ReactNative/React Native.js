@@ -1436,10 +1436,38 @@ function Home({navigation, route}) {                 // Every stack component wi
 
 //------------------------- useNavigation() Hook
 /* 
-
+        You can use the useNavigation() hook to navigate 
+        through different pages.
 */
 
 
+function App() {
+        return (
+               <NavigationContainer>
+                        <Stack.Navigator initialRouteName="home">
+                                <Stack.Screen name="home"component={Home}  />
+                        </Stack.Navigator>
+               </NavigationContainer>
+        )
+}
+
+
+function Home() {
+    const navigation = useNavigation();   
+
+        /* 
+                navigation.navigate();                // Move to another screen.
+                navigation.goBack();                  // Go to the previous screen in the stack.
+                navigation.push('ProductDetails', {   // Creates a new instance of the page. The instance will be ON TOP of the current instance
+                     productName: 'New Product'       // You can pass any data as props to the page we are navigating to
+                });
+                navigation.replace('Home');           // Replace the current instance with a new instance. You wont be able to go back to the old instance
+                navigation.setParams();               // Update route params dynamically.
+        */
+        
+    return(<Button></Button>)
+  
+}
 
 
 

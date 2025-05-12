@@ -516,8 +516,20 @@ app.post("/upload", (req, res) => {
 	            ws.on('close', () => {                                         
 	                console.log('Client disconnected')
 	            })
-		})	
-	}
+		    wss.clients.map((client) => {				      // you can traverse through all the clients that are connected to this websocket
+		     /* 
+			 	client.readyState; 				      // Indicates the connection status. It can be WebSocket.OPEN, WebSocket.CLOSED, etc.			
+				client.protocol; 				      // If the client specified a subprotocol during the handshake, it will be stored here.		
+				client.url; 					      // Contains the URL the client connected to.		
+				client.extensions; 				      // Lists any WebSocket extensions in use.		
+				client.on(event, callback); 			      // Lets you handle events like "message", "close", "error", etc.
+				client.send(data); 				      // Allows sending data to the client.	
+				client.terminate();				      // Immediately terminates the connection.		
+				client.close(code, 'reason'); 			      // Gracefully closes the connection with an optional code and reason.
+			*/									// code is an integer 
+		    })										// 1000 (normal closure)   			     1001 (Going away e.g., client navigating away)
+		})										// 1006 (Abnormal closure cannot be set manually)    1011 (Server encountered an unexpected condition)
+
 
 //------------ CLOSING WEBSOCKETS
 

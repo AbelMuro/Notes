@@ -3,6 +3,22 @@
         React Native is a library used to develop mobile apps on android and iOS
 
 
+        Bookmarks:
+                1) Features of React Native
+                2) Container Components (View, Scroll View, Dynamic Scroll View)
+                3) List Components (Flat List, Section List)
+                4) Button Components (Pressable, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback)
+                5) Text Components (Text)
+                6) Image Components (Image, BackgroundImage)
+                7) Loading Icon Components (ActivityIndicator)
+                8) Input Components (TextInput)
+                9) Forms (Formik, Field, useField, useFormikContext)
+                10) Event Handlers (onPress, onLongPress, ...)
+                11) Modules
+                        11.1) Platform
+                        11.2) Alert
+                12) React Navigation
+
 
                                        FEATURES OF REACT NATIVE
 
@@ -797,6 +813,13 @@ const App = () => {
 
 
 
+
+
+
+
+
+
+
 //========================================================================== INPUT COMPONENTS ==============================================================================
 
 
@@ -834,228 +857,6 @@ function App ()  {
         <View>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//========================================================================== LOADING ICON COMPONENTS ==============================================================================
-
-//------------------------- CIRCULAR PROGRESS BAR 
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
-
-function App() {
-  return(
-    <ActivityIndicator size="small" color="#0000ff" />
-  )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//========================================================================== EVENT HANDLERS ==============================================================================
-/* 
-        Every event handler has access to the event object, it is a synthetic event
-        that wraps around all browser events with a API to ensure consistent behavior 
-        across different browsers. Keep in mind that React-native doesnt use the same 
-        event handler names as React, it has its own list of event handlers.
-
-        React native uses the following event names
-
-              onPress
-              onLongPress              
-              onPressIn              
-              onPressOut
-              onChangeText
-              onEndEditing             
-              onFocus            
-              onBlur            
-              onSubmitEditing            
-              onKeyPress
-              onScroll
-              onMomentumScrollBegin
-              onMomentumScrollEnd
-              onScrollBeginDrag
-              onScrollEndDrag
-              onKeyboardDidShow
-              onKeyboardDidHide
-*/
-
-function App() {
-
-    const handlePress = (e) => {
-      /* 
-        e.nativeEvent.changedTouches           // An array of touch points that have changed.
-        e.nativeEvent.locationX                // X-coordinate of the touch relative to the element.
-        e.nativeEvent.locationY                // Y-coordinate of the touch relative to the element.  
-        e.nativeEvent.pageX                    // X-coordinate relative to the entire screen.        
-        e.nativeEvent.pageY                    // Y-coordinate relative to the entire screen.        
-        e.nativeEvent.timestamp                // Time when the event was triggered.        
-        e.nativeEvent.target                   // The React Native element that triggered the event.       
-        e.nativeEvent.touches                  // An array of all active touch points.      
-      */
-
-    }
-  
-    return (
-        <Touchable onPress={handlePress}>
-      
-        </Touchable>
-    )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//========================================================================== MODULES ===============================================================
-
-
-//------------------------- Platform
-/* 
-     The platform module is used to get information about the device and the OS.
-*/
-
-
-import {Platform} from 'react-native';
-
-function App() {
-        Platform.OS;                                                 // returns the current OS running the app (android or iOS)
-        Platform.Version;                                            // returns the version of the OS (a number on android, a string on iOS)
-        Platform.isTV;                                               // returns true or false, detects if the app is running on a TV
-        Platform.constants.reactNativeVersion;                       // returns a string containing the react native version
-        Platform.constants.osVersion;                                // returns a string containing the OS version
-        Platform.constants.model;                                    // returns a string containing the device' model (iphone 13, Pixel 6)
-        const backgroundColor = Platform.select({                    // select() method is used to apply certain css styles based on the OS
-                ios: 'red',                                               
-                android: 'blue'
-        })     
-
-
-        return(
-            <View style={{backgroundColor}}>
-                
-            </View>
-        )
-}
-
-
-
-//------------------------- Alert
-/* 
-        The alert module can be used to display a message to a user
-*/
-import {Alert} from 'react-native';
-
-const App = () => {
-    const handleAlert = () => {
-      Alert.alert(                                                                  // available for both iOS and android
-          'Alert Title',                                                            // title
-          'My Alert Msg', [                                                         // message
-          { text: 'Cancel', onPress: () => console.log('Cancel Pressed')},          // Cancel button   
-          { text: 'OK', onPress: () => console.log('OK Pressed')}                   // OK button
-        ]);
-
-        Alert.prompt(                                                                // only available for iOS
-          "Enter your name",                                                         // title
-          "Please type your name below:",                                            // message
-          (text) => console.log("User entered:", text)                               // text input
-        );
-    }
-
-    return( 
-            <TouchableOpacity onPress={handleAlert}> 
-                    Hello World! 
-            </TouchableOpacity>
-        )
-} 
-
-
-
-
-
-//------------------------- Clipboard
-/* */
-import Clipboard from '@react-native-clipboard/clipboard';
-import {Pressable} from 'react-native';
-
-const App = () => {
-
-    const handleClipboard = () => {
-        Clipboard.setString('Hello World');
-    }
-
-  return (
-    <Pressable onPress={handleClipboard}>
-      Click me
-    </Pressable>
-  )
-
-  
-}
-
 
 
 
@@ -1310,6 +1111,251 @@ const SubmitButton = () => {
     </View>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================================== LOADING ICON COMPONENTS ==============================================================================
+
+//------------------------- CIRCULAR PROGRESS BAR 
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+
+function App() {
+  return(
+    <ActivityIndicator size="small" color="#0000ff" />
+  )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================================== EVENT HANDLERS ==============================================================================
+/* 
+        Every event handler has access to the event object, it is a synthetic event
+        that wraps around all browser events with a API to ensure consistent behavior 
+        across different browsers. Keep in mind that React-native doesnt use the same 
+        event handler names as React, it has its own list of event handlers.
+
+        React native uses the following event names
+
+              onPress
+              onLongPress              
+              onPressIn              
+              onPressOut
+              onChangeText
+              onEndEditing             
+              onFocus            
+              onBlur            
+              onSubmitEditing            
+              onKeyPress
+              onScroll
+              onMomentumScrollBegin
+              onMomentumScrollEnd
+              onScrollBeginDrag
+              onScrollEndDrag
+              onKeyboardDidShow
+              onKeyboardDidHide
+*/
+
+function App() {
+
+    const handlePress = (e) => {
+      /* 
+        e.nativeEvent.changedTouches           // An array of touch points that have changed.
+        e.nativeEvent.locationX                // X-coordinate of the touch relative to the element.
+        e.nativeEvent.locationY                // Y-coordinate of the touch relative to the element.  
+        e.nativeEvent.pageX                    // X-coordinate relative to the entire screen.        
+        e.nativeEvent.pageY                    // Y-coordinate relative to the entire screen.        
+        e.nativeEvent.timestamp                // Time when the event was triggered.        
+        e.nativeEvent.target                   // The React Native element that triggered the event.       
+        e.nativeEvent.touches                  // An array of all active touch points.      
+      */
+
+    }
+  
+    return (
+        <Touchable onPress={handlePress}>
+      
+        </Touchable>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================================== MODULES ===============================================================
+
+
+//------------------------- Platform
+/* 
+     The platform module is used to get information about the device and the OS.
+*/
+
+
+import {Platform} from 'react-native';
+
+function App() {
+        Platform.OS;                                                 // returns the current OS running the app (android or iOS)
+        Platform.Version;                                            // returns the version of the OS (a number on android, a string on iOS)
+        Platform.isTV;                                               // returns true or false, detects if the app is running on a TV
+        Platform.constants.reactNativeVersion;                       // returns a string containing the react native version
+        Platform.constants.osVersion;                                // returns a string containing the OS version
+        Platform.constants.model;                                    // returns a string containing the device' model (iphone 13, Pixel 6)
+        const backgroundColor = Platform.select({                    // select() method is used to apply certain css styles based on the OS
+                ios: 'red',                                               
+                android: 'blue'
+        })     
+
+
+        return(
+            <View style={{backgroundColor}}>
+                
+            </View>
+        )
+}
+
+
+
+//------------------------- Alert
+/* 
+        The alert module can be used to display a message to a user
+*/
+import {Alert} from 'react-native';
+
+const App = () => {
+    const handleAlert = () => {
+      Alert.alert(                                                                  // available for both iOS and android
+          'Alert Title',                                                            // title
+          'My Alert Msg', [                                                         // message
+          { text: 'Cancel', onPress: () => console.log('Cancel Pressed')},          // Cancel button   
+          { text: 'OK', onPress: () => console.log('OK Pressed')}                   // OK button
+        ]);
+
+        Alert.prompt(                                                                // only available for iOS
+          "Enter your name",                                                         // title
+          "Please type your name below:",                                            // message
+          (text) => console.log("User entered:", text)                               // text input
+        );
+    }
+
+    return( 
+            <TouchableOpacity onPress={handleAlert}> 
+                    Hello World! 
+            </TouchableOpacity>
+        )
+} 
+
+
+
+
+
+//------------------------- Clipboard
+/* */
+import Clipboard from '@react-native-clipboard/clipboard';
+import {Pressable} from 'react-native';
+
+const App = () => {
+
+    const handleClipboard = () => {
+        Clipboard.setString('Hello World');
+    }
+
+  return (
+    <Pressable onPress={handleClipboard}>
+      Click me
+    </Pressable>
+  )
+
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

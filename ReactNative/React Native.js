@@ -1310,7 +1310,11 @@ export default App;
 
 //======================================== REACT NAVIGATION =================================
 /* 
-        React Navigation can be used to implement client-side routing in a React-native app
+        React Navigation can be used to implement client-side routing in a React-native app.
+        Keep in mind that this library uses the stack data structure to organize the pages.
+        Everytime you navigate to a different page, that page will be placed on top of a stack.
+        When you press the back button, the page on top of the stack will be removed. The page 
+        that is on top of the stack is what you see on your device.
 
 
               1)  npm install @react-navigation/native
@@ -1365,7 +1369,6 @@ function App(){
         client-side routing.
 
                 Syntax:
-
                         <Stack.Navigator 
                                 initialRouteName={}                         // Sets the default screen that appears first. (Home, aboutus)
                                 screenOptions={}                            // Provides default styling and behaviors for all screens in the navigator.
@@ -1400,7 +1403,7 @@ function App() {
         return (
                <NavigationContainer>
                         <Stack.Navigator initialRouteName="home">
-                                <Stack.Screen name="home"component={Home}  />
+                                <Stack.Screen name="home" component={Home} />
                         </Stack.Navigator>
                </NavigationContainer>
         )
@@ -1409,23 +1412,20 @@ function App() {
 
 
 function Home({navigation, route}) {                 // Every stack component will have access to the navigation and route prop 
-        /*
-                navigation.navigate('aboutus', {        // navigate() will navigate to a different page  
-                     someParams: 'whatever'                 // You can pass any data as props to the page we are navigating to
-                }); 
-                navigation.push('ProductDetails', {     // Creates a new instance of the page. The instance will be ON TOP of the current instance
-                     productName: 'New Product'            // You can pass any data as props to the page we are navigating to
-                });          
-                navigation.goBack();                 // goBack() will navigate to the previous page
-
-                route.key;                           // A unique identifier for the screen.
-                route.name;                          // The name of the route ("home", "about_us").
-                route.params;                        // An object containing any parameters sent to this screen.
-                route.path;                          // The path associated with the route, useful in deep linking.
-                
-        */
         
-    return(<></>)
+        navigation.navigate('aboutus', {             // navigate() will place a new page on top of the stack 
+             someParams: 'whatever'                          // You can pass any data as props to the page we are navigating to
+        }); 
+        navigation.push('ProductDetails', {          // Creates a new instance of the current page. The new instance will be placed ON TOP of the stack
+             productName: 'New Product'                      // You can pass any data as props to the page we are navigating to
+        });          
+        navigation.goBack();                         // goBack() will remove the page on top of the stack
+        route.key;                                   // A unique identifier for the screen.
+        route.name;                                  // The name of the route ("home", "about_us").
+        route.params;                                // An object containing any parameters sent to this screen.
+        route.path;                                  // The path associated with the route, useful in deep linking.
+                
+        return(<></>)
 }
 
 
@@ -1454,19 +1454,18 @@ function App() {
 
 function Home() {
     const navigation = useNavigation();   
-
-        /* 
-                navigation.navigate();                // Move to another screen.
-                navigation.goBack();                  // Go to the previous screen in the stack.
-                navigation.push('ProductDetails', {   // Creates a new instance of the page. The instance will be ON TOP of the current instance
-                     productName: 'New Product'       // You can pass any data as props to the page we are navigating to
-                });
-                navigation.replace('Home');           // Replace the current instance with a new instance. You wont be able to go back to the old instance
-                navigation.setParams();               // Update route params dynamically.
-        */
+  
+    navigation.navigate('AboutUs', {      // navigate() will place a new page on top of the stack
+        someParams: 'whatever'                   // You can pass any data as props to the page we are navigating to
+    });                
+    navigation.goBack();                  // goBack() will remove the page on top of the stack
+    navigation.push('ProductDetails', {   // Creates a new instance of the currentpage. The instance will be placed ON TOP of the stack
+         productName: 'New Product'               // You can pass any data as props to the page we are navigating to
+    });
+    navigation.replace('Home');           // Replace the current instance with a new instance. You wont be able to go back to the old instance
+    navigation.setParams();               // Update the current route params dynamically.
         
     return(<Button></Button>)
-  
 }
 
 
@@ -1475,7 +1474,11 @@ function Home() {
 
 
 
-
+//------------------------ useRoute() Hook
+/* 
+        
+        
+*/
 
 
 

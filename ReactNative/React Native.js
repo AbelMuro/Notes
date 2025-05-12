@@ -17,6 +17,8 @@
                 11) Modules
                         11.1) Platform
                         11.2) Alert
+                        11.3) Stylesheets
+                        11.4) Linking
                 12) React Navigation
 
 
@@ -290,67 +292,6 @@ import {Dimensions} from 'react-native';            //this component lets you ac
     // dynamic content
 </ScrollView>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-//========================================================================== STYLE COMPONENTS ==============================================================================
-
-//---------------------------- STYLESHEETS 
-/* 
-      STYLESHEET: is a object that lets you create a stylesheet inside a JS file
-      this is another way of modularizing css in your component
-*/
-
-
-import {StyleSheet} from 'react-native';
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingTop: 22,
-    },
-    item: {
-      padding: 10,
-      fontSize: 18,
-      height: 44,
-    },
-});
-
-const App = () => {
-    return(
-      <View style={styles.container}>
-        
-      </View>
-    )
-}
 
 
 
@@ -691,60 +632,6 @@ export default App;
 
 
 
-//========================================================================== LINK COMPONENTS ==============================================================================
-
-
-//------------------------- LINKING 
-/* 
-    You can create a link with the Linking module and
-    the openURL() method
-*/
-
-import {Text, Linking} from 'react-native';
-
-const App = () => {
-
-    const handlePress = () => {
-        Linking.openURL('http://google.com');                  //you can open up a new link with this module
-    };
-    
-    return (
-        <View onPress={handlePress}>             
-            <Text> Hello World</Text>       
-        </View>
-    );
-};
-
-export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //========================================================================== IMAGE COMPONENTS ==============================================================================
 
@@ -795,6 +682,34 @@ const App = () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//========================================================================== LOADING ICON COMPONENTS ==============================================================================
+
+//------------------------- CIRCULAR PROGRESS BAR 
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+
+function App() {
+  return(
+    <ActivityIndicator size="small" color="#0000ff" />
+  )
+}
 
 
 
@@ -1139,33 +1054,6 @@ const SubmitButton = () => {
 
 
 
-//========================================================================== LOADING ICON COMPONENTS ==============================================================================
-
-//------------------------- CIRCULAR PROGRESS BAR 
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
-
-function App() {
-  return(
-    <ActivityIndicator size="small" color="#0000ff" />
-  )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1313,9 +1201,6 @@ const App = () => {
 } 
 
 
-
-
-
 //------------------------- Clipboard
 /* */
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -1332,13 +1217,65 @@ const App = () => {
       Click me
     </Pressable>
   )
+}
 
-  
+
+
+//---------------------------- Stylesheets 
+/* 
+      STYLESHEET: is a module that lets you create a stylesheet inside a JS file
+      this is another way of modularizing css in your component
+*/
+
+
+import {StyleSheet} from 'react-native';
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingTop: 22,
+    },
+    item: {
+      padding: 10,
+      fontSize: 18,
+      height: 44,
+    },
+});
+
+const App = () => {
+    return(
+      <View style={styles.container}>
+        
+      </View>
+    )
 }
 
 
 
 
+
+//------------------------- Linking
+/* 
+    You can create a link with the Linking module and
+    the openURL() method
+*/
+
+import {Text, Linking} from 'react-native';
+
+const App = () => {
+
+    const handlePress = () => {
+        Linking.openURL('http://google.com');                  //you can open up a new link with this module
+    };
+    
+    return (
+        <View onPress={handlePress}>             
+            <Text> Hello World</Text>       
+        </View>
+    );
+};
+
+export default App;
 
 
 

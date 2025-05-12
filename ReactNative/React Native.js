@@ -1310,30 +1310,122 @@ export default App;
 
 //======================================== REACT NAVIGATION =================================
 /* 
-      1)  npm install @react-navigation/native
-          npm install react-native-screens 
-          npm install react-native-safe-area-context
-          npm install @react-navigation/native-stack
+        React Navigation can be used to implement client-side routing in a React-native app
 
-      2) for IOS only: 
-              cd ios
-              pod install
-              
-      3) for android only: 
-            android/app/src/main/java/<your package name>/MainActivity.kt
 
-                import android.os.Bundle;                                          //add this to the file (must below the package statement)
-
-                 class MainActivity: ReactActivity() {
-                    // ...
-                    override fun onCreate(savedInstanceState: Bundle?) {          //add this to the class
-                      super.onCreate(null)
-                    }
-                    // ...
-                  }
-
-        This package is similar to react-routers, but it was designed for a react-native app 
+              1)  npm install @react-navigation/native
+                  npm install react-native-screens 
+                  npm install react-native-safe-area-context
+                  npm install @react-navigation/native-stack
+        
+              2) for IOS only: 
+                      cd ios
+                      pod install
+                      
+              3) for android only: 
+                    android/app/src/main/java/<your package name>/MainActivity.kt
+        
+                        import android.os.Bundle;                                          //add this to the file (must below the package statement)
+        
+                         class MainActivity: ReactActivity() {
+                            // ...
+                            override fun onCreate(savedInstanceState: Bundle?) {          //add this to the class
+                              super.onCreate(null)
+                            }
+                            // ...
+                          }
 */
+
+
+//------------------------- NavigationContainer Component
+/* 
+        NavigationContainer is a component that serves as a container
+        for all the routes in your application
+
+*/
+
+import { NavigationContainer} from '@react-navigation/native';
+
+function App(){
+        return(
+                <NavigationContainer>
+                        
+                </NavigationContainer>
+        )
+}
+
+
+
+
+//------------------------- Stack Component
+/* 
+        Stack is a component that serves as a Route in your
+        client-side routing.
+
+                Syntax:
+
+                        <Stack.Navigator 
+                                initialRouteName={}                         // Sets the default screen that appears first. (Home, aboutus)
+                                screenOptions={}                            // Provides default styling and behaviors for all screens in the navigator.
+                                headerMode={}                               // Controls the header's visibility (screen, float, none).
+                                gestureEnabled={}                           // Enables or disables gestures for navigation (swipe back on iOS).
+                                presentation={}                             // Specifies how the screen appears (modal, transparentModal, etc.).
+                                detachInactiveScreens={}                    // Optimizes performance by unmounting inactive screens.
+                                animationEnabled={}                         // Toggles animation for screen transitions.
+                        />
+
+
+                        <Stack.Screen   
+                                name={}                                      // Defines the unique name of the screen used for navigation.
+                                component={}                                 // Specifies the React component to render for the screen.
+                                initialParams={}                             // Passes default parameters to the screen.
+                                options={{
+                                        title,                               // Sets the header title.
+                                        headerShown,                         // Controls the visibility of the header (true or false).
+                                        headerStyle,                         // Customizes header appearance (e.g., background color).                                     
+                                        headerTitleStyle,                    // Styles the header text.                                  
+                                        headerLeft,                          // headerRight: Adds components like buttons to the left/right of the header.
+                                        gestureEnabled,                      // Enables/disables swipe gestures.                                       
+                                        animationTypeForReplace,             // Determines animation when replacing a screen (push, pop, etc.).
+                                }}
+                        />
+                        
+*/
+
+
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
+
+function App() {
+        return (
+               <NavigationContainer>
+                        <Stack.Navigator initialRouteName="home">
+                                <Stack.Screen name="home"component={Home}  />
+                        </Stack.Navigator>
+               </NavigationContainer>
+        )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { NavigationContainer, useNavigation} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 

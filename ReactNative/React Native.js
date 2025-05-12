@@ -802,7 +802,7 @@ const App = () => {
 
 //------------------------- TEXT-INPUT 
 /* 
-    INPUT is a component that can be used to receive user input
+    TEXT-INPUT is a component that can be used to receive user input
 */
 
 
@@ -814,8 +814,7 @@ function App ()  {
     const handleText = (newText) => {
         setText(newText)
     }
-
-
+        
     const handleSubmit = () => {}
   
     return (
@@ -976,55 +975,69 @@ function App() {
 
 //------------------------- Platform
 /* 
-      You can use the platform module to apply certain styles to elements based on the current OS
+     The platform module is used to get information about the device and the OS.
 */
 
 
 import {Platform} from 'react-native';
 
-Platform.OS;                                                 //detects the current OS (android, iOS)
-Platform.select();                                           //returns an object depending on the current OS
-Platform.Version === 25;                                     //this can be used to detect the current version of android
-parseInt(Platform.Version, 10);                              //this can be used to detect the current version of iOS
+function App() {
+        Platform.OS;                                                 // returns the current OS running the app (android or iOS)
+        Platform.Version;                                            // returns the version of the OS (a number on android, a string on iOS)
+        Platform.isTV;                                               // returns true or false, detects if the app is running on a TV
+        Platform.constants.reactNativeVersion;                       // returns a string containing the react native version
+        Platform.constants.osVersion;                                // returns a string containing the OS version
+        Platform.constants.model;                                    // returns a string containing the device' model (iphone 13, Pixel 6)
+        const backgroundColor = Platform.select({                    // select() method is used to apply certain css styles based on the OS
+                ios: 'red',                                               
+                android: 'blue'
+        })     
+
+
+        return(
+            <View style={{backgroundColor}}>
+                
+            </View>
+        )
+}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-//---------------------------------- ALERT ------------------------------
-
+//------------------------- Alert
+/* 
+        The alert module can be used to display a message to a user
+*/
 import {Alert} from 'react-native';
 
 const App = () => {
     const handleAlert = () => {
-      Alert.alert('Alert Title', 'My Alert Msg', [
-        {                                                            //buttons
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-        },
-        {
-          text: 'OK', 
-          onPress: () => console.log('OK Pressed')
-        },
-      ]);
+      Alert.alert(                                                                  // available for both iOS and android
+          'Alert Title',                                                            // title
+          'My Alert Msg', [                                                         // message
+          { text: 'Cancel', onPress: () => console.log('Cancel Pressed')},          // Cancel button   
+          { text: 'OK', onPress: () => console.log('OK Pressed')}                   // OK button
+        ]);
+
+        Alert.prompt(                                                                // only available for iOS
+          "Enter your name",                                                         // title
+          "Please type your name below:",                                            // message
+          (text) => console.log("User entered:", text)                               // text input
+        );
     }
 
-    return(<View onPress={handleAlert}> Hello World! </View>)
+    return( 
+            <TouchableOpacity onPress={handleAlert}> 
+                    Hello World! 
+            </TouchableOpacity>
+        )
 } 
 
 
 
-//---------------------------- CLIPBOARD ----------------------------
+
+
+//------------------------- Clipboard
+/* */
 import Clipboard from '@react-native-clipboard/clipboard';
 import {Pressable} from 'react-native';
 
@@ -1052,111 +1065,258 @@ const App = () => {
 
 
 
-//======================================== FORMIK =====================================================
-//DO NOT USE CONDITIONAL RENDERING ON PLACEHOLDER PROPS
-//npm install formik
-import { Formik, Field } from 'formik';
-import { useFormikContext } from 'formik';
 
 
-const formik = useFormikContext();                //you can set errors programmatically, call any event handlers with this object
-
-const validateForm = (values) => {  
-    const errors = {};
-    if(!values.email)
-          errors.email = "Can't be empty";
-    if(!values.password)
-          errors.password = "Can't be empty";
-
-    return errors;
-}
-
-const handleSubmit = (values) => {
-        console.log(values)
-}
-
-const customHandleBlur = (e) => {
-       formik.handleBlur(e);
-}
-
-  
-<Formik
-    initialValues={{email: '', password: ''}}                              //state of the form
-    onSubmit={handleSubmit}
-    validate={validateForm}>
-     {
-       ({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (    //you can use error object and touched object to determing which field to apply error styles
-                <View>
-                    <Field
-                       name='email'
-                       type='email'>
-                          {({field}) => (
-                                <TextInput 
-                                    {...field}                                     //if you get an error about handleChange() you may want to remove {...field}
-                                    onChangeText={handleChange('email')} 
-                                    onBlur={handleBlur('email')} 
-                                  />
-                              )}
-                      </Field>
-                      <Field
-                         name='password'
-                         type='password'>
-                            {({field}) => (
-                                  <TextInput
-                                      {...field} 
-                                      onChangeText={handleChange('password')} 
-                                      onBlur={customHandleBlur}                     //you can define your own blur function
-                                    />
-                               )}
-                       </Field>
-                       <Pressable onPress={handleSubmit}>
-                            <Text> Submit </Text>
-                       </Pressable>                  
-                   </View>
-                    )
-                } 
- </Formik>
-
-//---------------------------- useField() --------------------------------------------------
-//useField() hook lets you create a field for formik and each field has its own independent event handlers (onChange, onBlur, validate function, etc...)
 
 
-function Form(){
-      return(
-            <Formik
-                initialValues={{email: '', password: ''}}
-                onSubmit={handleSubmit}>
-                {
-                    ({handleSubmit}) => (
-                        <View>
-                            <TextField name='email'/>
-                            <TextField name='password'/>
-                            <LoginButton onPress={handleSubmit}>
-                                  'Log In'
-                            </LoginButton>                  
-                        </View>
-                    )
-                }
-            </Formik>   
+
+
+
+
+
+
+
+
+
+//========================================================================== FORMS ===============================================================
+/* 
+        React-Native doesn't have a built in form component. To handle complex forms, we
+        can use external libraries such as FORMIK
+
+        npm install formik
+
+*/
+
+
+//------------------------- Formik Component
+/* 
+        The formik component serves as a centralized state manager for all
+        the fields for a form.
+
+        
+                Syntax: 
+
+                        Formik Component: 
+                
+                                <Formik initialValue={} onSubmit={} validate={}>
+                
+                                        initialValues: The initial state of the form
+                                        onSubmit: a function that is called when the user submits the form
+                                        validate:  a function that is used to validate certain fields, it returns an error object
+
+
+                        Child Props:
+                        
+                                <Formik>
+                                        {
+                                            ({handleChange, handleBlur, handleSubmit, values, errors, touched}) => {         
+                                                        
+                                                        handleChange:  onChange event handler that changes a specific part of the state (handleChange('email'))
+                                                        handleBlur:    onBlur event handler that detects if a TextInput loses focus (handleBlur('email'))
+                                                        handleSubmit:  onSubmit event handler that will have access to the whole state
+                                                        values:  an object that has all the field values of the form
+                                                        errors: an object that is returned from the validate function
+                                                        touched: an object that tells formik if a TextInput has been touched by the user
+                                            }
+                                        }
+                                </Formik>
+                        
+*/
+
+import { Formik } from 'formik';
+
+function App() {
+
+        const handleSubmit = (values) => {
+                /* 
+                        values = {
+                           email,
+                           password
+                        }
+                */
+        }
+
+        const validateForm = (values) => {                                               
+            const errors = {};
+            if(!values.email)
+                  errors.email = "Can't be empty";
+            if(!values.password)
+                  errors.password = "Can't be empty";
+        
+            return errors;
+        }
+        
+        return(
+                <Formik     
+                        initialValues={{email: '', password: ''}}                              //state of the form
+                        onSubmit={handleSubmit}
+                        validate={validateForm}>
+                            {(handleSubmit) => (<Pressable onPress={handleSubmit}/> )}
+                </Formik>
         )
 }
 
 
+
+
+//------------------------- Field Component
+/* 
+        The Field component is used to render a <TextField/> component 
+        as a child prop
+
+                Syntax:
+
+                        Field Component
+                        
+                                <Field name={} type={}/>
+        
+                                        name:  this prop is used to identify the field
+                                        type:  this prop specifies the type of data for the input
+        
+
+                        Child Props:      
+                        
+                                <Field>
+                                        {
+                                            ({fields}) => {                                        // fields is an object that has all the necessary props for the TextInput 
+                                                  <TextInput {...field} />                         // if you get an error about handleChange() you may want to remove {...field}
+                                            }
+                                        }
+                                </Field>
+*/
+
+function App() {
+        return(
+                <Formik>
+                 {
+                    ({handleChange, handleBlur}) => (   
+                          <Field
+                              name='email'
+                              type='email'>
+                                 {({field}) => (
+                                         <TextInput 
+                                                {...field}                                          /* using all default field properties (value, onChangeText, etc.. ) */
+                                                 onChangeText={handleChange('email')}                /* Make sure the argument to handleChange matches the name prop */            
+                                                  onBlur={handleBlur('email')}                        /* Make sure the argument to handleBlur matches the name prop */  
+                                        />
+                                )}
+                             </Field>                 
+                        )
+                 } 
+                </Formik>
+        )
+}
+
+
+
+
+//------------------------- useField() Hook
+/* 
+        useField() hook lets you create a field for formik 
+        and each field has its own independent event handlers 
+        (onChange, onBlur, validate function, etc...)
+        This is useful for modularization.
+
+                Syntax: 
+                        const [field, meta, helpers] = useField({name, validate});
+                        
+                                name:  the name of the field for the form (email, password)
+                                validate: a function that is used to validate the state of the hook
+                                field: {
+                                        name,                         // The name of the field.
+                                        value,                        // The current field value.
+                                        onChange,                     // Function to update the field value.
+                                        onBlur,                       // Function triggered when the field loses focus.
+                                }
+                                meta: {
+                                        error,                         // Validation error message (if any).
+                                        touched,                       // true if the field has been interacted with.
+                                        initialValue,                  // The initial field value.
+                                }
+                                helpers: {
+                                        setValue(value),               // Sets the value manually.
+                                        setTouched(boolean),           // Sets the touched state.
+                                }
+        
+*/
+
+const validate = (value) => {
+     if(value === '')
+          return 'Cant be empty';
+     else
+          return '';
+}
+
 function TextField({name}) {
-    const validate = (value) => value ? '' : "Can't be empty";              //you can have an individual validate function for each field with this hook
-    const [field, meta, helpers] = useField({name, validate})
+    const [field, meta, helpers] = useField({name, validate});
 
     return(
-        <TextInput 
-            name='password'                                                  //this prop is ESSENTIAL
-            onChangeText={helpers.setValue}
-            onBlur={helpers.setTouched}
-            placeholder={meta.error ? "Can't be empty" : 'Enter Password'}
-        />
+        <TextInput {...field} />
     )
 }
 
-  
+
+
+
+
+
+
+//------------------------- useFormikContext() Hook
+/* 
+        The useFormikContext() hook will return an object 
+        that has all the event handlers and the values of the form.
+        This hook must be used inside the Formik component
+
+                Syntax:
+                        const context = useFormikContext();
+
+                                context = {
+                                        values,                         // The current values of all form fields.
+                                        errors,                         // An object containing validation errors for each field.
+                                        touched,                        // Tracks whether fields have been interacted with.
+                                        dirty,                          // Boolean indicating if any field value has changed.
+                                        isValid,                        // Boolean indicating if the form is valid.
+                                        handleChange('email'),          // Updates field values when input changes.      
+                                        handleBlur('email'),            // Marks the field as touched when input loses focus.  
+                                        handleSubmit(),                 // Calls the form's submit function.     
+                                        setFieldValue(name, value)      // Manually updates a field value.
+                                        setFieldTouched(name, touched)  // Manually sets touched state.
+                                        resetForm()                     // Resets the form to its initial state.
+                                        isSubmitting,                   // Boolean indicating if the form is being submitted.
+                                        submitForm(),                   // Manually triggers the form submission.
+                                }              
+*/
+
+const MyForm = () => {
+     return (
+         <Formik>
+            {() => (
+               <View>
+                  <SubmitButton />
+               </View>
+            )}
+         </Formik>
+     );
+};
+
+
+const SubmitButton = () => {
+  const { handleSubmit, values } = useFormikContext();                        //must be used inside of a Formik component
+
+  return (
+    <View>
+      <Button title="Submit" onPress={handleSubmit} />
+      <Text>Current Values: {JSON.stringify(values)}</Text>
+    </View>
+  );
+};
+
+
+
+
+
+
+
 
 
 

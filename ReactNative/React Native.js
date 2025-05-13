@@ -1345,8 +1345,8 @@ export default App;
 
 //------------------------- NavigationContainer Component
 /* 
-        NavigationContainer is a component that serves as a container
-        for all the routes in your application
+        <NavigationContainer/> is a component that serves as a container
+        for all the navigation that happens in your app
 
 */
 
@@ -1363,13 +1363,13 @@ function App(){
 
 
 
-//------------------------- Stack Component
+//------------------------- Navigator Component
 /* 
-        Stack is a component that serves as a Route in your
-        client-side routing.
+        Navigator is a component that servers as a container
+        for all the routes in your app
 
                 Syntax:
-                        <Stack.Navigator 
+                        <Navigator 
                                 initialRouteName={}                         // Sets the default screen that appears first. (Home, aboutus)
                                 screenOptions={}                            // Provides default styling and behaviors for all screens in the navigator.
                                 headerMode={}                               // Controls the header's visibility (screen, float, none).
@@ -1378,8 +1378,32 @@ function App(){
                                 detachInactiveScreens={}                    // Optimizes performance by unmounting inactive screens.
                                 animationEnabled={}                         // Toggles animation for screen transitions.
                         />
+*/
 
-                        <Stack.Screen   
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const {Navigator} = createNativeStackNavigator();
+
+function App(){
+        return(
+                <NavigationContainer>
+                        <Navigator initialRouteName="home">
+
+                        </Navigator>
+                </NavigationContainer>
+        )
+}
+
+
+
+
+
+
+//------------------------- Screen Component
+/* 
+        Screen is a component that displays a single route.
+
+                Syntax:
+                         <Screen   
                                 name={}                                      // Defines the unique name of the screen used for navigation.
                                 component={}                                 // Specifies the React component to render for the screen.
                                 initialParams={}                             // Passes default parameters to the screen components.
@@ -1396,14 +1420,14 @@ function App(){
 */
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
+const {Navigator, Screen} = createNativeStackNavigator();
 
 
 function App() {
         return (
                <NavigationContainer>
-                        <Stack.Navigator initialRouteName="home">
-                                <Stack.Screen name="home" component={Home} />
+                        <Navigator initialRouteName="home">
+                                <Screen name="home" component={Home} />
                         </Stack.Navigator>
                </NavigationContainer>
         )
@@ -1411,23 +1435,39 @@ function App() {
 
 
 
-function Home({navigation, route}) {                 // Every stack component will have access to the navigation and route prop 
+
+
+
+//------------------------ Route Props
+/* 
+        Every component that is used within a <Screen/> component
+        will have two props available. Keep in mind, that every Route can
+        also return another <Navigator/> component with another set
+        of Routes. Those routes will only update the current page on top 
+        of the stack.
+*/
+
+function Home({navigation, route}) {                 // Every route will have access to the navigation and route prop 
         
         navigation.navigate('aboutus', {             // navigate() will place a new page on top of the stack 
              someParams: 'whatever'                          // You can pass any data as props to the page we are navigating to
         }); 
-        navigation.push('ProductDetails', {          // Creates a new instance of the current page. The new instance will be placed ON TOP of the stack
-             productName: 'New Product'                      // You can pass any data as props to the page we are navigating to
+        navigation.push('AboutMe', {                 // Creates a new instance of the current page. The new instance will be placed ON TOP of the stack
+             someParams: 'new params'                      // You can pass any data as props to the page we are navigating to
         });          
         navigation.goBack();                         // goBack() will remove the page on top of the stack
+        
         route.key;                                   // A unique identifier for the screen.
         route.name;                                  // The name of the route ("home", "about_us").
         route.params;                                // An object containing any parameters sent to this screen.
         route.path;                                  // The path associated with the route, useful in deep linking.
                 
-        return(<></>)
+        return (                             
+            <Navigator initialRouteName="AboutUs">   // These routes will only update the page on top of the stack
+                   <Screen name="home" component={AboutUs} />
+            </Navigator>
+        )
 }
-
 
 
 
@@ -1437,20 +1477,12 @@ function Home({navigation, route}) {                 // Every stack component wi
 //------------------------- useNavigation() Hook
 /* 
         You can use the useNavigation() hook to navigate 
-        through different pages.
+        through different pages. Keep in mind, that the
+        useNavigation() hook can only be used inside a 
+        route.
 */
 
-
-function App() {
-        return (
-               <NavigationContainer>
-                        <Stack.Navigator initialRouteName="home">
-                                <Stack.Screen name="home"component={Home}  />
-                        </Stack.Navigator>
-               </NavigationContainer>
-        )
-}
-
+import { useNavigation } from '@react-navigation/native';
 
 function Home() {
     const navigation = useNavigation();   
@@ -1465,9 +1497,8 @@ function Home() {
     navigation.replace('Home');           // Replace the current instance with a new instance. You wont be able to go back to the old instance
     navigation.setParams();               // Update the current route params dynamically.
         
-    return(<Button></Button>)
+    return(<></>)
 }
-
 
 
 
@@ -1476,85 +1507,60 @@ function Home() {
 
 //------------------------ useRoute() Hook
 /* 
-        
-        
+        The useRoute() hook can be used to get information
+        about the current route. Keep in mind, that this hook
+        can only be used inside a route.
 */
 
-
-
-
-
-
-
-
-
-
-import { NavigationContainer, useNavigation} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-const Stack = createNativeStackNavigator();
-
-function App() {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="home">
-                    <Stack.Screen 
-                        name='home'                           //key
-                        component={Home}
-                        options={{ headerShown: false }}      //removes the default navigation bar for the page
-                          />
-                 <Stack.Screen name='aboutus' component={AboutUs} />
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
-}
-
-
-//2) you can use the useNavigation() hook to navigate through different pages
-function AboutUs({route}) {
-    const navigation = useNavigation();   
-    const {someParams} = route.params;     //you can receive data from another web page like this
-
-    const handlePress = () => {
-      navigation.navigate('home')
-    }
-
-    const handleGoBack = () => {
-      navigation.goBack();                //you can go to the previous page with this function
-    }
-  
-    return(<Button></Button>)
-  
-}
-
-
-// 3) how to get the current route WITHIN a screen component
 import { useRoute } from '@react-navigation/native';
 
-const route = useRoute();
-console.log(route.name);
+function App() {
+      const route = useRoute();
+
+       route.name;                 // The name of the current route.
+       route.key;                  // A unique key identifying the route.
+       route.params;               // An object containing parameters passed to the route.
+        
+       return (<></>)   
+}
 
 
 
 
-//4) how to get the current route OUTSIDE a screen component
+
+//------------------------ Creating a default Tab Bar for navigation
+/* 
+        The navigator component returned from createBottomTabNavigator
+        will display a navigation bar on the bottom of the screen.
+
+                Syntax: 
+                
+                        <Tab.Navigator
+                                  initialRouteName,                       // Sets the default screen when the navigator loads.
+                                  backBehavior,                           // Defines how the navigator handles the back button (firstRoute, initialRoute, order, history, none).
+                                  detachInactiveScreens,                  // Determines whether inactive screens should be detached to save memory.
+                                  tabBar,                                 // A custom component for rendering the tab bar.
+                                  screenListeners,                        // Allows listening to screen lifecycle events.
+                                  lazy,                                   // Controls whether screens are lazily loaded.
+                                  screenOptions={{
+                                        tabBarStyle: { backgroundColor: 'black' },        // background color for the tab bar
+                                        tabBarActiveTintColor: 'white',                   // font color for the route name that is on top of the stack
+                                        tabBarInactiveTintColor: 'gray',                  // font color for the route name that is NOT on top of the stack
+                                  }}
+                        />
+*/
+
+const Tab = createBottomTabNavigator();
 
 function App() {
-    const navigationRef = useRef();
-
-    return (
-        <Provider store={store}>
-            <NavigationContainer ref={navigationRef}>
-                    <MyComponent navigate={navigationRef}/>             //you will need to pass the ref object to the child component 
-            </NavigationContainer>     
-        </Provider>
-    );
-}
-
-
-function MyComponent({navigate}){
-  const route = navigate.current?.getCurrentRoute();
-  route.name;                                                            //you can get the name of the current route like this
+       return (
+            <NavigationContainer>
+                 <Tab.Navigator>
+                      <Tab.Screen name="Home" component={HomeScreen} />
+                      <Tab.Screen name="Profile" component={ProfileScreen} />
+                 </Tab.Navigator>
+            </NavigationContainer>
+       );
 }
 
 
@@ -1562,6 +1568,29 @@ function MyComponent({navigate}){
 
 
 
+//------------------------ Creating a custom Tab Bar for navigation
+/* 
+        You can create a custom tab bar with the tabBar prop 
+        from the navigator component returned from createBottomTabNavigator
+
+        <Tab.Navigator tabBar={CustomTabBar}>
+
+*/
+
+function CustomTabBar({ state, navigation }){
+        state.index;                        // index of the active tab
+        state.routes;                       // an array of all the route names
+        navigation.navigate(name, params);  // Navigates to a specific screen.
+        navigation.goBack();                // Goes back to the previous screen.
+        navigation.reset({                  // Resets the navigation stack 
+                  index: 1,                 // Profile Route will be the current route.
+                  routes: [                 // We clear the stack and create a new stack
+                    { name: 'Home' },
+                    { name: 'Profile' },
+                  ],
+        });;                    
+        navigation.setParams(params);       // Updates the current route's parameters.
+}
 
 
 

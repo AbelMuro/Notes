@@ -1614,29 +1614,6 @@ function CustomTabBar({ state, navigation }){
 
 
 
-//============================================ REACT NATIVE IMAGE TO BASE 64 ==============================
-//npm install react-native-image-base64
-
-import ImgToBase64 from 'react-native-image-base64';
-
-ImgToBase64.getBase64String('file://your_file_url')
-  .then(base64String => {
-    // Do something with the base64String
-  })
-  .catch(err => {
-    // Handle any errors
-  });
-
-
-
-
-
-
-
-
-
-
-
 
 
 //============================================== REACT NATIVE IMAGE PICKER ================================
@@ -1699,17 +1676,6 @@ function App() {
     </Pressable>
   )
 }
-
-
-//=============================================== REACT NATIVE UUID =============================================
-//npm install react-native-uuid
-
-
-import uuid from 'react-native-uuid';
-uuid.v4();               //this will generate a random unique ID
-
-
-
 
 
 
@@ -1976,45 +1942,7 @@ function App() {
 
 
 
-
-//=========================================== REACT NATIVE CREATE THUMBNAIL ===========================
-//npm install react-native-create-thumbnail
-/* 
-    For Android:
-
-          go to android/app/src/debug/AndroidManifest.xml
-
-          <manifest xmlns:android='https//....'> 
-              <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-              <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-          </manifest>
-
-      for ios: 
-
-          cd ios
-          pod install
-*/                  
-
-                  
-import { createThumbnail } from "react-native-create-thumbnail";
-
-
-        async function getThumbnail() {
-            try{
-                const { path, width, height } = await createThumbnail({
-                    url: 'path to video file',
-                    timeStamp: 100,
-                  })  
-                           
-            }
-            catch(error){
-                console.log(error);
-            }
- 
-                 
-        }
-
-
+4
 
 
 

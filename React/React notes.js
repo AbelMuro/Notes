@@ -1329,6 +1329,7 @@ function MyComponent() {
 //useCallback() can be used to force a function to only be recreated when a certain variable changes
 //useCallback() was designed to be used with a memoized component(component that gets exported with memo())
 //keep in mind that everytime a component get re-rendered, the functions get recreated, which can potentially affect performance
+// when the functions get re-created, it will cause a change in the props if the function is being passed as props
 //this hook is similar to useMemo(), but the main difference is that... 
 //useCallback() returns a function
 //useMemo() returns a value

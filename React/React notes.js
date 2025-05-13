@@ -1606,39 +1606,170 @@ function MyApp() {
     
 
 //=========================================== REACT ROUTER ================================================
-// React Routers vs Conventional Router
-// React Routers is Client-side routing
-// Conventional Router is Server-side routing
-// In Server-side routing, the server handles client requests based on the pathname of the URL.
-// In client-side routing, whenever a request is made for a route, this request is not sent to the server. Instead, the javascript code handles the routing process.
+/* 
+       React Routers implements Client side routing in a React application. This library will
+       connect a component to a specific route.
 
-// React Routers displays different routes(pages) in a single html file, while conventional router displays pages in different html files
+       npm install react-router-dom
+       
+*/
 
-// npm install react-router-dom
-    
+
+
+
+//------------------------------------- Browser Router
+/* 
+        BrowserRouter component is a context provider that enables all the 
+        React Router features in your application. You can also have custom
+        components as a child in this provider.
+
+*/
+
+function App() {
+
+        return (
+                <BrowserRouter> 
+                        <CustomComponent/>
+                </BrowserRouter>
+        )
+}
+
+
+
+
+
+//------------------------------------- Routes Component
+/* 
+        The Routes component is a container for all the routes in your
+        application. This component cannot have any custom components as
+        a child.
+*/
+
+function App() {
+
+        return (
+                <BrowserRouter> 
+                        <Routes> 
+                
+                        </Routes>
+                </BrowserRouter>
+        )
+}
+
+
+
+
+//------------------------------------- Route Component
+/* 
+        The Route component defines the actual routes in your application. 
+        Each Route can also have nested Route components
+
+                Syntax: 
+                        <Route path={} element={}>
+
+                                path:  The path to the route
+                                element: the commponent that will be rendered in the route
+*/
+
+function App(){
+        return (
+            <BrowserRouter> 
+                        <Routes> 
+                             <Route path={'/'} element={<HomePage />}>
+                        </Routes>
+           </BrowserRouter>
+        )
+}
+
+
+
+//------------------------------------- Navigating Routes
+/* 
+        You can use the Link component or the useNavigate() hook to 
+        navigate to different routes.
+*/
+
+function App(){
+        const navigate = useNavigate();
+
+        const handleClick = () => {
+                navigate("/aboutUs", {state: {data: "whatever"}});     // will navigate to the '/aboutUs' component and pass {data: "whatever"} to another component
+                navigate('..');                                        // will navigate to the parent route of the current route
+                navigate(-1);                                          // will navigate to the previous route
+                navigate('contactUs')                                  // will add contactUs to the current pathname      (/account   ->    /account/contactUs)
+                navigate('aboutUs');                                   // keep in mind that calling navigate like this again will only change the last parameter of the pathname  (/account/contactUs    ->     /account/aboutUs)
+        }
+
+        return (
+                <> 
+                         <Link to="/ContactUs/email" className="example">Email us</Link>
+                         <Link to="/ContactUs/phone" className="example">Call us</Link>
+                </>   
+        )
+}
+
+
+
+
+
+//------------------------------------- Nested Route Components
+/* 
+        Every Route component can have other nested Route components.
+        The parent Route must have an <Outlet/> component that can
+        be used to render the nested Route components. Use <base href="/" /> 
+        in the index.html when you are using nested routes, this will 
+        prevent your app from sending a request to a route in the server.
+*/
+
+function App() {
+        return(
+                <BrowserRouter> 
+                        <Routes> 
+                                <Route path="/ContactUs" element={<ContactUs/>}>      
+                                     <Route path="/ContactUs/email" element={<EmailUs/>}/>           
+                                     <Route path="/ContactUs/phone" element={<CallUs/>}/>            
+                                </Route>
+                        </Routes>
+                </BrowserRouter>
+        )
+}
+
+function ContactUs() {                                     //as long as the current pathname starts with /ContactUs, this component will be rendered
+        return(
+                <div> 
+                        <h1> Contact Us<h1>
+                        <Outlet />                         //this will render either /ContactUs/email   or   /ContactUs/phone
+                </div>    
+        )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 function RouterStuff() {
     return(
-            
-         <BrowserRouter>     
-                <NavigationBar/>                                                //you can also define a NavigationBar component like this
-                <Routes>                                                        //and when you click on one of the <Link>'s in the NavigationBar component
-                        <Route index element={<HomePage />}>                    //it will automatically activate one of the corresponding routers below
-                        <Route path="/AboutUs" element={<AboutUs />}>           
-                        <Route path="/Contact" element={<ContactUs />}>
-                        <Route path="/DonateUs" element={<DonateUs />}>
-                        <Route path="/DonateThem" element={<DonateUs />}>        //you can use the same component for different paths
-                </Routes>
-         </BrowserRouter>
-            
 
 
 
         <BrowserRouter>  
             <NavigationBar/>                    
-            <Routes>
-                {/* This router will always be rendered first, index is the same as path="./" */}                
-                <Route index element={<Home/>}/>                                
+            <Routes>                          
                     
                 {/* (1) The parent Route has an <Outlet> that will be replaced by one of the elements from the nested Routes below, KEEP IN MIND, that everytime you have nested routes, the parent Route must have a <Outlet>
                         use <base href="/" /> in the index.html when you are using nested routes, this will prevent your app from sending a request for a route to the server

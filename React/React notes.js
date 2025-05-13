@@ -1663,7 +1663,6 @@ function App() {
 //------------------------------------- Route Component
 /* 
         The Route component defines the actual routes in your application. 
-        Each Route can also have nested Route components
 
                 Syntax: 
                         <Route path={} element={}>
@@ -1677,6 +1676,7 @@ function App(){
             <BrowserRouter> 
                         <Routes> 
                              <Route path={'/'} element={<HomePage />}>
+                             <Route path="*" element={<PageNotFound />}/>                /// if the user goes to a route that doesnt exist, this route will be displayed (404 page)
                         </Routes>
            </BrowserRouter>
         )
@@ -1686,7 +1686,7 @@ function App(){
 
 //------------------------------------- Navigating Routes
 /* 
-        You can use the Link component or the useNavigate() hook to 
+        You can use the <Link/> component or the useNavigate() hook to 
         navigate to different routes.
 */
 
@@ -1702,9 +1702,9 @@ function App(){
         }
 
         return (
-                <> 
-                         <Link to="/ContactUs/email" className="example">Email us</Link>
-                         <Link to="/ContactUs/phone" className="example">Call us</Link>
+                <>                                                         //state prop will pass data from one route to another
+                         <Link to="/ContactUs/email" className="example" state={{ message: "Hello from Home!" }}> Email us </Link>
+                         <Link to="/ContactUs/phone" className="example" state={{ message: "Hello from Home!" }}> Call us </Link>
                 </>   
         )
 }
@@ -1727,8 +1727,9 @@ function App() {
                 <BrowserRouter> 
                         <Routes> 
                                 <Route path="/ContactUs" element={<ContactUs/>}>      
-                                     <Route path="/ContactUs/email" element={<EmailUs/>}/>           
-                                     <Route path="/ContactUs/phone" element={<CallUs/>}/>            
+                                     <Route path="/ContactUs" element={<ContactUs/>}/>                          /// if the child route has the same path as the parent, it will still be displayed
+                                     <Route path="/ContactUs/email" element={<EmailUs/>}/>                      /// this child route will be displayed ONLY if the pathname is /ContactUs/email
+                                     <Route path="/ContactUs/phone" element={<CallUs/>}/>                       /// this child route will be displayed ONLY if the pathname is /ContactUs/phone
                                 </Route>
                         </Routes>
                 </BrowserRouter>
@@ -1748,188 +1749,75 @@ function ContactUs() {                                     //as long as the curr
 
 
 
+//------------------------------------- Routes with dynamic paths
+/* 
+      You can create a dynamic path for a route with the following syntax
 
+      /:path               // path can be any placeholder
 
+      You can access the dynamic path by using useParams()
+*/
 
-
-
-
-
-
-
-
-
-
-
-
-    
-function RouterStuff() {
-    return(
-
-
-
-        <BrowserRouter>  
-            <NavigationBar/>                    
-            <Routes>                          
-                    
-                {/* (1) The parent Route has an <Outlet> that will be replaced by one of the elements from the nested Routes below, KEEP IN MIND, that everytime you have nested routes, the parent Route must have a <Outlet>
-                        use <base href="/" /> in the index.html when you are using nested routes, this will prevent your app from sending a request for a route to the server
-                */} 
-                <Route path="/ContactUs" element={<NestedNavigationBar/>}>      
-                     <Route path="/ContactUs/email" element={<EmailUs/>}/>           
-                     <Route path="/ContactUs/call" element={<CallUs/>}/>            
-                </Route>
-
-                <Route path='/account/' element={<DisplayNotes/>}>                /* you can have default nested components that are displayed automatically when we get to a certain path  */
-                        <Route path='/account/' element={<EditNote/>}>            // when /account pathname is displayed, all the nested child elements will also be displayed initially
-                                <Route path='/account/' element={<SaveNote/>}>
+function App(){
+        return(
+                <BrowserRouter> 
+                        <Routes>
+                                <Route path="/:path" element={<ContactUs/>}>
+                                <Route path="/DonateUs" element={<Donate/>}/>                
+                                <Route path="/DonateUs/:path" element={<ThankYou />}/>            
+                                <Route path="/DonateUs/:path/:otherPath" element={<DonateMore/>}  
                         </Route>
-                </Route>
-
-                {/*(2) This Route will send a URL parameter to the Route below*/}
-                <Route path="/:repoName" element={<Whatever/>}>
-                <Route path="/DonateUs" element={<DonateUs />}/>                
-                <Route path="/DonateUs/:repoName" element={<ThankYou />}/>      {/* :repoName is a placeholder, it can be sent as useParam() to the <ThankYou /> */} 
-                <Route path="/DonateUs/:repoName/:otherRepoName" element={<Whatever/>}   
- 
-                {/*(3) This nested route has nested routes that will each pass a url parameter to the other, KEEP IN MIND, that everytime you have nested routes, the parent Route must have a <Outlet> */}
-                <Route path="/Complaints" element={<Complaints>}>
-                        <Route path="/Complaints/:pageOne" elements={<PageOne/>}>
-                        <Route path="/Complaints/:pageOne/:pageTwo" elements={<PageTwo/>}>                           
-                </Route>
- 
-                 {/* (4) This Route can be used for error handling*/}
-                 Route path="*" element={<NoPage />}/>                          {/* <Route path="*">  will only be rendered if the page requested does not exist*/}
-            </Routes>
-        </BrowserRouter>
-    )
-}
-
-
-function NavigationBar() {
-    return(
-        <>
-            <Link to="/" className="example"> Home</Link> <br/>               {/*you can style the links with className attribute*/}
-            <Link to="/AboutUs" className="example"> About Us</Link><br/>
-            <Link to="/ContactUs" className="example"> Contact Us</Link><br/>
-            <Link to="/DonateUs" className="example"> Donate Us</Link> <br/>   
-            <Link to="/thisCanBeAnything" className="example">Cancel Us </Link>   {/*this Link will target the route with path="/:repoName" */}
-        </>
-    )
-}
-
-//------------------------------------- (1) -------------------------------------
-//nested Routes that will display and replace the <Outlet />
-function NestedNavigationBar() {
-    return(
-        <>
-            <Link to="/ContactUs/email" className="example">Email us</Link>    //if the user clicks on this link, then its element will be rendered in the <Outlet/> below
-            <Link to="/ContactUs/call" className="example"> Call us</Link>     //if the user clicks on this link, then its element will be rendered in the <Outlet/> below
-            <Outlet />                                                          //this outlet will be replaced by the content of one of the elements above
-        </>
-    )
-}
-                           
-                           
-//------------------------------------- (2) -------------------------------------
-//Routes can pass URL parameters to other routes 
-function DonateUs() {
-    const navigate = useNavigate();                                //this hook is used to navigate to a different page, its useful if its used inside even handlers          
-    navigate("/DonateUs/cash");                                    //this will have the same effect as <Link>
-        
-    return(
-        <div>
-            <Link to="/DonateUs/cash" className="example"> Cash </Link><br/>        {/* 'cash' will be passed to the useParams() in the <ThankYou /> component*/}
-            <Link to="/DonateUs/credit" className="example"> Credit </Link><br/>    {/* 'credit' will be passed to the useParams() in the <ThankYou /> component*/}
-        </div>
-    )
-}
-
-function ThankYou() {                                       //repoName = "cash"  
-    const {repoName} = useParams();                         //repoName is the URL parameter that was passed 'down' from <Route path="/DonateUs">                                                         
-    const navigate = useNavigate();
-    navigate("/DonateUs/" + repoName + "whatever")          //"whatever" is another URL parameter that will be passed 'down' to the whatever component
-}
-
-function Whatever() {
-     const {repoName, otherRepoName} = useParams();                //repoName = "cash"    otherRepoName = "whatever"     
-     const navigate = useNavigate();
-     navigate("/DonateUs/" + repoName + otherRepoName + "somethingElse");   
-     
-}
-//------------------------------------- (3) -------------------------------------
-//useParams() hook is used to pass url parameters from one route to another
-
-function Complaints() {      
-        return(                                                 
-            <>
-               <Link to="/Complaints/page-one">                         //Clicking on this link will display PageOne() in the <Outlet>
-                <Outlet/>                                               //this will be replaced by one of the elements in the nested routes                 
-            </> 
+                </BrowserRouter>
         )
 }
 
-function PageOne(){
-     const {pageOne} = useParams();                                    //pageOne = '/page-one'
-
-        return(                                                 
-            <>
-               <>'Page One'</>                                          
-               <Link to="/Complaints/" + pageOne + 'pageTwo'>           //Clicking on this link will display PageTwo() in the <Outlet>
-                <Outlet/>                                               //this will be replaced by one of the elements in the nested routes                 
-            </> 
-        )
+function ThankYou() {                                      
+    const {path} = useParams();                             // path is the dynamic path placeholder that you used in the pathname of the route                                                        
 }
 
-function PageTwo(){
-     return(<>'Page Two'</>)    
+function DonateMore(){
+    const {path, otherPath} = useParams();                 // if the route has multiple dynamic paths, you can access all of them through this hook
 }
 
 
 
 
-//------------------------------------- (4) -------------------------------------
-//default page that appears when the user accesses a page that doesnt exist
+//------------------------------------- Passing Data between Routes
+/* 
+        You can pass data from one route to another with the useLocation()
+        hook.
+*/
 
-function NoPage() {return(<><p> 404: Page doesnt exist</p></>)}
-
-
-
-
-
-
-
-
-//------------------------------------- USE LOCATION() HOOK and USE NAVIGATE() HOOK -------------------------------------
-//useNavigate() is used to navigate to a different route in the app
-//useLocation() is used to get information from the current route AND to pass data from one route to another
 
 function Home() {
-        const navigate = useNavigate();     
+        const navigate = useNavigate();
         
-        const handleClick = () => {
-                navigate("/aboutUs", {state: {data: "whatever"}});     //  will navigate to the '/aboutUs' component and pass {data: "whatever"} to another component
-                navigate('..');                                        // will navigate to the parent route of the current route
-                navigate(-1);                                          // will navigate to the previous route
-                navigate('contactUs')                                  // will add contactUs to the current pathname      (/account   ->    /account/contactUs)
-                navigate('aboutUs');                                   // keep in mind that calling navigate like this again will only change the last parameter of the pathname  (/account/contactUs    ->     /account/aboutUs)
-        }
-        
-        return(
-                <button onClick={handleClick}> 
-                        Go to About me page 
-                </button>
-        )
+        navigate('/aboutus', {
+                state: {
+                        {data: 'whatever'}
+                }
+        });
 }
 
 
 function AboutUs() {
-        const {state} = useLocation();                         // '/aboutUs' component can use useLocation() to access the data being passed from navigate()
-        const location = useLocation();                        // OR you can access the location object that contains information about the current route
+        const location = useLocation();
 
-        location.pathname;                                     //returns '/aboutUS'
-        
+        location.pathname;                        // A string representing the current URL path.
+        location.search;                          // A string representing the query parameters of the URL (everything after ?).
+        location.hash;                            // A string representing the fragment identifier (everything after #).
+        location.state;                           // The state object passed via link or navigate, typically for persisting data between navigations.
+        location.key;                             // A unique identifier for the current location entry in the history stack.
 }
+
+
+
+
+
+
+
+
+
 
 
 

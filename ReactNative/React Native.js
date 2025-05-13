@@ -20,6 +20,8 @@
                         11.3) Stylesheets
                         11.4) Linking
                 12) React Navigation
+                13) ENV variables
+                14) Styled-Components (CSS in JS library)
 
 
                                        FEATURES OF REACT NATIVE

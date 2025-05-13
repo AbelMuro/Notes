@@ -1,4 +1,4 @@
-w//====================================================== CLOUD COMPUTING ===========================================================================
+//====================================================== CLOUD COMPUTING ===========================================================================
 /* 
     Cloud computing is the on-demand delivery of IT resources via the internet. Instead of owning expensive hardware that manages servers and databases, 
     you can access technology services (storage, databases, computing power) on an as-needed basis from a cloud provider (AWS)
@@ -21,105 +21,106 @@ w//====================================================== CLOUD COMPUTING ======
 
 
 //========================================================== AMAZON S3 =================================================================================
+
 /*
-Amazon Web Services S3 is an 'object' storage service that can be used to store data such as any type of files (text, image, video, etc...) and folders
-
-S3 is basically a NoSQL database
-S3 also has a REST API that is used by the back-end to make requests and receive responses from a bucket
-S3 is mostly used for backup and storage. Useful for saving distinct copies of you data
-S3 can also be used to host/deploy a static website
-
-S3 uses Buckets and Objects. Buckets are containers for objects, and objects are files or any metadata that describes the file.
-
---Buckets consists of objects that are each identified by a key and a version ID (if S3 versioning is enabled on the bucket)
-
---Objects consist of object data and metadata
-
-    metadata: a set of name and value pairs that describes the object, some of these pairs are default sets such as 'date last modified', and standard HTTP metadata (Content-Type)
-            
-    object data: can be any type of file; text, js, css, image, video, literally any file
-    
-
-
-
-
-
-------------------------------------------HOW TO USE S3 AS A DATABASE WITH THE SDK-----------------------------------------------------------------------
-1) Create a bucket in s3 console
-
-2) set the following options for the bucket
-    --ACL's enabled                                (in case you miss this part, you can go to 'Permissions', and then to 'Object Ownership', then click on ACL's enabled)
-    --unblock all public access                    (in case you miss this part, you can go to 'Permissions', then to 'Block Public Access', then uncheck 'Block all public access' )
-    Then click on create bucket
-    
-3) Go to Permissions and then click on 'Edit' in Bucket Policy
-
-4) Copy the 'Bucket ARN' and then click on 'Policy Generator'
-
-5) Set the settings below...
-
-    --type of policy: S3 Bucket Policy
-    --Principal: *
-    --Actions: GetObject, PutObject
-    --Paste the Bucket ARN and then type '/*' next to it
-    Then click on Add Statement and then Generate Policy (copy the JSON code that pops up)
-    
-6) Go back to Permissions -> Bucket Policy -> edit -> paste the policy and then click Save
-
-7) Then go to Permissions and then scroll down to CORS and paste the following.... 
-    (this will allow any/specific origin to make ajax calls to s3
-    
-        [
-            {
-                "AllowedHeaders": [
-                        "*"
-                    ],
-                "AllowedMethods": [
-                        "PUT",
-                        "HEAD",
-                        "GET"
-                    ],
-                "AllowedOrigins": [
-                    "*"
-                ],
-                "ExposeHeaders": []
-            }
-        ]
-
-
-8) Now you need to create or use an 'IAM' user that has an 'access key id' and a 'secret access key' 
-    and also a policy that allows that user to access the S3 bucket
-
-9) You can either select an policy that already exists and gives full access to ALL s3 buckets, if so, skip to step 10
-     if you want a policy that has limited access to some s3 buckets, then proceed to the next step
-
-    9.a) Go to 'IAM console' and then click 'Policies', then click on 'Create Policy', then set the following options...
-    
-        --select S3
-        --click on Write and select PutObject (this action lets the user put objects into the database)
-        --click on Read and select GetObject (this action lets the user get objects from the database)
-        --Go To resources, Then click on Add ARN 
-            --Then type in the ARN of the s3 bucket and click on 'Any object name'
-        Then click on 'Add ARN'
+        Amazon Web Services S3 is an 'object' storage service that can be used to store data such as any type of files (text, image, video, etc...) and folders
         
-    9.b) Give a name to the policy and create it (remember the name of the policy)
+        S3 is basically a NoSQL database
+        S3 also has a REST API that is used by the back-end to make requests and receive responses from a bucket
+        S3 is mostly used for backup and storage. Useful for saving distinct copies of you data
+        S3 can also be used to host/deploy a static website
+        
+        S3 uses Buckets and Objects. Buckets are containers for objects, and objects are files or any metadata that describes the file.
+        
+        --Buckets consists of objects that are each identified by a key and a version ID (if S3 versioning is enabled on the bucket)
+        
+        --Objects consist of object data and metadata
+        
+            metadata: a set of name and value pairs that describes the object, some of these pairs are default sets such as 'date last modified', and standard HTTP metadata (Content-Type)
+                    
+            object data: can be any type of file; text, js, css, image, video, literally any file
+*/            
+        
+        
 
-10) Now you need to assign that policy to the IAM user, To do this, go back to 'IAM console' and click on 'Users'
 
-11) Select the user, and then click on 'Add Permissions', then click on 'Attack policies directly' and search for the policy that you just created
+// ------------------------------------------ HOW TO USE S3 AS A DATABASE WITH THE SDK -----------------------------------------------------------------------    
+/*        
+        You will need to use the AWS-S3 SDK to use an S3 bucket on your application
+        
+        1) Create a bucket in s3 console
+        
+        2) set the following options for the bucket
+            --ACL's enabled                                (in case you miss this part, you can go to 'Permissions', and then to 'Object Ownership', then click on ACL's enabled)
+            --unblock all public access                    (in case you miss this part, you can go to 'Permissions', then to 'Block Public Access', then uncheck 'Block all public access' )
+            Then click on create bucket
+            
+        3) Go to Permissions and then click on 'Edit' in Bucket Policy
+        
+        4) Copy the 'Bucket ARN' and then click on 'Policy Generator'
+        
+        5) Set the settings below...
+        
+            --type of policy: S3 Bucket Policy
+            --Principal: *
+            --Actions: GetObject, PutObject
+            --Paste the Bucket ARN and then type '/*' next to it
+            Then click on Add Statement and then Generate Policy (copy the JSON code that pops up)
+            
+        6) Go back to Permissions -> Bucket Policy -> edit -> paste the policy and then click Save
+        
+        7) Then go to Permissions and then scroll down to CORS and paste the following.... 
+            (this will allow any/specific origin to make ajax calls to s3
+            
+                [
+                    {
+                        "AllowedHeaders": [
+                                "*"
+                            ],
+                        "AllowedMethods": [
+                                "PUT",
+                                "HEAD",
+                                "GET"
+                            ],
+                        "AllowedOrigins": [
+                            "*"
+                        ],
+                        "ExposeHeaders": []
+                    }
+                ]
+        
+        
+        8) Now you need to create or use an 'IAM' user that has an 'access key id' and a 'secret access key' 
+            and also a policy that allows that user to access the S3 bucket
+        
+        9) You can either select an policy that already exists and gives full access to ALL s3 buckets, if so, skip to step 10
+             if you want a policy that has limited access to some s3 buckets, then proceed to the next step
+        
+            9.a) Go to 'IAM console' and then click 'Policies', then click on 'Create Policy', then set the following options...
+            
+                --select S3
+                --click on Write and select PutObject (this action lets the user put objects into the database)
+                --click on Read and select GetObject (this action lets the user get objects from the database)
+                --Go To resources, Then click on Add ARN 
+                    --Then type in the ARN of the s3 bucket and click on 'Any object name'
+                Then click on 'Add ARN'
+                
+            9.b) Give a name to the policy and create it (remember the name of the policy)
+        
+        10) Now you need to assign that policy to the IAM user, To do this, go back to 'IAM console' and click on 'Users'
+        
+        11) Select the user, and then click on 'Add Permissions', then click on 'Attack policies directly' and search for the policy that you just created
+        
+        12) finally, click on next and then on Add Permissions
+        
+        13) Your IAM user is now ready to access the S3 bucket
+        
+        14) Create a file 'S3.js' with the following lines of code...
+*/
 
-12) finally, click on next and then on Add Permissions
 
-13) Your IAM user is now ready to access the S3 bucket
+// ------------------------------------------ Initializing the AWS-SDK        
 
-
-14) Create a file 'S3.js' with the following lines of code...
-
-
-    //npm install aws-sdk
-
-    
-    //---------------------------------------------s3.js
         import aws from 'aws-sdk';
         
         const s3 = new aws.S3({
@@ -129,7 +130,59 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             signatureVersion: 'v4'
         })
 
-    1) This function will create a URL that can be used in a fetch request to store data into the s3 bucket
+
+// ------------------------------------------ getSignedUrlPromise() 
+/* 
+    All CRUD operations with the AWS-SDK are performed with getSignedUrlPromise() method.
+    This method returns a promise that has a pre-signed URL that can be used in a 
+    fetch request to peform the CRUD operation
+*/
+
+const params = {
+    Bucket: 'your-bucket-name',
+    Key: 'name of object',
+    Expires: 60
+};
+
+s3.getSignedUrlPromise('putObject', params).then((URL) => {
+    fetch(url, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({data: 'data'}),
+    })
+})
+
+
+
+// ------------------------------------------ getSignedUrl()
+/* 
+    All CRUD operations with the AWS-SDK are performed with the getSignedUrl() method.
+    This method accepts a callback on the third argument that has a pre-signed URL that
+    can be used in a fetch request to perform the CRUD operation
+*/
+
+
+s3.getSignedUrl('putObject', params, (err, url) => {
+    if(err) return;
+    
+    fetch(url, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({data: 'data'}),
+    })
+})
+
+            
+
+// ------------------------------------------ Storing objects in the S3 Bucket
+/* 
+        You can use the getSignedUrlPromise() or the getSignedUrl() to get a pre-signed url that can be used 
+        in a fetch request to store objects in an S3 bucket.
+*/
     
             export async function generateUploadURL(objectName) {                 //objectName is the name of object that will be stored in S3 bucket
                 const params = {
@@ -137,11 +190,15 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
                     Key: objectName,
                     Expires: 60
                 };
+                
                 const uploadURL = await s3.getSignedUrlPromise('putObject', params);
                 return uploadURL;                                               
             }
 
-    2) This function will create a URL that can be used in a fetch request to retrieve data from the s3 bucket
+// ------------------------------------------ Getting objects from the S3 bucket
+/* 
+        This function will create a URL that can be used in a fetch request to retrieve data from the s3 bucket
+*/
     
             export async function generateDownloadURL(objectName){
                 const params = {
@@ -154,7 +211,12 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
                 return downloadURL;
             }
 
-    3) This function will create a URL that can be used in a fetch request to delete objects from the s3 bucket
+
+
+// ------------------------------------------ Deleting objects from the S3 bucket
+/* 
+    This function will create a URL that can be used in a fetch request to delete objects from the s3 bucket
+*/
     
             export async function generateDeleteURL(objectName){
                 const params = ({
@@ -166,9 +228,12 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
                 const deleteURL = await s3.getSignedUrlPromise('deleteObject', params);
                 return deleteURL;   
             }
-                    
 
-    4) This function will create a URL that can be used within a form to upload files into the s3 bucket
+
+// ------------------------------------------ Uploading files from a form into the S3 bucket
+/* 
+    This function will create a URL that can be used within a form to upload files into the s3 bucket
+*/
 
         export function generatePresignedURL(fileName) {
             const params = {
@@ -186,8 +251,8 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
               return {fields, url};
         }
 
-
-    5) This function will create a URL that can be used to download files from the s3 bucket
+// ------------------------------------------
+    //5) This function will create a URL that can be used to download files from the s3 bucket
     
             export function generateSignedURL(fileName){
                 const params = {
@@ -201,7 +266,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
             }
 
 
-    6) This function will automatically store data into the s3 bucket
+    //6) This function will automatically store data into the s3 bucket
 
             export function PutObject (objectName, data) {
                 const params = {
@@ -214,7 +279,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
                 });                
             }
 
-    7) This function will automatically upload a file into the s3 bucket
+    //7) This function will automatically upload a file into the s3 bucket
 
             export function UploadFile (file) {        //file must be from <input type='file'>
                 
@@ -228,7 +293,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
                 });
             }
 
-    8) This function will automatically retrieve data from the s3 bucket
+    //8) This function will automatically retrieve data from the s3 bucket
 
             export function GetObject (objectName) {
                 const params = {
@@ -249,7 +314,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
                 });
             }
 
-    9) This function will automatically retrieve ALL data from the s3 bucket
+    //9) This function will automatically retrieve ALL data from the s3 bucket
 
             export function GetAllObjects (bucketName)  {
                 const params = {
@@ -263,7 +328,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
                 });
             }
 
-    10) This function will automatically delete an object from the s3 bucket
+    //10) This function will automatically delete an object from the s3 bucket
 
             export function DeleteObject (objectName) {
                 const params = {
@@ -275,7 +340,7 @@ S3 uses Buckets and Objects. Buckets are containers for objects, and objects are
                 });
             }
 
-    11) This function will automatically delete multiple objects from the s3 bucket
+    //11) This function will automatically delete multiple objects from the s3 bucket
 
          export function DeleteAllObjects  ()  {
          

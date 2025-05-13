@@ -1,6 +1,0 @@
-{             
-    "variable": "value",
-    "array": ["value one", "value two"],
-    "object": {"key one": "value one", "key two": "value two"},
-    "array of objects": [{"key one": "value one", "key two": "value two"}, {"key one": "value one", "key two": "value two"}]
-}

@@ -351,8 +351,13 @@ function App() {
           animate.stop();                                                                  // you can stop an animation with the .stop() method
     }
 
-    return(    
-        <div ref={ref}></div>
+    return( 
+            <>
+                <div ref={ref}></div> 
+                <motion.div ref={ref}></div>
+            </>
+       
+            
     )
 }
 

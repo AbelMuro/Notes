@@ -131,11 +131,132 @@
         })
 
 
+            
+
+// ------------------------------------------ Storing objects into an S3 bucket
+/* 
+    You can store objects in an s3 bucket with the putObject() method
+*/
+
+            async function PutObject (objectName, data) {
+                const params = {
+                      Bucket: 'your-bucket-name',
+                      Key: objectName,                   
+                      Body: JSON.stringify(data)
+                };
+                
+                const result = await s3.putObject(params).promise();    
+            }
+
+
+
+
+// ------------------------------------------ Uploading files into an S3 bucket
+/* 
+    You can upload files into an s3 bucket with the upload() method
+*/
+
+            export function UploadFile (file) {        //file must be from <input type='file'>
+                
+                const params = {
+                  Bucket: 'your-bucket-name',
+                  Key: file.name,
+                  Body: file
+                };
+                
+                const result = await s3.upload(params).promise()
+            }
+
+
+
+
+// ------------------------------------------ Getting objects from an S3 bucket
+/* 
+    You can get objects from an S3 bucket with the .getObject() method.
+    Keep in mind that this method will return a buffer, so you need to 
+    convert the buffer into a UTF-8 encoded string.
+*/
+
+            export function GetObject (objectName) {
+                const params = {
+                      Bucket: 'your-bucket-name',
+                      Key: objectName
+                    };
+                
+                const data = await s3.getObject(params).promise();
+                const JSON_object = data.Body.toString("utf-8")
+                const object = JSON.parse(JSON_object);
+            }
+
+
+
+
+
+// ------------------------------------------ Deleting objects from an S3 bucket
+/* 
+    You can delete an object from an s3 bucket by using the deleteObject() method
+*/
+
+            export function DeleteObject (objectName) {
+                const params = {
+                      Bucket: 'your-bucket-name',
+                      Key: objectName
+                };
+
+                const otherParams = {                                    //you can delete multiple objects from the s3 bucket with these params
+                      Bucket: 'your-bucket-name',
+                      Delete: {
+                        Objects: [
+                          { Key: 'example1.txt' },
+                          { Key: 'example2.txt' }
+                        ]
+                      }
+                    };
+                
+                const result = await s3.deleteObject(params).promise();
+            }
+
+
+
+
+
+// ------------------------------------------ Getting meta-data from ALL objects in an S3 bucket
+/* 
+    You can get the meta data of all objects from an S3 bucket by using the listObjectV2() method.
+    Keep in mind that this method does not return the actual data from the s3 bucket
+    
+*/
+            export function GetAllObjects (bucketName)  {
+                const params = {
+                      Bucket: bucketName
+                };
+                
+                const objects = await s3.listObjectsV2(params).promise();
+                objects.content;            //array of objects containing meta data about the objects in s3
+                /* 
+                      Contents =  [
+                        {
+                          "Key": "user.json",
+                          "LastModified": "2025-05-13T23:37:00.000Z",
+                          "Size": 24,
+                          "ETag": "\"abc123def456ghi789\"",
+                          "StorageClass": "STANDARD"
+                        }
+                      ]                
+                */
+            }
+
+
 // ------------------------------------------ getSignedUrlPromise() 
 /* 
-    All CRUD operations with the AWS-SDK are performed with getSignedUrlPromise() method.
     This method returns a promise that has a pre-signed URL that can be used in a 
-    fetch request to peform the CRUD operation
+    fetch request to perform the CRUD operation
+
+        CRUD operations:
+    
+            putObject
+            getObject
+            deleteObject
 */
 
 const params = {
@@ -158,11 +279,21 @@ s3.getSignedUrlPromise('putObject', params).then((URL) => {
 
 // ------------------------------------------ getSignedUrl()
 /* 
-    All CRUD operations with the AWS-SDK are performed with the getSignedUrl() method.
     This method accepts a callback on the third argument that has a pre-signed URL that
     can be used in a fetch request to perform the CRUD operation
+
+            CRUD operations:
+    
+                putObject
+                getObject
+                deleteObject
 */
 
+const params = {
+    Bucket: 'your-bucket-name',
+    Key: 'name of object',
+    Expires: 60
+};
 
 s3.getSignedUrl('putObject', params, (err, url) => {
     if(err) return;
@@ -177,292 +308,85 @@ s3.getSignedUrl('putObject', params, (err, url) => {
 })
 
             
-
-// ------------------------------------------ Storing objects in the S3 Bucket
+// ------------------------------------------ createPresignedPost()
 /* 
-        You can use the getSignedUrlPromise() or the getSignedUrl() to get a pre-signed url that can be used 
-        in a fetch request to store objects in an S3 bucket.
-*/
-    
-            export async function generateUploadURL(objectName) {                 //objectName is the name of object that will be stored in S3 bucket
-                const params = {
-                    Bucket: 'your-bucket-name',
-                    Key: objectName,
-                    Expires: 60
-                };
-                
-                const uploadURL = await s3.getSignedUrlPromise('putObject', params);
-                return uploadURL;                                               
-            }
-
-// ------------------------------------------ Getting objects from the S3 bucket
-/* 
-        This function will create a URL that can be used in a fetch request to retrieve data from the s3 bucket
-*/
-    
-            export async function generateDownloadURL(objectName){
-                const params = {
-                    Bucket: 'your-bucket-name',
-                    Key: objectName,
-                    Expires: 60
-                }
-    
-                const downloadURL = await s3.getSignedUrlPromise('getObject', params);
-                return downloadURL;
-            }
-
-
-
-// ------------------------------------------ Deleting objects from the S3 bucket
-/* 
-    This function will create a URL that can be used in a fetch request to delete objects from the s3 bucket
-*/
-    
-            export async function generateDeleteURL(objectName){
-                const params = ({
-                    Bucket: 'your-bucket-name',
-                    Key: objectName,
-                    Expires: 60
-                });
-            
-                const deleteURL = await s3.getSignedUrlPromise('deleteObject', params);
-                return deleteURL;   
-            }
-
-
-// ------------------------------------------ Uploading files from a form into the S3 bucket
-/* 
-    This function will create a URL that can be used within a form to upload files into the s3 bucket
+    This method will return a pre-signed URL that can be used inside a form to make a POST
+    request. You can upload the files from a form into the S3 bucket. 
+    Keep in mind that the form using the pre-signed url must only have files.
+    you cannot upload any text data from the form.
 */
 
-        export function generatePresignedURL(fileName) {
-            const params = {
-                Bucket: 'your-bucket-name',
-                Fields: {
-                  Key: fileName
-                },
-                Conditions: [
-                    ["content-length-range", 0, 1048576],
-                  ],
-                Expires: 60
-            };
-              
-              const {fields, url} = s3.createPresignedPost(params);
-              return {fields, url};
-        }
 
-// ------------------------------------------
-    //5) This function will create a URL that can be used to download files from the s3 bucket
-    
-            export function generateSignedURL(fileName){
-                const params = {
-                    Bucket: 'your-bucket-name',
-                    Key: fileName,
-                    Expires: 60
-                };
-            
-                const url = s3.getSignedUrl('getObject', params);
-                return url;                            //use this url in the src attribute of an img tag
+    const params = {
+      Bucket: "your-bucket-name",
+      Fields: {
+        Key: "your-file-key",
+        ContentType: "image/png",
+      },
+    };
+
+    s3.createPresignedPost(params, (error, data) => {
+            data = {
+                 url: "https://your-bucket.s3.amazonaws.com/",
+                 fields: {
+                     key: "your-file-key",
+                     AWSAccessKeyId: "AKIAEXAMPLE",
+                     policy: "base64-encoded-policy",
+                     signature: "generated-signature"
+                  }
             }
+    })
 
 
-    //6) This function will automatically store data into the s3 bucket
+    <form action={url} encType="multipart/form-data" method='post'}>                           
+        <input type="hidden" name="key" value={fields.key}>
+        <input type="hidden" name="AWSAccessKeyId" value={fields.AWSAccessKeyId}>
+        <input type="hidden" name="policy" value={fields.policy}>
+        <input type="hidden" name="signature" value={fields.signature}>         
+        <input type='file' name='file'/>
+        <input type='submit'/>
+    </form>
 
-            export function PutObject (objectName, data) {
-                const params = {
-                      Bucket: 'your-bucket-name',
-                      Key: objectName,                   
-                      Body: JSON.stringify(data)
-                };
-                
-                s3.putObject(params, (err, data) => {
-                });                
-            }
 
-    //7) This function will automatically upload a file into the s3 bucket
 
-            export function UploadFile (file) {        //file must be from <input type='file'>
-                
-                const params = {
-                  Bucket: 'your-bucket-name',
-                  Key: file.name,
-                  Body: file
-                };
-                
-                s3.upload(params, (err, data) => {
-                });
-            }
 
-    //8) This function will automatically retrieve data from the s3 bucket
 
-            export function GetObject (objectName) {
-                const params = {
-                      Bucket: 'your-bucket-name',
-                      Key: objectName
-                    };
-                
-                s3.getObject(params, (err, data) => {
-                        if(err) return;
-
-                        // if we are getting objects
-                            const response = data.Body.toString();
-                            console.log(JSON.parse(response));
-                            
-                        // if we are downloading files       
-                            const imageData = data.Body;
-                            console.log(imageData.toString('base64'));       //this can be used in the src attribute of an img tag
-                });
-            }
-
-    //9) This function will automatically retrieve ALL data from the s3 bucket
-
-            export function GetAllObjects (bucketName)  {
-                const params = {
-                      Bucket: bucketName
-                };
-                
-                s3.listObjectsV2(params, (err, data) => {
-                    if(err) return;
-                    
-                    console.log(data.Contents);            //Contents is an array
-                });
-            }
-
-    //10) This function will automatically delete an object from the s3 bucket
-
-            export function DeleteObject (objectName) {
-                const params = {
-                      Bucket: 'your-bucket-name',
-                      Key: objectName
-                };
-                
-                s3.deleteObject(params, (err, data) => {
-                });
-            }
-
-    //11) This function will automatically delete multiple objects from the s3 bucket
-
-         export function DeleteAllObjects  ()  {
-         
-                 const params = {
-                      Bucket: 'your-bucket-name',
-                      Delete: {
-                        Objects: [
-                          { Key: 'example1.txt' },
-                          { Key: 'example2.txt' }
-                        ]
-                      }
-                    };
-                    
-                s3.deleteObjects(params, (err, data) => {
-                });
-         }    
 
         
 
-    //------------------------------------------app.js
-        import S3 from './s3.js'
+//--------------------------------------------HOW TO MANUALLY DEPLOY A WEBSITE WITH S3----------------------------------------------------------------------
 
-    // 1) this is how you get, put, and delete objects from the s3 bucket
-        function App() {
-
-                //1)
-                const putRequest = async () => {
-                    const url = await S3.generateUploadURL('name of object');        
-                    await fetch(url, {
-                            method: 'PUT',
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({data: 'data'}),
-                        })   
-                 } 
-
-                //2)
-                const getRequest = async () => {
-                        const url = await S3.generateDownloadURL('myfolder/name of object');
-                        const response = await fetch(url, {
-                            method: 'GET',
-                        })
-                        const data = await response.json();
-                        console.log(data);
-                }
-
-                //3)
-                const deleteRequest = async () => {
-                        const url = await S3.generateDeleteURL('name of object');
-                        await fetch(url, {
-                            method: 'DELETE',
-                        })
-                        console.log('data has been deleted');
-                }
-
-                //5)
-                const getFileRequest = () => {
-                        const signedUrl = S3.generateSignedURL('myImages/my image.png');
-                        const response = await fetch(signedUrl,{
-                            method: 'GET'
-                        })
-                        const fileURL = response.url;
-                        console.log(fileURL)                            //url of the file, put this in a
-                }
-
-                return(        
-                   <></>)
-            }
-
+/*
+    1) Create a bucket in S3 console
     
-    // 2) this is how you upload files into the s3 bucket
-        function App() {
-            const {url, fields} = S3.generatePresignedURL('name of file');            //4)
-
-            return(        
-                <form action={url} encType="multipart/form-data" method='post'}>                           
-                    <input type="hidden" name="key" value={'name of file'}/>
-                    <input type="hidden" name="X-Amz-Algorithm" value={fields["X-Amz-Algorithm"]}/>
-                    <input type="hidden" name="X-Amz-Credential" value={fields["X-Amz-Credential"]}/>
-                    <input type="hidden" name="X-Amz-Date" value={fields["X-Amz-Date"]}/>
-                    <input type="hidden" name="X-Amz-Signature" value={fields['X-Amz-Signature']}/>
-                    <input type="hidden" name="policy" value={fields['Policy']}/>            
-                    <input type='file' name='file'/>
-                </form>
-            )
-            
-        }
-
-
---------------------------------------------HOW TO MANUALLY DEPLOY A WEBSITE WITH S3----------------------------------------------------------------------
-
-1) Create a bucket in S3 console
-
-2) set the following options for the bucket
-    --ACL's enabled                                (in case you miss this part, you can go to 'Permissions', and then to 'Object Ownership', then click on ACL's enabled)
-    --unblock all public access                    (in case you miss this part, you can go to 'Permissions', then to 'Block Public Access', then uncheck 'Block all public access' )
-    Then click on create bucket
+    2) set the following options for the bucket
+        --ACL's enabled                                (in case you miss this part, you can go to 'Permissions', and then to 'Object Ownership', then click on ACL's enabled)
+        --unblock all public access                    (in case you miss this part, you can go to 'Permissions', then to 'Block Public Access', then uncheck 'Block all public access' )
+        Then click on create bucket
+        
+    3) Go to properties and then click on STATIC WEBSITE HOSTING and enable static website hosting for the bucket
     
-3) Go to properties and then click on STATIC WEBSITE HOSTING and enable static website hosting for the bucket
-
-4) Go to Permissions and then click on 'Edit' in Bucket Policy
-
-5) Copy the 'Bucket ARN' and then click on 'Policy Generator'
-
-6) Set the settings below...
-
-    --type of policy: S3 Bucket Policy
-    --Principal: *
-    --Actions: GetObject
-    --Paste the Bucket ARN and then type '/*' next to it
-    Then click on Add Statement and then Generate Policy (copy the JSON code that pops up)
+    4) Go to Permissions and then click on 'Edit' in Bucket Policy
     
-7) Go back to Permissions -> Bucket Policy -> edit -> paste the policy and then click Save
-
-8) Now all you have to do is import all the files in the /dist folder to the bucket (not the folder itself)
-
-    you can also use the command line instead.. aws s3 sync ./dist s3://{name-of-bucket}
-
-9) Select all the files that you imported in the bucket and then click on 'Actions', and then click on 'Make public using ACL'  
-
-10) once everything is working properly, go back to properties and scroll all the way down and click on the link in static website hosting
+    5) Copy the 'Bucket ARN' and then click on 'Policy Generator'
+    
+    6) Set the settings below...
+    
+        --type of policy: S3 Bucket Policy
+        --Principal: *
+        --Actions: GetObject
+        --Paste the Bucket ARN and then type '/*' next to it
+        Then click on Add Statement and then Generate Policy (copy the JSON code that pops up)
+        
+    7) Go back to Permissions -> Bucket Policy -> edit -> paste the policy and then click Save
+    
+    8) Now all you have to do is import all the files in the /dist folder to the bucket (not the folder itself)
+    
+        you can also use the command line instead.. aws s3 sync ./dist s3://{name-of-bucket}
+    
+    9) Select all the files that you imported in the bucket and then click on 'Actions', and then click on 'Make public using ACL'  
+    
+    10) once everything is working properly, go back to properties and scroll all the way down and click on the link in static website hosting
 
 
 
@@ -529,7 +453,15 @@ s3.getSignedUrl('putObject', params, (err, url) => {
 
 
 
-//============================================== AMAZON CODEPIPELINE ================================================================
+
+
+
+
+
+
+
+
+
 
 
 

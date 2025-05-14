@@ -1,6 +1,23 @@
 <!-- 
         SVG's are elements that help us create vector based graphics using XML
         Keep in mind that you can use a class attribute on all svg elements
+
+
+        Common Attributes:
+
+                fill:  the color of the inside of the shape
+
+                stroke:  the outline color of the shape (the border of the shape)
+                stroke-width: the width of the stroke
+                stroke-opacity: the opacity of the stroke
+                stroke-dasharray: can create dashed or dotted outlines
+
+                x:  the space between the left border of the SVG and the center of the shape
+                y:  the space between the top border of the SVG and the center of the shape
+                dx:  the horizontal shift of the element, positive values move the shape to the right, and negative values move the shape to the left
+                dy:  the vertical shift of the element, positive values move the shape to the bottom, and negative values move the shape to the top
+                
+                
 -->
 
 
@@ -73,6 +90,29 @@
 <svg>
       <text x="150" y="125" text-anchor="middle">SVG</text>
 </svg>
+
+
+
+
+
+
+
+<!--------------- Path Element--------------->
+<!-- 
+        The Path element can be used to create complex shapes
+        using the D attribute.
+-->
+
+<svg>
+        <path d="M50 50 L150 50 L100 150 Z"/>
+</svg>
+
+
+
+
+
+
+
 
 
 

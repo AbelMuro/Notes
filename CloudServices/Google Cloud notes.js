@@ -339,7 +339,6 @@ function GoogleLoginButton() {
 */
 
 
-
 import {GoogleMap, useLoadScript} from '@react-google-maps/api';
 
 function App() {
@@ -348,9 +347,20 @@ function App() {
 	        googleMapsApiKey: "API_KEY",
 	    });
 
-	return (
-		<GoogleMaps onLoad={
-			(map) => setMap(map)}>
+	return isLoaded && (
+		<GoogleMaps 
+			mapContainerStyle={mapContainer}            // you can pass an object that contains css properties that define the way the map will render
+	                mapContainerClassName={".class"}            // you can pass a class name from a css file that will define the way the map will render
+	                center={{lat: 44, lng: -80}}                // center is the initial position of the map, you must pass an object with the two properties lat and lng
+	                zoom={10}                                   // zoom is the initial zoom when the map is loaded onto the DOM
+	                onLoad={(map) => setMap(map)}               // when the google map loads, it will initialize the map state
+	                options={{                                  // these properties are used to remove the default options that control the map
+	                   zoomControl: true,
+	                   streetViewControl: true,
+	                   mapTypeControl: true,
+	                   fullscreenControl: false,
+	                   styles: customMap,                        // you can also include a custom map made from a different website, just convert the JSON into valid javascript
+	               }}>
 		</GoogleMaps>
 	)
 }
@@ -447,7 +457,7 @@ const searchNearbyRestaurants = () => {
     let places = new google.maps.places.PlacesService(map)                  
     places.nearbySearch(request, (results, status)=>{                       // nearbySearch will search the map for any businesses that has the keyword in request object
         if(status !== "OK") return;                                                 
-        results.forEach((result)=>{                                         // results is an array containing all the places found nearby the choosen location
+        results.forEach((result) => {                                       // results is an array containing all the places found nearby the choosen location
 	/* 
 		result = { 
 			place_id,
@@ -499,7 +509,7 @@ function getLocationDetails() {
         },
         (place, status) => {                                       //place is an object containing all the data of the location
             if(status !== "OK") return;
-            let locationData = {                                
+            const locationData = {                                
                 name: place.name,
                 image: place.photos[0].getUrl(),
                 address: place.vicinity,
@@ -514,39 +524,52 @@ function getLocationDetails() {
 
 
 
+//------------------------- Calculating the route between two locations
+/* 
+	You can use the route() method to calculate a route between two
+ 	points of interest.
+*/
+
+
+import {DirectionsRendered} from '@react-google-maps/api'
+
+function App() {
+    async function calculateRoute() {
+	const directionService = new google.maps.DirectionsService();       // DirectionsService() is a constructor that returns an object with pre defined methods that let us calculate a route
+	
+	const results = await directionService.route({                      // route() will calculate the route between the origin and the destination
+	    origin: {lat: 2.34, lng: 4.56},                                 // start of the route
+	    destination: {lat: 4.56, 9.22},                                 // end of the route
+	    travelMode: google.maps.TravelMode.DRIVING                      // TravelMode = {DRIVING, BICYCLE, WALKING, ETC...}
+	})
+	    /* 
+                 results					            // results can be passed to the directions prop of <DirectionsRenderer/> component
+		 results.routes[0]                                          // routes is an array that contains all the different routes calculated by route()
+		 results.routes[0].legs[0]                                  // legs is an array that contains all the stopover waypoints or destinations specified
+		 results.routes[0].legs[0].distance                         // each 'leg' is an object that contains info about the calculated route
+		 results.routes[0].legs[0].duration                         // each 'leg' has properties like distance and duration 
+		 results.routes[0].legs[0].distance.text                    // text returns a string that contains a human readable distance/duration           
+	    */                                                                     
+    }
+    
+    return(
+	   <GoogleMaps> 
+		<DirectionsRenderer directions={results} /> 			//you can get the results from the promise returned by the route() method
+	    </GoogleMaps>	 
+    )
+	    
+}
+
+
+
+
+
 
 
 
 
 import React, {useCallback, useState} from 'react';
 import {GoogleMap, useLoadScript, Marker, DirectionsRenderer} from '@react-google-maps/api';
-
-
-const center = {                            //if you are going to pass an object to panTo or setCenter
-    lat: 44,                                //make sure it has these two properties
-    lng: -80
-};
-
-const customMap = [
-    {
-        featureType: "administrative",
-        elementType: "geometry",
-        stylers: [{visibility: "off"}]
-    },
-    {
-        featureType: "poi",
-        stylers: [{visibility: "off"}]
-    },
-    {
-        featureType: "road",
-        elementType: "labels.icon",
-        stylers: [{visibility: "off"}]
-    },
-    {
-        featureType: "transit",
-        stylers: [{visibility: "off"}]
-    }
-];
 
 
 
@@ -557,13 +580,6 @@ function MyGoogleMap() {
 
 
 
-
-
-
-
-
-
-    
 
 //================================================ GEOCODING API =======================================
 /*
@@ -606,52 +622,6 @@ function MyGoogleMap() {
 
     
     
-
-
-
-//---------------------------------------------- (2) CALCULATING ROUTE BETWEEN TWO LOCATIONS --------------------------------------------------------------------
-    //CALCULATING THE ROUTE BETWEEN TWO LOCATIONS
-    //keep in mind that route() returns a promise
-
-    const [directions, setDirections] = useState(null);                     //state object that will contain the directions between two locations
-    const [distance, setDistance] = useState('');                           //these state objects are being used in the comments below the functions
-    const [duration, setDuration] = useState('');
-    const originRef = useRef("");                                           //originRef will reference an input element, we will use that reference to get the text inputed by the user
-    const destinationRef = useRef("");
-
-    async function calculateRoute() {
-        const directionService = new google.maps.DirectionsService();       //DirectionsService() is a constructor that returns an object with pre defined methods that let us calculate a route
-        
-        let results = await directionService.route({                        //route() will calculate the route between the origin and the destination
-            origin: originRef.current.value,                                //start of the route
-            destination: destinationRef.current.value,                      //end of the route
-            travelMode: google.maps.TravelMode.DRIVING                      //TravelMode = {DRIVING, BICYCLE, WALKING, ETC...}
-        })
-        setDirections(results);                                             //setting the directions state with the results that contain the actual route
-        setDistance(results.routes[0].legs[0].distance.text);
-        setDuration(results.routes[0].legs[0].duration.text)
-        // results.routes[0]                                                //routes is an array that contains all the different routes calculated by route()
-        // results.routes[0].legs[0]                                        //legs is an array that contains all the stopover waypoints or destinations specified
-        // results.routes[0].legs[0].distance                               //each 'leg' is an object that contains info about the calculated route
-        // results.routes[0].legs[0].duration                               //each 'leg' has properties like distance and duration 
-        // results.routes[0].legs[0].distance.text                          //text returns a string that contains a human readable distance/duration                                                                      
-    }
-    
-    function clearRoute() {
-        setDirections(null);   
-        setDistance("");
-        setDuration("");
-        originRef.current.value = "";                                       //removing the text from the input box
-        destinationRef.currentvalue = "";                                   //removing the text from the input box
-    }
-    // <div> Distance is: {distance}</div>
-    // <div> duration is: {duration}</div>
-    // <input type="text" ref={originRef}/>                              
-    // <input type="text" ref={destinationRef}/>
-    // <button type="button" onClick={calculateRoute}> Calculate Route </button>
-    // <button type="button" onClick={clearRoute}> Clear Route </button>
-    // <GoogleMaps> <DirectionsRenderer directions={directions} /> </GoogleMaps>
-
 
 
 

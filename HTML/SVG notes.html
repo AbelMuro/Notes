@@ -1,0 +1,143 @@
+<!-- 
+        SVG's are elements that help us create vector based graphics using XML
+        Keep in mind that you can use a class attribute on all svg elements
+-->
+
+
+
+
+
+
+<!--------------- Svg Element--------------- >
+<!-- 
+    The SVG element can be used as a container for your vector based graphics.
+    It is important that you define the xmlns attribute, because this attribute
+    defines the namespace for the svg. This tells the browser to intepret SVG as
+    a markup instead of another XML-based format.
+-->
+
+<svg width='100px' height='100px' xmlns="http://www.w3.org/2000/svg">
+
+</svg>
+
+
+
+
+
+
+<!--------------- Rect Element--------------- >
+<!--
+    The RECT element can be used to create rectangle graphics.
+
+    The fill attribute is used to color the entire rectangle in a certain color
+-->
+
+<svg>
+   <rect width='300px' height='100px' fill="red" />
+</svg>
+
+
+
+
+
+
+
+<!--------------- Circle Element--------------- >
+<!-- 
+    The Circle element can be used to create circle graphics.
+
+    cx attribute defines the space between the left border of the SVG to the center of the circle
+    cy attribute defines the space between the top border of the SVG to the center of the circle
+    r attribute defines the radius of the circle
+
+-->
+<svg>
+    <circle cx="150" cy="100" r="80" fill="green" />
+</svg>
+
+
+
+
+
+
+
+<!--------------- Text Element--------------->
+<!-- 
+    The Text element can be used to write text graphics
+
+    x attribute defines the space between the left border of the SVG to the center of the text
+    y attribute defines the space between the the top border of the SVG to the center of the text
+    text-anchor defines how the text is aligned relative to its center (start, middle, end)
+-->
+
+<svg>
+      <text x="150" y="125" text-anchor="middle">SVG</text>
+</svg>
+
+
+
+
+
+<!--------------- Defs Element--------------->
+<!--
+    The defs element can be used to create a reusable graphical objects  
+    that can be assigned to an SVG element
+-->
+
+<svg>
+    <defs>
+    
+    </defs>
+</svg>
+
+
+
+
+<!--------------- Linear Gradients --------------->
+<!-- 
+      The Linear gradient element can be used to apply 
+      a linear gradient style to an SVG element.
+
+      id attribute is used to assign the linear-gradient style to an svg element.
+      stop-color attribute is used to fill a portion of the linear-gradient a certain color
+      offset attribute defines at what percent the current color will transition to the next color
+-->
+
+<svg>
+    <defs>
+          <linearGradient id="myGradient">
+              <stop stop-color='red' offset="0%" />
+              <stop stop-color='blue'  offset="50%" />
+              <stop stop-color='green' offset="100%" />
+          </linearGradient>
+    </defs>
+    <circle fill="url(#myGradient)" />
+</svg>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   

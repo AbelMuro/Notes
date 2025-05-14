@@ -103,21 +103,21 @@
   	    When you buy a domain, the website will provide you with a SSL certificate and Key file
        	    save these files in your repository
 
-     	3.1) Go to your domain list in ionos, and select the domain you just bought.
-      
-		     DNS -> Add Record -> Select A
-	
-	      		 Host Name = @
-		     	 Points to = external-ip-address of the VM instance
-	
-	                 Click create
-	
-	 	    DNS -> Add Record -> Select AAAA
-	
-			Host Name = @
-	  		Points to = ipv6-address that you assigned to vm instance in step 0.5
-	
-	    		click create
+	     	3.1) Go to your domain list in ionos, and select the domain you just bought.
+	      
+			     DNS -> Add Record -> Select A
+		
+		      		 Host Name = @
+			     	 Points to = external-ip-address of the VM instance
+		
+		                 Click create
+		
+		 	    DNS -> Add Record -> Select AAAA
+		
+				Host Name = @
+		  		Points to = ipv6-address that you assigned to vm instance in step 0.5
+		
+		    		click create
 
 
   	4) To run node.js app with HTTPS you must first configure your app to use HTTPS
@@ -166,48 +166,48 @@
     Google cloud run is a service that is used to deploy serverless functions and websites
 
 
-//-------------------------- DEPLOY NODE.JS with CLOUD RUN -------------------------------------------------
+//-------------------------- DEPLOY NODE.JS with DOCKER --------------------------
 
           
     1) Use Docker to create an image of your node.js app (look at docker notes for more info)
 
     1.5) Create a cloudbuild.yaml file in the root directory of your repository
 
-    steps:
-	- name: 'gcr.io/cloud-builders/npm'
-	  args: ['install']
-	- name: 'gcr.io/cloud-builders/npm'
-	  args: ['run', 'build']
-	- name: 'gcr.io/cloud-builders/docker'
-	  args: ['build', '-t', 'gcr.io/PROJECT-ID/ANY-NAME', '.']			//you can get the PROJECT-ID from the google cloud console, from the top right corner.
-	- name: 'gcr.io/cloud-builders/docker'
-	  args: ['push', 'gcr.io/PROJECT-ID/ANY-NAME']
-	- name: 'gcr.io/cloud-builders/gcloud'
-	  args:
-	   - 'run'
-	   - 'deploy'
-	   - 'PROJECT-ID'
-	   - '--image'
-	   - 'gcr.io/PROJECT-ID/ANY-NAME'
-	   - '--region'
-	   - 'us-central1'
-	   - '--platform'
-	   - 'managed'
-	  images:
-	  - 'gcr.io/PROJECT-ID/ANY-NAME'
-	  env:
-	   - 'API_KEY=12345657'
-	   - 'accountname=whatever'
+	    steps:
+		- name: 'gcr.io/cloud-builders/npm'
+		  args: ['install']
+		- name: 'gcr.io/cloud-builders/npm'
+		  args: ['run', 'build']
+		- name: 'gcr.io/cloud-builders/docker'
+		  args: ['build', '-t', 'gcr.io/PROJECT-ID/ANY-NAME', '.']			//you can get the PROJECT-ID from the google cloud console, from the top right corner.
+		- name: 'gcr.io/cloud-builders/docker'
+		  args: ['push', 'gcr.io/PROJECT-ID/ANY-NAME']
+		- name: 'gcr.io/cloud-builders/gcloud'
+		  args:
+		   - 'run'
+		   - 'deploy'
+		   - 'PROJECT-ID'
+		   - '--image'
+		   - 'gcr.io/PROJECT-ID/ANY-NAME'
+		   - '--region'
+		   - 'us-central1'
+		   - '--platform'
+		   - 'managed'
+		  images:
+		  - 'gcr.io/PROJECT-ID/ANY-NAME'
+		  env:
+		   - 'API_KEY=12345657'
+		   - 'accountname=whatever'
 
-    2) gcloud auth login                                                            //login with google
+    2) gcloud auth login                                                           	 //login with google
     
     3) Run the following commands 
     
-        docker tag name-of-image gcr.io/PROJECT_ID/name-of-image                    // you can get PROJECT_ID from the google console 
-        docker push gcr.io/PROJECT_ID/name-of-image                                 // This will uploade the image to the Google Artifact registry
-
-        //if you have an issue with authorization, run the following command
-        gcloud auth configure-docker
+	        docker tag name-of-image gcr.io/PROJECT_ID/name-of-image                    // you can get PROJECT_ID from the google console 
+	        docker push gcr.io/PROJECT_ID/name-of-image                                 // This will uploade the image to the Google Artifact registry
+	
+	        //if you have an issue with authorization, run the following command
+	        gcloud auth configure-docker
 
     4) Then go to 'Google Cloud Run' and then click on Deploy Container (click on 'service' in the dropdown)
 
@@ -298,15 +298,120 @@ function GoogleLoginButton() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 //================================================================= GOOGLE MAPS =================================================================
 
-//==================================GOOGLE MAPS WITH REACT================================================================
-// REMEMBER: to use the google object from the window object, you HAVE to install google maps api
-// window = {google: {maps: {...}}}
-//as with every pre defined object, it has its set of functions and properties
 
-// to install google maps into your react application, just use...
-// npm install @react-google-maps/api
+
+
+//---------------------------------------------------- GOOGLE MAPS WITH REACT ----------------------------------------------------
+/* 
+	You can use the google maps API in a React application. Use npm install @react-google-maps/api
+ 	and this command will populate the google property of the window object
+
+  		window.google = {maps: {...}}}
+*/
+
+
+//------------------------ Initialize Google Maps
+/* 
+	You can use the GoogleMaps component to render a map in your app.
+ 	Use the onLoad event handler to get the state of the map.
+  	Also, use useLoadScript() hook to load the necessary script for
+   	google maps.
+
+    	Once the onLoad event handler is called, the map state will have access 
+     	to the following methods
+
+	      	map.setZoom(15);		//sets the zoom level for the actual map
+       
+*/
+
+import {GoogleMap, useLoadScript} from '@react-google-maps/api';
+
+function App() {
+	const [map, setMap] = useState(/** @type google.maps.Map */(null));
+	const {isLoaded} = useLoadScript({  
+	        googleMapsApiKey: "API_KEY",
+	        libraries
+	    });
+
+	return (
+		<GoogleMaps onLoad={
+			(map) => setMap(map)}>
+		</GoogleMaps>
+	)
+}
+
+
+
+
+
+//------------------------ Geocoding
+/* 
+	Geocoding is the process of converting a human-readable address
+ 	to latitude and longitude. You can use the geocode() method to 
+  	do this.
+*/
+
+      function geocoding() {
+          let geocoder = new google.maps.Geocoder();
+
+          geocoder.geocode({address: '1950 21st ST, San Pablo, CA, USA, 94806'}, (results, status) => { 
+              if(status !== "OK") return;
+		// results[0]                                 // results[] is an array of objects that contain all the different results of the geocoding
+		// results[0].geometry                        // geometry is an object that contains properties such as location
+		// results[0].geometry.location               // location is an object with properties latitude and the longitude
+          })
+      }
+
+
+
+
+
+
+
+
+
+//------------------------ Reverse Geocoding
+/* 
+	Reverse geocoding is the process of converting latitude and longitude
+ 	into a human-readable address.
+*/
+
+
+    function reverseGeocoding(lat_lng = {lat: 23.432, lng: -43.45}) {
+        let geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({location: lat_lng}, (results, status) => {          //geocode is an asynchronous function, meaning that javascript will NOT wait until this function finishes
+            if(status !== "OK") return;
+
+            const address = results[0].formatted_address;
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import React, {useCallback, useState} from 'react';
 import {GoogleMap, useLoadScript, Marker, DirectionsRenderer} from '@react-google-maps/api';
@@ -343,72 +448,10 @@ const customMap = [
 
 
 function MyGoogleMap() {
-    //the map state can be used to change the current position of the map with event handlers
-    const [map, setMap] = useState(/** @type google.maps.Map */(null));    
-
-    // <GoogleMaps onLoad={(map)=>{setMap()}}> </GoogleMaps>                // onLoad property will initialize the map state
-
-    //useLoadScript will load the <script src="https://maps.googleapis.com....."> </script> in the html file
-    const [libraries] = useState(["places"])                                //this library is used with the Autocomplete component
-    const {isLoaded} = useLoadScript({  
-        googleMapsApiKey: "API_KEY",
-        libraries
-    });
-
-
-
-//---------------------------------------------(1) GEOCODING---------------------------------------------------------------------
-   //RE-POSITIONING THE MAP BASED ON USER INPUT BY GEOCODING THE PHYSICAL ADDRESS INTO LATITUDE AND LONGITUDE
-    const addressRef = useRef();
-
-    const geocoding = () => {
-        let geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode({address: addressRef.current.value}, (results, status)=> { //geocode will translate an address into longitude and latitude 
-            if(status == "OK"){
-                map.setCenter(results[0].geometry.location); //using setCenter() to recenter the map based on the results of the geocoding  
-                var marker = new google.maps.Marker({        //you can dynamically create a marker like this on the google map            
-                    position: results[0].geometry.location,  //position of the marker
-                    map: map                                 //state map that 'contains' the actual google map
-                })
-                map.setZoom(15);                              //you can specify a specific map zoom here 
-                // results[0]                                 // results[] is an array of objects that contain all the different results of the geocoding
-                // results[0].geometry                        // geometry is an object that contains properties such as location
-                // results[0].geometry.location               // location contains the latitude and the longitude
-            }
-            else
-                alert("Address is invalid")
-        })
-    }
-
-    // <button type="button" onClick={geocoding}> Click Here </button>
 
 
 
 
-
-
-
-//------------------------------------------------ (1.5) REVERSE GEOCODING-------------------------------------------------------------
-    // CONVERTING A LATITUDE AND LONGITUDE INTO A PHYSICAL ADDRESS
-
-    const reverseGeocode = useRef();                            //this object will contain the human readable address of a latitude and longitude
-
-    //if you want to call with function dynamically, make sure to make this function into ASYNC/AWAIT
-    function reverseGeocoding(lat_lng) {
-        let geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode({location: lat_lng}, (results, status)=>{          //geocode is an asynchronous function, meaning that javascript will NOT wait until this function finishes
-            if(status == "OK")
-                reverseGeocode.current = results[0].formatted_address;
-            else
-                reverseGeocode.current = "not a valid address";
-        })
-    }
-
-    //reverse geocoding is mostly used for google maps api methods that need a latitude and longitude from user input
-    //normally, people will just input a physical address in a text input box, so we use reverse geocoding to use the latitude and longitude 
-    //from the physical address
 
 
 

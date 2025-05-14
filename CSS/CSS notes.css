@@ -1224,7 +1224,7 @@
     /*----------------------------------------- FILTER FUNCTIONS ------------------------------------*/
     /* you can use multiple filter functions on the same element*/
 
-    filter: blur(5px);           /* will blur an element*/
+    filter: blur(5px);           /* will blur an element (only works if all colors assigned to the element have some opacity)*/
     filter: brightness(75%);     /* will determine the brightness of the element or image 
         keep in mind that 'brightness' in this case means that the color will either be its
         original specified color (100%), or it will darken the color to a specified color variant(0%)

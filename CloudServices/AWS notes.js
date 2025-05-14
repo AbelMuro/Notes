@@ -389,10 +389,11 @@ s3.getSignedUrl('putObject', params, (err, url) => {
     10) once everything is working properly, go back to properties and scroll all the way down and click on the link in static website hosting
 
 
+*/
 
 
-
-------------------------------------------------HOW TO CONNECT A GITHUB REPOSITORY TO S3------------------------------------------------------------
+//------------------------------------------------HOW TO CONNECT A GITHUB REPOSITORY TO S3------------------------------------------------------------
+/*
     1) Create an S3 Bucket 
 
     2) set these settings on the bucket
@@ -481,6 +482,10 @@ s3.getSignedUrl('putObject', params, (err, url) => {
     
 
 
+
+
+//------------------------------------------------ DEPLOYING A NODE.JS APP WITH EC2 ------------------------------------------------------------
+
     1)  Go to EC2 dashboard and click on Launch Instance
 
     2)  Create a name for the server
@@ -552,10 +557,6 @@ s3.getSignedUrl('putObject', params, (err, url) => {
 
               If you server is running on a port that is not one of the default values (80 for http, or 443 for https)
               then the url should look like this url 'http://your-ec2-public-ip-or-dns:port/your-endpoint'
-
-
-
-
 
       16) To enable HTTPS requests to your ec2 instance, run the following commands
 
@@ -649,12 +650,28 @@ s3.getSignedUrl('putObject', params, (err, url) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 //================================================== AMAZON IAM =========================================================================
 
 /* 
     Amazon IAM is a service that controls which users have authorization to use specific resources in AWS. The idea behind 
     these IAM users is to enable other people within an organization to use the same AWS account and its services. As the organization grows, 
     you can put IAM users within IAM groups that have the same permissions, thereby simplifying the permissions being delegated.
+
+    When you create a AWS account, you are given a 'root' user account that has ALL administrative access. However, 
+    it is strongly recommended to not use this root account for everyday tasks for security reasons. The Root user should 
+    only be used for actions that require the root user. For other trivial actions, an IAM account should be used
     
     By default, an IAM user doesnt have any permissions. The root user will have to assign a 'policy' that lists 
     the permissions to the IAM user. Once the IAM user has the policy, they can access the AWS resources. Policies are basically JSON files
@@ -664,15 +681,13 @@ s3.getSignedUrl('putObject', params, (err, url) => {
     temporary access to that bucket, but the Role must have the policy that gives permission to that bucket. Keep in mind that during the
     time the IAM user has a Role, they give up their previous policy temporarily.
 
-    When you create a AWS account, you are given a 'root' user account that has ALL administrative access. However, 
-    it is strongly recommended to not use this root account for everyday tasks for security reasons. The Root user should 
-    only be used for actions that require the root user. For other trivial actions, an IAM account should be used
-
-
 
     RECAP:
+        Root user: the owner of the AWS account, they have all the administatrive access
 
-        Policies: are a list of permissions (access to S3, EC2, etc...)
+        IAM user: a user of the AWS account, they must be given permission to use AWS resources
+
+        Policies: are a list of permissions (access to S3, EC2, etc...) that are assigned to a IAM user or Role 
 
         Roles: are a list of policies that can be assigned to a user
 

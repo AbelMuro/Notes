@@ -333,9 +333,12 @@ function GoogleLoginButton() {
     	Once the onLoad event handler is called, the map state will have access 
      	to the following methods
 
-	      	map.setZoom(15);		//sets the zoom level for the actual map
+	      	map.setZoom(15);				//sets the zoom level for the actual map
+		map.setCenter({lat: 23.43, lng: 12.43})		//sets the center of the map to the specified coordinates
        
 */
+
+
 
 import {GoogleMap, useLoadScript} from '@react-google-maps/api';
 
@@ -343,7 +346,6 @@ function App() {
 	const [map, setMap] = useState(/** @type google.maps.Map */(null));
 	const {isLoaded} = useLoadScript({  
 	        googleMapsApiKey: "API_KEY",
-	        libraries
 	    });
 
 	return (
@@ -379,10 +381,6 @@ function App() {
 
 
 
-
-
-
-
 //------------------------ Reverse Geocoding
 /* 
 	Reverse geocoding is the process of converting latitude and longitude
@@ -404,6 +402,113 @@ function App() {
 
 
 
+//------------------------- Geolocating
+/* 
+ 	You can access the users location by using the geolocating method.
+  	Keep in mind that geolocation is a Web API, its not part of the 
+   	Google maps API
+*/
+
+    const moveToUsersLocation = () => {
+        if(!navigator.geolocation) {                                    //navigator.geolocation will return false if the browser does not support it
+            alert("geolocation is not supported by your browser");
+            return; 
+        }
+        else{                                                           //navigator is another object that is a part of the global object window
+            navigator.geolocation.getCurrentPosition((position) => {    //getCurrentPosition will get the position of the device used to view the app   
+                const currentPosition = {                                 //position is an object that contains a coord object with the latitude and longitude
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };                          
+            },                                                                                          
+            () => {                                                     //this second callback is an error handler
+                alert("unable to retrieve your location")
+                return;
+            })
+        }
+    }
+
+
+
+
+
+//------------------------- Nearby Search
+/* 
+	You can search for nearby points of interest with the PlacesService() method.
+ 	It returns an array of locations that are near a certain point
+*/
+const searchNearbyRestaurants = () => {
+    let request = {
+        location: {lat: -34, lng: 45},                                      // the origin of where we will search for points of interest
+        radius: 500,                                                        // radius of the area in which to look for the businesses
+        keyword: "McDonald's"                                               // name of the businesses that we want to look for
+        //type: "store"                                                     // you can also search for nearby business by using the type property, 
+    }                                                                      
+    let places = new google.maps.places.PlacesService(map)                  
+    places.nearbySearch(request, (results, status)=>{                       // nearbySearch will search the map for any businesses that has the keyword in request object
+        if(status !== "OK") return;                                                 
+        results.forEach((result)=>{                                         // results is an array containing all the places found nearby the choosen location
+	/* 
+		result = { 
+			place_id,
+			latitute,
+			longitude
+		}
+	*/
+        })
+      
+    })
+}
+
+
+
+//------------------------- Markers
+/* 
+	You can use the Marker() constructor to create a marker
+ 	in the map
+*/
+
+
+function createMarkers() {
+    const marker = new google.maps.Marker({                                
+        position: {lat: 44, lng: -10},                                    
+        map: map,                                                           // passing the state object
+        title: "location"                                                   // this is what will appear when you hover over the marker
+    })
+
+    marker.addEventListener("click", (e) => {                               // you can add an event listener to the marker object
+	    // you can form a closure with the lat and lng of the marker and use other google maps api services
+    })
+
+}
+
+
+
+
+//------------------------- Get details of a location
+/* 
+	You can use the getDetails() method to get meta data of
+ 	a specific location
+*/
+
+function getLocationDetails() {
+    let placeService = new google.maps.places.PlacesService(map);
+    placeService.getDetails({
+        placeId: "u29ghauwhubd98",                            	//you must specify the place id of a specific location                          
+        fields: ["name", "photos", "opening_hours", "utc_offset_minutes", "vicinity", "rating"]  //details of the location that we want to obtain
+        },
+        (place, status) => {                                       //place is an object containing all the data of the location
+            if(status !== "OK") return;
+            let locationData = {                                
+                name: place.name,
+                image: place.photos[0].getUrl(),
+                address: place.vicinity,
+                rating: place.rating,
+                openHours: place.opening_hours.isOpen(),
+            }
+        }
+    )
+}
 
 
 
@@ -549,109 +654,6 @@ function MyGoogleMap() {
 
 
 
-
-
-
-//----------------------------------------------- (3) GEOLOCATING-------------------------------------------------------------------
-    //GETTING THE USERS LOCATION AND MOVING THE MAP TO THAT LOCATION
-
-    const usersLocation = useRef()                                      //its a good idea to store the users location in a local object
-
-    const moveToUsersLocation = () => {
-        if(!navigator.geolocation) {                                    //navigator.geolocation will return false if the browser does not support it
-            alert("geolocation is not supported by your browser");
-            return; 
-        }
-        else{                                                           //navigator is another object that is a part of the global object window
-            navigator.geolocation.getCurrentPosition((position) => {    //getCurrentPosition will get the position of the device used to view the app   
-                let currentPosition = {                                 //position is an object that contains a coord object with the latitude and longitude
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-                usersLocation.current = currentPosition                 //storing the users location in this object                  
-                map.setCenter(currentPosition);                         //storing the latitude and longitude in an object and passing it to setCenter()
-                var marker = new google.maps.Marker({                   //creating a new marker based on the position of the user's device
-                    position: currentPosition,
-                    map: map                                            
-                })
-                map.setZoom(15)                                         //setting the zoom 
-            },                                                                                          
-            () => {                                                     //this second callback is an error handler
-                alert("unable to retrieve your location")
-                return;
-            })
-        }
-    }
-
-
-
-//------------------------------------------------- (4) NEARBY SEARCH-----------------------------------------------------------------------------------------------------------
-//SEARCHING FOR NEARBY RESTAURANTS, GROCERY STORES, BUSINESSES, ETC..., BASED ON THE USERS CURRENT LOCATION
-
-//keep in mind that if you want to search for nearby places of a location that is specified through an input text box,
-//you will want to use a geocoding function with async/await, because nearbySearch() only accepts an object with latitude and longitude
-const searchNearbyRestaurants = () => {
-    let request = {
-        location: {lat: -34, lng: 45},                                      //current location of the device/user
-        radius: 500,                                                        //radius of the area in which to look for the businesses
-        keyword: "McDonald's"                                               //name of the businesses that we want to look for
-        //type: "store"                                                     //you can also search for nearby business by using the type property, 
-    }                                                                       //   but keep in mind that you must remove 'keyword' property
-    let places = new google.maps.places.PlacesService(map)                  //calling the PlacesServices constructor
-    places.nearbySearch(request, (results, status)=>{                       //nearbySearch will search the map for any businesses that has the keyword in request object
-        if(status != "OK") return;                                                 
-        results.forEach((result)=>{                                         //results is an array containing all the places found nearby the choosen location
-            //result contains data about the location (place_id, name, latitude, longitude )
-        })
-      
-    })
-}
-
-
-
-//------------------------------------------------- (5) MARKERS ------------------------------------------------------------------------------------------------------------------
-//keep in mind that if you want to create markers dynamically, 
-//you will need to geocode the users input into latitude and longitude 
-//before using the function below
-
-//by adding the map state to the Marker constructor, the marker will automatically appear on the map
-function createMarkers() {
-    let marker = new google.maps.Marker({                                   //creating a marker with the Marker() constructor
-        position: {lat: 44, lng: -10},                                      //this constructor only accepts an object with latitude and longitude
-        map: map,                                                            //passing the state object
-        title: "location"                                                   //this is what will appear when you hover over the marker
-    })
-
-    marker.addListener("click", () => {                                     //you can use addListener to handle events
-        //usually, you want to use getDetails() to get info about the marker selected
-    })
-
-}
-
-
-//----------------------------------------------------- (6) GET DETAILS OF A LOCATION -------------------------------------------------------------------------------
-//getDetails() will enable you to obtain data from a specific location
-//keep in mind that getDetails() is asynchronous, so if you want
-//to call this function dynamically, you want to use AYNC/AWAIT
-
-function getLocationDetails() {
-    let placeService = new google.maps.places.PlacesService(map);
-    placeService.getDetails({
-        placeId: "u29ghauwhubd98",                            //you must specify the place id of a specific location                          
-        fields: ["name", "photos", "opening_hours", "utc_offset_minutes", "vicinity", "rating"] //properties of the location that we want to obtain
-        },
-        (place, status) => {                                       //place is an object containing all the data of the location
-            if(status != "OK") return;
-            let locationData = {                                  //storing the data of the location into an object
-                name: place.name,
-                image: place.photos[0].getUrl(),
-                address: place.vicinity,
-                rating: place.rating,
-                openHours: place.opening_hours.isOpen(),
-            }
-        }
-    )
-}
 
 
 

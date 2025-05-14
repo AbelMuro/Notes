@@ -219,8 +219,13 @@
         border-box: image will be positioned from upperleft corner of border, 
         content-box: image will be positioned from upperleft corner of content
     */
-    background-color:white;                                   /* the background color of the element, this color will be hidden if you apply the properties above*/
+    background-color: white;                                   /* the background color of the element, this color will be hidden if you apply the properties above*/
 
+    background: linear-gradient(red, blue);                   /* creating a gradient that changes from red to blue*/
+    /* 
+        linear-gradient(45deg, red, blue);                    // creating a gradient that is tilted 45deg
+        linear-gradient(red 0% 40%, blue 40% 100%);           // creating a gradient where red wont change UNTIl 40%, then it slowly changes to blue
+    */
 }
 
 

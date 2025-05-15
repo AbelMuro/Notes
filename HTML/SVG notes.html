@@ -5,19 +5,22 @@
 
         Common Attributes:
 
+                transform: you can apply transformations to the shape (rotate(45deg), scale(1.4), translate(23, 45)) 
+
                 fill:  the color of the inside of the shape
+                fill-opacity: the opacity of the fill color
 
                 stroke:  the outline color of the shape (the border of the shape)
                 stroke-width: the width of the stroke
                 stroke-opacity: the opacity of the stroke
                 stroke-dasharray: can create dashed or dotted outlines
 
-                x:  the space between the left border of the SVG and the center of the shape
-                y:  the space between the top border of the SVG and the center of the shape
-                dx:  the horizontal shift of the element, positive values move the shape to the right, and negative values move the shape to the left
-                dy:  the vertical shift of the element, positive values move the shape to the bottom, and negative values move the shape to the top
-                
-                
+                x:  the space between the left border of the SVG and the left border of the shape
+                y:  the space between the top border of the SVG and the top border of the shape
+                cx: the space between the left border of the SVG and the center of the shape
+                cy: the space between the top border of the SVG and the center of the shape
+                dx:  the horizontal shift of the element, defines the distance between the left border of the shape and a new destination
+                dy:  the vertical shift of the element, defines the distance between the top border of the shape and a new destination
 -->
 
 
@@ -31,9 +34,22 @@
     It is important that you define the xmlns attribute, because this attribute
     defines the namespace for the svg. This tells the browser to intepret SVG as
     a markup instead of another XML-based format.
+
+    The viewbox attribute defines the coordinate system and the scaling behavior 
+    of the SVG. Keep in mind that the coordinate system doesnt have to be the same size
+    as the SVG, the browser will automatically scale the coordinate system to fit the 
+    SVG.
+
+            syntax:
+                    viewBox="minX minY width height"
+
+                            minX: the minimum value of x, usually 0
+                            minY: the minimum value of y, usually 0
+                            width: the width of the coordinate system
+                            height the height of the coordinate system
 -->
 
-<svg width='100px' height='100px' xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50">
 
 </svg>
 
@@ -96,11 +112,41 @@
 
 
 
-
 <!--------------- Path Element--------------->
 <!-- 
         The Path element can be used to create complex shapes
-        using the D attribute.
+        using the D attribute. This attribute uses commands to 
+        actually draw the shape.
+
+                Syntax:
+
+                        Command x-coodinate y-coordinate    
+
+                        x1 y1 = control point
+                        x y = end point    
+
+                M x y: (move cursor)                                Moves the cursor to a specified position.
+                L x y: (draw line)                                  Draws a straight line from the current position to a new coordinate.
+                H x: (draw line horizontally)                       Moves the cursor horizontally, but if the previous command was M, then it also draws a line.
+                V y: (draw line vertically)                         Moves the cursor vertically, but if the previous command was M, then it also draws a line.
+                
+                C x1 y1, x2 y2, x y: (cubic Bézier curve)           Draws a smooth curve using two control points and an end point.
+                S x2 y2, x y: (smooth cubic Bézier curve)           Draws a curve using two control points, the first control point will be the second control point of a previous C or S command 
+                                                                       (if theres no previous C or S command, then the starting point will be the first control point)
+                Q x1 y1, x y: (quadratic Bézier curve)              Uses one control point to create a curve and an end point
+                T x y: (smooth quadratic Bézier curve)              Draw a curve using the starting point as the control point, if the previous command was a Q or T
+                                                                        then the control point will be the control point of the previous Q or T
+
+                Z (closepath):                                      Closes the path by drawing a line back to the starting point.
+
+                A rx ry rotation large-arc-flag sweep-flag x y (elliptical arc): 
+
+                        rx = x radius of the eclipse
+                        ry = y radius of the eclipse
+                        rotation = the degree of rotation of the eclipse
+                        large-arc-flag = Defines whether the arc should be greater than or less than 180 degrees (1 for large, 0 for small).
+                        sweep-flag = Determines the arc's direction (1 for clockwise, 0 for counterclockwise).
+                        x, y: The destination point where the arc ends.
 -->
 
 <svg>
@@ -111,9 +157,19 @@
 
 
 
+<!--------------- G Element--------------->
+<!-- 
+        The G element will group multiple SVG elements together
+        so they can be styled or transformed together with the 
+        same attributes
+-->
 
-
-
+<svg>
+    <g fill="blue" stroke="black">
+        <circle/>
+        <rect />
+    </g>
+</svg>
 
 
 

@@ -389,14 +389,11 @@ function App() {
 
 
 
-
-
 //------------------------ Reverse Geocoding
 /* 
 	Reverse geocoding is the process of converting latitude and longitude
  	into a human-readable address.
 */
-
 
     function reverseGeocoding(lat_lng = {lat: 23.432, lng: -43.45}) {
         let geocoder = new google.maps.Geocoder();
@@ -409,6 +406,36 @@ function App() {
     }
 
 
+
+
+//------------------------ Geocoding URL
+/*
+	You can use this api for geocoding purposes
+*/
+	// geocoding
+    async function geocoding (address) {
+        try{
+            let response = await fetch(`https://geocode.maps.co/search?q=${address}&api_key=API_KEY`);
+            let results = await response.json();
+            let latlong = results[0];
+            return {lat: latlong.lat, lon: latlong.lon};            
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
+	// reverse geocoding
+    async function reverseGeocode (latlng) {
+        try{
+            let response = await fetch(`https://geocode.maps.co/reverse?lat=${-24.3423}&lon=${12.3423}&api_key=API_KEY`);
+            let results = await response.json();
+            return results.display_name;
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
 
 
 
@@ -437,8 +464,6 @@ function App() {
             })
         }
     }
-
-
 
 
 
@@ -471,27 +496,62 @@ const searchNearbyRestaurants = () => {
 }
 
 
-
 //------------------------- Markers
 /* 
 	You can use the Marker() constructor to create a marker
- 	in the map
+ 	in the map. The marker will automatically appear on the map 
+
+	    	origin property is used to select an icon within a sprite sheet (image with multiple icons)
+	
+		+--------------------------+
+		|  Icon 1  |  Icon 2  |  Icon 3  |
+		|   (0,0)  |  (50,0)  | (100,0)  |
+		+--------------------------+
+	 
+		origin: new google.maps.Point(50, 0)  will select the second icon in the sprite sheet for the marker
 */
 
 
 function createMarkers() {
     const marker = new google.maps.Marker({                                
         position: {lat: 44, lng: -10},                                    
-        map: map,                                                           // passing the state object
-        title: "location"                                                   // this is what will appear when you hover over the marker
+        map: map,                                                            // passing the map state object
+        title: "location",                                                   // this is what will appear when you hover over the marker
+	icon: {
+	        url: "https://example.com/custom-icon.png", 		    // URL of the custom icon
+	        scaledSize: new google.maps.Size(50, 50),		    // Resize the icon
+	        origin: new google.maps.Point(0, 0), 			    // Origin point (used for sprite sheets)
+	        anchor: new google.maps.Point(25, 50) 		            // Anchor point (defines where the icon is positioned relative to the point on the map)
+	}
     })
 
-    marker.addEventListener("click", (e) => {                               // you can add an event listener to the marker object
-	    // you can form a closure with the lat and lng of the marker and use other google maps api services
+    marker.addEventListener("onclick", (e) => {                               // you can add an event listener to the marker object
+	
     })
 
 }
 
+
+
+//------------------------- Marker Component
+/* 
+	You can use the <Marker/> component to render a marker
+ 	on your map.
+*/
+
+function App() {
+	return (
+		<Marker 
+		    icon={{
+			url: "http://maps.gstatic.com/mapfiles/markers2/icon_green.png",  // URL of the custom icon
+			scaledSize: new google.maps.Size(50,50),     			  // Resize the icon
+			origin: new google.maps.Point(0, 0), 			    	  // Origin point (used for sprite sheets)
+			anchor: new google.maps.Point(5,5)           			  // Anchor point (defines where the icon is positioned relative to the point on the map)
+		     }} 
+                    position={{lat: 44, lng: -80}}					  ///Marker will position a marker on the map based on the position property*/}
+                />              			  
+	)
+}
 
 
 
@@ -522,14 +582,11 @@ function getLocationDetails() {
 
 
 
-
-
 //------------------------- Calculating the route between two locations
 /* 
 	You can use the route() method to calculate a route between two
  	points of interest.
 */
-
 
 import {DirectionsRendered} from '@react-google-maps/api'
 
@@ -556,127 +613,43 @@ function App() {
 	   <GoogleMaps> 
 		<DirectionsRenderer directions={results} /> 			//you can get the results from the promise returned by the route() method
 	    </GoogleMaps>	 
-    )
-	    
+    )    
 }
 
 
 
-
-
-
-
-
-
-import React, {useCallback, useState} from 'react';
-import {GoogleMap, useLoadScript, Marker, DirectionsRenderer} from '@react-google-maps/api';
-
-
-
-
-
-function MyGoogleMap() {
-
-
-
-
-
-//================================================ GEOCODING API =======================================
-/*
-	You can use this api for geocoding purposes
+//------------------------- Autocomplete
+/* 
+	You can use the autocomplete feature in google maps api
+ 	to display recommendations to the user whent they start typing
+  	an address.
 */
+import {Autocomplete} from '@react-google-maps/api';
 
+function App() {
+	const {isLoaded} = useLoadScript({  
+	        googleMapsApiKey: "API_KEY",
+		libraries: ["places"]
+	    });
 	
-	// address to lat/long
-    const geocode = async (address) => {
-        try{
-            let response = await fetch(`https://geocode.maps.co/search?q=${address}&api_key=API_KEY`);
-            let results = await response.json();
-            let latlong = results[0];
-            return {lat: latlong.lat, lon: latlong.lon};            
-        }
-        catch(error){
-            console.log(error);
-        }
-    }
-
-
-
-	// lat/long to address
-    const reverseGeocode = async (latlng) => {
-        try{
-            let response = await fetch(`https://geocode.maps.co/reverse?lat=${-24.3423}&lon=${12.3423}&api_key=API_KEY`);
-            let results = await response.json();
-            return results.display_name;
-        }
-        catch(error){
-            console.log(error);
-        }
-    }
-
-
-
-
-
-
-
-    
-    
-
-
-
-
-
-
-
-
-//-----------------------------------------------------------------------------------------------------------------
-//keep in mind that you should use global objects that contain lat and lng
-    return isLoaded ? (
-        <>
-        {/*Remember that you can include the tags below inside the GoogleMap tags */}
-{/*1*/}<input type="text" ref={addressRef}/>        {/* this will reposition the map based on user input */}
-{/*1*/}<button type="button" onClick={geocoding}> Click here </button>  {/* this will call the event handler that will use user input to calculate the re-position*/}
-
-{/*2*/}<input type="text" ref={originRef}/>           {/*Getting user input to calculate the origin of the */}                    
-{/*2*/}<input type="text" ref={destinationRef}/>
-{/*2*/}<button type="button" onClick={calculateRoute}>Calculate Route</button>
-{/*2*/}<button type="button" onClick={clearRoute}> Clear Route</button>
-
-{/*3*/}<button type="button" onClick={moveToUsersLocation}></button>
-
-        <Autocomplete className="someClass">            {/* you can also apply some css to Autocomplete */}
-            <input type="text" />                      {/*this input box will now have autocomplete (remember not to include {} inside <Autocomplete >)*/}
-        </Autocomplete>
-        <GoogleMap 
-            mapContainerStyle={mapContainer}            //you can pass an object that contains css properties that define the way the map will render
-            mapContainerClassName={".class"}            //you can pass a class name from a css file that will define the way the map will render
-            center={{lat: 44, lng: -80}}                //center is the initial position of the map, you must pass an object with the two properties lat and lng
-            zoom={10}                                   //zoom is the initial zoom when the map is loaded onto the DOM
-            onLoad={(map)=>{setMap(map)}}               //when the google map loads, it will initialize the map state
-            options={{                                  //these properties are used to remove the default options that control the map
-                zoomControl: true,
-                streetViewControl: true,
-                mapTypeControl: true,
-                fullscreenControl: false,
-                stlyles: customMap,                      //you can also include a custom map made from a different website, just convert the JSON into valid javascript
-            }}>
-        
-            
-                {/* These are all the child components for GoogleMap*/}
-                <Marker icon={{
-                        url: "http://maps.gstatic.com/mapfiles/markers2/icon_green.png",
-                        scaledSize: new google.maps.Size(50,50),    //setting the size of the new marker
-                        anchor: new google.maps.Point(5,5)           //not sure what this property does
-                    }} position={{lat: 44, lng: -80}}/>             {/* Marker will position a marker on the map based on the position property*/}
-
-                {directions && 
-/*2*/                  <DirectionsRenderer directions={directions}/> } {/* Directions Renderer is used to calculate routes*/}
-        </GoogleMap>         
-        </>
-
-    ): (<div>is loading...</div>);                                   {/* you can create a loading screen here*/}
+	return isLoaded && (
+	        <Autocomplete className="someClass">            {/* you can also apply some css to Autocomplete */}
+	            <input type="text" />                      {/*this input box will now have autocomplete (remember not to include {} inside <Autocomplete >)*/}
+	        </Autocomplete>		
+	)
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -49,74 +49,7 @@
         <noscript>
             Please enable javascript to use this app
         </noscript>
-        
-            <!-- PARAGRAPH tags-->
-        <p class="myClass otherClass" title="paragraph"> my paragraph </p>    <!-- using the class attribute to specify a class for the element, title can be used to create a small popup that gives a description of the element-->
-        
-        
-        
-        
-        
-        
-            <!-- IMAGE tag-->
-        <img src="./images/space.gif" alt="space"/>                           <!-- loading an image onto the document with the src attribute, alt is used when the image doesnt load, and is usefull for screen readers-->
-        
-        
-        
-        
-        
-        
-            <!-- ANCHOR tags (hyperlinks)-->
-        <a href="https//www.google.com" target="_self"> Home </a>             <!-- creating a link in the document, target="_self" will open the link on the same window -->        
-        <a href="https://sf.gov/" target="_blank">  San Francisco </a>        <!-- target="_blank" will open the link on a new window-->      
-        <a href="mailto:abelmuro93@gmail.com"> Email Me </a>                  <!-- opens up outlook, then the user will be able to email the author of the website-->
-        <a href="#jumpHere"> Click here to jump </a>                           <!-- you can use #id to go to a specific part of a webpage-->
-        <a href="" onClick={handleLink}>                                      <!-- By passing an empty string, the link will STILL take you to a different page, so you must pass an onClick event handler that will use e.preventDefault()--> 
-            Click here     
-        </a>                                                                  <!-- 
-                                                                                    const handleLink = (e) => {
-                                                                                            e.preventDefault();            //this will prevent the <a> link from taking you to a different page
-                                                                                       }
-    
-                                                                                -->
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-            <!-- DIVISION tags-->
-        <div style="margin-top: 200px; color: red"> </div>                    <!-- using inline styles on this div element-->
-        
-        
 
-
-
-
-
-        
-
-
-        <!-- UNORDERED LIST-->
-        <ul>                            <!-- you can use list-style-image: url('') to change the bullet that appears, and you can use padding to make the bullets appear in the content-->
-            <li></li>                   <!-- you can also use padding here to put a space between the bullet and the item it self-->
-            <li></li>
-            <li></li>
-        <ul>
-        
-        
-
-
-
-
-
-            
-        
         <!-- creating an inline stylesheet -->
         <style>                                                               
               .someClass{
@@ -124,28 +57,6 @@
                     width: 780px;
                 }
         </style>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-            <!-- iFRAME tags: this is how you link a webpage within another webpage-->
-         <iframe src="images/second part of website.html" name="link" style="height:200px; width:700px"> </iframe> 
-         <a href="my first website.html" target="link">                                                 <!-- this will open a link to the iframe that it targets-->
-               Link to my webpage   
-         </a>        
-                <!-- This is how you embed a youtube video onto your webpage, if you right click any youtube video and select "COPY EMBEDED CODE", it will give you the following <iframe>  -->
-        <iframe width="971" height="546" src="https://www.youtube.com/embed/kD3BeJ0QOtc" frameborder="0px" allow="picture-in-picture" allowfullscreen>                <!-- accelerometer and gyroscope lets the user rotate the video if they are using a mobile device to watch a virtual reality or 360 degree video-->
-        </iframe>                                                                                                                                                     <!-- picture-in-picture allows the user to watch the video while using other apps on your mobile device-->
-                                                                                                                                                                      <!-- clipboard-write allows the user to copy the content to their clipboard-->
-                                                                                                                                                                      <!-- add ?autoplay=1&mute=1 at the end of the URL link to make the video auto play and stay muted-->
-                                                                                                                                                                      <!-- add ?loop=1 at the end of the URL to let the video play forever-->
-                                                                                                                                                                        <!-- add ?controls=1 at the end of the URL to show the controls in the video player-->
         
         
         
@@ -165,8 +76,7 @@
 
   
         
-        
-        
+    
         
         <!--This image will have small clickable areas with links-->
         <img src="images/multiple chairs.png" alt="image not showing" usemap="#myMap" style="height:500px; width:700px">            
@@ -176,15 +86,6 @@
         </map>                                                                                                                                                            
                                                                                                                                                                       
                 
-        
-        
-        
-        
-        
-        
-        
-        
-        
                                    
             <!--VIDEO tags -->
          <video style="width:300px; height:250px" controls autoplay muted>                                <!-- controls attribute adds play, pause and volume-->
@@ -197,11 +98,6 @@
 
         
         
-        
-        
-        
-        
-        
             <!-- AUDIO tags-->
         <audio controls>                                                                                <!--audio can use the same attributes as <video>-->
             <source src="music.mp3" type="audio/ogg">                                                   <!-- adding more <source> means more music for the music player-->
@@ -209,9 +105,7 @@
         </audio><br>                                                                                                                                                       
                                                                                                                                                                  
         
-        
-        
-        
+     
         
             <!-- OBJECT tag was designed to include plug ins (pdf readers, maps) in web sites-->
         <object width="0px" height="0px" data=""></object>
@@ -230,37 +124,13 @@
        
         
         
-        
-        
-        
-        
-        
-        
+    
     
             <!-- CANVAS tag: used to draw graphics (squares, lines, triangles, images, etc...) onto a website with javascript -->
          <canvas width="300" height="300"> </canvas>
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-            <!-- SVG tags: used to create 2D vectors for x and y graphs or pie charts-->
-         <svg width="100" height="100">    
-            <circle cx="50" cy="50" r="40" stroke="yellow" stroke-width="4" fill="red" />    
-          </svg>   
-
-
-        
-        
-        
-        
-        
+                
+       
         
             <!--How to use TABLES in html -->
         <table>                                     <!-- border-collapse: collapse will enable <tr/> to have borders-->

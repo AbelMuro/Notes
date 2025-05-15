@@ -203,7 +203,7 @@
 -->
 
 <svg>
-        <path d="M50 50 L150 50 L100 150 Z"/>
+     <path d="M50 50 L150 50 L100 150 Z"/>
 </svg>
 
 
@@ -321,7 +321,7 @@
 </svg>
 
 
-<!--------------- feGaussianBlur --------------->
+<!--------------- Blur Effect Filter --------------->
 <!-- 
         feGaussianBlue creates a soft blur effect
 
@@ -340,7 +340,7 @@
 
 
 
-<!--------------- feTurbulence --------------->
+<!--------------- Random Noise Effect Filter --------------->
 <!-- 
         feTurbulence creates random 'noise' that can be used
         to create water or cloud textures     
@@ -361,7 +361,7 @@
 </svg>
 
 
-<!--------------- feSpecularLighting --------------->
+<!--------------- Specular Lighting Effect Filter --------------->
 <!-- 
         feSpecularLighting creates a light effect on a shape,
         similar to how light reflects off of surfaces
@@ -385,6 +385,45 @@
 
 
 
+<!--------------- Drop Shadow Effect Filter --------------->
+<!-- 
+        feDropShadow can be used to create a drop shadow
+        behind an SVG element
+        
+        dx:     attribute defines the space between the left border of the element and a new coordinate (horizontal shift)
+        dy:     attribute defines the space between the top border of the element and a new coordiante (vertical shift)
+        stdDeviation:    attribute defines the amount of blur applied to the shadow
+        flood-opacity:   attribute defines the opacity of the shadow
+-->
+
+<svg>
+   <defs>
+       <filter id="shadow">
+            <feDropShadow dx="5" dy="5" stdDeviation="3" flood-opacity="0.5"/>
+       </filter>
+    </defs>
+    <circle filter="url(#shadow)"/>
+</svg>
 
 
-   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

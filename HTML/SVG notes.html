@@ -109,12 +109,14 @@
 <!--
     The RECT element can be used to create rectangle graphics.
 
-    The fill attribute is used to color the entire rectangle in a certain color
+    fill:       attribute is used to color the entire rectangle in a certain color
+    rx, ry:     the border radius of each corner in the rectangle   
 -->
 
 <svg>
-   <rect width='300px' height='100px' fill="red" />
+   <rect width='300px' height='100px' rx='12' ry='12' fill="red" />
 </svg>
+
 
 
 <!--------------- Circle Element--------------- >
@@ -131,6 +133,23 @@
 </svg>
 
 
+
+<!--------------- Line Element--------------- >
+<!-- 
+        The line element can be used to create a straight line
+        using two points.
+
+        x1, y1 = the left point of the line
+        x2, y2 = the right point of the line
+-->
+
+<svg>
+    <line x1="10" y1="10" x2="190" y2="190" stroke="black" stroke-width="2"/>
+</svg>
+
+
+
+
 <!--------------- Text Element--------------->
 <!-- 
     The Text element can be used to write text graphics
@@ -143,6 +162,7 @@
 <svg>
       <text x="150" y="125" text-anchor="middle">SVG</text>
 </svg>
+
 
 
 <!--------------- Path Element--------------->
@@ -238,9 +258,29 @@
 
 
 
+<!--------------- Radial Gradients --------------->
+<!-- 
+        The Radial gradient element can be used to create
+        a gradient that starts from a center and radiates 
+        out from that point.
 
-
-
+        id:    attribute is used to assign the linear-gradient style to an svg element.
+        stop-color:     attribute is used to fill a portion of the linear-gradient a certain color
+        offset:      attribute defines at what percent the current color will transition to the next color
+        spreadMethod:    attribute defines how the gradient will look when it reaches the end ("pad", "reflect", or "repeat")
+                                 pad will use the final offset color to fill the rest of the gradient
+                                 reflect will make the gradient continue but in reverse
+                                 repeate will make the gradient continue but jumps back to the first offset color
+-->
+<svg>
+     <defs>
+          <radialGradient id="RadialGradient1" spreadMethod="pad">
+                <stop stop-color="red" offset="0%" />
+                <stop stop-color="blue" offset="100%" />
+          </radialGradient>
+     </defs>       
+     <circle fill="url(#myGradient)" />
+</svg>
 
 
 
@@ -321,9 +361,27 @@
 </svg>
 
 
+<!--------------- feSpecularLighting --------------->
+<!-- 
+        feSpecularLighting creates a light effect on a shape,
+        similar to how light reflects off of surfaces
 
+        surfaceScale:       this attribute controls the depth of the effect (higher values create stronger highlights).
+        specularConstant:   this attribute determines the intensity of reflection.
+        specularExponent:    this attribute adjusts sharpness (higher values make sharper highlights).
+        lighting-color:      this attribute sets the color of the highlights.
+-->
 
-
+<svg>
+    <defs>
+        <filter id="specular">
+            <feSpecularLighting surfaceScale="5" specularConstant="0.75" specularExponent="20" lighting-color="white">
+                <fePointLight x="100" y="100" z="50"/>
+            </feSpecularLighting>
+        </filter>
+    </defs>
+  <rect filter="url(#specular)"/>
+</svg>
 
 
 

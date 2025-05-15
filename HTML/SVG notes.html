@@ -5,7 +5,7 @@
 
         Common Attributes:
 
-                transform: you can apply transformations to the shape (rotate(45deg), scale(1.4), translate(23, 45)) 
+                transform:   you can apply transformations to the shape (rotate(45deg), scale(1.4), translate(23, 45)) 
 
                 fill:  the color of the inside of the shape
                 fill-opacity: the opacity of the fill color
@@ -33,7 +33,7 @@
     The SVG element can be used as a container for your vector based graphics.
     It is important that you define the xmlns attribute, because this attribute
     defines the namespace for the svg. This tells the browser to intepret SVG as
-    a markup instead of another XML-based format.
+    a markup language instead of an XML-based formatted language.
 
     The viewbox attribute defines the coordinate system and the scaling behavior 
     of the SVG. Keep in mind that the coordinate system doesnt have to be the same size
@@ -54,8 +54,55 @@
 </svg>
 
 
+<!--------------- G Element--------------->
+<!-- 
+        The G element will group multiple SVG elements together
+        so they can be styled or transformed together with the 
+        same attributes
+-->
+
+<svg>
+    <g fill="blue" stroke="black">
+        <circle/>
+        <rect />
+    </g>
+</svg>
 
 
+<!--------------- Defs Element --------------->
+<!--
+    The defs element can be used to create a reusable graphical objects
+    that can be assigned to an SVG element
+-->
+
+<svg>
+    <defs>
+    
+    </defs>
+</svg>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ==================================================== SVG SHAPES ==================================================== -->
 
 
 <!--------------- Rect Element--------------- >
@@ -68,11 +115,6 @@
 <svg>
    <rect width='300px' height='100px' fill="red" />
 </svg>
-
-
-
-
-
 
 
 <!--------------- Circle Element--------------- >
@@ -89,11 +131,6 @@
 </svg>
 
 
-
-
-
-
-
 <!--------------- Text Element--------------->
 <!-- 
     The Text element can be used to write text graphics
@@ -106,10 +143,6 @@
 <svg>
       <text x="150" y="125" text-anchor="middle">SVG</text>
 </svg>
-
-
-
-
 
 
 <!--------------- Path Element--------------->
@@ -157,37 +190,30 @@
 
 
 
-<!--------------- G Element--------------->
-<!-- 
-        The G element will group multiple SVG elements together
-        so they can be styled or transformed together with the 
-        same attributes
--->
-
-<svg>
-    <g fill="blue" stroke="black">
-        <circle/>
-        <rect />
-    </g>
-</svg>
 
 
 
 
-<!--------------- Defs Element--------------->
-<!--
-    The defs element can be used to create a reusable graphical objects  
-    that can be assigned to an SVG element
--->
-
-<svg>
-    <defs>
-    
-    </defs>
-</svg>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ==================================================== SVG GRADIENTS ==================================================== -->
 
 <!--------------- Linear Gradients --------------->
 <!-- 
@@ -203,7 +229,7 @@
     <defs>
           <linearGradient id="myGradient">
               <stop stop-color='red' offset="0%" />
-              <stop stop-color='blue'  offset="50%" />
+              <stop stop-color='blue' offset="50%" />
               <stop stop-color='green' offset="100%" />
           </linearGradient>
     </defs>
@@ -226,6 +252,73 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ==================================================== SVG FILTERS ==================================================== -->
+
+<!--------------- Filters --------------->
+<!-- 
+        You can use the filter element to apply certain filter
+        effects on an SVG element
+-->
+
+<svg>
+    <defs>
+         <filter id="blurEffect">
+         </filter>    
+    </defs>
+</svg>
+
+
+<!--------------- feGaussianBlur --------------->
+<!-- 
+        feGaussianBlue creates a soft blur effect
+
+        stdDeviation is an attribute that defines how 
+        strong the blur will be.
+-->
+
+<svg>
+    <defs>
+         <filter id="blurEffect">
+                <feGaussianBlur stdDeviation={4}>
+         </filter>    
+    </defs>
+    <circle fill="url(#blurEffect)" />
+</svg>
+
+
+
+<!--------------- feTurbulence --------------->
+<!-- 
+        feTurbulence creates random 'noise' that can be used
+        to create water or cloud textures     
+
+        type = fractalNoise (smooth effects),  turbulence (rougher patterns)
+        baseFrequency = low (large waves),   high (fine grain),      can also be a numerical value
+        numOctaves = defines complexity (higher values add depth to the noise)
+        seed = sets a random variation of the turbulence pattern, must be an integer
+-->
+
+<svg>
+    <defs>
+        <filter id="cloudEffect">
+             <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3"/>
+        </filter>
+    </defs>
+    <circle fill="url(#cloudEffect)" />
+</svg>
 
 
 

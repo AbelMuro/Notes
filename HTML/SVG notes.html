@@ -407,12 +407,32 @@
 
 
 
+<!--------------- Color Matrix Effect Filter --------------->
+<!-- 
+      feColorMatrix is used to apply an effect on an SVG element
+      using a matrix.
 
+      type:      Defines the transformation type (matrix, saturate, hueRotate, luminanceToAlpha).
+      values:    Defines the transformation matrix or the values of the effect
 
+      type='matrix'  
+      values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0'
 
+      type='saturate'
+      values='0.5'        reduces saturation by half
 
+      type='luminanceToAlpha'    values is not used,  will make bright areas more opaque, and dark areas are more transparent
+      
+--> 
 
-
+<svg>
+  <defs>
+    <filter id="colorMatrix">
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+    </filter>
+  </defs>
+  <rect fill="blue" filter="url(#colorMatrix)"/>
+</svg>
 
 
 

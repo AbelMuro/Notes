@@ -40,6 +40,35 @@
 
 
 
+                    
+
+
+
+//================================================ FOCUS ================================================
+/* 
+            You can use the :focus element to apply a certain style 
+            to an element when it is focused on. This is useful for users
+            that rely on a keyboard to navigate through the website (using Tab for example).
+*/
+
+input:focus {
+  border-color: #008000;
+  box-shadow: 0 0 5px #008000;
+}
+
+
+button:focus:not(:focus-visible) {            // :not(:focus-visible) will prevent the focus style from being applied if the user clicked on the element
+  outline: none;
+}
+
+
+
+
+
+
+
+                    
+
 
                     
 

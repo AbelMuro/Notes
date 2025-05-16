@@ -1,3 +1,8 @@
+/* 
+    Firebase is a cloud storage 
+
+*/
+
 //npm install firebase
 
 import { initializeApp } from "firebase/app";               //you need this for your app to use firebase

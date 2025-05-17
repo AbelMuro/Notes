@@ -1,23 +1,27 @@
 /* 
-    Firebase is a cloud storage 
+        Firebase is a cloud service that provides back-end features as a service
 
+        npm install firebase
 */
 
-//npm install firebase
 
-import { initializeApp } from "firebase/app";               //you need this for your app to use firebase
-import { getDatabase} from 'firebase/database';             //accessing one of the getter functions for the database module
+
+
+
+//=================================================== Initialize Firebase ===================================================
+/* 
+        You can initialize firebase by calliing the initializeApp functions
+*/
+
+import { initializeApp } from "firebase/app";               
+import { getDatabase} from 'firebase/database';           
 import { getAuth} from 'firebase/auth';
 import { getStorage} from 'firebase/storage';
 import { getFirestore} from 'firebase/firestore';
 
-//the configuration object that you need to initialize firebase
-//keep in mind that every project has their own configuration object
-//and every project can have multiple apps accessing the same project
 const firebaseConfig = {                                    
     apiKey: "",                      //the 'key' that your app needs to access the firebase console
     authDomain: "",                 //the domain for the authentication that your app can use for signing in and logging out
-    databaseURL: "",                 //the url of the database for this project
     projectId: "",                   //identifies the project that this app will be using
     storageBucket: "",
     messagingSenderId: "",          //the ID that is used for enabling messaging in your app
@@ -28,9 +32,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize database and exporting it
-export const db = getDatabase(app);                                         //alot of the times, to use firebase, you will need to export these objects
 
 // Initialize authentication and exporting it
 export const auth = getAuth(app);                                           //alot of the times, to use firebase, you will need to export these objects
@@ -51,53 +52,126 @@ export const db = getFirestore(app);
 
 
 
-//--------------------------------------------------------------- REALTIME DATABASE ----------------------------------------------------------------------------------
-import {ref, set, onValue, push} from 'firebase/database';
-import {db} from './firebase-config';
-import {useRef} from 'react';
-
-let nodeRef = useRef();                                    //its a good idea to use a useRef to reference a node in the database
-
-//in realtime, data is stored in JSON
-
-function traverseThroughDatabase(findName) {
-     const referenceToDB = ref(db);                     //creating a reference to the entire database
-
-     onValue(referenceToDB, (snapshot) => {             //creating a 'snapshot' of the entire database
-          const data = snapshot.val();                  //parsing the snapshot into valid JS
-          for(let node in data){
-              if(data[node].name == findName)          //alot of the times, the database will be parsed into objects, so you can access the properties within that object
-                  console.log("Found Name");
-                  nodeRef.current = node;                  //storing a reference to the node in the database for future use
-          }
-     }) 
-}
+//=================================================== REALTIME DATABASE ===================================================
+/*
+    Realtime database is a NoSQL database that allows you to store data in real time.
+*/
 
 
+//------------------------- Initializing realtime database
+/* 
+    You can initialize realtime database with the getDatabase() getter function
+*/
+import { initializeApp } from "firebase/app";     
+import { getDatabase} from 'firebase/database';   
 
-function updateNode(nodeRef, newData) {
-    const referenceToNode = ref(db, "/" + nodeRef)        //there is an optional second argument that you can use to refence a specific node in database
+
+const firebaseConfig = {                                    
+    databaseURL: "",                         //the url of the database for this project
+};
+
+
+const app = initializeApp(firebaseConfig);
+export const db = getDatabase(app);
+
+
+
+
+
+//------------------------- Storing nodes in database
+/* 
+        To store new data in the realtime database, you can use 
+        the set() method to do just that. The first argument to set()
+        accepts the reference to the DB or the returned value of the push()
+        function.
+
+        The push() method can be used to generate a unique ID for 
+        a new document.
+*/
+import {ref, set, push} from 'firebase/database';
+import {db} from './Firebase/Config.js';
+
+
+async function createNewNode(newData){
+    const referenceToDB = ref(db, 'users/user1');
+    const newNodeWithUniqueID = push(referenceToDB);           
     
-    set(referenceToNode, {                             //set can be used to update a node in the database with new data, set will delete any previous nodes that has the same reference
-      name: newData.name,
-      age: newData.age,
-      birthday: newData.birthday
-    })
-}
-
-
-
-function createNewNode(newData){
-    const referenceToDB = ref(db);
-    const newNodeWithUniqueID = push(reference);           //push will generate a unique ID for a node
-    
-    set(newNodeWithUniqueID, {
+    await set(newNodeWithUniqueID, {
         name: newData.name,
         age: newData.age,
         birthday: newData.birthday
-    })
-  
+    });
+
+    console.log('Data has been stored')
 }
+     
+
+
+
+//------------------------- Updating nodes in database
+/* 
+    You can use the update() method to update an existing node in 
+    the realtime database.
+*/
+
+import { ref, update } from "firebase/database";
+import {db} from './Firebase/config.js'
+
+
+async function UpdateNode() {
+    const userRef = ref(db, 'users/user1');
+
+    await update(userRef, {
+      age: 25,
+      city: "San Francisco"
+    })
+
+    console.log('Data updated in database')
+}    
+
+
+
+
+//------------------------- Getting a node from database
+/*
+    You can get a specific node from the database by 
+    using the get() method
+*/
+
+import {ref, get } from "firebase/database";
+
+async function getNode() {
+     const usersRef = ref(db, "users/user1");
+    
+    const snapshot = await get(usersRef);
+    
+    if(snapshot.exists())
+        snapshot.val();
+}
+
+
+
+
+//------------------------- Getting all nodes from database
+/* 
+        You can use the onValue() method to get all nodes
+        in a specific part of the database
+*/
+
+import { ref, get } from "firebase/database";
+import {db} from './Firebase/Config.js';
+
+
+async function getAllNodes() {
+    const userRef = ref(db, "users");
+    
+    const snapshot = await get(userRef);
+        
+    if(snapshot.exists())    
+        snapshot.val();                //this should be an array of objects
+}
+
+
      
 
 

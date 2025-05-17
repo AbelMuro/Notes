@@ -55,7 +55,31 @@ export const db = getFirestore(app);
 //=================================================== REALTIME DATABASE ===================================================
 /*
     Realtime database is a NoSQL database that allows you to store data in real time.
+    This realtime database is usefull for apps that require live updates. 
+
+    This database organizes all of its data as a large JSON structure tree.
+
+                {
+                  "users": {
+                    "userId_123": {
+                      "name": "Alice",
+                      "email": "alice@example.com",
+                      "profilePicture": "https://example.com/alice.jpg",
+                      }
+                    }
+                   },
+                  "posts": {
+                    "postId_456": {
+                      "userId": "userId_123",
+                      "content": "Hello world!",
+                      "timestamp": 1715628961,
+                      "likesCount": 2
+                    }
+                  }
+                }
 */
+
+
 
 
 //------------------------- Initializing realtime database
@@ -155,7 +179,7 @@ async function getNode() {
 //------------------------- Getting all nodes from database
 /* 
         You can use the onValue() method to get all nodes
-        in a specific part of the database
+        in a specific property of the JSON structure tree
 */
 
 import { ref, get } from "firebase/database";

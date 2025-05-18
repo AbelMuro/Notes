@@ -207,11 +207,230 @@ async function getAllNodes() {
 
 
 
+//=================================================== AUTHENTICATION ===================================================
+/* 
+        You can implement authentication with firebase with different providers
+*/
 
-//------------------------------------------------------------- AUTHENTICATION ------------------------------------------------------------------
-//keep in mind that it is possible for a user's account to use both email/password and the google identity provider.
-//but its ALWAYS a good idea for the user to verify their email first before linking their email/password with another identity provider
-//also keep in mind that when you are trying to load an image photo from google or microsoft, its always a good idea to use referrerPolicy="no-referrer" on your image tags
+
+
+
+//------------------------- Register with email and password
+/* 
+        You can register an account with createUserWithEmailAndPassword()
+        The method returns the following object
+
+
+        userCredentials = {
+                uid: Unique user ID
+                email: Email of the user
+                displayName: User's display name (if set)
+                photoURL: Profile picture URL (if set)
+                phoneNumber: User's phone number (if verified)
+                providerId: The authentication provider (e.g., password, google.com)
+                emailVerified
+        }
+        
+*/
+
+import { createUserWithEmailAndPassword} from 'firebase/auth';
+import {auth} from './firebase-config';
+
+async function Register(email, password) {
+  try{                                                                                              //keep in mind that createUserWithEmailAndPassword will automatically log you in
+        const userCredentials = await createUserWithEmailAndPassword(auth, email, password);        //this will create a user and return an object with the user credentials
+  }
+  catch(error){
+       console.log(error.message);
+  }
+}
+
+
+
+
+//------------------------- Login with Email and password
+/* 
+        You can login with the method signInWithEmailAndPassword().
+        The method returns the following object
+
+        userCredentials = {
+                uid: Unique user ID
+                email: Email of the user
+                displayName: User's display name (if set)
+                photoURL: Profile picture URL (if set)
+                phoneNumber: User's phone number (if verified)
+                providerId: The authentication provider (e.g., password, google.com)
+                emailVerified: Boolean
+        }
+*/
+
+import { signInWithEmailAndPassword} from 'firebase/auth';
+import {auth} from './firebase-config';
+
+
+async function login(email, password) {
+  try{
+      const userCredentials = await signInWithEmailAndPassword(auth, email, password);                //this will sign the user in if their email is already registered                                    
+  }
+  catch(error) {
+        console.log(error.message) 
+  }
+}
+
+
+
+
+
+//------------------------- Updating account information
+/* 
+        You can update your account information by using the updateProfile() method.
+        You can pass an object as an argument that has the following properties with 
+        updated values
+        
+        userCredentials = {
+                uid: Unique user ID
+                email: Email of the user
+                displayName: User's display name (if set)
+                photoURL: Profile picture URL (if set)
+                phoneNumber: User's phone number (if verified)
+                providerId: The authentication provider (e.g., password, google.com)
+                emailVerified: Boolean
+        } 
+*/
+
+
+import {auth} from './firebase-config';
+import {updateProfile} from 'firebase/auth';
+
+async function updateAccount() {
+  try{                                                                                              //keep in mind that createUserWithEmailAndPassword will automatically log you in
+        await updateProfile(auth.currentUser, {                                                           //you can use updateProfile to update any data about the user on the spot
+            displayName: "new username"
+        });                             
+        console.log('acccount updated successfully');
+  }
+  catch(error){
+       console.log(error.message);
+  }
+}
+
+
+
+
+
+
+
+//------------------------- Login with Email link
+/* 
+        You can also register an account through an email link.
+        The sendSignInLinkToEmail() will send a link to the users
+        email and the user must click on the link to register
+
+        You can also use thhe isSignInWithEmailLink() method
+        to check if the current URL is a valid link that can be used 
+        to sign in.
+*/
+
+import {auth} from './firebase-config';
+import { sendSignInLinkToEmail} from 'firebase/auth';
+
+async function registerWithEmailLink(email) {
+    try{
+        const actionCodeSettings = {
+                url: 'The URL to which the user will be redirected after clicking the sign-in link. This should be a page in your application that handles email link sign-in.',
+                handleCodeInApp: 'If true, the sign-in link is meant to be handled in the app instead of the default web flow.',
+                iOS: {
+                    bundleId: 'The iOS app’s bundle ID that should handle the sign-in.',    
+                },
+                android: {
+                        packageName: 'The Android app’s package name.',
+                        installApp: 'If true, the app should be installed if not already.',
+                        minimumVersion: 'Specifies the minimum app version required to handle the sign-in.',
+                },
+                dynamicLinkDomain: 'Custom domain for Firebase Dynamic Links if used.'
+        }
+
+        if(!isSignInWithEmailLink(auth, window.location.href)) return
+            
+        await sendSignInLinkToEmail(auth, email, actionCodeSettings)                    //this will send an email link that the user can use to login
+    }
+   catch(error){
+       console.log(error.message)
+   }  
+}
+
+
+
+
+
+
+
+
+//------------------------- Login with Google
+/* 
+        You can login with google by using the GoogleAuthProvider()
+        method and the signInWithPopup() method. The signInWithPopup() will
+        return the following object
+
+        userCredentials = {
+                uid: Unique user ID
+                email: Email of the user
+                displayName: User's display name (if set)
+                photoURL: Profile picture URL (if set)
+                phoneNumber: User's phone number (if verified)
+                providerId: The authentication provider (e.g., password, google.com)
+                emailVerified: Boolean
+        }         
+*/
+
+async function LoginWithGoogle() {
+    try{
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({
+            "login_hint": "user@example.com"
+        });
+        const userCredentials = await signInWithPopup(auth, provider)    
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+
+
+
+
+
+//-------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 import { createUserWithEmailAndPassword, updateProfile, signOut, sendEmailVerification, sendSignInLinkToEmail, deleteUser} from 'firebase/auth';
@@ -246,65 +465,12 @@ async function createUser(email, password) {
 
 
 
-async function login(email, password) {
-  try{
-      const userCredentials = await signInWithEmailAndPassword(auth, email, password);                //this will sign the user in if their email is already registered
-      if(!userCredentials.user) throw "email not verified";                                           //you can use the userCredentials object to check if the email has been verified    
-  }
-  catch(error) {
-      if(error.message != null)
-          console.log(error.message) 
-      else
-        console.log(error)
-  }
-}
 
 
 
 
 
 
-
-async function createUserWithEmailLink(email) {
-    try{
-        const actionCodeSettings = {
-            url: "http://localhost:8080/login",                                         //this is the url that the user will see when they click on the email link
-            handleCodeInApp: true,                                                      //this must be true
-        }
-        await sendSignInLinkToEmail(auth, email, actionCodeSettings)                    //this will send an email link that the user can use to login
-        localStorage.setItem("emailLinkForSignIn", email);                              //its a good idea to store the email in the local storage 
-    }
-   catch(error){
-       console.log(error.message)
-   }  
-}
-
-//its a good idea to put this async function inside a useEffect() so that the user
-//can skip the login page and go directly to the account page
-async function LoginWithEmailLink() {
-       const saved_email = localStorage.getItem("emailLinkForSignIn");                  //getting the email from the local storage
-        if(isSignInWithEmailLink(auth, window.location.href) && saved_email){           //checking to see if the user logged in through an email link
-            await signInWithEmailLink(auth, saved_email, window.location.href)          //this function actually signs the user in
-            localStorage.removeItem("emailLinkForSignIn");                              //removing the email from the local storage
-            navigate("/adminaccount");                                                  //navigating directly to the account page
-       }        
-}
-
-
-
-
-async function LoginWithGoogle() {
-    try{
-        const provider - new GoogleAuthProvider();
-        provider.setCustomParameters({
-            "login_hint": "user@example.com"
-        });
-        await signInWithPopup(auth, provider)    
-    }
-    catch(error){
-        console.log(error);
-    }
-}
 
 
 async function LoginWithMicrosoft(){

@@ -207,12 +207,81 @@ async function getAllNodes() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 //=================================================== AUTHENTICATION ===================================================
 /* 
         You can implement authentication with firebase with different providers
 */
 
 
+
+//------------------------- onAuthStateChange() Hook
+/* 
+        The onAuthStateChange() is a firebase hook that can be used to detect
+        changes in the auth state. If the user logs in or logs out, it will trigger
+        the onAuthStateChange(). The callback that is passed to the second argument
+        of this hook has access to the following object.
+
+        currentUser = {
+                uid: A unique identifier for the user.
+                email: The user's email address (if available). 
+                emailVerified: A boolean indicating whether the user's email is verified.    
+                displayName: The user's display name (if set).   
+                photoURL: The URL of the user's profile picture.   
+                phoneNumber: The user's phone number (if available).   
+                providerId: The authentication provider used (e.g., "google.com", "facebook.com").  
+                metadata: An object containing metadata about the user's account, including:  
+                creationTime: Timestamp of when the user account was created.   
+                lastSignInTime: Timestamp of the user's last sign-in.  
+                providerData: An array of provider-specific user information. 
+                stsTokenManager: An object managing the Firebase authentication tokens.  
+                tenantId: The tenant ID if multi-tenancy is enabled. 
+                isAnonymous: A boolean indicating whether the user signed in anonymously.
+        }
+*/
+
+import { onAuthStateChanged } from 'firebase/auth';
+
+onAuthStateChanged(auth, (currentUser) => {
+     if(currentUser) 
+        console.log("user is already logged in");
+    else 
+        console.log("no user is logged in");
+})
+
+
+
+
+
+//------------------------- Send email link to verify email
+/* 
+        If you want the user to verify their email before logging in,
+        you can do this by using the sendEmailVerification() function
+*/
+import { sendEmailVerification} from 'firebase/auth';
+import {auth} from './firebase-config';
+
+async function verifyEmail() {
+        try{
+              await sendEmailVerification(auth.currentUser)  
+        }
+        catch(error){
+              console.log(error.message);
+        }
+}
+
+                                
 
 
 //------------------------- Register with email and password
@@ -298,7 +367,6 @@ async function login(email, password) {
         } 
 */
 
-
 import {auth} from './firebase-config';
 import {updateProfile} from 'firebase/auth';
 
@@ -319,6 +387,28 @@ async function updateAccount() {
 
 
 
+//------------------------- Logging out
+/* 
+        You can use the signOut() function to log out
+        a user.
+*/
+
+import { signOut} from 'firebase/auth';
+import {auth} from './firebase-config'
+
+async function logOut(email, password) {
+  try{                                                                                           
+        await signOut(auth);                                                                       
+  }
+  catch(error){
+       console.log(error.message);
+  }
+}
+
+
+
+
+
 
 //------------------------- Login with Email link
 /* 
@@ -326,13 +416,13 @@ async function updateAccount() {
         The sendSignInLinkToEmail() will send a link to the users
         email and the user must click on the link to register
 
-        You can also use thhe isSignInWithEmailLink() method
+        You can also use the isSignInWithEmailLink() method
         to check if the current URL is a valid link that can be used 
         to sign in.
 */
 
 import {auth} from './firebase-config';
-import { sendSignInLinkToEmail} from 'firebase/auth';
+import { sendSignInLinkToEmail, isSignInWithEmailLink} from 'firebase/auth';
 
 async function registerWithEmailLink(email) {
     try{
@@ -368,8 +458,8 @@ async function registerWithEmailLink(email) {
 
 //------------------------- Login with Google
 /* 
-        You can login with google by using the GoogleAuthProvider()
-        method and the signInWithPopup() method. The signInWithPopup() will
+        You can login with google by using the GoogleAuthProvider() constructor
+        and the signInWithPopup() method. The signInWithPopup() will
         return the following object
 
         userCredentials = {
@@ -383,11 +473,19 @@ async function registerWithEmailLink(email) {
         }         
 */
 
+import { GoogleAuthProvider, signInWithPopup} from 'firebase/auth'
+import {auth} from './firebase-config';
+
 async function LoginWithGoogle() {
     try{
         const provider = new GoogleAuthProvider();
         provider.setCustomParameters({
-            "login_hint": "user@example.com"
+                   login_hint: 'A string specifying the email address of the user to be pre-filled in the sign-in form.'
+                   hd: 'A string specifying a Google Workspace domain to restrict sign-in to users from a particular domain.' 
+                   prompt: 'Specifies the authentication prompt behavior. Possible values are "none", "consent", or "select_account".'
+                   include_granted_scopes: 'A boolean (true or false) to indicate whether the user should be prompted to grant additional scopes if they’ve already signed in.'
+                   openid.realm: 'Used for OpenID authentication and helps with federated identity setups.'
+                   access_type: 'Defines whether the authentication flow should request offline access. Possible values are "online" or "offline".'
         });
         const userCredentials = await signInWithPopup(auth, provider)    
     }
@@ -401,25 +499,100 @@ async function LoginWithGoogle() {
 
 
 
-//-------------------------
+//------------------------- Login with Microsoft
+/* 
+        You can login with Microsoft by using the oAuthProvider() constructor
+        and the signInWithPopup() function. The signInWithPopup() returns the 
+        following object.
+
+        userCredentials = {
+                uid: Unique user ID
+                email: Email of the user
+                displayName: User's display name (if set)
+                photoURL: Profile picture URL (if set)
+                phoneNumber: User's phone number (if verified)
+                providerId: The authentication provider (e.g., password, google.com)
+                emailVerified: Boolean
+        }     
+*/
+
+import { OAuthProvider, signInWithPopup} from 'firebase/auth'
+import {auth} from './firebase-config';
+
+async function LoginWithMicrosoft(){
+    try {
+        const provider = new OAuthProvider("microsoft.com");
+        provider.setCustomParameters({
+                   login_hint: 'A string specifying the email address of the user to be pre-filled in the sign-in form.'
+                   hd: 'A string specifying a Google Workspace domain to restrict sign-in to users from a particular domain.' 
+                   prompt: 'Specifies the authentication prompt behavior. Possible values are "none", "consent", or "select_account".'
+                   include_granted_scopes: 'A boolean (true or false) to indicate whether the user should be prompted to grant additional scopes if they’ve already signed in.'
+                   openid.realm: 'Used for OpenID authentication and helps with federated identity setups.'
+                   access_type: 'Defines whether the authentication flow should request offline access. Possible values are "online" or "offline".'
+        })
+       const userCredentials = await signInWithPopup(auth, provider)    
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+
+
+
+
+//------------------------- Login with Facebook
+/* 
+        You can login with facebook with the FacebookAuthProvider() constructor
+        and the signInWithPopup() function. The signInWithPopup() returns the following
+        object
+
+        userCredentials = {
+                uid: Unique user ID
+                email: Email of the user
+                displayName: User's display name (if set)
+                photoURL: Profile picture URL (if set)
+                phoneNumber: User's phone number (if verified)
+                providerId: The authentication provider (e.g., password, google.com)
+                emailVerified: Boolean
+        }  
+*/
+
+import { FacebookAuthProvider, signInWithPopup} from 'firebase/auth'
+import {auth} from './firebase-config';
+
+async function LoginWithFacebook(){
+    try {
+        const provider = new FacebookAuthProvider();
+        const userCredentials = await signInWithPopup(auth, provider)    
+    }
+    catch(error){
+        console.log(error);
+    }
+}
 
 
 
 
 
 
+//------------------------- Delete account
+/* 
+        You can delete your account by using the deleteUser() function
+*/
 
+import { deleteUser} from 'firebase/auth';
+import {auth} from './firebase-config';
 
-
-
-
-
-
-
-
-
-
-
+async function deleteAccount() {
+    try{
+        await deleteUser(auth.currentUser);
+    }
+    catch(error){
+        if(error.code === 'auth/requires-recent-login')
+            // find a way to let user log in again
+    }
+}
 
 
 
@@ -444,19 +617,6 @@ import {auth} from './firebase-config';
 
 
 
-async function createUser(email, password) {
-  try{                                                                                              //keep in mind that createUserWithEmailAndPassword will automatically log you in
-        const userCredentials = await createUserWithEmailAndPassword(auth, email, password);        //this will create a user and return an object with the user credentials
-        updateProfile(auth.currentUser, {                                                           //you can use updateProfile to update any data about the user on the spot
-            displayName: "new username"
-        });
-        await sendEmailVerification(userCredentials.user)                                           //alot of the times, you should send an email verification to the user
-        await signOut(auth);                                                                        //you can also sign out with this function
-  }
-  catch(error){
-       console.log(error.message);
-  }
-}
 
 
 
@@ -466,36 +626,6 @@ async function createUser(email, password) {
 
 
 
-
-
-
-
-
-
-
-async function LoginWithMicrosoft(){
-    try {
-        const provider = new OAuthProvider("microsoft.com");
-        provider.setCustomParameters({
-            prompt: "consent",                       //forces the user to select an account, even if they are already logged in
-            tenant: "9376f0e7-1c43-470a-aaea-06f6e6e413da"          //this seems to be required for this to work
-        })
-       await signInWithPopup(auth, provider)    
-    }
-    catch(error){
-        console.log(error);
-    }
-}
-
-async function LoginWithFacebook(){
-    try {
-        const provider = new FacebookAuthProvider();
-        await signInWithPopup(auth, provider)    
-    }
-    catch(error){
-        console.log(error);
-    }
-}
 
 
 
@@ -564,42 +694,6 @@ function SignInWithPhoneNumber() {
 }
 
 
-
-
-async function deleteAccount() {
-    try{
-        await deleteUser(auth.currentUser);
-    }
-    catch(error){
-        if(error.code === 'auth/requires-recent-login')
-            // find a way to let user log in again
-    }
-}
-
-
-//this function will get called everytime there is a change in the auth state, as the name implies.
-//for the most part, it is used to determine if the user logged in or signed out
-//it can be used to check if a user can skip the login page if they are already signed in
-onAuthStateChanged(auth, (currentUser) => {
-     if(currentUser != null) {
-        console.log("user is already logged in");
-        navigate("/accountPage") 
-    }
-    else if(currentUser == null){
-        console.log("no user is logged in");
-        navigate("/loginPage")
-    }
-})
-
-
-
-//this function can also be used to access meta data from the users account.
-//if you access auth.currentUser directly and assign it to a variable.
-//the variable will be null AFTER you refresh the page or re-render the component
-onAuthStateChanged(auth, (currentUser) => {
-     if(currentUser != null)
-         setUser(currentUser.displayName);                
-})
 
 
 //------------------------------------------------------- AUTHENTICATION REACT HOOKS -----------------------------------------------------------------

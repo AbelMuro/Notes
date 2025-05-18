@@ -1684,7 +1684,7 @@ function App(){
 
 
 
-//------------------------------------- Navigating Routes
+//------------------------------------- Navigating Routes (useNavigate hook, Link component)
 /* 
         You can use the <Link/> component or the useNavigate() hook to 
         navigate to different routes.
@@ -1749,7 +1749,7 @@ function ContactUs() {                                     //as long as the curr
 
 
 
-//------------------------------------- Routes with dynamic paths
+//------------------------------------- Routes with dynamic paths (useParams hook)
 /* 
       You can create a dynamic path for a route with the following syntax
 
@@ -1782,12 +1782,11 @@ function DonateMore(){
 
 
 
-//------------------------------------- Passing Data between Routes
+//------------------------------------- Passing Data between Routes (useLocation hook)
 /* 
         You can pass data from one route to another with the useLocation()
         hook.
 */
-
 
 function Home() {
         const navigate = useNavigate();
@@ -1798,7 +1797,6 @@ function Home() {
                 }
         });
 }
-
 
 function AboutUs() {
         const location = useLocation();
@@ -1813,11 +1811,51 @@ function AboutUs() {
 
 
 
+//------------------------------------- Blocking navigation until user gives consent (useBlocker hook)
+/* 
+        You can use the useBlocker() hook to prevent a user
+        from navigating away from the current page until 
+        they give consent. This hook will automatically detect
+        any changes made to the navigation. But the component that 
+        uses the hook must have the returned value of the useBlocker hook
+
+        KEEP IN MIND, to use the useBlocker() hook, 
+        your app can't use the <BrowserRouter/> context provider.
+        You need to use the two components createBrowserRouter and
+        RouterProvider
+
+                function App() {
+                        const router = createBrowserRouter([
+                                {
+                                    path: "/",
+                                    element: <Home />,
+                                },
+                        ]};
+        
+                        return (
+                            <RouterProvider router={router}/>
+                        )
+                }
 
 
+*/
 
 
+function useConfirmNavigation(shouldBlock) {
+    const block = useBlocker(shouldBlock);
 
+    useEffect(() => {
+        if(block.status !== 'blocked') return;
+
+        const confirmed = confirm('Are you sure you want to leave? You will forfeit the match in doing so');
+        if(confirmed)
+            block.proceed();                        
+        else        
+            block.reset();                //prevents the user from navigating away
+    }, [block.status])
+
+    return block;                         //component that uses useConfirmNavigation() must have this object for the blocker to work
+}
 
 
 

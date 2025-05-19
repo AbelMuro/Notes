@@ -590,20 +590,24 @@ node.replaceChild(newNode, oldNode);				//replaces an existing node with a new n
 
 const clonedNode = node.cloneNode(true)				//clones an exact copy of a node, if argument is true, then the child elements also get cloned
 
-const rect = node.getBoundingClientRect();			/* returns a object with the width, height, top, bottom, left, right (relative to viewport) css properties of the element
-								   the measurements include transformations done with scale() and rotate */	
 
-const offsetWidth = node.offsetWidth; 				/* returns the width and height of the element, including paddings and borders */
-const offsetHeight = node.offsetHeight;
+const rect = node.getBoundingClientRect();			/* returns a object with the width, height, top, bottom, left, right (relative to viewport) css properties of the element as it appears on the browser
+								   includes padding and border and transformations in the width and height values*/	
 
-const clientWidth = node.clientWidth;				/* returns the width and height of the element, excluding paddings and borders */
+const styles = window.getComputedStyle(node);			/* returns an object containing ALL the css properties of the element as it appears on the browser
+								   Excludes padding and border and transformations in the width and height values */
+
+const offsetWidth = node.offsetWidth; 				/* returns the width and height of the element as it appears on the browser, including paddings and borders, but excludes transformations*/
+const offsetHeight = node.offsetHeight;						
+
+const clientWidth = node.clientWidth;				/* returns the width and height of the element as it appears on the browser, excluding paddings and borders and transformations */
 const clientHeight = node.clientHeight;
 
-const styles = window.getComputedStyle(node);			/* returns an object containing ALL the css properties of the element
-								   Once the browser is done processing all stylesheets, inline styles, and other css manipulations.
-	   							   getComputedStyle() will return the values of what the element actually looks like in the browser */
-
-
+/* 
+   Once the browser is done processing all stylesheets, inline styles, and other css manipulations.
+   getBoundingClientRect(), getComputerStyle(), offsetHeight and clientHeight 
+   will return the values of what the element actually looks like in the browser
+*/
 
 
 

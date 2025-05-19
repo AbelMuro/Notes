@@ -1004,12 +1004,94 @@ function Upload() {
 
 
 
-//-------------------------------------------------------- FIRESTORE --------------------------------------------------------------------------------
+//=================================================== FIREBASE FIRESTORE ===================================================
+/* 
+        The firestore is a NoSQL database that can be used for deep nesting.
+        Firestore organizes its data by using collections, and each collection 
+        is a group of documents. Each document has syntax similar to an JS object.
+        Add firestore to your project.
+        
+*/
+
+
+//------------------------- Initialize Firestore
+/* 
+        You can initialize firestore by using the getFirestore() method
+*/
+
+import { initializeApp } from "firebase/app";               
+import { getFirestore} from 'firebase/firestore';
+
+const firebaseConfig = {                                    
+    apiKey: "",                     
+    authDomain: "",               
+    projectId: "",                   
+    storageBucket: "",
+    messagingSenderId: "",         
+    appId: "",                             
+    measurementId: "",
+};
+
+const app = initializeApp(firebaseConfig);
+export const firestore = getFirestore(app);
+
+
+
+
+//------------------------- Doc() function
+/* 
+        You can use the doc() function to get a reference to a specific
+        document in a collection. The second/third arguments of this function
+        accept directories that point to a specific document. Also, if the 
+        directory includes a path that doesnt exist, then it will be created.
+        Keep in mind that the final path of the directory must be a document
+*/
+
+
+import {doc} from 'firebase/firestore'
+import {firestore} from './firebase-config';
+
+const docRef = doc(db, 'users/richard/history/actions/contacts/david')      // users is a colletion, richard is a document, history is a collection, actions is a document, etc..  
+const docRef = doc(db, "users", "richard/info/data")                        // second argument accepts the name of a collection, third argument accepts the directory of a document within the collection
+docRef.exists();                                                            // returns a boolean value indicating if the document exists in the collection 
+
+
+
+
+//------------------------- Collection() function
+/* 
+        You can use the collection() function to get a reference to a specific
+        collection in firestore.
+*/
+
+import {collection} from 'firebase/firestore'
+import {firestore} from './firebase-config';
+
+const collectionRef = collection(db, "users");                            // selects a collection
+const collectionRef = collection(db, "users/richard/history");            // users is a collection, richard is a document, history is a collection
+const docRef = doc(collectionRef, "Abel")                                 // you can also use the reference returned by collection(), and use it on the first argument of doc()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import {collection, addDoc, setDoc, doc, updateDoc, increment, decrement, arrayUnion, deleteDoc, onSnapshot} from 'firebase/firestore'
 
-//in Firestore, data is organized in documents, which are then organized into collections
-//keep in mind that doc() and collection() can also create nested collections or doc
-const docRef = doc(db, 'richard/info/data/time/person/whatever')        //even though time doesnt exist, it will be created with all the nested doc
 
 
 //this is also legal
@@ -1018,15 +1100,11 @@ const docRef = doc(collectionRef, "Abel")                 //selects a document w
 
 
 //this is how you create nested collections
-const nestedDocumentRef = doc(db, "users", "richard/info/data")   //richard is a document within the users collection, info is a nested collection and data is a document within the nested collection
 const nestedCollectionRef = collection(db, "users/richard/info") //users is a collection, richard is a document, info is a nested collection within richard
 
 
 //different ways of using doc()
 const docRef = doc(collectionRef, "Abel");                       //passing a collection ref as the first argument and passing the name of the document as the second argument
-const nestedDocumentRef = doc(db, "users", "richard/info/data"); //first argument receives the firestore object, second argument takes the name of collection, and the third is the name of the document
-const anotherDocRef = doc(db, "users/abel");                     //users is the collection, abel is the document
-anotherDocRef.exists();                                          //self explainatory
 
 //different ways of using collection()
 const collectionRef = collection(db, "users");            //selects a collection

@@ -161,6 +161,18 @@
     x attribute defines the space between the left border of the SVG to the center of the text
     y attribute defines the space between the the top border of the SVG to the center of the text
     text-anchor defines how the text is aligned relative to its center (start, middle, end)
+
+    There will be times when you want the SVG container to be the same size as the <text/> element
+    You can use the font.ready() async method to check when the font-family has been loaded on
+    the <text/> element. You can dynamically set the width and height of the SVG inside the ready()
+    async method. Keep in mind, if you are using transitions, you will need to use a setTimeout() to 
+    force the fonts.ready() function to wait until the transitions finishes.
+
+        document.fonts.ready.then(() => {
+            const bbox = textElement.getBBox();
+            svgElement.setAttribute('width', bbox.width + 20);                
+            
+        })
 -->
 
 <svg>

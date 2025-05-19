@@ -390,39 +390,7 @@ func2();
 	The DOM (Document Object Model) is an tree-like structure that represents the actual website. This structure is
  	made of nodes that each represents a section/part of the website. In Javascript, we have the Document object that
   	has a collection of methods and properties that we can use to manipulate the DOM and update the actual website.
-
-		Node Methods and properties:
-	
-		   	const node = document.querySelector('');
-		
-			const parent = node.parentNode;
-		 	const childNodes = node.childNodes;				//returns all child elements as an array (includes text nodes)
-	   		const children = node.children;					//returns all child elements as an array (excludes text nodes)   
-	   
-	   		const firstChild = node.firstChild;				//returns the first child node of the element (includes text nodes)
-	     		const lastChild = node.lastChild;				//returns the last child node of the element (includes text nodes)
-	     		const firstElementChild = node.firstElementChild;		//returns the first child node of the element (excludes text nodes)
-	       		const lastElementChild = node.lastElementChild;			//returns the last child node of the element (excludes text nodes)       
-	       
-	       		const nextSibling = node.nextSibling;				//returns the next sibling element
-		 	const previousSibling = node.previousSibling;			//returns the previous sibling element
-	
-		 	const innerHTML = node.innerHTML;				//returns the HTML of the element, can also be used to set the HTML of the element
-	   		const textContent = node.textContent;				//returns the text child node of the element, can also be used to set the text of the element
-		
-	       		node.setAttribute('class', 'myNewClass');			//sets an attribute with the specified value
-		 	node.removeAttribute('class');					//removes an attribute
-		 	const attribute = node.getAttribute('class');			//returns an attribute's value as a string
-	
-	   		node.appendChild(node);						//adds a child node to the element
-	     		node.removeChild(node);						//removes the child node from the element
-	       		node.replaceChild(newNode, oldNode);				//replaces an existing node with a new node
-		 
-		 	const clonedNode = node.cloneNode(true)				//clones an exact copy of a node, if argument is true, then the child elements also get cloned
 */
-
-
-
 
 
 //------------------- querySelector()
@@ -469,9 +437,6 @@ const nodes = document.getElementsByClassName("my_class");
  	the tag name of the element. The returned value is an array of nodes
 */
 const nodes = document.getElementsByTagName("div");                                  
-
-
-
 
 
 
@@ -591,6 +556,52 @@ document.getElementById("id").addEventListener("click", (e) => {
 
 
 
+//------------------- Node reference methods
+/* 
+	Once you obtain a reference to an element using the methods above.
+ 	You can use the following methods to get additional meta data of
+  	the node.
+*/
+
+const node = querySelector('.myElement');
+
+const parent = node.parentNode;					//returns the parent node of the current node
+const childNodes = node.childNodes;				//returns all child elements as an array (includes text nodes)
+const children = node.children;					//returns all child elements as an array (excludes text nodes)   
+
+const firstChild = node.firstChild;				//returns the first child node of the element (includes text nodes)
+const lastChild = node.lastChild;				//returns the last child node of the element (includes text nodes)
+const firstElementChild = node.firstElementChild;		//returns the first child node of the element (excludes text nodes)
+const lastElementChild = node.lastElementChild;			//returns the last child node of the element (excludes text nodes)       
+
+const nextSibling = node.nextSibling;				//returns the next sibling element
+const previousSibling = node.previousSibling;			//returns the previous sibling element
+
+const innerHTML = node.innerHTML;				//returns the HTML of the element, can also be used to set the HTML of the element
+const textContent = node.textContent;				//returns the text child node of the element, can also be used to set the text of the element
+
+node.setAttribute('class', 'myNewClass');			//sets an attribute with the specified value
+node.removeAttribute('class');					//removes an attribute
+const attribute = node.getAttribute('class');			//returns an attribute's value as a string
+
+node.appendChild(node);						//adds a child node to the element
+node.removeChild(node);						//removes the child node from the element
+node.replaceChild(newNode, oldNode);				//replaces an existing node with a new node
+
+const clonedNode = node.cloneNode(true)				//clones an exact copy of a node, if argument is true, then the child elements also get cloned
+
+const rect = node.getBoundingClientRect();			/* returns a object with the width, height, top, bottom, left, right (relative to viewport) css properties of the element
+								   the measurements include transformations done with scale() and rotate */	
+
+const offsetWidth = node.offsetWidth; 				/* returns the width and height of the element, including paddings and borders */
+const offsetHeight = node.offsetHeight;
+
+const clientWidth = node.clientWidth;				/* returns the width and height of the element, excluding paddings and borders */
+const clientHeight = node.clientHeight;
+
+const styles = window.getComputedStyle(node);			/* returns an object containing ALL the css properties of the element
+								   Once the browser is done processing all stylesheets, inline styles, and other css manipulations.
+	   							   getComputedStyle() will return the values of what the element actually looks like in the browser */
 
 
 

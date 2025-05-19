@@ -11,6 +11,12 @@
 //=================================================== Initialize Firebase ===================================================
 /* 
         You can initialize firebase by calliing the initializeApp functions
+        But first you need to create a new project in the firebase console
+
+        Go to firebase console -> create new project -> go to project settings -> general -> scroll down to 'your apps' section, and add a web app to the project
+
+        When you add a web app to your project, it will generate the firebaseConfig object that 
+        you will need to use for initializing the firebase SDK
 */
 
 import { initializeApp } from "firebase/app";               
@@ -56,6 +62,11 @@ export const db = getFirestore(app);
 /*
     Realtime database is a NoSQL database that allows you to store data in real time.
     This realtime database is usefull for apps that require live updates. 
+    Add Realtime Database to your firebase project and change the read and write rules
+    for the database
+
+    Go to firebase console -> Realtime database -> Rules -> { "rules": {".read": true, ".write": true}}
+    
 
     This database organizes all of its data as a large JSON structure tree.
 
@@ -91,8 +102,15 @@ import { getDatabase} from 'firebase/database';
 
 
 const firebaseConfig = {                                    
-    databaseURL: "",                         //the url of the database for this project
+    apiKey: "",                      //the 'key' that your app needs to access the firebase console
+    authDomain: "",                 //the domain for the authentication that your app can use for signing in and logging out
+    projectId: "",                   //identifies the project that this app will be using
+    storageBucket: "",
+    messagingSenderId: "",          //the ID that is used for enabling messaging in your app
+    appId: "",                     //the ID that is used for identifying the app in the project. Projects can have multiple apps             
+    measurementId: "",
 };
+
 
 
 const app = initializeApp(firebaseConfig);
@@ -114,7 +132,6 @@ export const db = getDatabase(app);
 */
 import {ref, set, push} from 'firebase/database';
 import {db} from './Firebase/Config.js';
-
 
 async function createNewNode(newData){
     const referenceToDB = ref(db, 'users/user1');
@@ -221,8 +238,37 @@ async function getAllNodes() {
 
 //=================================================== AUTHENTICATION ===================================================
 /* 
-        You can implement authentication with firebase with different providers
+        You can implement authentication with firebase with different providers. 
+        Add authentication to your project in the firebase console, and add a 
+        sign-in provider that your app can use to sign in users
+
+        go to firebase console -> authentication -> go to sign-in-method -> select the sign-in providers you want to use      
+        
 */
+
+
+//------------------------- Initializing Authentication
+/* 
+        You must call the getAuth() function to initialize authentication
+        in your firebase app
+*/
+import { initializeApp } from "firebase/app";                   
+import { getAuth} from 'firebase/auth';
+
+const firebaseConfig = {                                    
+    apiKey: "",                      //the 'key' that your app needs to access the firebase console
+    authDomain: "",                 //the domain for the authentication that your app can use for signing in and logging out
+    projectId: "",                   //identifies the project that this app will be using
+    storageBucket: "",
+    messagingSenderId: "",          //the ID that is used for enabling messaging in your app
+    appId: "",                     //the ID that is used for identifying the app in the project. Projects can have multiple apps             
+    measurementId: "",
+};
+
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);                                         
+
 
 
 
@@ -262,9 +308,7 @@ onAuthStateChanged(auth, (currentUser) => {
 
 
 
-
-
-//------------------------- Send email link to verify email
+//------------------------- Verify Email
 /* 
         If you want the user to verify their email before logging in,
         you can do this by using the sendEmailVerification() function
@@ -282,8 +326,6 @@ async function verifyEmail() {
 }
 
                                 
-
-
 //------------------------- Register with email and password
 /* 
         You can register an account with createUserWithEmailAndPassword()
@@ -299,7 +341,6 @@ async function verifyEmail() {
                 providerId: The authentication provider (e.g., password, google.com)
                 emailVerified
         }
-        
 */
 
 import { createUserWithEmailAndPassword} from 'firebase/auth';
@@ -313,7 +354,6 @@ async function Register(email, password) {
        console.log(error.message);
   }
 }
-
 
 
 
@@ -385,8 +425,6 @@ async function updateAccount() {
 
 
 
-
-
 //------------------------- Logging out
 /* 
         You can use the signOut() function to log out
@@ -404,9 +442,6 @@ async function logOut(email, password) {
        console.log(error.message);
   }
 }
-
-
-
 
 
 
@@ -451,11 +486,6 @@ async function registerWithEmailLink(email) {
 
 
 
-
-
-
-
-
 //------------------------- Login with Google
 /* 
         You can login with google by using the GoogleAuthProvider() constructor
@@ -480,22 +510,19 @@ async function LoginWithGoogle() {
     try{
         const provider = new GoogleAuthProvider();
         provider.setCustomParameters({
-                   login_hint: 'A string specifying the email address of the user to be pre-filled in the sign-in form.'
-                   hd: 'A string specifying a Google Workspace domain to restrict sign-in to users from a particular domain.' 
-                   prompt: 'Specifies the authentication prompt behavior. Possible values are "none", "consent", or "select_account".'
-                   include_granted_scopes: 'A boolean (true or false) to indicate whether the user should be prompted to grant additional scopes if they’ve already signed in.'
-                   openid.realm: 'Used for OpenID authentication and helps with federated identity setups.'
-                   access_type: 'Defines whether the authentication flow should request offline access. Possible values are "online" or "offline".'
+                   login_hint: 'A string specifying the email address of the user to be pre-filled in the sign-in form.',
+                   hd: 'A string specifying a Google Workspace domain to restrict sign-in to users from a particular domain.' ,
+                   prompt: 'Specifies the authentication prompt behavior. Possible values are "none", "consent", or "select_account".',
+                   include_granted_scopes: 'A boolean (true or false) to indicate whether the user should be prompted to grant additional scopes if they’ve already signed in.',
+                   openid.realm: 'Used for OpenID authentication and helps with federated identity setups.',
+                   access_type: 'Defines whether the authentication flow should request offline access. Possible values are "online" or "offline".',
         });
-        const userCredentials = await signInWithPopup(auth, provider)    
+        const userCredentials = await signInWithPopup(auth, provider);    
     }
     catch(error){
         console.log(error);
     }
 }
-
-
-
 
 
 
@@ -539,8 +566,6 @@ async function LoginWithMicrosoft(){
 
 
 
-
-
 //------------------------- Login with Facebook
 /* 
         You can login with facebook with the FacebookAuthProvider() constructor
@@ -573,9 +598,6 @@ async function LoginWithFacebook(){
 
 
 
-
-
-
 //------------------------- Delete account
 /* 
         You can delete your account by using the deleteUser() function
@@ -596,119 +618,68 @@ async function deleteAccount() {
 
 
 
+//------------------------- Sign in with Phone number
+/* 
+        You can enable uses to sign in with a phone number by using 
+        the signInWithPhoneNumber() function. Phone number must be in 
+        the following format.
 
+                +1 510 619 6057
+*/
 
-
-
-
-
-
-
-
-
-import { createUserWithEmailAndPassword, updateProfile, signOut, sendEmailVerification, sendSignInLinkToEmail, deleteUser} from 'firebase/auth';
-import { GoogleAuthProvider, OAuthProvider, FacebookAuthProvider, signInWithPopup} from 'firebase/auth'
-import {auth} from './firebase-config';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function SignInWithPhoneNumber() {
-    const [confirm, setConfirm] = useState(null);
-    const [code, setCode] = useState('');
-
-    const handleSubmit = async () => {
-        try{
-            const confirmationResult = await signInWithPhoneNumber(auth, '+5106196086', window.recaptchaVerifier);
-            setConfirm(confirmationResult);
-        }
-        catch(error){
-            console.log(error);
-        }
-    }
-
-    const handleCode = (e) => {
-        setCode(e.target.value);
-    }
-
-    const submitCode = async() => {
-        try{
-            const result = await confirm.confirm(code);
-            //user is now logged in!
-        }
-        catch(error){
-            if(error.code === 'auth/invalid-verification-code')
-                //display an error message to the user
+        // 1) In an onSubmit handler, you will call signInWithPhoneNumber() and this will return a confirm object
+        
+          import { signInWithPhoneNumber } from 'firebase/auth';
+          import {auth} from './firebase-config';
+        
+          const handleSubmit = async (phoneNumber) => {
+                try{
+                    const confirm = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+                    console.log('text message with a code was sent to the phone number')
+                    setConfirm(confirm);                        //you should put the confirm object in a state 
+                }
+                catch(error){
+                    console.log(error);
+                }
+            }
+          
+        
+        // 2) With the confirm object, you have access to the confirm() method that can be used to 
+        //    let the user enter the code that was sent to them
+        
+        const handleCode = (code) => {
+                try{
+                    const result = await confirm.confirm(code);                //confirm is the object returned from signInWithPhoneNumber()
+                    console.log('user is logged in')
+                }
+                catch(error){
+                    if(error.code === 'auth/invalid-verification-code')
+                        console.log('Invalid Code was entered')
+                }
         }
         
-    }
-
-    useEffect(() => {
-        auth.languageCode = 'en'; 
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {            // 'sign-in-button' is an ID of a button that calls 'signInWithPhoneNumber()'
-            'size': 'invisible',
-            'callback': (response) => {
-                console.log(response);
-            }
-        });
-    }, [])
-
-
-    return(
-        <form className={styles.form}>
-            {confirm ? 
-                <fieldset>
-                    <h1>
-                        We sent you a code, please enter the code
-                    </h1>
-                    <input value={code} onChange={handleCode} />
-                    <button onClick={submitCode}>
-                        Submit Code
-                    </button>
-                </fieldset> : 
-                <fieldset>
-                    <button id='sign-in-button' onClick={handleSubmit}>
-                        Register
-                    </button>            
-                </fieldset>
-            }
-        </form>
-    )
-}
 
 
 
 
 //------------------------------------------------------- AUTHENTICATION REACT HOOKS -----------------------------------------------------------------
+/* 
+        You can also implement authentication with firebase hooks
+        keep in mind, for microsoft and facebook, you will need to configure your developers account 
+        for each of these companies to use the 'log in' functionality make sure you use the 
+        redirect URI for the configuration 
+*/
+
+
 import {useSignInWithGoogle, useSignInWithApple, useSignInWithMicrosoft, useSignInWithFacebook, useAuthState} from 'react-firebase-hooks/auth'
 import {auth} from './firebase-config';
 
-
-
-//keep in mind, for microsoft and facebook, you will need to configure your developers account for each of these companies to use the 'log in' functionality
-//make sure you use the redirect URI for the configuration 
 function LoginPage() {
     const [signInWithGoogle, userGoogle, loadingGoogle, errorGoogle] = useSignInWithGoogle(auth);           //userGoogle is an object with all the credentials of the user
     const [signInWithApple, userApple, loadingApple, errorApple] = useSignInWithApple(auth);
     const [signInWithMicrosoft, userMicrosoft, loadingMicrosoft, errorMicrosoft] = useSignInWithMicrosoft(auth);
     const [signInWithFacebook, userFacebook, loadingFacebook, errorFacebook] = useSignInWithFacebook(auth);
+    const [user] = useAuthState(auth);
     
     const handleGoogle = async () => {
         try{
@@ -757,14 +728,6 @@ function LoginPage() {
 }
 
 
-function AuthStateChangeHook() {
-    const [user] = useAuthState(auth);
-    
-    return(
-        {user ? <AccountPage/> : <LoginPage/>}
-    )
-
-}
 
 
 
@@ -777,9 +740,95 @@ function AuthStateChangeHook() {
 
 
 
-//------------------------------------------------------ FIREBASE STORAGE-----------------------------------------------------------------------------
-//REMEMEBER, YOU MUST SET THE RULES OF THE STORAGE TO ALLOW PEOPLE TO ACCESS YOUR STORAGE.
-//https://console.firebase.google.com/u/0/project/insta-messaging-app/storage/insta-messaging-app.appspot.com/rules
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=================================================== FIREBASE STORAGE ===================================================
+/* 
+        You can use the storage in firebase to store files such as images and text documents
+        Add firebase storage to your project, and set the rules of the storage to allow people to access
+        the storage.
+
+        go to firebase console -> firebase storage -> Rules -> allow read, write: if true;
+
+*/
+
+
+
+//------------------------- Initialize firebase storage
+/* 
+        You must initialize firebase storage by using the getStorage()
+        function. The second argument is a link that is generated in the
+        storage.
+
+        Go to firebase console -> firebase storage -> copy the url ('gs://name-of-project-f1fdc.appspot.com/')
+*/
+
+import { initializeApp } from "firebase/app";               
+import { getStorage} from 'firebase/storage';
+
+const firebaseConfig = {                                    
+    apiKey: "",                    
+    authDomain: "",           
+    projectId: "",                
+    storageBucket: "",
+    messagingSenderId: "",       
+    appId: "",                            
+    measurementId: "",
+};
+
+const app = initializeApp(firebaseConfig);
+export const storage = getStorage(app, 'gs://link-sharing-app-f1fdc.appspot.com/');  //you must include the 'bucket' name for the storage you are trying to access
+
+
+
+
+
+//-------------------------  Upload an image to storage
+/* 
+        You can upload an image to storage by using the ref() 
+        function and the uploadBytes() function
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import {ref as refSB, uploadBytes, listAll} from "firebase/storage";                     //some modules have the same function names, such as ref
 import {storage} from './firebase-config';

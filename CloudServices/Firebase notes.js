@@ -668,64 +668,145 @@ async function deleteAccount() {
         keep in mind, for microsoft and facebook, you will need to configure your developers account 
         for each of these companies to use the 'log in' functionality make sure you use the 
         redirect URI for the configuration 
+
+        All the following hooks return the user object
+
+                user = {
+                        uid: Unique identifier for the user.
+                        displayName: User's full name from their Facebook profile.       
+                        email: Email associated with the account (if available).        
+                        photoURL: Profile picture URL.       
+                        emailVerified: Boolean indicating if the email is verified.         
+                        phoneNumber: User's phone number (if available).           
+                        providerData: Array of authentication provider details.      
+                        metadata: Contains timestamps for account creation and last sign-in.
+                }
 */
 
 
-import {useSignInWithGoogle, useSignInWithApple, useSignInWithMicrosoft, useSignInWithFacebook, useAuthState} from 'react-firebase-hooks/auth'
+
+
+//------------------------- useSignInWithGoogle()
+/* 
+        you can use the useSignInWithGoogle() hook to sign in your
+        users with google. It displays a popup on the website that 
+        takes the user to the google login page.
+*/
+
+import {useSignInWithGoogle} from 'react-firebase-hooks/auth'
 import {auth} from './firebase-config';
 
-function LoginPage() {
-    const [signInWithGoogle, userGoogle, loadingGoogle, errorGoogle] = useSignInWithGoogle(auth);           //userGoogle is an object with all the credentials of the user
-    const [signInWithApple, userApple, loadingApple, errorApple] = useSignInWithApple(auth);
-    const [signInWithMicrosoft, userMicrosoft, loadingMicrosoft, errorMicrosoft] = useSignInWithMicrosoft(auth);
-    const [signInWithFacebook, userFacebook, loadingFacebook, errorFacebook] = useSignInWithFacebook(auth);
-    const [user] = useAuthState(auth);
-    
+function App() {
+    const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);           //userGoogle is an object with all the credentials of the user
+
     const handleGoogle = async () => {
         try{
-           await signInWithGoogle();                        //after this function is called, the userAuthState() will automatically redirect you to account page
+           await signInWithGoogle();                 
         }
         catch(error){
-            console.log(error);
+            console.log(error.message);
         }
     }
-    const handleApple = async () => {
-        try{
-            await signInWithApple();                        //to use apple log in, you have to buy a subscription that costs $100 a year, fuck that
+        
+}
+
+
+
+//------------------------- useSignInWithApple()
+/* 
+        You can use the useSignInWithApple() hook to enable users to log in with 
+        their apple account. It displays a popup on the website that takes users 
+        to the apple log in page.
+
+        to use apple log-in, you have to buy a subscription that costs $100 a year, fuck that
+*/
+
+import { useSignInWithApple} from 'react-firebase-hooks/auth'
+import {auth} from './firebase-config';
+
+
+function App(){
+        const [signInWithApple, user, loading, error] = useSignInWithApple(auth);
+
+        const handleApple = async () => {
+                try{
+                    await signInWithApple();                       
+                }
+                catch(error){
+                    console.log(error.message);
+                }
         }
-        catch(error){
-            console.log(error);
-        }
-    }
-    
-    const handleMicrosoft = async () => {
-        try{                                                //you MUST include the following parameters on the second argument for this to work
-            await signInWithMicrosoft("", {prompt: "consent", tenant: "9376f0e7-1c43-470a-aaea-06f6e6e413da"});     //prompt will ask the user which microsoft account they want to use            
-        }
-        catch(error){
-            console.log(error);
-        }
-    }
-    
-    const handleFacebook = async () => {
-        try{
-            await signInWithFacebook();
-        }
-        catch(error){
-            console.log(error);
+}
+
+
+
+//------------------------- useSignInWithMicrosoft()
+/* 
+        You can use the useSignInWithMicrosoft() hook to enable users to log in with 
+        their microsoft account. It displays a popup on the website that takes users 
+        to the microsoft log in page.
+*/
+
+import { useSignInWithMicrosoft} from 'react-firebase-hooks/auth'
+import {auth} from './firebase-config';
+
+function App() {
+        const [signInWithMicrosoft, user, loading, error] = useSignInWithMicrosoft(auth);
+
+        const handleMicrosoft = async () => {
+                try{                                                //you MUST include the following parameters on the second argument for this to work
+                    await signInWithMicrosoft("", {prompt: "consent", tenant: "9376f0e7-1c43-470a-aaea-06f6e6e413da"});     //prompt will ask the user which microsoft account they want to use            
+                }
+                catch(error){
+                    console.log(error);
+                }
         }
         
-    }
-
-    return(
-        <>
-            <button onClick={handleGoogle}> "Sign In with Google" </button>   
-            <button onClick={handleApple}> "Sign In with Apple" </button> 
-            <button onClick={handleMicrosoft}> "Sign In with Microsoft" </button> 
-            <button onClick={handleFacebook}> "Sign In with Facebook" </button> 
-        <>
-    )
 }
+
+
+
+
+//------------------------- useSignInWithFacebook()
+/* 
+        You can use the useSignInWithFacebook() hook to enable users to log in with 
+        their faceboook account. It displays a popup on the website that takes users 
+        to the facebook log in page.
+*/
+
+import { useSignInWithFacebook} from 'react-firebase-hooks/auth'
+import {auth} from './firebase-config';
+
+function App() {
+        const [signInWithFacebook, user, loading, error] = useSignInWithFacebook(auth);  
+
+        const handleFacebook = async () => {
+                try{
+                    await signInWithFacebook();
+                }
+                catch(error){
+                    console.log(error.message);
+                } 
+        }
+}
+
+
+
+//------------------------- useAuthState()
+/* 
+        You can use the useAuthState() hook to detect changes 
+        on the log-in state of the user
+*/
+
+import { useAuthState} from 'react-firebase-hooks/auth'
+import {auth} from './firebase-config';
+
+function App() {
+        const [user] = useAuthState(auth);    
+}
+
+
+
 
 
 
@@ -795,68 +876,53 @@ export const storage = getStorage(app, 'gs://link-sharing-app-f1fdc.appspot.com/
 
 
 
-
-//-------------------------  Upload an image to storage
+//-------------------------  Upload file to storage
 /* 
         You can upload an image to storage by using the ref() 
-        function and the uploadBytes() function
+        function and the uploadBytes() function.
+
+        The file upload can be the files uploaded from <input type="file"/>  
+        or any blob object
 */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import {ref as refSB, uploadBytes, listAll} from "firebase/storage";                     //some modules have the same function names, such as ref
+import {ref, uploadBytes, listAll} from "firebase/storage";                  
 import {storage} from './firebase-config';
 
-
-
-
-//the functions below are all asynchronous
 async function uploadImagesToStorage(file) {
-     const reference = refSB(storage, "/AbelsImages/" + file.name);                   //its a good idea to store the images in a folder like this
-     await uploadBytes(reference, file);                                        //file can be the Javascript File that comes from the <input type="file">     
-}                                                                                     //or it can be a blob object
+     const reference = ref(storage, "/AbelsImages/" + file.name);                  
+     const uploadResult = await uploadBytes(reference, file);            
+     uploadResult.metadata;
+     uploadResult.ref;                //reference to the file uploaded to storage                              
+}                                                                                 
+
+
+
+
+//------------------------- Download file from storage
+/* 
+        You can download a file from storage by using the 
+        getDownloadURL(). This function will return the url
+        of the file in storage that can be used to download the file
+*/
+
+import {ref, getDownloadURL} from "firebase/storage";                  
+import {storage} from './firebase-config';
 
 async function downloadImagesFromStorage(fileName){
-    const reference = refSB(storage, "/AbelsImages/" + fileName);
-    let url = await getDownloadURL(reference);
-    //you can then select an img element and assign the url to the src attribute
+    const reference = ref(storage, "/AbelsImages/" + fileName);
+    const url = await getDownloadURL(reference);
+    //you can assign the url to the src attribute of an img tag
 }
 
 
-async function TraversingThroughTheFilesInAFolder() {
-    const imagesRef = ref(storage, 'myImages');
-    const results = await listAll(imagesRef);
-    results.items.forEach((ref) => {
-            ref.name;
-            ref;                        //ref is a file reference, you will need to use getDownloadURL() to get the url for the file
-    })
-}
+//------------------------- Delete file from storage
+/* 
+        You can delete files from the storage by using the 
+        deleteObject() function.
+*/
+
+import {ref, deleteObject} from "firebase/storage";                  
+import {storage} from './firebase-config';
 
 async function deleteFile() {
     const imageRef = ref(storage, 'myImages/funny-cat.jpg');
@@ -864,41 +930,59 @@ async function deleteFile() {
 }
 
 
+
+
+
+
+
 //-------------------------------------------------------- FIREBASE STORAGE REACT HOOKS -----------------------------------------------------------
-import { useDownloadURL, useUploadFile } from 'react-firebase-hooks/storage';
-import {ref as refSB} from 'firebase/storage';
+/* 
+     You can use hooks to upload and download files from the storage   
+*/
+
+
+
+//------------------------- useDownloadURL()
+/* 
+        You can use the useDownloadURL() hook to download a file
+        from the storage. The hook returns the url for the file 
+        that can be used on a src attribute of an img tag
+*/
+
+import { useDownloadURL} from 'react-firebase-hooks/storage';
+import {ref} from 'firebase/storage';
 import {storage} from './firebase-config';
 
-
-function Download(props) {
-    const ref = refSB(storage, "/DavidsImages/" + props.fileName);
+function App({filename}) {
+    const ref = ref(storage, "/DavidsImages/" + fileName);
     const [downloadUrl, loading, error] = useDownloadURL(ref);                      
                                                                                     
-    if(loading)
-        return(<>still loading</>)
-    
-    else{
-          const url = downloadUrl();
-          return(<img src={url} />)
-     }
+    return !loading && <img src={url}/>
 }
 
 
-//not sure about this one yet
+
+
+
+
+//------------------------- useUploadFile()
+/* 
+        You can use useUploadFile() hook to upload a file 
+        to the storage.
+*/
+
+import {useUploadFile } from 'react-firebase-hooks/storage';
+import {ref} from 'firebase/storage';
+import {storage} from './firebase-config';
+
 function Upload() {
     const [uploadFile, uploading, snapshot, error] = useUploadFile();
     
-    const handleClick = async (e) => {
-        const file = e.target.files;
-        const ref = refSB(storage, "/folderName/" + file.name);
-        await uploadFile(ref, file,  );
+    const handleClick = async (file) => {                                //file is a blob object from an <input type='file'/>
+        const ref = ref(storage, "/folderName/" + file.name);
+        await uploadFile(storage, file, { contentType: "text/plain" });;
     }
-    
-    return(
-        <input type="file" onClick={handleClick}/>
-    
-    )
-    
+     
 }
 
 

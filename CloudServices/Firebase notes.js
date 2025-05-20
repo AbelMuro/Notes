@@ -1073,6 +1073,9 @@ const docRef = doc(collectionRef, "Abel")                                 // you
 
 
 
+
+        
+
 //------------------------- Getting a document from a collection
 /* 
         You can get a document from a collection by using the getDoc() function.
@@ -1133,7 +1136,7 @@ async function getDocument() {
                 limit()      can be used to limit the number of documents that are retrieved from the collection      
 */
 
-import { getDocs, query, where, orderBy, limit } from "firebase/firestore";
+import { getDocs, collection, query, where, orderBy, limit } from "firebase/firestore";
 
 async function getAllDocumentsFromCollection() {
     try{
@@ -1210,6 +1213,8 @@ async function addNewDocument () {
                 }
 */
 
+import {doc, setDoc} from 'firebase/firestore'
+
 async function ReplaceDocument() {
      try{
         const newDocument = doc(db, "cities", "LA");                  
@@ -1242,15 +1247,26 @@ async function ReplaceDocument() {
         updateDoc() function will be updated in the existing document. If a property
         doesnt exist in the original document, then that property will be added.
         If the document doesnt exist, then it will be created
+
+        If you want to retrieve the previous value of a property and update it.
+        you can do so by using the following functions
+
+                increment()        accepts a positive or negative integer value that will be used to increment or decrement the property's original value
+                arrayUnion()       accepts any value that will be added as a new element to the property's original array (if arrayUnion() contains an element that is already included in the original array, then nothing will happen)
+                arrayRemove()      accepts a value that will be filtered from the property's original array
+                serverTimeStamp()  returns the current server's time when the document was updated
 */
+
+import {updateDoc, doc, increment, arrayUnion, serverTimeStamp} from 'firebase/firestore'
 
 async function updateDocument() {
     try{
         const documentRef = doc(db, 'posts/post');
-        await updateDoc(documentRef, {                                      //updateDoc will automatically update the fields specified in the second argument
-            title: 'new title',                                              //if the field doesnt exist in the document, then it will be created
-            age: increment(1),                                              //if the field is a number, you can increment the original number with increment or decrement
-            friends: arrayUnion('john'),                                    
+        await updateDoc(documentRef, {                                      
+            title: 'new title',                                            
+            age: increment(1),                      //can be negative as well                                       
+            friends: arrayUnion('john'),     
+            updatedAt: serverTimeStamp()
         })
     }
     catch(error){
@@ -1267,6 +1283,8 @@ async function updateDocument() {
         You can delete a document in a collection by uding the
         deleteDoc() function.
 */
+
+import {deleteDoc, doc} from 'firebase/firestore'
 
 async function deleteDocument() {
     try{
@@ -1299,6 +1317,8 @@ async function deleteDocument() {
         }
 */
 
+import {onSnapshot, doc} from 'firebase/firestore'
+
 async function detectingChangesInADocument() {
     const docRef = doc(db, `MyAccount/userInfo`);
     const unsubscribe = onSnapshot(docRef,  (document) => {})
@@ -1313,39 +1333,8 @@ async function detectingChangesInADocument() {
 
 
 
-import {collection, addDoc, setDoc, doc, updateDoc, increment, decrement, arrayUnion, deleteDoc, onSnapshot} from 'firebase/firestore'
 
 
-
-
-
-//you can use query(), orderBy() and where() to organize a collection
-const q = query(collectionRef, orderBy('datePosted', 'desc'));
-const [comments, loading] = useCollectionData(q);
-
-const q = query(collectionRef, where('population', '!=', 1000))
-const [country, loading] = useCollectionData(q);
-
-
-
-
-
-
-
-async function updateDocument() {
-    try{
-        const documentRef = doc(db, 'posts/post');
-        await updateDoc(documentRef, {                                      //updateDoc will automatically update the fields specified in the second argument
-            title: 'new title',                                             //if the field doesnt exist in the document, then it will be created
-            age: increment(1),                                              //if the field is a number, you can increment the original number with increment or decrement
-            friends: arrayUnion('john'),                                    //arrayUnion allows you to add elements to an array in the document
-        })
-    }
-    catch(error){
-        console.log(error);
-    }
-        
-}
 
 
 
@@ -1361,6 +1350,7 @@ import {useCollectionData, useCollection} from 'react-firebase-hooks/firestore';
 function ReactHooks () {
     const collectionRef = collection(db, "cities")                                  // collection() returns a reference to a collection
     const documentRef = doc(collectionRef, "LA")                                    // doc() returns a reference to a document from a collection
+    const q = query(collectionRef, orderBy('datePosted', 'desc'));
     
     const [value, loading, error] = useCollectionData(collectionRef);
     //value                                                                         //this is an array that contains all the documents in the collection

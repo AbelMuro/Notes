@@ -1123,16 +1123,33 @@ async function getDocument() {
                document.data(): Returns an object containing all the fields in the document.
                document.get(fieldPath): Retrieves the value of a specific field by its path.
         }
+
+        You can also use the query() function to get a specific group of documents 
+        within the collection. The query() function uses where(), orderBy() and limit()
+        to specify the group.
+
+                orderBy()    can be used to order the documents based on a property (second argument can 'asc' or 'desc')
+                where()      can be used to get a document if a property's value meets a certain condition
+                limit()      can be used to limit the number of documents that are retrieved from the collection      
 */
+
+import { getDocs, query, where, orderBy, limit } from "firebase/firestore";
 
 async function getAllDocumentsFromCollection() {
     try{
         const collectionRef = collection(db, "cities");
-        const query = await getDocs(collectionRef);                           
-        query.forEach((document) => {})
+        const query = await getDocs(collectionRef);   
+        query.forEach((document) => {});
+            
+        const q = query(collectionRef, orderBy('datePosted', 'desc'));
+        const q = query(collectionRef, where('population', '!=', 1000));
+        const q = query(collectionRef, limit(10)));
+        const q = query(collectionRef, where('population', '!=', 1000), limit(20))                // you can combine where(), orderBy() and limit() in the same query function
+        const query = await getDocs(q);                           
     }
-
 }
+
+
 
 
 

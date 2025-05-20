@@ -26,6 +26,15 @@
                 cy: the space between the top border of the SVG and the center of the shape
                 dx:  the horizontal shift of the element, defines the distance between the left border of the shape and a new destination
                 dy:  the vertical shift of the element, defines the distance between the top border of the shape and a new destination
+
+
+        Useful DOM node methods for SVG:
+
+                const svgNode = querySelector('#mySVG');          //getBBox() works for ANY element related to SVG
+                svgNode.getBBox();                                //use this method to get the final calculated width and height of your SVG element
+
+                const textSvgNode = querySelector('#myTextSVG')    //getComputedTextLength() only works for <text/> elements
+                textSvgNode.getComputedTextLength();               //use this method to get the full length of the path of the <text/> element AFTER its been painted on the DOM
 -->
 
 
@@ -52,10 +61,6 @@
                             minY: the minimum value of y, usually 0
                             width: the width of the coordinate system
                             height the height of the coordinate system
-
-
-        const svgNode = querySelector('#mySVG');
-        svgNode.getBBox();                                //use this method to get the final calculated width and height of your SVG
 -->
 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50">

@@ -1076,8 +1076,7 @@ const docRef = doc(collectionRef, "Abel")                                 // you
 //------------------------- Getting a document from a collection
 /* 
         You can get a document from a collection by using the getDoc() function.
-        getDoc() accepts a reference to a document returned from doc().
-        getDoc() returns a promise that resolves to the following object
+        getDoc() returns a promise that resolves to the following object.
 
         snapshot = {
                 id: The document ID.
@@ -1104,6 +1103,38 @@ async function getDocument() {
          console.log(error);
      }
 }
+
+
+
+
+
+
+//------------------------- Getting all documents in a collections
+/* 
+       You can get all the documents in a collection by using the 
+       getDocs() function. The promise that is returned from 
+       getDocs() will resolve to an iterable object that contains 
+       all the documents. Each document in the iterable object has the
+       following properties.
+
+        document = {
+               document.id:   A string representing the document's unique ID.
+               document.ref:  A DocumentReference pointing to this document’s location in Firestore.        
+               document.data(): Returns an object containing all the fields in the document.
+               document.get(fieldPath): Retrieves the value of a specific field by its path.
+        }
+*/
+
+async function getAllDocumentsFromCollection() {
+    try{
+        const collectionRef = collection(db, "cities");
+        const query = await getDocs(collectionRef);                           
+        query.forEach((document) => {})
+    }
+
+}
+
+
 
 
 
@@ -1160,7 +1191,6 @@ async function addNewDocument () {
                         merge:  a boolean indicating if ALL the provided properties should be updated in the existing document, if false, then the whole document will be replaced
                         mergeFields: an array of properties that includes which provided property should be updated in the existing document.
                 }
-        
 */
 
 async function ReplaceDocument() {
@@ -1188,15 +1218,74 @@ async function ReplaceDocument() {
 
 
 
+//------------------------- Update document in collection
+/* 
+        You can update a document in a collection by using the updateDoc()
+        function. All properties in the object on the second argument of the
+        updateDoc() function will be updated in the existing document. If a property
+        doesnt exist in the original document, then that property will be added.
+        If the document doesnt exist, then it will be created
+*/
+
+async function updateDocument() {
+    try{
+        const documentRef = doc(db, 'posts/post');
+        await updateDoc(documentRef, {                                      //updateDoc will automatically update the fields specified in the second argument
+            title: 'new title',                                              //if the field doesnt exist in the document, then it will be created
+            age: increment(1),                                              //if the field is a number, you can increment the original number with increment or decrement
+            friends: arrayUnion('john'),                                    
+        })
+    }
+    catch(error){
+        console.log(error);
+    }
+        
+}
 
 
 
 
+//------------------------- Delete document in collection
+/* 
+        You can delete a document in a collection by uding the
+        deleteDoc() function.
+*/
+
+async function deleteDocument() {
+    try{
+        const docRef = doc(db, 'posts/post');
+        await deleteDoc(docRef);                                                //as the name implies, the document will be deleted from the collection
+    }
+    catch(error){
+          console.log(error.message);
+    }
+}
 
 
 
 
+//------------------------- Detecting changes in a document
+/* 
+        You can detect changes in a document by using the onSnapshot()
+        function. onSnapshot() will return a function that lets you unsubscribe 
+        from the changes of the document. The second argument of this function 
+        accepts a callback that will be called when there is a change in the document. 
+        The callback will accept an object with the following properties.
 
+        document = {
+                doc.id: A string representing the document’s unique ID.
+                doc.ref: A DocumentReference pointing to the document’s location in Firestore.
+                doc.exists(): A boolean indicating whether the document exists.   
+                doc.metadata: Metadata about the document, such as whether it was fetched from the cache or server.
+                doc.data(): Returns an object containing the document’s fields (or undefined if the document doesn’t exist).
+                doc.get(fieldPath): Retrieves the value of a specific field by its path.
+        }
+*/
+
+async function detectingChangesInADocument() {
+    const docRef = doc(db, `MyAccount/userInfo`);
+    const unsubscribe = onSnapshot(docRef,  (document) => {})
+}
 
 
 
@@ -1230,7 +1319,7 @@ async function updateDocument() {
     try{
         const documentRef = doc(db, 'posts/post');
         await updateDoc(documentRef, {                                      //updateDoc will automatically update the fields specified in the second argument
-            title: 'new title',                                              //if the field doesnt exist in the document, then it will be created
+            title: 'new title',                                             //if the field doesnt exist in the document, then it will be created
             age: increment(1),                                              //if the field is a number, you can increment the original number with increment or decrement
             friends: arrayUnion('john'),                                    //arrayUnion allows you to add elements to an array in the document
         })
@@ -1239,40 +1328,6 @@ async function updateDocument() {
         console.log(error);
     }
         
-}
-
-async function deleteDocument() {
-    try{
-        const docRef = doc(db, 'posts/post');
-        await deleteDoc(docRef);                                                //as the name implies, the document will be deleted from the collection
-    }
-    catch(error){
-          console.log(error);
-    }
-
-}
-
-
-async function getAllDocumentsFromCollection() {
-    try{
-        const collectionRef = collection(db, "cities");
-        let query = await getDocs(collectionRef);                           //getDocs() will return an iterable object that you can use to iterate through a collection
-        query.forEach((document) => {
-            document.id;                                                    //gets the name/identifier of the document
-            document.data();
-            doc(db, "cities", document.id);                                 //if you want to update every document in the collection, you must use doc()
-        })
-    }
-
-}
-
-
-async function detectingChangesInADocument() {
-    const docRef = doc(db, `MyAccount/userInfo`);
-    const unsubscribe = onSnapshot(docRef,  (doc) => {                    //everytime there is a change in the document. onSnapshot() will be called
-        doc.data();
-        doc.id;
-    })
 }
 
 

@@ -91,7 +91,8 @@ function App() {
                  animate={                                                
                         backgroundColor: 'red', 
                         x: [-100, -50, 0, 50, 100, 150]                        //will animate through an array of values
-                 }>
+                 }
+                 onAnimationComplete={() => {}}>                                //calls a functions once the animation is complete           
             </motion.div>
      )
 }

@@ -5,9 +5,19 @@
 
 
 
-                                                HANDSHAKE
-            
+                                                HANDSHAKE   
                                                 
+            For two clients to connect, they must exchange their Session Description Protocol (SDP). 
+            SDP is a format that describes the media capabilities (video, audio, resolutions, bandwidth), 
+            the IP address, ports, and network settings of the client. The SDP format looks like the following
+
+                                    v=0
+                                    o=- 123456 654321 IN IP4 192.168.1.10            // session ID
+                                    s=WebRTC Call                                   
+                                    c=IN IP4 203.0.113.1                             // public IP address
+                                    t=0 0                                                
+                                    m=audio 49152 RTP/AVP 96                         // media details (audio/video, port, codec)
+                                    a=rtpmap:96 opus/48000/2                         // atttributes (codec details like opus)
 
             1) The local client creates a RTCPeerConnection() object
 
@@ -34,9 +44,23 @@
 
             11) Once both clients have exchanges SDP information, each client will begin gathering ICE candidates
 
-            12) Both clients will send their ICE candidates to each other through the websocket
-                and each candidate will be checked to see if the candidate can be used for
-                the clients to connect to each other
+
+
+                                                ICE candidate gathering
+                                                
+             Once the initial handshake is done and both clients exchanged SDP information,  they will exchange
+             Interactive Connectivity Establishment (ICE) candidate information. Each candidate is a potential 
+             network path that both clients can use to create a connection with each other. Below are some examples 
+             of ICE candidates.
+
+                         Local Network (private IP address)                  // device was able to find its own IP address
+                         STUN server (public IP discovery)                   // device was NOT able to find its own IP address, so the STUN server helps find it
+                         TURN server (relay if connection fails)             // a server that is used as a middleman between the two clients, it receives the message from one client and sends it to the other client
+
+            1) Both clients will start ICE gathering and will send the all ICE candidates through the websocket
+
+            2) The clients will receive the ICE candidate from each other and use the .addIceCandidate() method
+               to see if both clients can connect to each other with the candidate
                 
             
 */

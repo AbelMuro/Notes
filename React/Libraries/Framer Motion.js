@@ -724,8 +724,12 @@ function App() {
             You can use the useScroll() hook to get current progress of scrolling on the x-axis and y-axis
             of a container
 
+            const { scrollYProgress, scrollXProgress, scrollY, scrollX } = useScroll()
 
-            const {scrollYProgress, scrollXProgress } = useScroll()
+                        scrollYProgress: is a motion value, (value is between 0 and 1) should be used with other motion value hooks
+                        scrollXProgress: is a motion value, (value is between 0 and 1) should be used with other motion value hooks
+                        scrollY: is a string representing the current vertical scroll position in pixels
+                        scrollX: is a string representing the current horizontal scroll position in pixels
             
             ____________
             |          |
@@ -737,13 +741,13 @@ function App() {
 
 function App() {
     const ref = useRef();
-    const {scrollYProgress, scrollXProgress } = useScroll();                  // by default, this will get the current scrolling progress of the body tag
+    const {scrollYProgress, scrollXProgress, scrollX, scrollY } = useScroll();                  // by default, this will get the current scrolling progress of the body tag
     const {scrollYProgress, scrollXProgress } = useScroll({container: ref});  // this will get the current scrolling progress of a specific element
   
     return(
-          <div      
+          <motion.div      
             ref={ref}
-            style={scaleX: scrollYProgress}                         //this component will be resized based on the current value of scrollYProgress                                     
+            style={{width: scrollY}}                                                          
           />
     )    
 }
@@ -953,14 +957,14 @@ function App() {
 */
 
 function App() {
-     const y = useMotionValue(0);
+     const width = useMotionValue(0);
 
      useMotionValueEvent(y, "change", (latest) => {
-         console.log("y changed to:", latest);
+         console.log("current value of width is: ", latest);
      });
 
      return (
-        <motion.div style={{x, opacity}}> </motion.div>
+        <motion.div style={{width}}> </motion.div>
     )         
 }
 

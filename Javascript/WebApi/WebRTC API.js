@@ -34,7 +34,10 @@
 
             11) Once both clients have exchanges SDP information, each client will begin gathering ICE candidates
 
-            12) Both clients will send their ICE candidates to each other
+            12) Both clients will send their ICE candidates to each other through the websocket
+                and each candidate will be checked to see if the candidate can be used for
+                the clients to connect to each other
+                
             
 */
 

@@ -31,21 +31,12 @@
                                             <!-- SCRIPT tags-->
             <!-- script tags are used to include javascript code into the document-->
         <script src="https://kit.fontawesome.com/29995223a0.js" crossorigin="anonymous"></script>   <!-- script tags can also be used to include the CDN of frameworks (bootstrap, jquery, materialize, etc...) -->             
-        <script type="module">                                                      //type="module" defines a script that has its own scope                                                          
-                import {someFunction} from './scripts.js';                          // this is useful for importing functions or variables from a JS file
-                window.someFunction = someFunction;
-        </script>
-        <script defer>                                                              //its always a good idea to use the defer attribute to make sure the scripts are loaded AFTER the document is loaded
-            let sum = 0;
-            sum++;
-            console.log(sum);
-            document.querySelector(".someClass").innerHTML = sum;
-        </script>
 
     </head>
 
 
     <body>
+        <!-- displays the message if the user doesn't have javascript enabled in their browser -->
         <noscript>
             Please enable javascript to use this app
         </noscript>
@@ -57,108 +48,16 @@
                     width: 780px;
                 }
         </style>
-        
-        
-        
-        
-        <!-- ARIA attributes (Accessible Rich Internet Applications): these attributes are usefull for accessibility-->
-        
-        <button aria-label="opens a new web page" >CLICK</button>       <!-- aria-label is used to describe what the button will actually do-->
-        
-        <p aria-hidden="true">                                          <!-- aria-hidden is used for screen readers to decide to skip content-->
-            This content will be
-            skipped by Screen-Readers
-        </p>
-        
-        <div id="myFirstName">First Name</div>                           <!-- aria-labeledby works similarly to 'for' in input and labels-->
-        <input type="text" aria-labelledby="myFirstName" />
 
+        <!-- creating an script  -->
+        <script type="module" defer>                                                      //type="module" defines a script that has its own scope     defer means that the script will wait until the document is fully loaded before running                                                     
+                import {someFunction} from './my_script.js';                        
+                document.querySelector('#myID');
 
-  
-        
-    
-        
-        <!--This image will have small clickable areas with links-->
-        <img src="images/multiple chairs.png" alt="image not showing" usemap="#myMap" style="height:500px; width:700px">            
-        <map style="display:block" name="myMap">
-            <area shape="rect" coords="23,39,186,234" href="https://www.thechairstore.com/">                              <!-- use PAINT app to find coords of specific parts in the image-->
-            <area shape ="circle" coords="564,366,100" href="https://www.thechairstore.com/" onclick="myFunction()">   
-        </map>                                                                                                                                                            
-                                                                                                                                                                      
-                
-                                   
-            <!--VIDEO tags -->
-         <video style="width:300px; height:250px" controls autoplay muted>                                <!-- controls attribute adds play, pause and volume-->
-            <source src="./randomvideo.mp4" type="video/mp4" size=1080/>                                  <!-- the size attribute can be used to define the quality options for the video-->
-            <source src="./randomvideo.mp4" type="video/mp4" size=720/>
-            <source src="./randomvideo.mp4" type="video/mp4" size=520/>
-            <source src="./randomvideo.mp4" type="video/mp4" size=480/>
-            Your browser doesn't support the video tag
-         </video>
-
+                //any javascript code goes here
+        </script>
         
         
-            <!-- AUDIO tags-->
-        <audio controls>                                                                                <!--audio can use the same attributes as <video>-->
-            <source src="music.mp3" type="audio/ogg">                                                   <!-- adding more <source> means more music for the music player-->
-            Your browser doesn't support the audio tag
-        </audio><br>                                                                                                                                                       
-                                                                                                                                                                 
-        
-     
-        
-            <!-- OBJECT tag was designed to include plug ins (pdf readers, maps) in web sites-->
-        <object width="0px" height="0px" data=""></object>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-            <!-- this is known as bookmarking, use the ID of an element to jump to another part of the same page-->
-        <div id="jumpHere"> </div>
-        <a href="#jumpHere"> this is how you jump to another part of the webpage </a>
-       
-        
-        
-    
-    
-            <!-- CANVAS tag: used to draw graphics (squares, lines, triangles, images, etc...) onto a website with javascript -->
-         <canvas width="300" height="300"> </canvas>
-
-                
-       
-        
-            <!--How to use TABLES in html -->
-        <table>                                     <!-- border-collapse: collapse will enable <tr/> to have borders-->
-            <caption> Title of Table</caption>
-            <tbody>
-                <tr>                                <!-- <tr/> cannot have margin and padding-->
-                    <th> column 1 title </th>       <!-- you can add margin and padding to <th/> -->
-                    <th> column 2 title </th>
-                    <th> column 3 title </th>       <!-- you can use colspan to make an element span more columns -->
-                </tr>                               <!-- you can use rowspan to make an element span more rows-->
-                
-                <tr>
-                    <th> Row Title 1 </th>
-                    <td> column 1 </td>         
-                    <td> column 2 </td>
-                    <td> column 3 </td>
-                </tr>
-                <tr> 
-                    <th> Row Title 2 </th>
-                    <td> column 1 </td>
-                    <td> column 2 </td>
-                    <td> column 3 </td>            
-                </tr>
-            </tbody>
-        </table>
-
-
-
     </body>
 
 </html>

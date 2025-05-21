@@ -1333,89 +1333,70 @@ async function detectingChangesInADocument() {
 
 
 
-
-
-
-
-
-
 //-----------------------------------------------------------FIRESTORE HOOKS-------------------------------------------------------------------------------
-import React from 'react';
-import {firestoreDB } from './firebase-config';
+/* 
+        You can use the react-firebase-hooks library to use firebase hooks that makes it easier to implement firebase features
+*/
+
+
+//------------------------- useDocumentData()
+/* 
+        You can use the useDocumentData() to get a document from a collection.
+        The hook returns the following three objects
+
+                document:  contains all the properties of the document
+                loading:   a boolean value that indicates if the document is still loading
+                error = {
+                        name – A string indicating the type of error.
+                        message – A detailed error message explaining what went wrong.
+                        code – A Firebase error code, like "permission-denied" or "not-found", useful for debugging.
+                        stack – A stack trace showing where the error originated.
+                }
+*/
+
 import {collection, doc} from 'firebase/firestore';
-import {useCollectionData, useCollection} from 'react-firebase-hooks/firestore';        
+import {useCollectionData, useCollection} from 'react-firebase-hooks/firestore';   
+import {db} from './firebase-config.js';
 
-
-
-function ReactHooks () {
-    const collectionRef = collection(db, "cities")                                  // collection() returns a reference to a collection
-    const documentRef = doc(collectionRef, "LA")                                    // doc() returns a reference to a document from a collection
-    const q = query(collectionRef, orderBy('datePosted', 'desc'));
-    
-    const [value, loading, error] = useCollectionData(collectionRef);
-    //value                                                                         //this is an array that contains all the documents in the collection
-    //value[0].name
-    
-    const [val, load, error] = useDocumentData(documentRef)
-    //val                                                                          // this is an object that represents the document
-    //val.name                                                                  
-    
-    return loading ? (<>...is loading<>) : (<> Done loading</>)
+function App(){
+     const documentRef = doc(db, "Cities/LA")                          
+     const [document, loading, error] = useDocumentData(documentRef)
 }
 
 
 
 
 
+//------------------------- useCollectionData()
+/* 
+        You can use the useCollectionData() to retrieve all documents
+        in a collection. The hook will return the following objects
+
+        documents:         an array that contains all the documents in the collection
+        loading:           a boolean value indicating if the documents are still loading
+        error = {
+                name – A string indicating the type of error.
+                message – A detailed error message explaining what went wrong.
+                code – A Firebase error code, like "permission-denied" or "not-found", useful for debugging.
+                stack – A stack trace showing where the error originated.
+        }
+        
+*/
+
+import {collection} from 'firebase/firestore';
+import {useCollectionData, useCollection} from 'react-firebase-hooks/firestore';        
+import {db } from './firebase-config';
+
+
+function App() {
+    const collectionRef = collection(db, "cities")                                
+    const q = query(collectionRef, orderBy('datePosted', 'desc'));
+    const [documents, loading, error] = useCollectionData(collectionRef);     
+    const [documents, loading, error] = useCollectionData(q); 
+}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//to set up firebase hosting...
-
-//npm install -g firebase-tools
-//Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-//firebase login
-//firebase init hosting
-
-//it will then ask you a bunch of questions about the project
-
-//starting emulators
-//firebase setup:emulators:firestore            ensure that this is first installed
-//firebase emulators:start --only auth
 
 
 

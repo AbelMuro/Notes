@@ -284,6 +284,8 @@ function App() {
 
           whileInView={{opacity: 1}}               //gesture for elements that first appear in the viewport
           viewport={{once: true}}                  //the whileInView gesture will only run once
+          onViewportEnter={() => {}}               //function that fires when the component first enters the screen
+          onViewportLeave={() => {}}               //function that fires when the component leaves the screen
 
           whileDrag={{color: 'red'}}               //gesture for elements that are currently being dragged
           onDragStart={(e, info) => {}}            //function that fires when the user starts dragging the element

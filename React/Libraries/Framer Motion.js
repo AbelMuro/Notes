@@ -673,8 +673,7 @@ function App() {
 //-------------------------- viewport Props
 /* 
             You can use viewport props to customize the behavior of
-            scrolling animation
-            
+            scrolling animation.
 */
 
 function App() {
@@ -719,7 +718,59 @@ function App() {
 
 
 //======================================================== IMPERATIVE ANIMATION: Scrolling Hooks ================================================================================================
+/* 
+            You can use the following hook to get the scroll position of the body tag.
+            You can also use the following functions to better utilize the useScroll() hook.
 
+
+            1) You can use the following function to calculate the top and bottom thresholds of 
+               an element. This is useful for starting a scrolling animation when the scrollbar
+               touches the very top border or very bottom border of the element
+
+                        const node = document.querySelector('#ContainerWithScrollingAnimation');
+                        offsetFromTop = node.offsetTop;                                                // the space between the top border of the element and the top of the page
+                        offsetHeight = node.offsetHeight;                                              // the full height of the element
+               
+                        const calculateScrollThreshold = (offsetFromTop, offsetHeight) => {
+                            const scrollableHeight = document.documentElement.scrollHeight;              // the full height of the whole document 
+                            const offsetFromBottom = offsetFromTop + offsetHeight;                       // we calculate the space between the bottom border of the element and the bottom of the page
+                            const topScrollThreshold = offsetFromTop / scrollableHeight;
+                            const bottomScrollThreshold = offsetFromBottom / scrollableHeight;
+                        
+                            return [topScrollThreshold, bottomScrollThreshold];                          // we return the thresholds as a value between 0 and 1
+                        }
+
+            2) You can use the following function to create a mapping between two ranges of values.
+               This is useful for getting the scroll position and applying a transformation ONLY
+               when the scroll position reaches a certain range
+
+                           value = 0.12312     // current scroll position
+                           x1 = 0.2            // when scroll position reaches 0.2
+                           x2 = 0.4            // when scroll position reaches 0.4
+
+                           y1 = 0              // motion value for width
+                           y2 = 400            // motion value for width
+
+
+                           const CreateMapping = (x1, x2, y1, y2, value) => {
+                                 const numerator = (value - x1) * (y2 - y1);
+                                 const denominator = x2 - x1;
+                                 return y1 + (numerator/denominator);
+                           }
+
+            3) You can apply the scrolling animation and the functions above with the following hook
+
+                            useMotionValueEvent(scrollYProgress, 'change', (value) => {
+                                const lowerConstraint = 0;
+                                const upperConstraint = 400;
+                        
+                                if(value < topScrollThreshold || value > bottomScrollThreshold) return;
+                        
+                                const mappedValue = CreateMapping();
+                                width.set(mappedValue);                                     // width is another motion value that only gets updated when the scroll reaches a certain range
+                            })
+
+*/
 
 //-------------------------- useScroll() hook
 /* 
@@ -744,7 +795,7 @@ function App() {
 function App() {
     const ref = useRef();
     const {scrollYProgress, scrollXProgress, scrollX, scrollY } = useScroll();                  // by default, this will get the current scrolling progress of the body tag
-    const {scrollYProgress, scrollXProgress } = useScroll({container: ref});  // this will get the current scrolling progress of a specific element
+    const {scrollYProgress, scrollXProgress } = useScroll({container: ref});                     // this will get the current scrolling progress of a specific element
   
     return(
           <motion.div      
@@ -753,6 +804,17 @@ function App() {
           />
     )    
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -930,12 +992,19 @@ function App() {
 /* 
             The useMotionValue() hook returns a 'motion value' that is assigned to the style
             attribute of elements. Keep in mind that the motion value should be the same name 
-            of the css property that we want to keep track of.
+            of the css property that we want to keep track of. Each motion value object has a
+            method .set() that can be used to programmatically set the value for the motion value
+
+            const x = useMotionValue(0);
+            x.set(200);
+            
 */
 
 function App() {
     const x = useMotionValue(200);  
     const opacity = useMotionValue(0.7)
+    x.set(300);
+    opacity.set(0.2);
 
     return (
         <motion.div style={{x, opacity}}> </motion.div>
@@ -982,6 +1051,7 @@ function App() {
             syntax:
                  const motionValue = useSpring(initialValue, transition);
 
+                             motionValue.set()  can be used to programmatically set a motion value
                              initialValue:   can be any integer value or another motionValue
                              transition:     an object containing the transition properties for the spring animation
 */
@@ -992,6 +1062,8 @@ function App(){
            damping: 30,                         
            restDelta: 0.001
     })
+
+    scale.set(20);
  
     return (
         <motion.div style={{scale}}> </motion.div>
@@ -1009,6 +1081,7 @@ function App(){
             syntax: 
                  const motionValue = useTransform( otherMotionValue, [mapFrom], [mapTo])
 
+                             motionValue.set()  this method can be used to programmatically set a motion value
                              otherMotionValue:  this is a motion value returned from useMotionValue() hook
                              [mapFrom]:   this is an array of values that will be mapped to the third argument
                              [mapTo]:     this is an array of values that will be mapped to the second argument
@@ -1021,6 +1094,8 @@ function App() {
                         [0, 100],             // if 'x' is currently at 25
                         [0, 1]                // then 'opacity' will be at 0.25
     );
+    opacity.set(15);
+  
 
     return <motion.div style={{ x, opacity }} />;
 }

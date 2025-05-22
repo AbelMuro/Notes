@@ -88,20 +88,7 @@
     
                 TURN: a server that steps in when direct peer-to-peer communication isn’t possible due to restrictive 
                       network conditions. It acts as an middle-man, relaying data between the two clients 
-                      to ensure connectivity.
-
-            Methods and properties of RTCPeerConnection:
-
-
-                        .createOffer()                          // this method generates the SDP of the local client
-                        .setLocalDescription()                  // this method will declare that the SDP belongs to the local client
-                                                                        
-                        .setRemoteDescription()                 // this method will declare that an SDP belongs to the remote client
-                        .createAnswer()                         // this method generates the SDP of the remote client
-                        
-                        .addIceCandidate()                      // this method performs connectivity checks for an ice candidate that was 
-                                                                   received by the local client from the remote client
-                
+                      to ensure connectivity.        
 */
 
         const peerConnection = new RTCPeerConnection({
@@ -114,6 +101,10 @@
                 }
             ]
         });
+
+
+        peerConnection.close();                                    // calling the close() method will close the connection, the RTCPeerConnection() will have to be instantiated again
+
 
 
 
@@ -181,11 +172,7 @@
                     receivedChannel.close()
                 }
 
-
-
-
-                                  
-                                  
+                 
 
 
 //---------------------------- .createOffer()
@@ -205,8 +192,6 @@
             The SDP object returned from .createOffer() has two properties that must be sent through the websocket
 */                       
 
-
-
  const offer = await peerConnection.createOffer()
 
  offer.sdp;                        
@@ -223,7 +208,6 @@
             You can use the .createAnswer method to generate the SDP of the local client
             based off of the SDP that was sent by the remote client
 */
-
 
 const answer = await peerConnection.createAnswer()
                       
@@ -266,18 +250,65 @@ await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer))
             You can use the .addIceCandidate() method to receive an ICE candidate from
             the remote client. This method will perform a connectivity check on the candidate
             and see if both clients can establish a connection. This method accepts an
-            instance of the RTCIceCandidate() class
+            instance of the RTCIceCandidate() class and you must pass the ICE candidate object
+            that was sent by the remote client using .onicecandidate.
 */
 
 await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate))
+
+
+                  
+
+
+
+
+//---------------------------- .onicecandidate
+/* 
+             You can use the .onicecandidate property to create an event handler
+             that will be triggered when the client detects a ICE candidate. The
+             property accepts a callback that will have access to the ICE candidate object.
+             Once we detect an ICE candidate, we send it through the websocket.
+             Below are some example of ICE candidates
+
+                         Local Network (private IP address)                  // device was able to find its own IP address
+                         STUN server (public IP discovery)                   // device was NOT able to find its own IP address, so the STUN server helps find it
+                         TURN server (relay if connection fails)             // a server that is used as a middleman between the two clients, it receives the message from one client and sends it to the other client
+*/
+
+peerConnection.onicecandidate = (e) => {                                                        
+            if(e.candidate) 
+                signalingServer.send(JSON.stringify({type: 'candidate', candidate: e.candidate}));
+            else
+                console.log('All ICE candidates have been collected');
+}
+
+
+                      
+
+
+
+
+//---------------------------- .oniceconnnectionstatechange
+/* 
+            You can use .oniceconnectionstatechange to create an event handler
+            that will be triggered when there is a change in the connection 
+            between both clients. Below are the 5 possible states for the 
+            connection
+
+            checking, connected, disconnected, failed, closed  (if the state is either disconnected, failed, closed; then the remote client closed the session)
+*/
+
+                      
+peerConnection.oniceconnectionstatechange = () => {
+       console.log(`ICE state: ${peerConnection.iceConnectionState}`)     
+}
+
 
 
 
 
 
                       
-               
-       
 
 //---------------------------- signalingState
 /*
@@ -348,17 +379,36 @@ peerConnection.signalingState
                     }      
 */
 
+
+
+
+//---------------------------- Initializing signaling websocket
+/* 
+            Look in node.js notes for more info on websockets
+*/
+                      
 const signalingServer = new WebSocket('look in node.js notes for more info on websockets');
 
+
+
+
+
+
+                      
+//---------------------------- Handling handshake and ICE candidates
+/* 
+            We can handle the initial handshake and potential ICE candidates with 
+            the .onmessage event handler.
+*/
 signalingServer.onmessage = async (message) => {
               const text = await message.data.text();
               const data = JSON.parse(text);
           
               if(data.type === 'offer' && peerConnection.signalingState === 'stable') {                   //we handle a connection here (when a local client wants to connect to a remote client)
-                  await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));       //we create a remote description of the offer  (remote description are the connection settings of the OTHER peer)
-                  const answer = await peerConnection.createAnswer();                                     //we create an answer in response to the offer
-                  await peerConnection.setLocalDescription(answer);                                       //we create a local description of the answer we created
-                  signalingServer.send(JSON.stringify({ type: 'answer', answer }));                       //we send the answer to the websocket
+                  await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));       
+                  const answer = await peerConnection.createAnswer();                                     
+                  await peerConnection.setLocalDescription(answer);                                       
+                  signalingServer.send(JSON.stringify({ type: 'answer', answer }));                      
               } 
               else if(data.type === 'answer' && peerConnection.signalingState === 'have-local-offer'){ //we finalize the connection here, the remote client will send an answer to the local client, enabling the connection
                   await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));      //we create a remote description of the answer from another peer
@@ -371,8 +421,16 @@ signalingServer.onmessage = async (message) => {
 
 
 
-
-
+//---------------------------- Sending Offer to remote client via websocket
+/* 
+        We can use the send() method to send an offer that contains the SDP 
+        of the local client to the remote client
+*/
+                      
+signalingServer.send(JSON.stringify({ 
+  type: 'offer', 
+  offer: {sdp: offer.sdp, type: offer.type}, 
+}))  
 
 
 

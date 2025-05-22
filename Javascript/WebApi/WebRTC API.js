@@ -57,12 +57,15 @@
                          STUN server (public IP discovery)                   // device was NOT able to find its own IP address, so the STUN server helps find it
                          TURN server (relay if connection fails)             // a server that is used as a middleman between the two clients, it receives the message from one client and sends it to the other client
 
-            1) Both clients will start ICE gathering and will send the all ICE candidates through the websocket
+            1) The local client will start gathering ICE candidates and sends them through the websocket
 
-            2) The clients will receive the ICE candidate from each other and use the .addIceCandidate() method
-               to see if both clients can connect to each other with the candidate
-                
-            
+            2) The remote client will also start gathering ICE candidates and sends them through the websocket
+
+            2) Both clients will receive the ICE candidates from each other and use the .addIceCandidate() method
+               to perform connectivity checks for each ICE candidate 
+
+            3) Once the best ICE candidate has been choosen. Both clients will connect and can send each other 
+               Audio/Video streams using addTrack(), or Text/Data messages via createDataChannel() 
 */
 
 
@@ -72,7 +75,7 @@
 
 
 
-//---------------------------- RTCPeerConnection()
+//====================================== RTCPeerConnection() ======================================
 /* 
             In javascript, we have the RTCPeerConnection API that can be used to create a connection between two clients.
             You must instantiate this class by providing a STUN (Session Traversal Utilities for NAT) server url 
@@ -90,16 +93,14 @@
             Methods and properties of RTCPeerConnection:
 
 
-                        .createOffer()                           
-                        .setLocalDescription()                  // this method will set the Session Description Protocol(SDP) of the local client. 
-                                                                   The SDP contains information about the media capabilities (audio, video, resolutions, bandwidth limits),
-                                                                   connection details (IP address and port), and network settings of the local client
-                                                                   
+                        .createOffer()                          // this method generates the SDP of the local client
+                        .setLocalDescription()                  // this method will declare that the SDP belongs to the local client
+                                                                        
+                        .setRemoteDescription()                 // this method will declare that an SDP belongs to the remote client
+                        .createAnswer()                         // this method generates the SDP of the remote client
                         
-                        .setRemoteDescription()                 // this method will configure the connection of the local client based on the SDP of the remote client
-                        .createAnswer()
-                        
-                        .addIceCandidate()
+                        .addIceCandidate()                      // this method performs connectivity checks for an ice candidate that was 
+                                                                   received by the local client from the remote client
                 
 */
 
@@ -116,11 +117,205 @@
 
 
 
+//---------------------------- .createDataChannel()
+/* 
+      You can use the .createDataChannel() to create a data channel that enables two clients
+      to send text/data messages to each other. The .createDataChannel() also has event handlers
+      that can be assign callbacks that will be called when the event is triggered
+
+                  onopen:    will be triggered when the data channel has both clients connected to each other
+                  onclose:   will be triggered when the local client closed the connection with dataChannel.close()
+                  onerror:   will be triggered when one of the clients loses connection (most likely the client left the session by refreshing or click on the back button)
+                  onmessage: will be triggered when the remote client sends a text/data message to the local client
+                  close():   will close the data channel and the connection
+*/
+
+          const dataChannel = peerConnection.createDataChannel('chat');            
+          dataChannel.onopen = () => console.log('Local data channel open'); 
+          dataChannel.onclose = () => console.log('Local data channel is closed');
+          dataChannel.onerror = (error) => console.log('Local data channel error: ', error);             
+          dataChannel.onmessage = (e) => {
+                      console.log('Local data channel message ', JSON.parse(e.data)                   
+            })   
+          dataChannel.close()
 
 
 
 
 
+//---------------------------- .ondatachannel
+/* 
+            The ondatachannel property is an event handler that accepts a callback
+            that will be called when the local client has connected to the remote client.
+            The local client will have access to the datachannel that the remote client 
+            created with .createDataChannel(). The received data channel in the callback
+            can have the following event handlers
+
+                  onopen:    will be triggered when the data channel has both clients connected to each other
+                  onclose:   will be triggered when the local client closed the connection with dataChannel.close()
+                  onerror:   will be triggered when one of the clients loses connection (most likely the client left the session by refreshing or click on the back button)
+                  onmessage: will be triggered when the remote client sends a text/data message to the local client
+                  close():   will close the data channel and the connection
+*/
+
+
+        peerConnection.ondatachannel = (e) => {                                                                      
+                    const receivedChannel = e.channel;
+        
+                    receivedChannel.onmessage = (e) => {                                                          
+                        const data = JSON.parse(e.data);
+                        console.log('Received message from remote client ', data);              
+                    }
+                    receivedChannel.onopen = () => {
+                        console.log("Remote data channel is open!");
+                    };
+                
+                    receivedChannel.onclose = () => {
+                        console.log("Remote data channel closed");
+                    };
+            
+                    receivedChannel.onerror = (error) => {                                    
+                        console.log('Remote data channel error: ', error);
+                    }
+
+                    receivedChannel.close()
+                }
+
+
+
+
+                                  
+                                  
+
+
+//---------------------------- .createOffer()
+/* 
+            You can use the .createOffer() method to generate the SDP of the local client.
+            SDP is a format that describes the media capabilities (video, audio, resolutions, bandwidth), 
+            the IP address, ports, and network settings of the client. The SDP format looks like the following
+
+                        v=0
+                        o=- 123456 654321 IN IP4 192.168.1.10            // session ID
+                        s=WebRTC Call                                   
+                        c=IN IP4 203.0.113.1                             // public IP address
+                        t=0 0                                                
+                        m=audio 49152 RTP/AVP 96                         // media details (audio/video, port, codec)
+                        a=rtpmap:96 opus/48000/2                         // atttributes (codec details like opus)
+
+            The SDP object returned from .createOffer() has two properties that must be sent through the websocket
+*/                       
+
+
+
+ const offer = await peerConnection.createOffer()
+
+ offer.sdp;                        
+ offer.type;
+
+
+
+
+
+
+
+//---------------------------- .createAnswer()
+/* 
+            You can use the .createAnswer method to generate the SDP of the local client
+            based off of the SDP that was sent by the remote client
+*/
+
+
+const answer = await peerConnection.createAnswer()
+                      
+
+
+
+
+            
+
+//---------------------------- .setLocalDescription()
+/* 
+            You can use the .setLocalDescription() to 'declare' that an SDP object 
+            belongs to the local client. The argument passed to this method must be an
+            object returned from .createOffer() or .createAnswer()
+*/
+
+await peerConnection.setLocalDescription(offer);
+
+
+                                  
+
+
+
+//---------------------------- .setRemoteDescription()
+/* 
+            You can use the .setRemoteDescription() method to 'declare' that an SDP object
+            belongs to the remote client. This is typically done when the remote client sends 
+            their SDP to the local client. This method accepts an instance of the RTCSessionDescription()
+            class.
+*/
+         
+await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer))
+
+
+
+
+
+//---------------------------- .addIceCandidate()
+/*
+            You can use the .addIceCandidate() method to receive an ICE candidate from
+            the remote client. This method will perform a connectivity check on the candidate
+            and see if both clients can establish a connection. This method accepts an
+            instance of the RTCIceCandidate() class
+*/
+
+await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate))
+
+
+
+
+
+                      
+               
+       
+
+//---------------------------- signalingState
+/*
+            You can use the signalingState property to check the current
+            state of the peer connection. The property has the following 
+            possible values.
+
+
+            stable	            No active SDP exchange; connection is established or awaiting initiation.
+            have-local-offer	Local peer has created an SDP offer but hasn’t received an answer yet.
+            have-remote-offer	Remote peer has sent an SDP offer, waiting for a response.
+            have-local-pranswer	Local peer has sent a provisional answer (partial response).
+            have-remote-pranswer	Remote peer has sent a provisional answer.
+            closed	            The connection has been closed and cannot be used anymore.
+
+            
+            
+*/
+
+peerConnection.signalingState
+
+                      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
 
 //---------------------------- Signaling Mechanism
 /* 
@@ -159,7 +354,7 @@ signalingServer.onmessage = async (message) => {
               const text = await message.data.text();
               const data = JSON.parse(text);
           
-              if(data.type === 'offer' && peerConnection.signalingState === 'stable') {               //we handle a connection here (when a local client wants to connect to a remote client)
+              if(data.type === 'offer' && peerConnection.signalingState === 'stable') {                   //we handle a connection here (when a local client wants to connect to a remote client)
                   await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));       //we create a remote description of the offer  (remote description are the connection settings of the OTHER peer)
                   const answer = await peerConnection.createAnswer();                                     //we create an answer in response to the offer
                   await peerConnection.setLocalDescription(answer);                                       //we create a local description of the answer we created

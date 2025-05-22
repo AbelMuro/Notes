@@ -89,11 +89,6 @@ function useWebRTC(){
     }
 
 
-   /* 
-      3) When the component first mounts, we should create a connection to the signaling websocket
-         and create a peer connection as soon as possible
-   */
-
     useEffect(() => {
         signalingServer.current = new WebSocket('look in node.js notes for more info on websockets');
         peerConnection.current = new RTCPeerConnection({
@@ -107,10 +102,6 @@ function useWebRTC(){
             ]
         });
 
-        /* 
-           4) We create the event handlers for the signaling server, peer connection and the remote data channel
-              the 'onmessage' event for the signaling server will handle the connection between the clients
-        */ 
         signalingServer.current.onmessage = async (message) => {
                                       const text = await message.data.text();
                                       const data = JSON.parse(text);

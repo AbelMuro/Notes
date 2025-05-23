@@ -19,30 +19,76 @@
                                     m=audio 49152 RTP/AVP 96                         // media details (audio/video, port, codec)
                                     a=rtpmap:96 opus/48000/2                         // atttributes (codec details like opus)
 
-            1) The local client creates a RTCPeerConnection() object
+            1) The local client creates a RTCPeerConnection() object and connects to the websocket in the same callstack.
+               Once the connection to the websocket has been established, you can proceed to step 2
 
-            2) The local client calls the .createDataChannel() method to create a channel that can be 
-               used between two clients to connect to each other
+                        const signalingServer = new WebSocket();
+                        const peerConnection = new RTCPeerConnection();
+                        signalingServer.onmessage = () => {}
+                        signalingServer.onopen = () => {}
+                        peerConnection.onicecandidate = () => {}
+                        peerConnection.oniceconnectionstatechange = () => {}
+                        peerConnection.current.ondatachannel = () => {}
+
+            2) The local client calls the .createDataChannel() method.
+            
+                        const dataChannel = peerConnection.createDataChannel('chat');
+                        dataChannel.onopen = () => {}
+                        dataChannel.onclose = () => {}
+                        dataChannel.onerror = () => {}
+                        dataChannel.onmessage = () => {}
 
             3) The local client calls .createOffer() method to generate its SDP 
+            
+                        const offer = await peerConnection.createOffer()
 
-            4) The local client calls .setLocalDescription() method to declare that the SDP belongs to the local client.
+            4) The local client calls .setLocalDescription() method.
+
+                        await peerConnection.setLocalDescription(offer);
 
             5) The local client sends the SDP object returned from .createOffer() through the websocket.
 
-            6) The remote client receives the SDP object and calls the .setRemoteDescription() method to declare that 
-               the received SDP object belongs to the local client.
+                        signalingServer.send(JSON.stringify({ 
+                             type: 'offer', 
+                             offer: {sdp: offer.sdp, type: offer.type}, 
+                             username: remoteClientUsername, 
+                        })) 
+
+            6) The remote client receives the SDP object and calls the .setRemoteDescription() method
+
+                         signalingServer.onmessage = (data) => {
+                                await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+                         }
 
             7) The remote client calls the .createAnswer() method to generate its SDP
 
+                        signalingServer.onmessage = () => {
+                              const answer = await peerConnection.createAnswer()
+                        }
+
             8) The remote client calls the .setLocalDescription() method to declare that the SDP belongs to the remote client.
+
+                        signalingServer.onmessage = () => {
+                               await peerConnection.setLocalDescription(answer)
+                        }
 
             9) The remote client sends the SDP object returned from .createAnswer() through the websocket
 
-            10) The local client receives the SDP object and calls the .setRemoteDescription() method to declare that
-               the received SDP object belongs to the remote client
+                        signalingServer.onmessage = () => {
+                               signalingServer.send(JSON.stringify({ 
+                                    type: 'answer', 
+                                    answer 
+                               })); 
+                        }
 
-            11) Once both clients have exchanges SDP information, each client will begin gathering ICE candidates
+            10) The local client receives the SDP object and calls the .setRemoteDescription() method to declare that
+               the received SDP object belongs to the remote client.
+               
+                        signalingServer.onmessage = (data) => {
+                             await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+                        }
+
+            11) Once both clients have exchangec SDP information, each client will begin gathering ICE candidates
 
 
 
@@ -57,15 +103,39 @@
                          STUN server (public IP discovery)                   // device was NOT able to find its own IP address, so the STUN server helps find it
                          TURN server (relay if connection fails)             // a server that is used as a middleman between the two clients, it receives the message from one client and sends it to the other client
 
-            1) The local client will start gathering ICE candidates and sends them through the websocket
+            1) The local client and the remote client will start gathering ICE candidates and sends them through the websocket
 
-            2) The remote client will also start gathering ICE candidates and sends them through the websocket
+                        peerConnection.onicecandidate = (e) => {
+                             signalingServer.send(JSON.stringify({
+                                    type: 'candidate', 
+                                    candidate: e.candidate
+                             }));
+                        }
 
             2) Both clients will receive the ICE candidates from each other and use the .addIceCandidate() method
                to perform connectivity checks for each ICE candidate 
 
-            3) Once the best ICE candidate has been choosen. Both clients will connect and can send each other 
-               Audio/Video streams using addTrack(), or Text/Data messages via createDataChannel() 
+                        signalingServer.onmessage = (data) => {
+                             await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+                        }
+
+            3) Once the best ICE candidate has been choosen, the remote client will receive the data channel created 
+               by the local client and both clients can finally connect.
+
+                            peerConnection.ondatachannel = (e) => {
+                                    const receivedDataChannel = e.channel;
+                            }
+                            
+            4) The local client can send data to the remote client
+            
+                        dataChannel.send(JSON.stringify(message));
+
+            5) The remote client can send data to the local client
+                        
+                          peerConnection.ondatachannel = (e) => {
+                                    const receivedDataChannel = e.channel;
+                                    receivedDataChannel.send(JSON.stringify(message))
+                          }
 */
 
 
@@ -431,6 +501,30 @@ signalingServer.send(JSON.stringify({
   type: 'offer', 
   offer: {sdp: offer.sdp, type: offer.type}, 
 }))  
+
+
+
+
+
+//---------------------------- Sending answer to remote client via websocket
+/* 
+        We can use the send() method to send an answer that contains the SDP
+        of the local client to the remote client. This is typically done after
+        the remote client sent an initial offer to the local client
+*/
+
+ signalingServer.send(JSON.stringify({             
+       type: 'answer', 
+       answer 
+ }));   
+
+
+
+
+
+
+
+                      
 
 
 

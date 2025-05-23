@@ -30,7 +30,8 @@
                         peerConnection.oniceconnectionstatechange = () => {}
                         peerConnection.current.ondatachannel = () => {}
 
-            2) The local client calls the .createDataChannel() method.
+            2) The local client calls the .createDataChannel() method. Keep in mind, that only one client
+                should call .createDataChannel(). All the steps below should happen synchronously.
             
                         const dataChannel = peerConnection.createDataChannel('chat');
                         dataChannel.onopen = () => {}
@@ -130,11 +131,21 @@
             
                         dataChannel.send(JSON.stringify(message));
 
+            4.5) The local client can receive data from the remote client
+
+                         dataChannel.onmessage = () => {}
+                                    
             5) The remote client can send data to the local client
                         
                           peerConnection.ondatachannel = (e) => {
                                     const receivedDataChannel = e.channel;
                                     receivedDataChannel.send(JSON.stringify(message))
+                          }
+
+            5.5) The remote client can receive data from the local client
+
+                        peerConnection.ondatachannel = (e) => {
+                                    receivedDataChannel.onmessage = () => {}
                           }
 */
 

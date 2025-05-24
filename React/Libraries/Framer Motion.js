@@ -995,7 +995,11 @@ function App() {
             of the css property that we want to keep track of. Each motion value object has a
             method .set() that can be used to programmatically set the value for the motion value
 
-            const x = useMotionValue(0);
+            const x = useMotionValue(initialValue, transition);
+
+                        initialValue:  the initial value of the motion value
+                        transition:    an object that accepts transition properties
+                                    
             x.set(200);
             
 */
@@ -1079,12 +1083,13 @@ function App(){
             a motion-value (that keeps track of a different css property) is changed.
 
             syntax: 
-                 const motionValue = useTransform( otherMotionValue, [mapFrom], [mapTo])
+                 const motionValue = useTransform( otherMotionValue, [mapFrom], [mapTo], transition)
 
                              motionValue.set()  this method can be used to programmatically set a motion value
                              otherMotionValue:  this is a motion value returned from useMotionValue() hook
                              [mapFrom]:   this is an array of values that will be mapped to the third argument
                              [mapTo]:     this is an array of values that will be mapped to the second argument
+                             transition:  an object that accepts transition properties
 */
 
 

@@ -30,11 +30,14 @@
 
         Useful DOM node methods for SVG:
 
-                const svgNode = querySelector('#mySVG');          //getBBox() works for ANY element related to SVG
-                svgNode.getBBox();                                //use this method to get the final calculated width and height of your SVG element
+                const svgNode = querySelector('#mySVG');           //getBBox() works for ANY element related to SVG
+                svgNode.getBBox();                                 //use this method to get the final calculated width and height of your SVG element
 
                 const textSvgNode = querySelector('#myTextSVG')    //getComputedTextLength() only works for <text/> elements
                 textSvgNode.getComputedTextLength();               //use this method to get the full length of the path of the <text/> element AFTER its been painted on the DOM
+
+                const path = document.querySelector("path");       //getTotalLength() only works for <Path/> elements
+                const length = path.getTotalLength();              //use this method to get the full length of the path 
 -->
 
 

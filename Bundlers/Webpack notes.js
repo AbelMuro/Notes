@@ -4,7 +4,7 @@
 
 
                                                         BUNDLING PROCESS      
-                      1) File Analysys 
+                      1) File Analysis 
                               The bundler will look for the entry point of the application (index.js) and will analyze all 
                               imports and dependencies used in the application. The bundler will also check for syntax errors 
                       

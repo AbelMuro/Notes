@@ -1,20 +1,71 @@
-const path = require('path');               //path is now a module that has access to pre defined methods that are built into Node.js
-const HtmlWebpackPlugin = require("html-webpack-plugin"); //to use a plugin with webpack, you must use require
-const dotenv = require("dotenv-webpack")     //npm install dotenv-webpack -D
-const CopyWebpackPlugin = require('copy-webpack-plugin');    //npm install copy-webpack-plugin -D         you will NEED this if you are planning on having a /public folder
+/* 
+                    Webpack is a bundler that is used to bundle all of the dependecies of an application/website 
+                    into one file, bundle.js. This file is then served by the server to the client.
 
-//module.exports is a node.js object that accepts objects, arrays, functions and classes as values that can be used in other js modules
-//to use module.exports..
 
-//const module = module.require(./nameofFile); -----this goes on another js file
-//module.key   ----accessing one of the key/properties in the module
+                                                        BUNDLING PROCESS      
+                      1) File Analysys 
+                              The bundler will look for the entry point of the application (index.js) and will analyze all 
+                              imports and dependencies used in the application. The bundler will also check for syntax errors 
+                      
+                      2) Dependency Graph:
+                              Then the bundler starts a dependency graph by linking all the modules and
+                              assets together. 
+                      
+                      3) Transpilation: 
+                              Once the dependency graph is completed, the bundler will use babel to transpile any
+                              JSX code used in the files. 
+                      
+                      4) Optimization: 
+                               The bundler will implement tree-shaking, this is a process of removing any unused code
+                               in the application. All whitespaces will be removed and variable names will be shortened to 
+                               optimize the size of the file.
+
+                      5) Bundling: 
+                                Once the steps above have been completed, the bundle will bundle all the files into one 
+                                file, bundle.js. If the developer implemented lazy-loading, the bundler will split the bundle.js
+                                into multiple files, each file will be loaded on the browser when necessary
+
+
+                    You can configure webpack by exporting an object with the following properties
+
+                    webpack = {
+                        entry: ''                            // entry is the directory of the index.js file. Webpack will start its dependency graph based on this file, and will automatically figure out which modules depend on this file   
+                        output: {                            // output defines the details of the bundle.js file
+                            path: ''                                 // path is the actual directory of the bundle.js
+                            filename: ''                             // filename is the name of the bundle.js (can be any name)
+                            publicPath: ''                           // publicPath is the base path for all assets. This tells webpack where to look when you reference files inside import statements
+                            clean: true                              // clean accepts a boolean value that tells webpack to remove old files in the output directory before generating new ones
+                            assetModuleFilename: ''                  // assetModuleFilename defines the naming convention for all files that are process by webpack.
+                        },
+                        plugins: [],                          // all webpack plugins go here
+                        devServer: {                          // devServer is the configuration for the development server
+                            port: 3000,                               // port is the actual port where our development server will run
+                            historyApiFallback: true,                 // historyApiFallback sets the index.html as a fallback file when the browser makes a request to the development server for a file that doesnt exist (http://localhost:3000/aboutus   ->   browsers sends a request for aboutus.html)
+                            proxy: {                                  // the proxy will forward all requests to the specified port
+                                '/': {                                          // http://localhost:3000/login
+                                    target: 'http://localhost:3000',            // will only forward requests that are send from this port
+                                    router: () => 'http://localhost:5000'       // all requests will be forwarded to this port
+                                }
+                            }
+                        }
+                    }
+*/
+
+
+
+
+const path = require('path');              
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const dotenv = require("dotenv-webpack")                     // npm install dotenv-webpack -D
+const CopyWebpackPlugin = require('copy-webpack-plugin');    // npm install copy-webpack-plugin -D         you will NEED this if you are planning on having a /public folder
+
 
 module.exports = {
-
-    entry: './src/index.js',                  //this is where webpack will start its dependency graph, and will automatically figure out with modules depend on this entry point                  
-    output: {                                  //output is where our production code will be sent to               
-        path: path.join(__dirname, '/dist'),  //__dirname represents the current directory, /dist is the folder that will contain our production code
-        filename: 'bundle.js',                 //the bundled js file
+    entry: './src/index.js',                           
+    output: {                                             
+        path: path.join(__dirname, '/dist'),  
+        filename: 'bundle.js',                
         publicPath: '/',
         clean: true,
         assetModuleFilename: '[name][ext]',

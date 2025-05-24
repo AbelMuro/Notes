@@ -52,21 +52,43 @@
     defines the namespace for the svg. This tells the browser to intepret SVG as
     a markup language instead of an XML-based formatted language.
 
-    The viewbox attribute defines the coordinate system and the scaling behavior 
+                Common Attributes
+
+    VIEWBOX: attribute defines the coordinate system and the scaling behavior 
     of the SVG. Keep in mind that the coordinate system doesnt have to be the same size
     as the SVG, the browser will automatically scale the coordinate system to fit the 
     SVG.
 
-            syntax:
                     viewBox="minX minY width height"
 
                             minX: the minimum value of x, usually 0
                             minY: the minimum value of y, usually 0
-                            width: the width of the coordinate system
-                            height the height of the coordinate system
+                            width: the width of the coordinate system (use width of the svg container)
+                            height the height of the coordinate system (use height of the svg container)
+
+
+     PRESERVE-ASPECT-RATIO:  helps maintain the aspect ratio of the svg and its child elements
+     when the width or height of the SVG increases or decreases.
+
+                      preserveAspectRatio="xMidYMid meet"
+
+                                'none' → No uniform scaling; stretches to fit.  
+                                'xMinYMin' → Aligns the viewBox to the top-left.                      
+                                'xMidYMin' → Aligns the viewBox to the top-center.                    
+                                'xMaxYMin' → Aligns the viewBox to the top-right.                  
+                                'xMinYMid' → Aligns the viewBox to the middle-left.                
+                                'xMidYMid' → Aligns the viewBox to the center (default).                
+                                'xMaxYMid' → Aligns the viewBox to the middle-right.                
+                                'xMinYMax' → Aligns the viewBox to the bottom-left.                 
+                                'xMidYMax' → Aligns the viewBox to the bottom-center.                       
+                                'xMaxYMax' → Aligns the viewBox to the bottom-right.
+        
+                                'meet' → Scales the viewBox uniformly to fit within the SVG while preserving aspect ratio of all child elements
+                                'slice' → Scales the viewBox uniformly but may crop parts of the viewBox to fill the SVG.
+
 -->
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet">
 
 </svg>
 

@@ -34,21 +34,36 @@
                         output: {                            // output defines the details of the bundle.js file
                             path: ''                                 // path is the actual directory of the bundle.js
                             filename: ''                             // filename is the name of the bundle.js (can be any name)
-                            publicPath: ''                           // publicPath is the base path for all assets. This tells webpack where to look when you reference files inside import statements
+                            publicPath: ''                           // publicPath is the base path for all assets. This tells webpack where to look when you reference files (images, fonts, ect..) inside import statements
                             clean: true                              // clean accepts a boolean value that tells webpack to remove old files in the output directory before generating new ones
-                            assetModuleFilename: ''                  // assetModuleFilename defines the naming convention for all files that are process by webpack.
+                            assetModuleFilename: ''                  // assetModuleFilename defines the naming convention for all files that are processed by webpack. [name][ext]
                         },
                         plugins: [],                          // all webpack plugins go here
                         devServer: {                          // devServer is the configuration for the development server
                             port: 3000,                               // port is the actual port where our development server will run
                             historyApiFallback: true,                 // historyApiFallback sets the index.html as a fallback file when the browser makes a request to the development server for a file that doesnt exist (http://localhost:3000/aboutus   ->   browsers sends a request for aboutus.html)
-                            proxy: {                                  // the proxy will forward all requests to the specified port
-                                '/': {                                          // http://localhost:3000/login
-                                    target: 'http://localhost:3000',            // will only forward requests that are send from this port
-                                    router: () => 'http://localhost:5000'       // all requests will be forwarded to this port
+                            proxy: {                                  // proxy is used to forward all fetch requests from one port to another (this is typically used if you are developing a restful API on the same local machine as your front-end)
+                                '/': {                                          // forwarding all requests that start at the root '/'
+                                    target: 'http://localhost:3000',            // the port that has your front-end application that is making the fetch requests   ->     fetch('/aboutus')
+                                    router: () => 'http://localhost:5000'       // the port that has your restful API that will receive all forwaded fetch requests 
                                 }
                             }
-                        }
+                        },
+                        module: {                                      // module will define how different file types will be processed in webpack
+                            rules: [                                   // rules accepts an array of objects. Each object defines how a specific file type will be processed
+                                {                                     
+                                    test: /\.js$/,                     // test accepts a regular expression that describes the file type we want to process
+                                    use: {                             // use will define how we will process the file type
+                                        loader: 'babel-loader',        // loader will load the babel transpiler to transpile javascript
+                                        options: {                     // options for the transpiler
+                                            presets: [                 
+                                                '@babel/preset-env',   // this will transpile all ES6 JS syntax into JS that the browser can understand
+                                                '@babel/preset-react'  // this will transpile all JSX code into react.createElement()
+                                            ]} 
+                                    }                                                                
+                                }
+                            ]
+                        },
                     }
 */
 

@@ -981,9 +981,8 @@ function App() {
 //======================================================== IMPERATIVE ANIMATION: Motion Value Hooks ================================================================================================
 /* 
             Motion Values are objects that are used to keep track of a certain css property.
-            Keep in mind that these objects will not initialize an animation, you will
-            have to initialize the animation with initial-animate props, or the useAnimate() hooks.
-            
+            Any changes made to a motion value will NOT cause a re-render, any DOM updates
+            caused by motion values happen outside of the scope of React.
 */
 
 
@@ -996,19 +995,20 @@ function App() {
             method .set() that can be used to programmatically set the value for the motion value
 
             const x = useMotionValue(initialValue, transition);
-
+       
                         initialValue:  the initial value of the motion value
                         transition:    an object that accepts transition properties
-                                    
-            x.set(200);
+
+                        x              the motion value as an object
+                        x.set(200);    the set method allows us to instantly set a value for the motion value
+                        x.get();       the get method allows us to get the current value of the motion value
+                        x.on('change', () => {})  the on method allows us to create an event listener everytime there is a change in the motion value
             
 */
 
 function App() {
     const x = useMotionValue(200);  
     const opacity = useMotionValue(0.7)
-    x.set(300);
-    opacity.set(0.2);
 
     return (
         <motion.div style={{x, opacity}}> </motion.div>

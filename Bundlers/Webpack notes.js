@@ -141,13 +141,13 @@ module.exports = {
      This plugin can help us configure the html files in our project.
      More specifically, this plugin will be mostly used to configure the 
      index.html file in the project. The plugin is a function constructor that
-     accepts an object with the following properties
+     accepts an object with the following properties.
 
-              template:                                Specifies the directory of the template index.html file.
               filename:                                Defines the name of the html file (default is index.html). 
+              favicon:                                 Specifies the directory of a favicon for the HTML file.       
+              template:                                Specifies the directory of the template index.html file.
               inject:                                  Determines where scripts are injected (true (by default, scripts are set in body), false (we manually set the scripts), 'head', 'body').        
               title:                                   Sets the <title> of the generated HTML.     
-              favicon:                                 Specifies the directory of a favicon for the HTML file.     
               meta: {                                  Allows you to define the meta tags dynamically. Each property defines the name attribute and the value defines the content attribute of the meta tag
                   viewport: 'width=device-width, initial-scale=1',            <meta name="viewport" content="width=device-width, initial-scale=1">       
                   description: 'This is a sample description for SEO',        <meta name="description" content="This is a sample description for SEO">
@@ -174,13 +174,27 @@ module.exports = {
 
 module.exports = {
   plugins: [
-        new HtmlWebpackPlugin({               //this plugin will help us generate the production html file in our /dist
-            filename: 'index.html',           //our production html file will be named index.html
-            favicon: './src/favicon.png',     //loading a favicon in our html template
-            template: './src/index.html'      //this is a template for our production html file, we are defining how the html will look like before we make our production html file
+        new HtmlWebpackPlugin({               
+            filename: 'index.html',           
+            template: './src/index.html'      
         })
   ]
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

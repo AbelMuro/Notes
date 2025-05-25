@@ -41,8 +41,9 @@
 
                   8) Imperative Animation: Motion Value Hooks
                         8.1) useMotionValue() hook
-                        8.2) useSpring() hook
-                        8.3) useTransform() hook
+                        8.2) useMotionValueEvent() Hook
+                        8.3) useSpring() hook
+                        8.4) useTransform() hook
 
 
 

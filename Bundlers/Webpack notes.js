@@ -128,6 +128,9 @@ module.exports = {
 
 
 
+
+
+
 //------------------------------- Plugins
 /* 
      Plugins property will accept an array of objects that each
@@ -141,6 +144,9 @@ module.exports = {
 
 
 
+
+
+  
 //------------------------------- html-webpack-plugin
 /* 
      This plugin can help us configure the html files in our project.
@@ -148,7 +154,7 @@ module.exports = {
      index.html file in the project. Keep in mind, you can make a multi-page 
      application with this plugin. Every page in the application must have a 
      corresponding object of the html-webpack-plugin constructor. The plugin 
-     is a function constructor that accepts an object with the following properties
+     is a function constructor that accepts an object with the following properties...
 
               filename:                                Defines the name of the html file (default is index.html). 
               favicon:                                 Specifies the directory of a favicon for the HTML file.       
@@ -193,6 +199,8 @@ module.exports = {
               publicPath:                             Sets the root path for assets. This tells webpack where to look when we reference files in the html file
 */
 
+const HtmlWebpackPlugin = require("html-webpack-plugin");     //npm install html-webpack-plugin -D
+
 module.exports = {
   plugins: [
         new HtmlWebpackPlugin({               
@@ -208,6 +216,64 @@ module.exports = {
 
 
 
+//------------------------------- dotenv-webpack plugin
+/* 
+    This plugin can enable the use of env variables in our project.
+    The DotEnv() constructor accepts an object with the following properties
+
+          path: './.env')         Specifies the path to your environment variables file.
+          safe: boolean           If true, it loads .env.example to verify that all required variables are set in your .env file.         
+          systemvars: boolean     If true, it allows access to the servers' environment variables.     
+          silent: boolean         If true, it suppresses warnings when missing environment variables.     
+          expand: boolean         If true, it enables variable expansion within .env files.    
+          defaults: './.env.defaults'     Specifies a path to a .env.defaults file for default env values.    
+          prefix: 'CUSTOM'        Allows you to define a prefix for environment variables. (process.env.ACCOUNT_SECRET   ->    process.env.CUSTOM_ACCOUNT_SECRET)
+*/
+
+const DotEnv = require("dotenv-webpack")                     // npm install dotenv-webpack -D
+
+exports.module = {
+  plugins = [
+       new DotEnv({systemvars: true}), //this enables the use of env variables, you must use process.env.name_of_variable (systemvars tells us that any env variable defined in a web-host(netlify) is a system variable, and MUST be used for the app)
+  ]
+}  
+
+
+
+
+
+
+
+//------------------------------- copy-webpack-plugin
+/* 
+    This plugin is used to copy all assets from a folder to the project.
+    You will typically need this to include files that are NOT explicitly 
+    imported in your project. The CopyWebpackPlugin() constructor accepts 
+    an array with objects that have the following properties.
+
+
+            from: '':       Specifies the directory of the folder we want to copy assets from.
+            to: '':         Specifies the directory in the /dist folder where the copied files will be placed.
+            context: ''     Specifies the root directory for the 'from' property
+            globOptions: [  Allows filtering files using glob patterns.
+                ignore: ['**/excludedfolder/**', '**/*.md'],
+                dot: true,
+                nocase: true,
+                matchBase: true
+            ]    
+            filter: () => {}        A function to exclude certain files.
+            toType:         Defines whether the destination is a directory or file.        
+            force:          Forces overwriting of existing files.       
+            priority:       Controls execution order.     
+            transform:      Modifies file contents before copying.
+*/
+
+const CopyWebpackPlugin = require('copy-webpack-plugin');    // npm install copy-webpack-plugin -D        
+
+
+new CopyWebpackPlugin({
+    patterns: [{ from: 'public', to: '' }],                  //this will copy all the files from the public folder to the build root directory
+  }),
 
 
 
@@ -218,8 +284,7 @@ module.exports = {
 
 
 
-
-
+  
 
 
 

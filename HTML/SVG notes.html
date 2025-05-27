@@ -372,6 +372,10 @@
 </svg>
 
 
+
+
+
+
 <!--------------- Blur Effect Filter --------------->
 <!-- 
         feGaussianBlue creates a soft blur effect
@@ -383,7 +387,7 @@
 <svg>
     <defs>
          <filter id="blurEffect">
-                <feGaussianBlur stdDeviation={4}>
+              <feGaussianBlur stdDeviation={4}>
          </filter>    
     </defs>
     <circle filter="url(#blurEffect)" fill='red'/>
@@ -394,7 +398,8 @@
 <!--------------- Random Noise Effect Filter --------------->
 <!-- 
         feTurbulence creates random 'noise' that can be used
-        to create water or cloud textures     
+        to create water or cloud textures. Keep in mind, that you need
+        feDisplacementMap to actually distort the image in the DOM
 
         type = fractalNoise (smooth effects),  turbulence (rougher patterns)
         baseFrequency = must be a numerical value between 0 and 1 (low value means large waves, high value means fine grain)
@@ -405,11 +410,17 @@
 <svg>
     <defs>
         <filter id="cloudEffect">
-             <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3"/>
+             <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result='cloudTexture'/>
+             <feDisplacementMap in="cloudTexture" in2="SourceGraphic" />
         </filter>
     </defs>
     <circle filter="url(#cloudEffect)" fill='red'/>
 </svg>
+
+
+
+
+
 
 
 <!--------------- Specular Lighting Effect Filter --------------->
@@ -417,10 +428,16 @@
         feSpecularLighting creates a light effect on a shape,
         similar to how light reflects off of surfaces
 
-        surfaceScale:       this attribute controls the depth of the effect (higher values create stronger highlights).
-        specularConstant:   this attribute determines the intensity of reflection.
-        specularExponent:    this attribute adjusts sharpness (higher values make sharper highlights).
-        lighting-color:      this attribute sets the color of the highlights.
+                surfaceScale:       this attribute controls the depth of the effect (higher values create stronger highlights).
+                specularConstant:   this attribute determines the intensity of reflection.
+                specularExponent:    this attribute adjusts sharpness (higher values make sharper highlights).
+                lighting-color:      this attribute sets the color of the highlights.
+
+        fePointtLight can be used to position the lighting
+
+                x: X-coordinate of the light source.       
+                y: Y-coordinate of the light source.     
+                z: Z-coordinate (depth) of the light source.
 -->
 
 <svg>
@@ -433,6 +450,8 @@
     </defs>
   <rect filter="url(#specular)" fill='red'/>
 </svg>
+
+
 
 
 
@@ -489,12 +508,110 @@
 
 
 
+<!--------------- Move Filter --------------->
+<!--         
+        This filter will shift an image along the x or y axis
+
+                dx: Defines the horizontal shift. 
+                dy: Defines the vertical shift. 
+                in: Specifies the input image to be offset (defaults to "SourceGraphic").
+-->
+
+<svg>
+    <defs>
+        <filter id='moveFilter'>
+            <feGaussianBlur result='blur'/>
+            <feOffset in='blur' dx="10" dy="10" />
+        </filter>
+    </defs>
+</svg>
 
 
 
 
 
 
+
+<!--------------- Filters that enhance other filters --------------->
+<!-- 
+        The following filter enhancers use the following attributes
+
+                results:   a string that represents the results of the filter being applied
+                in:        accepts either the 'results' attribute of another filter (image), 
+                           or the SourceGraphic (the element in the DOM)
+                in2:       accepts either the 'results' attribute of another filter (image)
+                           or the SourceGraphic (the element in the DOM)
+
+        You can combine multiple filters with the properties above.
+
+-->
+
+
+<!--------------- feDisplacementMap --------------->
+<!-- 
+      This filter can be used to get pixel values from one image
+      to spatially displace another.
+
+                in: Specifies the input image that will be used to displace another.
+                in2: Defines the output image that will be distorted
+                scale: Determines the intensity of displacement (higher values create stronger distortions).
+                xChannelSelector: Chooses which color channel (R, G, B, or A) from in2 to use for displacement along the x-axis.
+                yChannelSelector: Chooses which color channel (R, G, B, or A) from in2 to use for displacement along the y-axis.
+-->
+
+<svg>
+    <defs>
+         <filter>
+              <feGaussianBlur result="filterEffect"/>
+              <feDisplacementMap in="filterEffect" in2="SourceGraphic" />
+         </filter>    
+    </defs>
+</svg>
+
+
+
+
+<!--------------- feBlend --------------->
+<!--         
+        This filter can be used to blend one image with another image
+
+                in: Specifies the first input image.
+                in2: Specifies the second input image. 
+                mode: Defines the blending mode (normal, multiply, screen (brightening effect), darken, lighten).
+-->
+
+<svg>
+   <defs>
+       <filter id="blendEffect">
+           <feGaussianBlur result='blurred'>
+           <feBlend in="blurred" in2="SourceGraphic" />
+       </filter>
+   </defs>  
+</svg>
+
+
+
+
+
+<!--------------- feMerge --------------->
+<!--         
+        This filter can be used to merge multiple filters
+        with the feMergeNode
+-->
+
+<svg>
+     <defs>
+        <filter id="mergedEffect">
+               <feGaussianBlur result="blurred"/>
+               <feOffset result="offsetBlur"/>
+               <feMerge>
+                   <feMergeNode in="blurred">    
+                   <feMergeNode in="offsetBlur"/>
+                   <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+        </filter>
+     </defs>
+</svg>
 
 
 

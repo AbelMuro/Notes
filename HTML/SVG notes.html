@@ -406,6 +406,7 @@
     <defs>
         <filter id="cloudEffect">
              <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3"/>
+             <feDisplacementMap in="SourceGraphic" scale="5"/>
         </filter>
     </defs>
     <circle filter="url(#cloudEffect)" fill='red'/>
@@ -429,6 +430,7 @@
             <feSpecularLighting surfaceScale="5" specularConstant="0.75" specularExponent="20" lighting-color="white">
                 <fePointLight x="100" y="100" z="50"/>
             </feSpecularLighting>
+             <feBlend in="SourceGraphic" mode="screen"/>
         </filter>
     </defs>
   <rect filter="url(#specular)" fill='red'/>
@@ -479,7 +481,7 @@
 <svg>
   <defs>
     <filter id="colorMatrix">
-      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+        <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
     </filter>
   </defs>
   <rect fill="blue" filter="url(#colorMatrix)"/>

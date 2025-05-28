@@ -137,16 +137,25 @@ module.exports = {
     The devServer property can be used to configure the development server
     used by webpack
 
-          static: Defines the directory from which static files are served.
-          compress: Enables gzip compression for faster loading.         
-          port: Specifies the port number for the server.         
-          hot: Enables Hot Module Replacement (HMR) for live updates without full reloads.        
-          open: Automatically opens the browser when the server starts.       
-          proxy: Allows forwarding API requests to avoid CORS issues.      
-          historyApiFallback: Ensures proper routing for single-page applications (SPA).        
-          allowedHosts: Controls which hosts can access the server.          
-          https: Enables HTTPS for secure connections.          
-          client: Configures client-side logging and overlay settings.          
+          static: ''                    static defines the directory where files should be included in your dev server (public folder or any folder that has files that are not explicitly imported in your project)
+          compress: boolean             compress enables the compression of files in the project for faster load times.         
+          port: ''                      port specifies the port number for the server.         
+          hot: boolean                  hot enables Hot Module Replacement (HMR) for live updates everytime there is a change in one of the files.        
+          open: boolean                 open automatically opens the browser when the server starts.       
+          proxy: {                      proxy will forward all API requests made to an endpoint to a different URL
+              '/': {                                          http://localhost:3000/login
+                  target: 'http://localhost:3000',            will only forward requests that are send from this port
+                  router: () => 'http://localhost:5000'       all requests will be forwarded to this port
+              }
+          }                             
+          historyApiFallback:          historyApiFallback helps with routing in our react app, everytime we refresh the page, react router will send a request to the dev server, but this property will make sure it searches for an index file first              
+          https: {                     https can enable the dev server to connect to back end services with https, instead of http (setting this value to true will create a self-signed certificate, passing an object will create a trusted certificate) 
+              key: fs.readFileSync('path/to/key.pem'),
+              cert: fs.readFileSync('path/to/cert.pem'),
+              ca: fs.readFileSync('path/to/ca.pem'),
+          }      
+          allowedHosts: ['locahost', 'myDomain.com', 'all']   allowedHosts lets certain domains view the website in the dev server 
+          client:     Configures client-side logging and overlay settings.          
           watchFiles: Watches specific files for changes and triggers reloads.          
           setupMiddlewares: Allows custom middleware functions for additional processing.
 */

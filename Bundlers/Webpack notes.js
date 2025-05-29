@@ -142,22 +142,30 @@ module.exports = {
           port: ''                      port specifies the port number for the server.         
           hot: boolean                  hot enables Hot Module Replacement (HMR) for live updates everytime there is a change in one of the files.        
           open: boolean                 open automatically opens the browser when the server starts.       
+          historyApiFallback:           historyApiFallback helps with routing in our react app, everytime we refresh the page, react router will send a request to the dev server, but this property will make sure it searches for an index file first              
+          allowedHosts: ['locahost', 'myDomain.com', 'all']   allowedHosts lets certain domains access the dev server (if you type http://'myDomain.com in the browser, you will be able to visit the website from the dev server)
           proxy: {                      proxy will forward all API requests made to an endpoint to a different URL
               '/': {                                          http://localhost:3000/login
                   target: 'http://localhost:3000',            will only forward requests that are send from this port
                   router: () => 'http://localhost:5000'       all requests will be forwarded to this port
               }
-          }                             
-          historyApiFallback:          historyApiFallback helps with routing in our react app, everytime we refresh the page, react router will send a request to the dev server, but this property will make sure it searches for an index file first              
-          https: {                     https can enable the dev server to connect to back end services with https, instead of http (setting this value to true will create a self-signed certificate, passing an object will create a trusted certificate) 
+          }                              
+          https: {                      https can enable the dev server to connect to back end services with https, instead of http (setting this value to true will create a self-signed certificate, passing an object will create a trusted certificate) 
               key: fs.readFileSync('path/to/key.pem'),
               cert: fs.readFileSync('path/to/cert.pem'),
               ca: fs.readFileSync('path/to/ca.pem'),
           }      
-          allowedHosts: ['locahost', 'myDomain.com', 'all']   allowedHosts lets certain domains view the website in the dev server 
-          client:     Configures client-side logging and overlay settings.          
-          watchFiles: Watches specific files for changes and triggers reloads.          
-          setupMiddlewares: Allows custom middleware functions for additional processing.
+          client: {                     Configures how console-logging is done by webpack (error messages, warning messages, etc..)
+              logging: ''                  Defines which type of logs will be shown in the browser console ('verbose' (detailed) ,'info', 'warn', 'error', or 'none').    
+              progress: boolean            Displays the build progress in the browser.           
+              overlay: {                   Shows the console-logs done by webpack directly in the browser as an overlay. 
+                  error: true,                    will show error messages in the overlay
+                  warnings: true                  will show warning messages in the overlay
+              }                             
+              webSocketURL: 'ws://localhost:3000/ws'  specifies the URL of the WebSocket used by webpack for live reloading.     
+          }    
+-          watchFiles: ['']                  Watches specific files for changes and triggers reloads.          
+-          setupMiddlewares:             Allows custom middleware functions for additional processing.
 */
 
 

@@ -157,20 +157,30 @@ module.exports = {
               ca: fs.readFileSync('path/to/ca.pem'),
           }      
           client: {                     Configures how console-logging is done by webpack (error messages, warning messages, etc..)
-              logging: ''                  Defines which type of logs will be shown in the browser console ('verbose' (detailed) ,'info', 'warn', 'error', or 'none').    
+              logging: ''                  Defines which type of logs will be shown in the browser console ('verbose' (detailed), 'info', 'warn', 'error', or 'none').    
               progress: boolean            Displays the build progress in the browser.           
               overlay: {                   Shows the console-logs done by webpack directly in the browser as an overlay. 
                   error: true,                    will show error messages in the overlay
                   warnings: true                  will show warning messages in the overlay
               }                             
-              webSocketURL: 'ws://localhost:3000/ws'  specifies the URL of the WebSocket used by webpack for live reloading.     
+              webSocketURL: {              Configures the websocket used by webpack for live reloading (you should use this property if you are running webpack in a non-localhost enviroment)
+                  hostname: "localhost",          hostname can be a custom domain (myexample.com),    defaults to 'localhost'
+                  port: 8080,                     port used by webpack,    defaults to the same port as the dev server
+                  pathname: "/ws",                specifying endpoint used for the websocket,    defaults to '/ws'
+                  protocol: "ws"                  ws or wss,    defaults to the protocol used by the dev server (http or https)
+                } 
           }    
          setupMiddlewares: (middlewares, devServer) => {    You can create a mock Restfull API with this property
+              const express = require('express');
+
+              devServer.app.use(express.json())
+         
               devServer.app.get("/api/items", (_, res) => {
                     res.json({mockData: 'mock'});
               });
         
-              devServer.app.post("/api/items", (req, res) => {              `devServer.app` doesn't support full request parsing
+              devServer.app.post("/api/items", (req, res) => {           
+                    const body = req.body;
                     res.json({ message: "Item added", success: true });
               });
         
@@ -178,7 +188,7 @@ module.exports = {
                 res.json({ message: `Item ${req.params.id} deleted`, success: true });
               });
         
-              middlewares.push((req, res, next) => {
+              middlewares.push((req, res, next) => {                        creating middleware for every request made to /api
                 console.log(`Request received: ${req.url}`);
                 next();
               });

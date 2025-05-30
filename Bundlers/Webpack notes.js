@@ -144,7 +144,8 @@ module.exports = {
           open: boolean                 open automatically opens the browser when the server starts.       
           historyApiFallback:           historyApiFallback helps with routing in our react app, everytime we refresh the page, react router will send a request to the dev server, but this property will make sure it searches for an index file first              
           allowedHosts: ['locahost', 'myDomain.com', 'all']   allowedHosts lets certain domains access the dev server (if you type http://'myDomain.com in the browser, you will be able to visit the website from the dev server)
-          proxy: {                      proxy will forward all API requests made to an endpoint to a different URL
+          watchFiles: ['src/**/*.html']              Watches specific files for changes and triggers reloads.    ** means all folders in between, * means all file names    
+/*        proxy: {                      proxy will forward all API requests made to an endpoint to a different URL
               '/': {                                          http://localhost:3000/login
                   target: 'http://localhost:3000',            will only forward requests that are send from this port
                   router: () => 'http://localhost:5000'       all requests will be forwarded to this port
@@ -164,8 +165,27 @@ module.exports = {
               }                             
               webSocketURL: 'ws://localhost:3000/ws'  specifies the URL of the WebSocket used by webpack for live reloading.     
           }    
--          watchFiles: ['']                  Watches specific files for changes and triggers reloads.          
--          setupMiddlewares:             Allows custom middleware functions for additional processing.
+         setupMiddlewares: (middlewares, devServer) => {    You can create a mock Restfull API with this property
+              devServer.app.get("/api/items", (_, res) => {
+                    res.json({mockData: 'mock'});
+              });
+        
+              devServer.app.post("/api/items", (req, res) => {              `devServer.app` doesn't support full request parsing
+                    res.json({ message: "Item added", success: true });
+              });
+        
+              devServer.app.delete("/api/items/:id", (req, res) => {
+                res.json({ message: `Item ${req.params.id} deleted`, success: true });
+              });
+        
+              middlewares.push((req, res, next) => {
+                console.log(`Request received: ${req.url}`);
+                next();
+              });
+        
+              return middlewares;
+            }
+  }            
 */
 
 

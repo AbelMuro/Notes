@@ -369,13 +369,183 @@ module.exports = {
 
 
 
+//------------------------------- modules
+/* 
+    The module property allows you to set rules on how certain files are loaded, 
+    and you can apply transformations to those files (typescript to javascript, sass to css)
+    The module property accepts an object with the rules property. The rules property accepts
+    an array of object that has the following properties
+
+        test:              test is a regular expression that matches a specific file 
+        exclude: ''        exclude can ignore certain files 
+        use: {             use will let us apply a transformation (can be an object or array of objects)
+            loader: ''     the name of the loader (can be a string or array)
+            options: ''    you can specify which loaders will be used by the loader (some loaders have plugins that each have its own functionality)
+        }
+
+*/
+
+module.exports = {
+  module: {
+    rules: []
+  }
+}
 
 
 
 
 
 
-  
+
+//------------------------------- babel-loader
+/* 
+      You can use the babel-loader to transpile JS files.
+      This loader has plugins that you can use transform a 
+      specific type of JS so that the browser can understand it.
+
+            @babel/preset-env          transforms ES6 syntax into a browser compatable JS
+            @babel/preset-react        transforms React JSX into React.createElement
+*/
+
+module.exports = {
+  module: {
+    rules: [
+          {                                  
+              test: /\.js$/,                      
+              use: {
+                  loader: 'babel-loader',    
+                  options: {presets: ['@babel/preset-env', '@babel/preset-react']} 
+              }                                                                
+          },
+    ]
+  }
+}
+
+
+
+
+//------------------------------- style-loader
+/* 
+      You can use the style-loader to tell webpack to 'inject' all
+      of your css files into the <head> tag of your HTML file with 
+      the <style> tag
+*/
+
+
+module.exports = {
+  module: {
+    rules: [
+          {
+              test: /\.css$/,
+              use: [{loader: 'style-loader'}]         
+          },
+    ]
+  }
+}
+
+
+
+
+
+//------------------------------- css-loader
+/* 
+    You can use the css-loader to enable webpack to intepret CSS
+    files and allows it to bundle the css with the JS.
+    It also allows webpack to process @import statements and
+    url() functions within a css file
+*/
+
+
+module.exports = {
+  module: {
+    rules: [
+          {
+              test: /\.css$/,
+              use: [{loader: 'css-loader'}]           
+          },
+    ]
+  }
+}
+
+
+
+
+//------------------------------- postcss-loader
+/* 
+    You can use the postcss
+*/
+
+
+module.exports = {
+  module: {
+    rules: [
+          {
+              test: /\.css$/,
+              use: [{loader: 'postcss-loader'}]           
+          },
+    ]
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  module: {
+      rules: [                               
+          {                                  
+              test: /\.js$/, 
+              exclude: ''                      
+              use: {
+                  loader: 'babel-loader',    
+                  options: {presets: ['@babel/preset-env', '@babel/preset-react']} //preset-env is a group of babel plugins that will transpile all the new features of javascript 
+                  }                                                                 //preset-react is also a group of babel plugins, but it will transpile jsx with other new features of javascript
+          },
+          {
+              test: /\.css$/,
+              use: [{loader: 'style-loader'}, {loader: 'css-loader'}, {loader: 'postcss-loader'}]             //using style loader and css loader to load css onto application
+          },
+          {
+              test: /\.(png|jpg|webp|mp4|wav)$/,
+              type: 'asset/resource'                                              //asset/resource loads files such as images, audio and videos
+          }
+      ]
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

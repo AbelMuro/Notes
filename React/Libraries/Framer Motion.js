@@ -1081,16 +1081,28 @@ function App(){
 /* 
             The useTransform() hook returns a 'motion value' that is assigned to the style 
             attribute of elements. This hook will enable an animation for a css property when 
-            a motion-value (that keeps track of a different css property) is changed.
+            another motion-value (that keeps track of a different css property) is changed.
 
             syntax: 
                  const motionValue = useTransform( otherMotionValue, [mapFrom], [mapTo], transition)
 
+                             motionValue        the motion-value object that is assigned to the style attribute of elements
                              motionValue.set()  this method can be used to programmatically set a motion value
                              otherMotionValue:  this is a motion value returned from useMotionValue() hook
                              [mapFrom]:   this is an array of values that will be mapped to the third argument
                              [mapTo]:     this is an array of values that will be mapped to the second argument
                              transition:  an object that accepts transition properties
+
+
+            This hook also accepts a callback on the second argument, you can use the callback 
+            to change the syntax of the motion-value. This is useful for binding the motion-value
+            to css properties that require additional information (some properties require units)
+                        
+                 const blurFilter = useTransform(otherMotionValue, (value) => `blur(${value}px)`)
+
+                 <div style={{filter: blurFilter}}>
+
+                             
 */
 
 

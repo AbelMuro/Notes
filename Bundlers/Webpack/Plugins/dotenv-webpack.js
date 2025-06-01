@@ -4,7 +4,7 @@
     This plugin can enable the use of env variables in our project.
     The DotEnv() constructor accepts an object with the following properties
 
-          path: './.env')         Specifies the path to your environment variables file.
+          path: './.env'          Specifies the path to your environment variables file.
           safe: boolean           If true, it loads .env.example to verify that all required variables are set in your .env file.         
           systemvars: boolean     If true, it allows access to the servers' environment variables.     
           silent: boolean         If true, it suppresses warnings when missing environment variables.     

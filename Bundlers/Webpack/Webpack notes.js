@@ -25,47 +25,8 @@
                                 Once the steps above have been completed, the bundle will bundle all the files into one 
                                 file, bundle.js. If the developer implemented lazy-loading, the bundler will split the bundle.js
                                 into multiple files, each file will be loaded on the browser when necessary
-
-
-                    You can configure webpack by exporting an object with the following properties
-
-                    webpack = {
-                        entry: ''                            // entry is the directory of the index.js file. Webpack will start its dependency graph based on this file, and will automatically figure out which modules depend on this file   
-                        output: {                            // output defines the details of the bundle.js file
-                            path: ''                                 // path is the actual directory of the bundle.js
-                            filename: ''                             // filename is the name of the bundle.js (can be any name)
-                            publicPath: ''                           // publicPath is the base path for all assets. This tells webpack where to look when you reference files (images, fonts, ect..) inside import statements
-                            clean: true                              // clean accepts a boolean value that tells webpack to remove old files in the output directory before generating new ones
-                            assetModuleFilename: ''                  // assetModuleFilename defines the naming convention for all files that are processed by webpack. [name][ext]
-                        },
-                        plugins: [],                          // all webpack plugins go here
-                        devServer: {                          // devServer is the configuration for the development server
-                            port: 3000,                               // port is the actual port where our development server will run
-                            historyApiFallback: true,                 // historyApiFallback sets the index.html as a fallback file when the browser makes a request to the development server for a file that doesnt exist (http://localhost:3000/aboutus   ->   browsers sends a request for aboutus.html)
-                            proxy: {                                  // proxy is used to forward all fetch requests from one port to another (this is typically used if you are developing a restful API on the same local machine as your front-end)
-                                '/': {                                          // forwarding all requests that start at the root '/'
-                                    target: 'http://localhost:3000',            // the port that has your front-end application that is making the fetch requests   ->     fetch('/aboutus')
-                                    router: () => 'http://localhost:5000'       // the port that has your restful API that will receive all forwaded fetch requests 
-                                }
-                            }
-                        },
-                        module: {                                      // module will define how different file types will be processed in webpack
-                            rules: [                                   // rules accepts an array of objects. Each object defines how a specific file type will be processed
-                                {                                     
-                                    test: /\.js$/,                     // test accepts a regular expression that describes the file type we want to process
-                                    use: {                             // use will define how we will process the file type
-                                        loader: 'babel-loader',        // loader will load the babel transpiler to transpile javascript
-                                        options: {                     // options for the transpiler
-                                            presets: [                 
-                                                '@babel/preset-env',   // this will transpile all ES6 JS syntax into JS that the browser can understand
-                                                '@babel/preset-react'  // this will transpile all JSX code into react.createElement()
-                                            ]} 
-                                    }                                                                
-                                }
-                            ]
-                        },
-                    }
 */
+
 
 
 
@@ -75,6 +36,11 @@
     config.js. In this file, you must export an object with the module.exports. The
     exported objects has all the properties that will configure webpack. 
     This file should always be at the root path of your project.
+
+               npm install webpack --save-dev                                       //installs webpack core
+               npm install webpack-cli --save-dev                                   //install webpack command line interface (terminal stuff)
+               npm install webpack-dev-server --save-dev 
+    
 */
 
 module.exports = {}
@@ -247,8 +213,6 @@ module.exports = {
     rules: []
   }
 }
-
-
 
 
 

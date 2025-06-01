@@ -472,7 +472,11 @@ module.exports = {
 
 //------------------------------- postcss-loader
 /* 
-    You can use the postcss
+    You can use the postcss loader to autoprefix css selectors and properties with the 
+    proper prefix
+
+        mask-image: url('');
+        -webkit-mask-image: url('')          -webkit- is automatically added to the css in the bundle.js file
 */
 
 
@@ -491,44 +495,34 @@ module.exports = {
 
 
 
+//------------------------------ asset/resources
+/* 
+      The asset/resource can enable webpack to load assets (images, videos, audio) as resources
+      in the output directory. In other words, webpack will automatically make a copy of
+      all assets and move these copies to the /dist folder
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/
 
   module: {
       rules: [                               
-          {                                  
-              test: /\.js$/, 
-              exclude: ''                      
-              use: {
-                  loader: 'babel-loader',    
-                  options: {presets: ['@babel/preset-env', '@babel/preset-react']} //preset-env is a group of babel plugins that will transpile all the new features of javascript 
-                  }                                                                 //preset-react is also a group of babel plugins, but it will transpile jsx with other new features of javascript
-          },
           {
-              test: /\.css$/,
-              use: [{loader: 'style-loader'}, {loader: 'css-loader'}, {loader: 'postcss-loader'}]             //using style loader and css loader to load css onto application
-          },
-          {
-              test: /\.(png|jpg|webp|mp4|wav)$/,
-              type: 'asset/resource'                                              //asset/resource loads files such as images, audio and videos
+              test: /\.(png|jpg|webp|mp4|wav|svg)$/,
+              type: 'asset/resource'                                           
           }
       ]
   },
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

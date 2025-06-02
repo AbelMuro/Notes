@@ -1089,9 +1089,12 @@ function App(){
                              motionValue        the motion-value object that is assigned to the style attribute of elements
                              motionValue.set()  this method can be used to programmatically set a motion value
                              otherMotionValue:  this is a motion value returned from useMotionValue() hook
-                             [mapFrom]:   this is an array of values that will be mapped to the third argument
-                             [mapTo]:     this is an array of values that will be mapped to the second argument
-                             transition:  an object that accepts transition properties
+                             [mapFrom]:         this is an array of values that will be mapped to the third argument
+                             [mapTo]:           this is an array of values that will be mapped to the second argument
+                             transition: {      an object that accepts two transition properties
+                                    ease:       must be an easing function imported from @popmotion/easing    
+                                    clamp:      accepts a boolean value that indicates if the output values should stay within the confines of the specified range
+                             } 
 
 
             This hook also accepts a callback on the second argument, you can use the callback 

@@ -28,8 +28,21 @@ module.exports = {
                 test: /\.js$/, 
                 use: {
                     loader: 'babel-loader',  
-                    options: {presets: ['@babel/preset-env', '@babel/preset-react']}  
-                    }                                                                 
+                    options: {
+                        presets: ['@babel/preset-env', '@babel/preset-react'],
+                         options: {
+                            plugins: [
+                              [
+                                'babel-plugin-root-import',
+                                {
+                                  rootPathSuffix: './src',
+                                  rootPathPrefix: '~/'
+                                }
+                              ]
+                            ]
+                          }
+                    }  
+                }                                                                 
             },
             {
                 test: /\.css$/,

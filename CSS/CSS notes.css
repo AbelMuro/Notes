@@ -1957,17 +1957,19 @@ p::selection{
 /*                 Firefox      scrollbar styling       */
 .pieces{
     overflow: scroll;
-    scrollbar-width: thin;
+    scrollbar-width: thin;                                    /* setting this to 'none' will remove the scrollbar and the space used by the scrollbar*/
     scrollbar-color: var(--scroll-bar-bg) transparent;
 }
 
 /*             WebKit Browsers (Chrome, Safari, Edge)                     */
 .pieces::-webkit-scrollbar{
+    display: none;            /* this will remove the scrollbar AND the space that is used by the scrollbar*/
     width: 10px;
     background-color: transparent;
 }
 
 .pieces::-webkit-scrollbar-thumb{
+    display: none;             /* this will remove the scrollbar thumb AND the space that is used by the thumb*/
     background-color: var(--scroll-bar-bg);
     border-radius: 10px;
 }

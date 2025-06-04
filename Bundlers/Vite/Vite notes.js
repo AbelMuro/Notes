@@ -69,8 +69,6 @@ export default defineConfig({})
 */
 
 
-import { defineConfig } from 'vite'
-
 export default defineConfig({
   root: '/'
 })
@@ -86,13 +84,97 @@ export default defineConfig({
     be relative to the directory of the vite config file
 */
 
-
-import { defineConfig } from 'vite'
-
 export default defineConfig({
-  base: './myApp/'                      // if i import an image from '/icons/my-icon.png', the url will be resolved to '/myApp/icons/my-icon.png'
+  base: './myApp/'                      // if i import an image from '/icons/my-icon.png', the url will be resolved to './myApp/icons/my-icon.png'
 })
 
+
+
+
+
+
+
+//----------------------------- resolve
+/* 
+     You can use the resolve property in the defineConfig() function
+     to create a flag that represents a certain directory.
+
+*/
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@': './src',                // everytime @ is used in a url of an import statement, it will resolve to './src'
+    },
+  },
+)
+
+
+
+
+
+
+//----------------------------- plugins
+/* 
+        You can use the plugins property in the defineConfig function to define 
+        the plugins for vue. Plugins are additional functionality that can be 
+        used in a vite application
+*/
+
+
+export default defineConfig({
+  plugins: []                     
+})
+
+
+
+
+
+
+
+
+//----------------------------- server
+/* 
+        You can use the server property in the defineConfig() function to 
+        configure the development server of your vite application.
+        The server property accepts an object that has the following properties.
+
+
+                host: '192.168.1.100'    Defines the ip-address of the devices on the same network that can access the dev server (the device can view the website on the dev server by typing http://192.168.1.100:5173 on the browser url)
+                port:                    Specifies the port number for the development server.      
+                strictPort:              If set to true, Vite will not use the next available port if the port specified above is unavailable. (vite will not start the dev server at all)      
+                https: {                 Enables HTTPS for the development server.   
+                      key: fs.readFileSync('server.key'),
+                      cert: fs.readFileSync('server.crt'),
+                      ca: fs.readFileSync('ca.pem'),
+                      pfx: fs.readFileSync('SSL-config.pfx'), 
+                      passphrase: 'Passphrase for encrypted private keys.'
+                },                   
+                proxy: {                   Configures proxy settings for API requests. 
+                      '/api': {            Forwarding all requests made in the dev server (/api) to (http://localhost:5000/api)
+                             target: 'http://localhost:5000',
+                             changeOrigin: true,
+                             secure: false,
+                             rewrite: (path) => path.replace(/^\/api/, ''),
+                             ws: true,
+                             configure: (proxy) => {
+                                 proxy.on('proxyReq', (proxyReq, req) => {
+                                     console.log(`Proxying request: ${req.url}`);
+                                });
+                        },          
+                }                               
+                cors: boolean              Enables CORS for all requests          
+                open: boolean              Automatically opens the browser when the server starts.          
+                headers:                   Allows setting custom headers for responses.          
+                allowedHosts:              Defines which hosts the server can respond to.
+*/
+
+export default defineConfig(  
+        server: {
+            port: 3000,                        
+            open: true,                         
+        }
+)
 
 
 

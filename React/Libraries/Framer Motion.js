@@ -883,7 +883,7 @@ function App(){
     The <LayoutGroup/> component is wrapped around child components and is
     used to create smooth animation transitions between the children when one 
     child component changes its layout. Keep in mind, that the child components must
-    have the layout prop for this to work. The most common technique used with
+    have the layout prop for this to work, this includes the grand children as well. The most common technique used with
     the <LayoutGroup/> component is with accordians.
 
     
@@ -911,8 +911,12 @@ function Accordion() {
             
   return (
     <motion.div layout onClick={handleOpen>               //this component will expand when we click on it, triggering a smooth animation
-        <h2> header </h2>
-        {isOpen && 'content'}
+        <motion.h2 layout> 'header' </motion.h2>
+        {isOpen && 
+            <div layout> 
+                 'Content'   
+             </div>
+        }
     </motion.div>
   )
 }

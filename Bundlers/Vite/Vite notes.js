@@ -152,15 +152,22 @@ export default defineConfig({
                 },                   
                 proxy: {                   Configures proxy settings for API requests. 
                       '/api': {            Forwarding all requests made in the dev server (/api) to (http://localhost:5000/api)
-                             target: 'http://localhost:5000',
-                             changeOrigin: true,
-                             secure: false,
-                             rewrite: (path) => path.replace(/^\/api/, ''),
-                             ws: true,
-                             configure: (proxy) => {
-                                 proxy.on('proxyReq', (proxyReq, req) => {
-                                     console.log(`Proxying request: ${req.url}`);
-                                });
+                             target: 'http://localhost:5000',                target is the domain that will receive the requests
+                             changeOrigin: true,                             changeOrigin will change the host header of the request being made, ensuring that the request is proxied to http://localhost:5000
+                             secure: false,                                  secure will enable Vite to check for a valid SSL certificate from http://localhost:5000
+                             rewrite: (path) => path.replace(/^\/api/, ''),  rewrite is a callback that is used to change the path of the URL being used in the fetch request (/api/users   ->   /users)
+                             ws: true,                                       ws enables websocket live connections and forwards these connection to http://localhost:5000
+                             configure: (proxy, options) => {                configure accepts a callback that accepts an object that represents the proxied request
+                                  proxy.on('proxyReq', (proxyReq, req, res) => {
+                                    console.log(`Proxying request to: ${req.url}`);
+                                    proxyReq.setHeader('X-Custom-Header', 'my-value');         you can modify the headers of the request before its sent to the proxy
+                                  });
+                        
+                                  proxy.on('error', (err, req, res) => {
+                                    console.error('Proxy error:', err);
+                                    res.end('Something went wrong.');
+                                  });
+                                }
                         },          
                 }                               
                 cors: boolean              Enables CORS for all requests          

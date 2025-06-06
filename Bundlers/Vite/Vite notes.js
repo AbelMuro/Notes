@@ -170,10 +170,14 @@ export default defineConfig({
                                 }
                         },          
                 }                               
-                cors: boolean              Enables CORS for all requests          
-                open: boolean              Automatically opens the browser when the server starts.          
-                headers:                   Allows setting custom headers for responses.          
-                allowedHosts:              Defines which hosts the server can respond to.
+                cors: boolean              Enables CORS for the dev server (this is typically used if you are developing a restfull api with vite )              
+                headers: {                 Allows setting custom headers for pre-flight responses sent by the dev server (usefull for setting up CORS).      
+                      'Access-Control-Allow-Origin': '*',
+                      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                }        
+                open: boolean              Automatically opens the browser when the server starts.      
+                allowedHosts: ['myDomain.com', 'otherDomain.net']                    Defines a list of domains that can view the website being developed in the dev server (byu default, it allows ALL domains to view the website)
 */
 
 export default defineConfig(  

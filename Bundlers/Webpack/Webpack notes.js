@@ -178,6 +178,31 @@ devServer: {                              //configuration property for the devel
 
 
 
+//------------------------------- devtools
+/* 
+      You can use the devtools property to use tools such as sourcemaps
+      in your project
+
+            eval →                   Fastest build and rebuild times, but source maps are less readable.      
+            source-map →             High-quality source maps, best for production debugging.   
+            eval-source-map →        Good for development, provides original source mapping.    
+            cheap-source-map →       Faster than source-map, but lacks column mappings.  
+            cheap-module-source-map → Similar to cheap-source-map, but includes loaders.     
+            inline-source-map →      Embeds source maps directly into the bundle.    
+            nosources-source-map →   Hides source code but keeps mapping for debugging.   
+            hidden-source-map →      Generates source maps but doesn’t reference them in the bundle.
+*/
+
+module.exports = {
+  devtool: 'source-map', 
+};
+
+
+
+
+
+
+
 
 //------------------------------- Plugins
 /* 

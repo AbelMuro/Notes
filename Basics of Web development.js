@@ -2,6 +2,7 @@
 
 						TERMINOLOGY OF WEB DEVELOPMENT
 
+
                                 FRONT-END-DEVELOPMENT: development of the visual aspect of a website/app
                                 
                                 BACK-END-DEVELOPMENT: development of server-side logic and databases
@@ -23,15 +24,34 @@
                                         APPLICATION-SERVER: a server that runs instructions and processes requests from other computers and sends responses (Node.js) 
                                         DATABASE-SERVER: a server that manages and stores data (SQL, noSQL)
 
-                                HOW THE INTERNET WORKS:
+                                BROWSER:
                                           1) When you first type-in the URL of a website (www.google.com), the browser will check the DNS(Domain Name System) of the URL.
                                              The browser will use the DNS to translate the human-readable URL into the corresponding IP address of the server that is hosting the website 
 
                                           2) Once the browser knows the IP address of the server, it will make a request to that server, asking for all the resources of the website (HTML files, css files, JS files)
 
                                           3) The server will process the request and decide what content to send to the browser
-                                              If the server uses server-side rendering, then the server will generate the website in the server first before sending a response
-                                              If the server uses client-side rendering, then the server will first send the HTML files to the browser, then the JS files
+	                                              If the server uses server-side rendering, then the server will generate the website in the server first before sending a response
+	                                              If the server uses client-side rendering, then the server will first send the HTML files to the browser, then the JS files
+			
+			                  4) Once the server receives the html, css, and JS files, the browser will start building an HTML-only DOM tree
+		       			     
+			                  5) Then the browser will build a CSS-only DOM tree.
+			
+			                  6) The browser will combine these two trees to form the Render DOM tree. This is what actually gets displayed on the screen.
+			              
+			                  7) The browser will calculate precise positions and sizes of the elements in the Render tree, this process is called layout calculation (reflow)
+
+  					  8) The browser will paint the elements on the screen.
+
+					  9) The browser may create separate layers for different elements, this process is called Compositing. The render tree will start with a 
+       					     default layer where all elements are initially placed. If an element has 'position: absolute' or 'transform: translate()', then it will 
+		 			     have its own layer in the render tree. 
+
+      					  10) When the HTML elements are updated, removed, or added, this will cause a change in the HTML-only dom tree, which in turn will trigger a re-render in the Render tree
+	     				      When certain css properties (width, height, margin, padding,...) are changed, this will cause a REFLOW for the CSS-only dom tree, which in turn will trigger a re-render in the Render tree
+	     
+    
 */
 							
 

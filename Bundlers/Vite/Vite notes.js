@@ -76,6 +76,54 @@ export default defineConfig({
 
 
 
+
+//----------------------------- build
+/* 
+        The build property is used to specify the directory that will be
+        used to place the bundle.js file
+*/
+
+
+export default defineConfig({
+  build: {
+        outDir:                         // Defines the output directory for the build. (/dist)
+        assetsDir:                      // Sets the directory for static assets within the output folder. (/public)          
+        target:                         // Specifies the version of javascript that Vite will compile too
+        minify:                         // allows your source code to be minified ('terser', 'esbuild', or Boolean).
+        sourcemap:                      // Enables source maps, source maps are files that map the original code to the bundled code (true (generates separate .map files), 'inline' (embeds the source maps in the output), 'hidden' (does not embed the source maps in the output)).
+        rollupOptions: {                // Allows customization of the Rollup bundler. (Vite is built on top of the rollup bundler)
+                input: {                // Defines multiple entry points for the build.
+                     main: './src/index.html',
+                     admin: './src/admin.html'
+                }
+                output: {                // Configures output settings like format, file names, and chunk splitting.
+                     format: 'es',       // Sets module format (e.g., 'es', 'cjs', 'umd')
+                     entryFileNames: '[name].[hash].js',         // Defines the naming pattern for entry files like index.js (hash is a unique identifier for the file, everytime the file changes, the hash is generated, this forces the browser to update the file instead of relying on cache)
+                     chunkFileNames: '[name].[hash].js',         // Defines the naming pattern for chunk files (any file that is being lazy-loaded)
+                     assetFileNames: 'assets/[name].[hash].[ext]', // Defines the naming pattern for assets files (images, fonts, and other static files) in the assets folder of the build directory
+                     sourcemap: true,                             // Enables source maps for rollup
+                }
+                external: Specifies dependencies that should not be bundled.
+                plugins: Allows adding custom Rollup plugins.
+                treeshake: Controls tree-shaking behavior to remove unused code.
+                manualChunks: Splits code into separate chunks for better caching.
+                watch: Configures watch mode settings for development. 
+                
+        }                  
+        manifest: Generates a manifest file (true or false).
+        polyfillModulePreload: Enables polyfills for module preload (true or false).
+        cssCodeSplit: Controls CSS code splitting (true or false).
+        terserOptions: Configures Terser minification options.      
+        chunkSizeWarningLimit: Sets the chunk size warning limit (in KB).    
+        reportCompressedSize: Reports compressed file sizes (true or false).   
+        emptyOutDir: Clears the output directory before building (true or false). 
+        write: Controls whether files are written to disk (true or false).
+  }                     // if i import an image from '/icons/my-icon.png', the url will be resolved to './myApp/icons/my-icon.png'
+})
+
+
+
+
 //----------------------------- base
 /* 
     You can use the base property in the defineConfig() function

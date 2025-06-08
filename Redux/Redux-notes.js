@@ -669,10 +669,10 @@ const store = configureStore({
                    return fulfillWithValue();                    // action sent to reducer will be action.payload
                    return rejectWithValue();                     // action sent to reducer will be action.payload
                    return Promise.resolve();                     // action sent to reducer will be action.payload
-                   return Promise.reject();                      // action sent to reducer will be action.error
-                   return new Promise((resolve, reject) => {     // If promise is resolve, then action.payload
-                      resolve();                                 // If promise is rejected, then action.error
-                      reject();
+                   return Promise.reject({message});             // action sent to reducer will be action.error (you can return an object with ONLY one property, message)
+                   return new Promise((resolve, reject) => {     // If promise is resolved, then action.payload
+                      resolve();                                 // If promise is rejected, then action.error (you can return an object with ONLY one property, message)
+                      reject({message});
                    })
              })
               

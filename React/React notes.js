@@ -1611,29 +1611,6 @@ function App() {
 
 
 
-//------------------------------------- Create Browser Router
-/* 
-        You can use the createBrowserRouter() function to 
-        organize components and routes in a different way.
-*/
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
-function App() {
-       
-        const router = createBrowserRouter([
-                {
-                    path: "/",
-                    element: <Home />,
-                },
-        ]};
-
-        return (
-            <RouterProvider router={router}/>
-        )
-}
-
-
-
 
 
 
@@ -1711,7 +1688,7 @@ function App(){
 
 
 
-//------------------------------------- Nested Route Components
+//------------------------------------- Child Route Components
 /* 
         Every Route component can have other nested Route components.
         The parent Route must have an <Outlet/> component that can
@@ -1747,11 +1724,11 @@ function ContactUs() {                                     //as long as the curr
 
 
 
-//------------------------------------- Routes with dynamic paths (useParams hook)
+//------------------------------------- Routes with dynamic pathnames (useParams hook)
 /* 
       You can create a dynamic path for a route with the following syntax
 
-      /:path               // path can be any placeholder
+      /:path                path can be any placeholder
 
       You can access the dynamic path by using useParams()
 */
@@ -1813,6 +1790,106 @@ function AboutUs() {
 
 
 
+//------------------------------------- Create Browser Router
+/* 
+        You can use the createBrowserRouter() function to 
+        organize route components in a different way.
+
+        CreateBrowserRouter() accepts an array of objects.
+        Each object has the following properties.
+
+        {
+             path: '/home'                  the pathname for the route
+             element: <Home/>               the component that will be rendered when the route matches the path '/home'
+        }
+*/
+
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+function App() {
+       
+        const router = createBrowserRouter([
+                {
+                    path: "/",
+                    element: <Home />,
+                },
+        ]};
+
+        return (
+            <RouterProvider router={router}/>
+        )
+}
+
+
+
+//------------------------------------- Create Browser Router and Child route components
+/* 
+        You can use the children property in the createBrowserRouter() to display
+        child route components within a parent route component. This is done with
+        the help of <Outlets/>. The children property accepts an array of objects that 
+        have the following properties
+
+        const router = createBrowserRouter([
+                {
+                     path: '/'                 
+                     element: <Layout/>              this component must have an <Outlet/> to display its child route components
+                     children: [
+                             {
+                                   index: true,         this child component will be displayed first when the pathname is '/'
+                                   element: <Home/>
+                                   children: [{}]        the child route component can also have its own child route components, but it must use the <Outlet/> component as well
+                             },
+                             {
+                                   path: '/about-us',
+                                   element: <AboutUs/>
+                                   children: [{}]
+                             }
+                     ]
+                }
+        ]}
+*/
+
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+
+function App() {
+
+        const Layout = () => {
+              return(
+                      <>
+                          <NavigationBar/>
+                          <Outlet/>
+                      </>
+              )  
+        }
+
+        const router = createBrowserRouter([
+                {
+                        path: '/',
+                        element: <Layout/>,                
+                        children: [
+                            {
+                                index: true,
+                                element: </Home>
+                            },
+                            {
+                                path: 'login',
+                                element: <Login/>
+                            }
+                        ]
+                }
+        ])
+
+
+        return (
+                <RouterProvider router={router}>
+        )
+        
+}
+
+
+
+
+
 //------------------------------------- Blocking navigation until user gives consent (useBlocker hook)
 /* 
         You can use the useBlocker() hook to prevent a user
@@ -1822,28 +1899,12 @@ function AboutUs() {
         uses the hook must have the returned value of the useBlocker hook
 
         KEEP IN MIND, to use the useBlocker() hook, 
-        your app can't use the <BrowserRouter/> context provider.
-        You need to use the two components createBrowserRouter and
-        RouterProvider
-
-                function App() {
-                        const router = createBrowserRouter([
-                                {
-                                    path: "/",
-                                    element: <Home />,
-                                },
-                        ]};
-        
-                        return (
-                            <RouterProvider router={router}/>
-                        )
-                }
-
-
+        You need to use createBrowserRouter() and
+        <RouterProvider/>
 */
 
 
-function useConfirmNavigation(shouldBlock) {
+function useConfirmNavigation(shouldBlock = true) {
     const block = useBlocker(shouldBlock);
 
     useEffect(() => {

@@ -1611,6 +1611,32 @@ function App() {
 
 
 
+//------------------------------------- Create Browser Router
+/* 
+        You can use the createBrowserRouter() function to 
+        organize components and routes in a different way.
+*/
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+function App() {
+       
+        const router = createBrowserRouter([
+                {
+                    path: "/",
+                    element: <Home />,
+                },
+        ]};
+
+        return (
+            <RouterProvider router={router}/>
+        )
+}
+
+
+
+
+
+
 //------------------------------------- Routes Component
 /* 
         The Routes component is a container for all the routes in your
@@ -1779,6 +1805,10 @@ function AboutUs() {
         location.state;                           // The state object passed via link or navigate, typically for persisting data between navigations.
         location.key;                             // A unique identifier for the current location entry in the history stack.
 }
+
+
+
+
 
 
 

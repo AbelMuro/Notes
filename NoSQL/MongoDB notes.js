@@ -340,6 +340,9 @@
 //-------------------------------------- DOWNLOAD FILES  -----------------------------------------------
 /* 
     You can download the files from the document with the GridFSBucket module in mongoDB
+    Databases such as MongoDB use the concept of Cursors, which is similar to pointers in C++.
+    When we look for a document that contains a file, MongoDB will use a Cursor to reference the
+    document in the database without actually loading it onto memory.
 
 */
 
@@ -354,16 +357,16 @@
         }
         
         router.get('/get_account', initializeGridFs, async (req, res) => {
-            const gfs = req.gfs;
+            const gfs = req.gfs;                                        
         
             try{
                 const user = await User.findOne({email});
-                const imageId = user.imageId;                            //this contains the id for the image (its just a 'new ObjectId()')
+                const imageId = user.imageId;                            //every account document should have a unique id that references the image in the fs.files collection
         
                 if(image){
                     const _id = new mongoose.Types.ObjectId(imageId);    //convert the _id into an objectId
-                    const cursor = gfs.find({_id});                      //we look for the file in the files collection (cursor is just a pointer to the file in the collecton)
-                    const files = await cursor.toArray();                //we get all the metadata from the file and store it within an array
+                    const cursor = gfs.find({_id});                      //we look for the documents (in the fs.files collectoon) that match the given _id.... find() will return a cursor that references the first match   
+                    const files = await cursor.toArray();                //we get all the document that are reference by the cursor and convert them into an array
                     const file = files[0];                        
                     const chunks = [];                                   //the use the chunks array to retrieve each chunk of the file
                     const readstream = gfs.openDownloadStream(_id);      //we initialize a read stream that is used to download the file from the chunks collection

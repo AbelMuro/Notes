@@ -89,38 +89,41 @@ export default defineConfig({
         outDir: '/dist'                  // Defines the output directory for the build. (/dist)
         assetsDir: '/assets'            // Sets the directory for static assets within the output folder.        
         target: 'esnext', 'es2015'      // Specifies the version of javascript that Vite will compile too (esnext is default)
-        minify:                         // allows your source code to be minified ('terser', 'esbuild', or Boolean).
-        sourcemap:                      // Enables source maps, source maps are files that map the original code to the bundled code (true (generates separate .map files), 'inline' (embeds the source maps in the output), 'hidden' (does not embed the source maps in the output)).
+        minify: '',                        // allows your source code to be minified ('terser', 'esbuild', or Boolean).
+        sourcemap: '',                     // Enables source maps, source maps are files that map the original code to the bundled code (true (generates separate .map files), 'inline' (embeds the source maps in the output), 'hidden' (does not embed the source maps in the output)).
         rollupOptions: {                // Allows customization of the Rollup bundler. (Vite is built on top of the rollup bundler)
                 input: {                // Defines multiple entry points for the build.
                      main: './src/index.html',
-                     admin: './src/admin.html'
-                }
+                     admin: './src/admin.html',
+                },
                 output: {                // Configures output settings like format, file names, and chunk splitting.
                      format: 'es',       // Sets module format ('es' (ECMAscript), 'cjs' (COMMONjs for Node.js), 'umd' (univeral format, ECMAscript and COMMONjs))
                      entryFileNames: '[name].[hash].js',         // Defines the naming pattern for entry files like index.js (hash is a unique identifier for the file, everytime the file changes, the hash is generated, this forces the browser to update the file instead of relying on cache)
                      chunkFileNames: '[name].[hash].js',         // Defines the naming pattern for chunk files (any file that is being lazy-loaded)
                      assetFileNames: 'assets/[name].[hash].[ext]', // Defines the naming pattern for assets files (images, fonts, and other static files) in the assets folder of the build directory
                      sourcemap: true,                             // Enables source maps for rollup (same options as build.sourcemap)
-                }
-                external: ['axios', 'react-virtualization']      // Defines dependencies that should not be bundled.
-                plugins: []                                      // Defines plugins that should be used with rollup and vite
-                treeshake: true                                  // true will enable treeshaking, false will disabled treeshaking, 'smallest' is an aggresive treeshaking mode that produces the smallest possible bundle
+                },
+                external: ['axios', 'react-virtualization'],      // Defines dependencies that should not be bundled.
+                plugins: [],                                      // Defines plugins that should be used with rollup and vite
+                treeshake: true,                                  // true will enable treeshaking, false will disabled treeshaking, 'smallest' is an aggresive treeshaking mode that produces the smallest possible bundle
                 manualChunks(pathname) {                               // the manualChunks method can be used for separating the bundle into different chunks (vite will evaluate every module and check its pathname)
                      if (pathname.includes('node_modules'))            // if the pathname of the module includes 'node_modules'...
                            return 'chunk_One';                         // chunk_One will be the name of the chunk that contains all assets within node_modules (manualChunks will not be called for the assets within node_modules)
                      
-                }                                
+                },                                
                 watch: {                                        // Defines how vite will 'watch' the files in the project for changes, and will update the dev server accordingly
                    include: 'src/**',                                 // Watches all files inside "src"
                    exclude: 'node_modules/**',                        // Doesn't watch all files inside node_modules
                    chokidar: {
-                       usePolling: true                                 // Enables polling (vite will check the project at regular intervals for any changes, instead of relying on the developer clicking on save)
-                       persistent – Keeps the watcher running indefinitely (true by default).
-                       ignored – Allows you to exclude specific files or directories using glob patterns or functions.                       
-                       depth – Limits how deep the watcher should go into nested directories.                                              
-                       interval – Sets the polling interval (useful when usePolling is enabled).                       
-                       awaitWriteFinish – Ensures that files are fully written before triggering events.                      
+                       usePolling: true,                                 // Enables polling (vite will check the project at regular intervals for any changes, instead of relying on the developer clicking on save)
+                       persistent: true,                                 // Keeps the watcher running indefinitely (true by default).
+                       ignored: ['node_modules/**', '*.log']             // Allows you to exclude specific files or directories                        
+                       depth: 34,                                        // Defines the number of nested directories that will be watched                                           
+                       interval: 1000                                    // Sets the polling interval in milliseconds (useful when usePolling is enabled).                       
+                       awaitWriteFinish: {                               // Ensures that files are fully written before detecting changes. (in other words, when the developer stop writing in the files, Vite will start its detection process of changes in the file system)   
+                            stabilityThreshold: 2000,                              // Vite will wait 2 seconds after the dev finishes writing in the files before detecting changes to the file system
+                            pollInterval: 100                                      // Vite will check every 100 milliseconds to see if the developer has stopped writing in the files
+                       }                                              
                        ignoreInitial – Prevents the watcher from firing events for existing files when it starts.                      
                        followSymlinks – Determines whether symbolic links should be watched.                       
                        atomic – Helps handle atomic writes by file editors.

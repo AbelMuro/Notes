@@ -282,11 +282,15 @@
 /* 
     You can upload images and files in a document with GridFSBucket module in mongoDB
     GridFSBucket will split a file into chunks and store them in MongoDB
-    The chunks are grouped into two collections in the mongoDB database,  fs.files and fs.chunks
-    fs is the default bucket name, you can specify a different name in     new GridFSBucket(conn.db, {bucketName: 'image'});
-    fs.files contains all the metadata of the file; filename, upload date, content type
-    fs.chunks contains all the binary data of the file
-    once the collections have been made, we save a reference (writestream.id) of the image into a document in mongoDB
+    The chunks are grouped into two collections in the mongoDB database (fs.files and fs.chunks)
+        fs.files contains all the metadata of the file; filename, upload date, content type
+        fs.chunks contains all the binary data of the file
+
+
+     const gfs = new GridFSBucket(conn.db, { bucketName: 'images' });
+
+     const cursor = gfs.find({_id: 'some id'})              //this will return a cursor that references the first document that matches the given _id
+    
 */
 
         const mongoose = require('mongoose');
@@ -342,7 +346,7 @@
     You can download the files from the document with the GridFSBucket module in mongoDB
     Databases such as MongoDB use the concept of Cursors, which is similar to pointers in C++.
     When we look for a document that contains a file, MongoDB will use a Cursor to reference the
-    document in the database without actually loading it onto memory.
+    document in the database that matches a certain property.
 
 */
 
@@ -364,9 +368,9 @@
                 const imageId = user.imageId;                            //every account document should have a unique id that references the image in the fs.files collection
         
                 if(image){
-                    const _id = new mongoose.Types.ObjectId(imageId);    //convert the _id into an objectId
-                    const cursor = gfs.find({_id});                      //we look for the documents (in the fs.files collectoon) that match the given _id.... find() will return a cursor that references the first match   
-                    const files = await cursor.toArray();                //we get all the document that are reference by the cursor and convert them into an array
+                    const _id = new mongoose.Types.ObjectId(imageId);    // convert the string into an ObjectId()
+                    const cursor = gfs.find({_id});                      // find() will return a cursor that references the first document that matches the given _id   
+                    const files = await cursor.toArray();                // we get all the document that are reference by the cursor and convert them into an array
                     const file = files[0];                        
                     const chunks = [];                                   //the use the chunks array to retrieve each chunk of the file
                     const readstream = gfs.openDownloadStream(_id);      //we initialize a read stream that is used to download the file from the chunks collection

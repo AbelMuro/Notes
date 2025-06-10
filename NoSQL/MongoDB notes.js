@@ -104,7 +104,7 @@
         const ObjectId = mongoose.Types.ObjectId; 
 
 
-//---------------- Converting ObjectId() into a string representation
+//---------------- Converting ObjectId() into a string
 /* 
     If you have an ObjectId(), you need to convert the object into a 
     string representation to be able to use it to identify a document 
@@ -122,7 +122,7 @@
 
 
 
-//---------------- Searching with a string representation of ObjectId()
+//---------------- Converting a string into ObjectId()
 /*
     If you have a string representation of an ObjectId(), you need to convert the
     string into ObjectId() before you can search for documents with it.
@@ -286,10 +286,16 @@
         fs.files contains all the metadata of the file; filename, upload date, content type
         fs.chunks contains all the binary data of the file
 
+     const gfs = new GridFSBucket(conn.db, {
+         bucketName: 'images'                // custom name for the chunks collections
+     });
 
-     const gfs = new GridFSBucket(conn.db, { bucketName: 'images' });
+     const cursor = gfs.find({_id: 'some id'})                find() will return a cursor that references the first document that matches the given _id 
+        cursor.forEach()                                      forEach() will iterate through all the documents that the cursor references (but each callback is calleds asynchronously)                                              
+            
 
-     const cursor = gfs.find({_id: 'some id'})              //this will return a cursor that references the first document that matches the given _id
+
+     
     
 */
 

@@ -278,151 +278,138 @@
 
 
 
-//-------------------------------------- UPLOADING FILES -----------------------------------------------
+
+            
+            
+//-------------------------------------- GridFSBucket() -------------------------------------- 
 /* 
-    You can upload images and files in a document with GridFSBucket module in mongoDB
+    GridFSBucket is used to upload files and download files from the mongoDB database
+
     GridFSBucket will split a file into chunks and store them in MongoDB
     The chunks are grouped into two collections in the mongoDB database (fs.files and fs.chunks)
         fs.files contains all the metadata of the file; filename, upload date, content type
         fs.chunks contains all the binary data of the file
 
+*/
+     const mongoose = require('mongoose');
+     const { GridFSBucket} = require('mongodb');
+
+     const conn = mongoose.connection;
+
      const gfs = new GridFSBucket(conn.db, {
-         bucketName: 'images'                // custom name for the chunks collections
+         bucketName: 'images'                              // custom name for the fs.chunks collections
      });
 
-     const cursor = gfs.find({_id: 'some id'})                find() will return a cursor that references the first document that matches the given _id 
-        cursor.forEach()                                      forEach() will iterate through all the documents that the cursor references (but each callback is calleds asynchronously)                                              
+
+
+
+
+
+
+
+//-------------------------------------- openUploadStream() -------------------------------------- 
+/* 
+    You can use the openUploadStream() method to upload files into MongoDB. The method will upload 
+    the files into the fs.chunks and fs.files collection. This method will return a writestream
+    that will handle all data by dividing it into smaller chunks
+*/
+
+      const image = req.file;                              // this is a file that was uploaded by the front end (look at the fetch notes for more info)
+
+      const uploadstream = gfs.openUploadStream(            
+          image.originalname, {                             // the name of the file being uploaded                 
+          contentType: image.mimetype                       // the content type of the file
+      });
+    
+      uploadstream.end(image.buffer);                        // end() will start the uploading process by dividing the files buffer (raw binary data) into chunks
+    
+      uploadstream.on('finish', async () => {
+           uploadstream.id;                                   // writestream.id is the string _id of ObjectId() of the file that was uploaded                   
+      });                                                
+    
+      uploadstream.on('error', (err) => {
+            console.log('Error uploading image:', err);
+      });
+
+
+
+
+
+
+
+//-------------------------------------- openDownloadStream() -------------------------------------- 
+/* 
+    You can use the openDownloadStream() method to download a file from the mongoDB database.
+    This method accepts an ObjectId() of the file in the fs.chunks and fs.files collection.
+    This method will return a stream that will download the file by getting one chunk of the file at a time
+*/
+
+        const _id = new mongoose.Types.ObjectId('_id of the file in the fs.files/fs.chunks collection');                            
+        const chunks = [];                                   // the use the chunks array to retrieve each chunk of the file
+        const downloadstream = gfs.openDownloadStream(_id);  // we initialize a read stream 
+        
+        downloadstream.on('data', (chunk) => {               // we get each chunk of the file and store it in the array
+            chunks.push(chunk);
+        })
+        
+        downloadstream.on('end', () => {
+            const fileBuffer = Buffer.concat(chunks);       // Buffer.concat() puts together all the chunks into a single chunk
+            fileBuffer.toString('base64')                   // we convert the binary data into base-64 string, this string can be sent to the front end
+        })
+        
+        downloadstream.on('error', (err) => {
+            console.log('Error reading file from MongoDB', err);
+        })
+
+
+
+
+
+//-------------------------------------- find() -------------------------------------- 
+/* 
+    You can use the find() method search for a file and obtain metadata about that file.
+    This method will return a cursor, which is an iterable object
+    that contains a reference to a document in the database. Keep in mind that the
+    cursor does not automatically have access to the document, if you
+    want to access the properties of the document, you must call toArray(),
+    next() or forEach(). These are all asynchronous methods
+
+    the document returned by the cursor will have the following properties
+
+        _id: 67d4b5091f3c8a86ccb4a182
+        length: 64652
+        chunkSize: 261120
+        uploadDate: 2025-03-14T23:00:26.293+00:00
+        filename: "jack in the box logo.png"
+        contentType: "image/png"
+*/
+
+     const cursor = gfs.find({_id: 'some id'})             // find() will return a cursor that references the first document that matches the given _id 
+     await cursor.toArray();                               // toArray() will return an array of documents
+     await cursor.next();                                  // next() will return the current document, and then it will move the cursor to the next matching document
+     cursor.forEach((document) => {                        // forEach() will iterate through all the documents   
+         document.filename                                        // each callback is called asynchronously
+     });                                            
+
+
+
+
+
+
+
             
 
 
-     
-    
-*/
-
-        const mongoose = require('mongoose');
-        const { GridFSBucket} = require('mongodb');
-
-        const initializeGridFs = (req, res, next) => {                      // 1) we create a middleware that initiates the GridFSBucket
-            const conn = mongoose.connection;
-            const gfs = new GridFSBucket(conn.db, {bucketName: 'image'});
-            req.gfs = gfs;
-            next();
-        };
-
-        app.post('/add_files_to_document', initializeGridFs, async (req, res) => {
-            const image = req.file;                                         // 2) look at your fetch notes on how to receive files from the front-end
-            const gfs = req.gfs;
-
-            try{
-                const user = new User({email, password});
-
-                if(image){
-                      const writestream = gfs.openUploadStream(            // 3) we create a writestream, its a way of handling data by diving it into smaller chunks
-                          image.originalname, {                               
-                          contentType: image.mimetype
-                      });
-                    
-                      writestream.end(image.buffer);                        // 4) Once the writestream has finished, we get the image buffer(the raw binary data for the image) and store the data into the database
-                    
-                      writestream.on('finish', async () => {
-                            user.imageId = writestream.id;           // 5) we update the user document with the ID of the writestream (this returns a string) )
-                            const userData = await user.save();
-                            console.log('Image uploaded to MongoDB');                            
-                      });
-                    
-                      writestream.on('error', (err) => {
-                            console.log('Error uploading image:', err);
-                     });
-                }
-            }
-            catch(error){
-                const message = error.message;
-                if(message.includes('E11000 duplicate key error collection:'))
-                    res.status(401).send(message);
-                else
-                    res.status(500).send(message);
-            }
-        })
-
-
-
-
-//-------------------------------------- DOWNLOAD FILES  -----------------------------------------------
-/* 
-    You can download the files from the document with the GridFSBucket module in mongoDB
-    Databases such as MongoDB use the concept of Cursors, which is similar to pointers in C++.
-    When we look for a document that contains a file, MongoDB will use a Cursor to reference the
-    document in the database that matches a certain property.
-
-*/
-
-        const mongoose = require('mongoose');
-        const { GridFSBucket} = require('mongodb');
-
-        const initializeGridFs = (req, res, next) => {
-            const conn = mongoose.connection;
-            const gfs = new GridFSBucket(conn.db, { bucketName: 'images' });
-            req.gfs = gfs;
-            next();
-        }
-        
-        router.get('/get_account', initializeGridFs, async (req, res) => {
-            const gfs = req.gfs;                                        
-        
-            try{
-                const user = await User.findOne({email});
-                const imageId = user.imageId;                            //every account document should have a unique id that references the image in the fs.files collection
-        
-                if(image){
-                    const _id = new mongoose.Types.ObjectId(imageId);    // convert the string into an ObjectId()
-                    const cursor = gfs.find({_id});                      // find() will return a cursor that references the first document that matches the given _id   
-                    const files = await cursor.toArray();                // we get all the document that are reference by the cursor and convert them into an array
-                    const file = files[0];                        
-                    const chunks = [];                                   //the use the chunks array to retrieve each chunk of the file
-                    const readstream = gfs.openDownloadStream(_id);      //we initialize a read stream that is used to download the file from the chunks collection
-        
-                    readstream.on('data', (chunk) => {                   //we get each chunk of the file and store it in the array
-                        chunks.push(chunk);
-                    })
-        
-                    readstream.on('end', () => {
-                        const fileBuffer = Buffer.concat(chunks);       //Buffer.concat() puts together all the binary data chunks into a single chunk
-                        res.status(200).json({
-                            username,
-                            email,
-                            contentType: file.contentType,
-                            image: fileBuffer.toString('base64')        //we convert the binary data into a text format (base 64) that can be transmitted safely with JSON
-                        })
-                    })
-        
-                    readstream.on('error', (err) => {
-                        console.log('Error reading file from MongoDB', err);
-                    })
-                }  
-                else
-                    res.status(200).json({username, email});
-                 
-            }
-            catch(error){
-                const message = error.message;
-                res.status(500).send(message);
-            }
-        })
 
 
 
 
 
 
-
-
-
-
-//======================================================= CHANGE STREAMS ======================================================================
+//-------------------------------------- Watch() -------------------------------------- 
 /* 
     You can use the watch() method to detect any changes made to a collection.
-    Typically, the watch() method is used with a Schema before assigning it to
-    a model. The watch() method will return an 'change stream', this stream will 
+    The watch() method will return an 'change stream', this stream will 
     have its event handlers that will be triggered when something happens to 
     the collection (add new document, delete document, change document).
 
@@ -444,11 +431,8 @@
     	    })
 */
 
-        const {Schema} = require('mongoose');
-        
-        const queueSchema = new Schema({
-            player: {type: String, required: true},
-        })
+        const mongoose = require('mongoose');
+        const Queue = mongoose.model();
 
         const changeStream = Queue.watch();                                 // this will detect any changes made to the collection (new document, delete document, change document)
         const changeStream = Queue.watch([                                  // this will detect any changes made to a specific document in a collection
@@ -459,8 +443,9 @@
         changeStream.on('change', (change) => {                             // change event will be triggered when the document or collection is updated
             const fullDocument = change.fullDocument;                       // contains the whole document that was updated or added to the collection
             const operationType = change.operationType;                     // will return 'insert' or 'delete'
-            changeStream.close();                                           // you can close the change stream connection
-        })  
+        });
+
+        changeStream.close();                                           // you can close the change stream connection
 
 
 

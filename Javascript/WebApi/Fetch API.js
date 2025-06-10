@@ -49,7 +49,7 @@ fetch("/somePath", {
 
 
 
-//------------------------Quick example on how to use the Fetch API
+//------------------------ Fetch API with async and await
 const response = await fetch('https://myWebsite.com/somePath', {                                                    //this will will return a promise..... 
       method: "POST",                                                   //POST, GET, PUT, DELETE
       credentials: "include",                                           //used for including credentials such as cookies
@@ -60,12 +60,23 @@ const response = await fetch('https://myWebsite.com/somePath', {                
 })
 
 if(response.status === 200){
-  const result = await response.text() // or response.json()            text() will parse the data into text, json() will be parse the json data into javascript         json() will be parse the json data into javascript
+  const result = await response.text() // or response.json()            text() will parse the data into text, json() will be parse the json data into javascript      
   //result will contain the data from the server
 }
 
 
 
+//------------------------ Fetch API with promises
+const promise = fetch('URL', {
+    method: 'GET',
+    headers: {
+	'Content-Type': 'application/json'
+    },
+});
+promise
+    .then(response => response.json())
+    .then(account => setPlayers(players => [...players, account]))
+    .catch(error => console.log(error.message));
 
 
 

@@ -221,8 +221,8 @@
 
 //-------------------------------------- GET DOCUMENTS -----------------------------------------------
 /* 
-        find() will return a cursor that has a single or multiple documents that satisfy the query                this will return NULL if it doesn't find the document in the collection
-        findOne() will return the document that satisfies the query
+        find() will return an array of documents that satisfy the query or null if no such documents exist            
+        findOne() will return a single document that satisfies the query
 */
 
 

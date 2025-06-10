@@ -86,11 +86,35 @@ export default defineConfig({
 
 export default defineConfig({
   build: {
-        outDir: '/dist'                  // Defines the output directory for the build. (/dist)
+        outDir: '/dist'                 // Defines the output directory for the build. (/dist)
         assetsDir: '/assets'            // Sets the directory for static assets within the output folder.        
         target: 'esnext', 'es2015'      // Specifies the version of javascript that Vite will compile too (esnext is default)
-        minify: '',                        // allows your source code to be minified ('terser', 'esbuild', or Boolean).
-        sourcemap: '',                     // Enables source maps, source maps are files that map the original code to the bundled code (true (generates separate .map files), 'inline' (embeds the source maps in the output), 'hidden' (does not embed the source maps in the output)).
+        minify: '',                     // allows your source code to be minified ('terser', 'esbuild', or Boolean).
+        terserOptions: {                // Configures Terser minification options.   
+                ecma: Specifies the ECMAScript version (e.g., 5, 2015, 2020).
+                toplevel: Enables optimizations at the top level of the code.  
+                module: Treats input as an ES module.
+                compress: {
+                        drop_console: true,  // Removes console.log and similar statements.
+                        drop_debugger: true, // Eliminates debugger statements.
+                        booleans: true,      // Optimizes boolean expressions (!!a ? b : c   →   a ? b : c).
+                        dead_code: true      // Removes unreachable code.
+                        conditionals: true   // Simplifies if statements and ternary expressions.
+                        unused: true         // Eliminates unused variables and functions. 
+                },
+                mangle: {
+                        properties: true     // Shortens property names
+                        keep_fnames: true    // Prevents function names from being shortened.    
+                        reserved: ['myVariable']           // Specifies variable names to exclude from being shortened.
+                },
+                format: {
+                        beautify: Keeps the output readable.
+                        comments: Controls comment preservation (false removes all comments).
+                        quote_style: Defines how strings are quoted (0-3 for different styles).
+                }
+                
+        }                    
+        sourcemap: '',                  // Enables source maps, source maps are files that map the original code to the bundled code (true (generates separate .map files), 'inline' (embeds the source maps in the output), 'hidden' (does not embed the source maps in the output)).
         rollupOptions: {                // Allows customization of the Rollup bundler. (Vite is built on top of the rollup bundler)
                 input: {                // Defines multiple entry points for the build.
                      main: './src/index.html',
@@ -116,7 +140,7 @@ export default defineConfig({
                    exclude: 'node_modules/**',                        // Doesn't watch all files inside node_modules
                    chokidar: {
                        usePolling: true,                                 // Enables polling (vite will check the project at regular intervals for any changes, instead of relying on the developer clicking on save)
-                       persistent: true,                                 // Keeps the watcher running indefinitely (true by default).
+                       persistent: true,                                 // Keeps the watcher running (true means indefinitely).
                        ignored: ['node_modules/**', '*.log']             // Allows you to exclude specific files or directories                        
                        depth: 34,                                        // Defines the number of nested directories that will be watched                                           
                        interval: 1000                                    // Sets the polling interval in milliseconds (useful when usePolling is enabled).                       
@@ -124,23 +148,25 @@ export default defineConfig({
                             stabilityThreshold: 2000,                              // Vite will wait 2 seconds after the dev finishes writing in the files before detecting changes to the file system
                             pollInterval: 100                                      // Vite will check every 100 milliseconds to see if the developer has stopped writing in the files
                        }                                              
-                       ignoreInitial – Prevents the watcher from firing events for existing files when it starts.                      
-                       followSymlinks – Determines whether symbolic links should be watched.                       
-                       atomic – Helps handle atomic writes by file editors.
+                       ignoreInitial: true,                              // Prevents the watcher from triggering an update to the dev server when the project first starts                    
+                       followSymlinks: true,                             // if set to true, then Vite will use system links created with npm link (cd path/to/module npm link,   cd path/to/project npm link)                       
+                       atomic: true,                                     // ensures that the watcher will update the dev server only once when it detects multiple changes made by the developer in the files
                    }
               }                                        
                 
         }                  
-        manifest: Generates a manifest file (true or false).
-        polyfillModulePreload: Enables polyfills for module preload (true or false).
-        cssCodeSplit: Controls CSS code splitting (true or false).
-        terserOptions: Configures Terser minification options.      
+        manifest: true,                                                 // Generates a manifest file that contains a mapping between the file that has the source code and its corresponding bundled file. 
+                                                                        // (this is useful for helping browsers detect changes to the file, some browsers have aggressive caching that makes it difficult to display updates to the file)
+        polyfillModulePreload: true,                                    // Defines if our project should use pollyfills (a pollyfill is code that implements a certain feature if the browser doesnt support it)
+        cssCodeSplit: true                                              // Defines if the css should also be code splitted with the JS (each css file will be bundled with the JS file that use it) 
         chunkSizeWarningLimit: Sets the chunk size warning limit (in KB).    
         reportCompressedSize: Reports compressed file sizes (true or false).   
         emptyOutDir: Clears the output directory before building (true or false). 
         write: Controls whether files are written to disk (true or false).
-  }                     // if i import an image from '/icons/my-icon.png', the url will be resolved to './myApp/icons/my-icon.png'
+  }                   
 })
+
+
 
 
 

@@ -75,7 +75,7 @@ const promise = fetch('URL', {
 });
 promise
     .then(response => response.json())
-    .then(account => setPlayers(players => [...players, account]))
+    .then(results => {console.log(results)}))
     .catch(error => console.log(error.message));
 
 

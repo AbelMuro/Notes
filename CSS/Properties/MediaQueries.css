@@ -1,0 +1,254 @@
+/* ---------------------------------------------------------- MEDIA QUERIES ---------------------------------------------------------------*/
+/* 
+    SYNTAX for @media queries 
+    if no media type is specified, then the ALL media type is implied
+
+    @media media-types (media-feature) {}
+*/
+
+/* ---------------Different ways to use @media------------------ */
+@media (min-height: 400px) {}
+@media (min-height: 500px), (orientation: landscape) {}  /* styles are applied to both min-height or orientation*/
+@media (min-height: 400px) and (max-height: 600px) {}    /* styles are applied only if min-height and max-height are both true */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*============================================ @MEDIA SCREEN ============================================*/
+/* 
+    @Media Screen will apply styles to the document based on the width of the viewport
+*/
+
+@media screen (max-width: 750px){}        /* most developers typically exclude the screen from the syntax*/
+
+
+
+
+
+/*------------------------  Max-width  Min-width  Max-height  Min-height ------------------------ */
+/* 
+    @media will trigger the new styles when the viewports width reaches 750px
+*/   
+
+@media (max-width: 750px){                                                    
+    div{
+        width: 100%;
+        border-bottom: 1px solid white;
+    }
+}
+
+
+
+/*------------------------  Any Pointer ------------------------ */
+/* 
+  @media will report the 'accuracy' of the input devices (mouse, touchscreen, or both)
+  Any-pointer will check for ALL input devices connected to the device 
+
+  Pointer will only check for the primary pointer device 
+  fine: means that at least one pointer device is very accurate 
+  coarse: means that at least one pointer device is not very accurate 
+  none: means that there are no mouse devices connected and the user is using a keyboard only 
+*/
+
+
+@media (any-pointer: coarse) {              /* (@media will apply the styles if a touchscreen is connected to the device) */
+    * {
+        width: 200px;
+        height: 200px;
+    }
+}
+@media (any-pointer: fine) {                /* (@media will apply the style if a mouse or mousepad is connected to the device) */
+    * {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (any-pointer: none) {                /* (@media will apply the styles if no pointer device is connected)*/
+    * {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+
+
+/*------------------------  Any Hover ------------------------ */
+/* 
+    Any-Hover: will check if any available input devices can actually hover over elements
+    Hover: will check if the primary input device can actually hover over elements
+
+    hover: means that at least one pointer device can hover over elements to trigger :hover effects
+    none: means that no pointer device can hover over elements to trigger :hover effects 
+        if it can hover over elements, then most likely, the input devices is a mouse,
+        if it can't hover over elements, then most likely, the input device is a touchscreen
+*/
+
+
+.menu > .dropdown{
+    display: none;
+}
+
+.menu:hover > .dropdown{
+    display: block;
+}
+
+@media (any-hover: none) {                      /* if there are no pointer devices that can hover over elements (mobile devices), then the following styles will be applied */
+    .menu > .dropdown{                          
+         display: block;
+    }
+}
+
+
+
+
+
+
+/*------------------------  Orientation ------------------------ */
+/* 
+    orientation was designed for tablets and iphones
+
+        landscape: iPad or iPhone is upside up
+        width must be smaller than height
+            ---------
+            |       |
+            |       |
+            |       |
+            |       |
+            ---------
+
+
+        portrait: ipad or iphone is on the side
+        height must be smaller than width
+            --------------
+            |            |
+            |            |
+            --------------
+*/
+
+
+@media (orientation: landscape) {
+    body {
+        flex-direction: row;
+    }
+}
+
+@media (orientation: portrait) {
+    body {
+        flex-direction: column;
+    }
+}
+
+
+
+
+
+/*------------------------ prefers-color-scheme ------------------------ */
+/* 
+    By default, most users have a 'theme' set on their computer; light theme or dark theme.
+    users can change their theme at any time. So sometimes you want your website/application to reflect
+    the theme that the user has set on their computer... and thats where prefers-color-scheme comes in
+    this media query will apply any css properties defined based 
+*/
+
+/* will detect and apply the css selectors ONLY if the user has a dark theme set on their computer */
+@media (prefers-color-scheme: dark){
+    body{
+        background-color: black;
+    }
+
+    p, h1, h2, h3, {
+       color: white;
+    }
+    
+    div{
+        box-shadow: 5px 5px 5px purple;
+    }
+}
+
+
+
+
+/* will detect and apply the css selectors ONLY if the user has a light theme set on their computer */
+@media (prefers-color-scheme: light){
+    body{
+        background-color: white;
+    }
+
+    p, h1, h2, h3, {
+       color: black;
+    }
+    
+    div{
+        box-shadow: 5px 5px 5px red;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*============================================ @MEDIA PRINT ============================================*/
+/* 
+    @media print will apply the styles before the document gets printed 
+    this is useful when you want to remove other content from the document
+    and only want to include the content that you want to print in the document
+*/
+
+
+@media print and (min-resolution: 300dpi) {             /* defines the minimum resolution for printing*/
+    .sidebar, .navigationbar, .footer {
+        visibility: hidden;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/*============================================ @SUPPORTS ============================================*/
+/* 
+    you can use @support rule to determine if the current browser supports a certain css property 
+*/
+
+@supports (display: flex) {
+    @media (min-width: 600px) {
+        .someClass {
+            display: flex;
+        } 
+    }
+}
+
+
+

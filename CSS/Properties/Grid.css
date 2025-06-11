@@ -1,0 +1,156 @@
+.grid{
+    /*
+        FOR DYNAMICALLY SIZED COLUMNS: you can use grid-template-column: auto 1fr 1fr    
+        the column with auto will grow with its content, 
+        and the columns with 1fr will take up the available space remaining
+    
+    */
+    
+    /* Grid container*/
+    display: grid, inline-grid;                 /* this will define a grid container
+            grid: defines a block container with the grid
+            inline-grid: defines an inline container with the grid
+        */
+    grid-template-columns: auto auto auto auto; /* this property will define four columns in the grid
+        each value will represent the width of each column in the grid
+        
+        Alot of the times, you can use the repeat() function to 'repeat' the values that you write in the values
+    
+        grid-template-columns: auto auto auto auto;                  //these two lines are identical
+        grid-template-columns: repeat(4, auto); 
+    
+        With grid-containers, there is a unit that you can use called 'fr'
+        'fr' stands for fraction, and it represents the faction of the available space in the container
+        Basically, if you want your columns in the grid container to be of equal width, you should do this...
+    
+        grid-template-columns: repeat(4, 1fr);
+           
+        */
+    grid-template-rows: auto auto auto auto;    /* this property will define the size of each row in the grid
+        if there are 4 rows and you have "grid-template-rows: auto auto", then this property will affect the
+        first two rows in the grid.
+
+        each value will represent the height of each row in the grid
+        grid-template-rows: height:auto  height:auto  height:auto  height:auto
+        */
+    justify-content: space-around, space-between, space-evenly, center, left, right; /* this property will 
+        give a pre-defined amount of space between the COLUMNS and NOT the individual items.
+
+        Just look at the notes for 'justify-content' in the flex-box
+        */
+    align-content: space-around, space-between, space-evenly, center, left, right /* this property will 
+        give a pre-defined amount of space between the ROWS and NOT the individual items.
+        
+        this property works best with grid containers
+        */
+    justify-items: center, flex-start, flex-end; /* this property will move ALL the items in the grid
+            within their individual containers. REMEMBER that this property will ignore the values specified
+            in grid-template-columns but NOT in grid-template-rows
+
+            take for example this...
+                grid-template-columns: 300px 300px;      //what this actually does is create a individual container of 300px for each item in the column
+                justify-items: center;                   //this will remove the width specified in grid-template-columns and will make the item as big as its content box
+                                            
+
+            visual example...
+
+                container stays at a constant width of 300px
+             ------------------
+            |                  |
+            |     content      |                        //just imagine that the content has a background-color of blue with the words content
+            |                  |                        //in this case, the blue color will fill up the entire container because the content 
+             ------------------                         //takes up the entire container
+
+
+            if we apply this property 'justify-items: center', 
+            then the content of the item will shrink 
+            BUT the container size stays the same.
+            it will also center the content box in the container
+
+             ------------------
+            |      -------     |                        //now, the blue color does NOT fill up the entire container, and only fills up the content box 
+            |     |content|    |                        
+            |      -------     |                        
+             ------------------
+
+             -----------------
+            |  -------        |                        //justify-items: left
+            | |content|       |                        
+            |  -------        |                        
+             ------------------
+
+
+        */
+    justify-self: center, flex-start, flex-end; /* this property does the same thing as justify-items, but only for ONE item at a time*/
+    align-self: center, flex-start, flex-end;    /* this property is very similar to justify-items, but it aligns the item
+         VERTICALLY, and NOT horizontally  
+    */
+    gap: 50px 50px;             /* SHORTHAND */
+    row-gap: 50px;              /* this property will put a constant amount of space (gap) between the rows in the grid */
+    column-gap: 50px;           /* this property will put a constant amount of space (gap) between the columns in the grid*/
+    
+    /* Grid items*/
+    grid-column: 1/3; /* SHORTHAND, this property will define the number of column lines a grid item will extend to 
+        the 1 in 1/3 means that the grid item starts at column line 1 and the 3 means 
+        that the grid item will extend to column line 3
+
+       column     column    column
+       line-1     line-2    line-3
+         ----------------------
+        | /        /         / |        by default, item-1 will take 1/2 column lines,
+        | / item-1 / item-2  / |        but with grid-column, you can extend a grid-item
+        | /        /         / |        past its initial column lines
+        | /        /         / |
+        | / item-3 / item-4  / |
+        | /        /         / |
+         ----------------------
+
+
+       column     column    column
+       line-1     line-2    line-3
+         ----------------------
+        | /                  / |        
+        | / <--> item-1 <--> / |        .itemOne { grid-column: 1/3}
+        | /        /         / |        item-1 now extends from grid-column 1
+        | /        /         / |        to grid-column 3
+        | / item-2 / item-3  / |
+        | /        /         / |
+        | /        /         / | 
+        | / item-4 /         / |  
+         -----------------------
+
+
+    */
+    grid-column-start: 1; /* defines the column line that the grid item will start in 
+        look at the notes above for more info
+     */
+    grid-column-end: 3; /* defines the column line that the grid item will end in
+        look at the notes above for more info
+     */
+    grid-row: 1/ span 3; /* SHORTAND, this property will define the number of rows a grid item will extend to
+        the 1 means that the grid-item will start from row 1
+        the 'span 3' means that the grid-item will extend to row 3
+
+        grid-template-columns: auto auto;
+
+         -------------------                 ---------------------------
+        |  item-1   item-2  |               |   ^       item-2         |        keep in mind that grid-row will always make the
+        |                   |    ---->      |   |                      |        grid-item 'float' to the left of the grid container
+        |  item-3   item-4  |               | item-1    item-3         |       .itemOne { grid-row: 1/ span 3}
+        |                   |               |   |                      |
+        |  item-5   item-6  |               |   v       item-4         |      
+         -------------------                |                          | 
+                                            | item-5    item-6         |
+                                            ---------------------------
+    
+    */
+    grid-row-start: 1;   /* this property defines the row that the grid item will start in 
+        look at the notes above for more information
+    */
+    grid-row-end: span 3; /* this property defines the row that the grid item will extend to 
+        look at the notes above for more information
+    */
+}
+
+
+

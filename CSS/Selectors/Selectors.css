@@ -1,0 +1,150 @@
+/*----------------------------------------------------------- SELECTORS -----------------------------------------------------------*/
+
+
+/* UNIVERSAL SELECTOR, this will sellect ALL elements in the document */
+*{                                              
+    color: none;                          
+}
+
+/* TAG SELECTOR, this will select all <div> elements */
+div {       
+    color:none
+}
+
+/* MULTIPLE SELECTORS, you can select multiple elements like below*/
+div, p, i, b {
+    color:none;
+}
+
+/* DESCENDANT SELECTOR, this will select ALL the <p> elements that are nested inside <div> elements, including ALL the grandchildren*/
+div p {
+    color:none;
+}
+
+/* CHILD SELECTOR: it will select all <p> elements that are nested within <div>.. but will NOT select the grandchildren */
+div > p{
+    color:none;
+}
+
+/* ADJACENT SELECTOR: it will select the first neighboring <p> element that comes directly after all <div>*/
+div + p{
+    color:none;
+}
+
+/* GENERAL SIBLING SELECTOR: this will select ALL <p> elements that come directly after <div>*/
+div ~ p
+{
+    color:none;
+}
+
+ /* ID SELECTOR */
+#HeaderOne{                                     
+    color:none;
+}   
+
+/* TAG and CLASS SELECTOR, the element must have both the <a> tag and the .className */
+a.className{
+    color:none;
+}
+
+/* ATTRIBUTE SELECTOR, this will select all elements with the title attribute*/
+[title]{
+    color:none;
+}
+
+/* TAG and ATTRIBUTE SELECTOR, this will select only the <p> elements with the name attribute*/
+p[name]{                                      
+    background-color:blue;
+}
+
+/* TAG, ATTRIBUTE and VALUE SELECTOR, same as above but will only select elements with attribute name="whatever"*/
+p[name="whatever"]{                            
+    color:red;
+}
+
+/*   ~= SELECTOR,     this will select all <p> elements that have the title attribute containing a space separated list of words, one of which MUST be flower*/
+p[title~=flower]{
+    color:none;
+}
+
+/*   |= SELECTOR,     this will select any element that has a class name that is exactly "any" or a class name that has "any-"*/
+[class|=any]{
+    color:none;
+}
+
+/*   ^= SELECTOR,     this will select all <p> elements that have a class name that starts with "top"*/
+p[class^="top"]
+{
+    color:none;
+}
+
+/*   $= SELECTOR,     this will select all elements that have a class name that ENDS with "money" */
+[class$="money"]
+{
+    color:none;
+}
+
+/*   *= SELECTOR,     this will select all elements that have a class name that contains the words "honey" anywhere in the value*/
+[class*="honey"] {
+    color:none;
+}
+
+/*    CLASS and ATTRIBUTE SELECTOR,     this will select all elements that have attribute dir = rtl AND have the class name example*/
+[dir=rtl].example{
+    color:none;
+}
+
+
+
+
+
+/*----------------------------------------------------------- PSEUDO CLASSES -----------------------------------------------------------*/
+
+
+
+/* FOCUS PSEUDO CLASS: this class will change the background color when the user clicks/focuses on the input element (reserved for input tags)*/
+input:focus{
+    background-color:none;
+}
+                                
+/* LINK PSEUDO CLASSES: this class will alter the color of the link (reserved for anchor tags)*/
+a:link{
+    color: blue;
+}
+
+/* VISITED PSEUDO CLASSES: this class will alter the color of the link once the user has already clicked on it (reserved for anchor tags)*/
+a:visited{
+    color: orange;
+}
+
+/* HOVER PSEUDO CLASS: this class will change the state of an element once the user hovers over the element with their mouse cursor*/
+div:hover{                                        /* :hover can be used by other elements*/             
+    color:blue;
+}
+
+/* ACTIVE PSEUDO CLASS: this class will style the element in the MOMENT that the user clicks on the link, this will be visible for a very short time (reserved for anchor tags)*/
+a:active{
+    color:red
+}
+
+/* FIRST CHILD PSEUDO CLASS: this will style all the first <p> child elements of all parents */
+p:first-child{
+    color:none;
+    content:"";
+}
+
+/* LAST CHILD PSEUDO CLASS: this class will style all <p> elements that are the last child for a parent*/
+p:last-child{
+    color: none;
+}
+
+ /* NOT PSEUDO CLASS:  this will select all anchor tags that do NOT have .currentPage*/
+a:not(.currentPage) {                    
+    color:blue
+}
+
+/* NTH TYPE PSEUDO CLASS: will select a <p> element IF its the 'second paragraph element' of a parent*/
+p:nth-of-type(2) {              
+    color:none
+}
+

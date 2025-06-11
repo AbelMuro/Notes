@@ -1,0 +1,16 @@
+
+.CursorProperties {
+    cursor: default;                                    /* default cursor icon*/
+    cursor: pointer;                                     /* cursor icon that has a hand pointing to something */
+    cursor: text;                                       /* default cursor when you hover over text*/
+    cursor: wait;                                       /* cursor icon with a blue circle*/
+    cursor: move;                                       /* cursor icon that has arrows pointing up, down left and right*/
+    cursor: grab;                                       /* cursor icon that has a hand that is about to grab something */
+    cursor: grabbing;                                   /* cursor icon that is grabbing something*/
+    cursor: help;                                       /* cursor icon with a question mark*/
+    cursor: not-allowed;                                 /* cursor icon with a red circle that has a red line across it*/
+    cursor: zoom-in;                                    /* cursor icon with a magnifying glass and a plus sign*/
+    cursor: zoom-out;                                    /* cursor icon with a magnifying glass and a minus sign*/
+    cursor: url(myCustomCursor.cur);                    /* you can create your own custom cursor*/
+} 
+

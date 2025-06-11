@@ -1,0 +1,37 @@
+.Text {
+    color: green;                                             /* the color of text*/
+    text-decoration: underline, solid, red, 50%;              /* SHORTHAND*/
+    text-decoration-line: overline, line-through, underline;    /* draws a line over, through, or under a text; you can also combine these values*/ 
+    text-decoration-color: red;                               /* the color of the line that is displayed by the property above */  
+    text-decoration-style: solid, wavy, double;                 /* the style of the line that is displayed by the property above */   
+    text-decoration-thickness: 50px;                            /* the thickness of the line that is displayed by the property above */
+
+    text-wrap: balance;                                         /* this will make sure that the text is evenly wrapped when its container is resized*/
+    text-indent: 50px;                                          /* the indent for text*/
+    text-align: center, left, right, justify;                   /* will align an INLINE element(text) within a block element, justify extends lines of text to make sure they are all of equal length*/
+    text-justify: inter-word, inter-character;                  /* only works if 'text-align: justify'... inter-word: increases/decreases space between words, inter-character: increases/decreased space between letters... you see the difference when you resize the window */
+    text-overflow: clip, ellipsis;                              /* defines how the text that is overflowing from its container will appear, clip will just remove the text, while ellipsis will show three dots ...*/
+    text-shadow: 20px -20px 5px blue;                         /* creates a shadow behind the text, 20px moves the shadow left and right, 
+        -20px moves the shadow up and down, 
+        5px defines by how much we blur the shadow 
+        and blue is the color of the shadow*/
+    text-transform: uppercase, lowercase, capitalize;           /* this will transform the text to uppercase, lowercase, or will capitalize every first letter of every word*/
+    
+    word-wrap: normal, break-word;                              /* this property defines if a long word will break onto the next line 
+
+             --------------
+            |thisisaveryveryverylongword             
+            |              |        //word-wrap: normal   -> this is default
+            |              |
+            |              |
+             --------------
+
+             ------------
+            | thisisavery|          //word-wrap: break-word
+            | veryveryver|
+            | ylongword  |
+            |            |
+             ------------
+        */
+    direction: rtl, ltr;                                        /* this property defines if the text direction will be read from left to right, or right to left*/
+}

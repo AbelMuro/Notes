@@ -143,8 +143,14 @@ a:not(.currentPage) {
     color:blue
 }
 
-/* NTH TYPE PSEUDO CLASS: will select a <p> element IF its the 'second paragraph element' of a parent*/
-p:nth-of-type(2) {              
+/* NTH TYPE PSEUDO CLASS: will select a <p> element IF its the 'second paragraph element' of a parent,  you can also use the n variable in the class to alternate elements */
+p:nth-of-type(2), i:nth-of-type(2n + 3){              
     color:none
 }
+
+/* NTH CHILD PESUDO CLASS: will select a <p> element IF its a paragragh element AND it is the second child of a parent */
+p:nth-child(2)  {
+    color: none;
+}
+
 

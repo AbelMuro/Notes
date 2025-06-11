@@ -1,0 +1,61 @@
+
+.ColumnContainers {
+    /* you should use columns for containers that only have text. Also, 
+    keep in mind that you don't have to organize the text into columns,
+    column-count will do that for you */
+
+    column-width: 200px;                    /* this property will set a minimun width for the columns, 
+        In other words, the number of columns will always change when the window is resized but the width 
+        of the columns stays the same
+
+        just pretend that the columns below have a width of 100px
+
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+
+
+        after we resize the window, we will have 2 columns but the width of those columns will still be 100px
+
+        blah blah blah      blah blah blah
+        blah blah blah      blah blah blah
+        blah blah blah      blah blah blah
+        blah blah blah      blah blah blah
+        blah blah blah      blah blah blah
+        blah blah blah      blah blah blah
+
+    */
+
+    column-count: 4;                        /* this property will divide the text into 4 columns
+        this property should NOT be used with column-width
+    */ 
+    column-gap: 40px;                       /* this property defines a constant space (gap) between the columns*/
+    column-rule: 4px solid pink;          /* SHORTHAND defines a border between the columns*/
+    column-rule-width: 4px;                 /* the width of the border between the columns*/
+    column-rule-style: solid, double ,inset, dotted, dashed, groove;/* the style of the border between the columns*/
+    column-rule-color: pink;              /* the color of the border between the columns*/
+    column-span: all;                       /* this property can be used to create a header for the columns
+    determines if a specific element in the columns will span the entire width of the columns 
+
+    just pretend that the BLAH BLAH BLAH is inside a <h1 style="column-span: all"> </h1>
+
+    <div style="column-count: 3">
+        BLAH BLAH BLAH      blah blah blah      blah blah blah          // without column-span: all
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+    </div>
+
+    <div style="column-count: 3">
+        -----------------BLAH BLAH BLAH----------------------           // just pretend that the --- is just more content
+        blah blah blah      blah blah blah      blah blah blah          // with column-span: all
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      blah blah blah
+        blah blah blah      blah blah blah      
+    </div>
+
+    
+    */
+}

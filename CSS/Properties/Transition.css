@@ -1,0 +1,18 @@
+.TransitionProperties:hover {
+    width: 400px;
+    background-color: green;
+}
+
+.TransitionProperties {
+    width: 100px;                           /* property that we will use to test transition property*/
+    background-color: red;
+
+    transition: width 2s 3s ease-in, background-color 2s 3s ease-in;   /*SHORTHAND you can include multiple transitions this way*/
+    transition-property: width;             /* property that we want to animate while it changes*/
+    transition-duration: 2s;                /* duration of the transition*/
+    transition-delay: 3s;                   /* delay before the transition takes effect*/
+    transition-timing-function: linear, ease, ease-in, ease-out, ease-in-out, steps(3, jump-start) cubic-bezier(0.075, 0.82, 0.165, 1); /* 
+        look at the notes for animation-timing-function in keyframes
+    */
+
+}

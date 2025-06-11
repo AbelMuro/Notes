@@ -1,0 +1,106 @@
+
+.Object{
+    /* try to find out the original width and height of the images before you start using these properties 
+     you can do this by using width: auto and height: auto */
+
+    object-fit: none, cover, fill, contain, scale-down; /* 
+        this property specifies how an img/video should be resized to fit its content-box
+
+            original size of image                     adjusted size of image
+        fill:      (600x400)            ->              (200x400)
+                 ---------------                        -------       
+                | x x x x x x x |                      | x x x |                 'object-fit: fill' will shrink/expand the
+                | x x x x x x x |                      | x x x |                  entire image to make it fit in
+                | x x x x x x x |                      | x x x |                  the given dimension
+                 ---------------                        -------
+        
+        none:   keep in mind that if the width/height is bigger than 
+                the original width/height, it will create an invisible container
+                with the actual width/height that you specified 
+
+                original size of image                     adjusted size of image
+                                  
+                    (600x400)     making the image smaller        (200x400)
+                 ---------------                             ----------------        
+                | x x x x x x x |                           | x x x |        |        'object-fit: none' will CLIP a part of the image
+                | x x x x x x x |                           | x x x |        |         and will NOT resize the image at all
+                | x x x x x x x |                           | x x x |        |
+                 ---------------                             ----------------
+
+                    (600x400)      making the image bigger    (800x400)
+                 ---------------                             ---------------------        
+                | x x x x x x x |                           | x x x x x x x       |      in this case, there will not be any clipping 
+                | x x x x x x x |                           | x x x x x x x       |      however we will create an invisible container
+                | x x x x x x x |                           | x x x x x x x       |
+                 ---------------                             ---------------------
+
+        cover:  'object-fit: cover' will maintain the original
+                aspect ratio of the image, and will zoom-in or 
+                zoom-out when the width/height is bigger or smaller than
+                the original width/height of the image.
+                Please Note, the image will zoom-in indefinitely but
+                the image will NOT zoom-out indefinitely and will 
+                start to clip
+
+        contain: keep in mind that this value will create an invisible 
+                 container that has the true width and height(600x600) 
+                 that you specified, and the image will fit inside the 
+                 container with the aspect ratio in tact 
+
+                    aspect-ratio of original image is 3:7, this ratio is maintained.
+
+                    (600x400)             ->           (700x1000)
+                 ---------------                        ------------------       'object-fit: contain' will maintain the original
+                | x x x x x x x |                      | x x x x x x x x  |       aspect ratio of the image, in other words, if you         
+                | x x x x x x x |                      | x x x x x x x x  |       increase or decrease the width of the image, the height        
+                | x x x x x x x |                      | x x x x x x x x  |       will be adjusted accordingly to make sure that the ratio stays the same         
+                 ---------------                       | x x x x x x x x  |              
+                /                                      |                  |       in this case, since the width and the height is much bigger  
+                /                                      |                  |       than the image, and the ratio MUST stay the same, we create an invisible container 
+                /                                      |                  |
+                /                                       ------------------ 
+
+                    (600x400)             ->           (200x200)
+                 ---------------                        --------             in this case, just imagine that in this tiny container
+                | x x x x x x x |                      |        |            we have the following x's (it will fit, but the image will be much smaller)
+                | x x x x x x x |                      |        |                   x x x x x x x
+                | x x x x x x x |                       --------                    x x x x x x x
+                 ---------------                                                    x x x x x x x 
+                /                                                      
+                
+                
+         
+        scale-down: this property will choose the smallest image from 'none' or 'cover', 
+                    both of these values can return a different sized image
+        
+
+
+
+    */
+    object-position: center, left, right, top, bottom, 100px 100px;  /* this property helps us position an image inside its content box
+        this is especially useful when we want to display a certain part of the image when 
+        the image is either too zoomed-in due to object-fit:cover or if its clipped due to object-fit: none.
+        'Object-Position' can also be useful if we have object-fit: contain, because it will usually create
+        a content-box bigger than the resized verson of the image
+
+
+
+
+        lets assume that the image is clipped and we want to display a certain part of the image...
+            object-fit: none   or  object-fit: cover            
+            object-position: left;
+            width: 100px; 
+            height: 100px 
+
+                (400x100)
+            --------------------
+            |xxxxxxxx|         |        the x's are a section of the image that is (100x100)
+            |xxxxxxxx|         |        and because we have object-position: left,
+            |xxxxxxxx|         |        the section we specified earlier will be positioned to the left
+            |xxxxxxxx|         |        This is what the user will actually see.
+            --------------------
+
+    */    
+
+}
+

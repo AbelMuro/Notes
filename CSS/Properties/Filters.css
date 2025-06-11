@@ -1,0 +1,74 @@
+.FilterFuntions{
+    /*----------------------------------------- FILTER FUNCTIONS ------------------------------------*/
+    /* you can use multiple filter functions on the same element*/
+
+    filter: blur(5px);           /* will blur an element (only works if all colors assigned to the element have some opacity)*/
+    filter: brightness(75%);     /* will determine the brightness of the element or image 
+        keep in mind that 'brightness' in this case means that the color will either be its
+        original specified color (100%), or it will darken the color to a specified color variant(0%)
+    */
+    filter: contrast(62%);       /* will determine the contrast of the image 
+        contrast, in this case, means that it determines how dark-colored objects are distinguishable from other 
+        light-colored objects in the image
+
+        100% means fully contrast
+        0% means not contrast at all
+
+    */
+    filter: drop-shadow(15px 10px 5px blue); /* will create a shadow behind the element 
+        in the same way that box-shadow property does. it is recommended that you use
+        this property instead
+    */
+    filter: greyscale(60%);      /* will determine how much grey the element will have 
+        100% means completely grey
+        0% means no grey at all
+    */
+    filter: hue-rotate(25deg);   /* will select a certain hue based on the angle specified, 
+        keep in mind that in css, hue colors are pure colors that are organized in a 
+        circular palette, 
+
+
+         ------------------------
+        |  RED    green    blue  |           //just pretend this is actually a circle and not a square
+        |       \  |             |           the angle between red and green is from hue-rotate(25deg)
+        | grey   \ |      orange |           the current color is red and will switch over to green   
+        |                        |
+        |  pink    lime    black |
+        |                        |
+         ------------------------
+    
+        
+
+    */
+    filter: invert(100%);        /* will change all the colors in an element to their inverted version
+        keep in mind that every color has an inverted version of that color,
+        the inverted color of red is light blue
+        the inverted color of dark blue is yellow
+        the inverted color of black is white
+    */
+    filter: opacity(56%);        /* will change the transparency of the element 
+        100% is not transparent
+        50% is partially transparent
+        0% is fuly transparent  
+    */
+    filter: saturate(110%);      /* will define how saturated the color of an element will be 
+        saturation defines how rich, vivid or intense a color will be
+
+        0% means no saturation
+        100% means normal color
+        101% and above means that the color will be VERY saturated
+        */
+    filter: sepia(100%);         /* will give the element/image a warm yellow/brownish color 
+        this is particularly useful for making images look like they were made from the 19th century
+
+        0% means normal image
+        50% partially sepia
+        100% means fully sepia
+    */
+
+    backdrop-filter: blur(5px)   /* will apply any of the filter functions above to 
+        an element BEHIND this one
+    */
+
+}
+

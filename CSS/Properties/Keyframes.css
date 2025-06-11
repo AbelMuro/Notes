@@ -1,0 +1,61 @@
+
+@keyframes customAnimation {                        /*you can only animate certain properties */
+    0%   {background-color: red}   
+    25%  {background-color: green}
+    50%  {background-color: blue}
+    75%  {background-color: pink}
+    100%  {background-color: orange}
+}    
+
+@keyframes anotherAnimation {                       /*another way of writing @keyframes */
+    from {transform: translateX(0px)}
+    to {transform: translateX(100px)}
+}
+
+.AnimationProperties {
+    /*---------------------------------------ANIMATION PROPERTIES---------------------------------------------------------------------------*/
+    animation-name: customAnimation;                         /* this element will be animated*/
+    animation-duration: 5s;                                  /* the time the animation will take to complete*/
+    animation-iteration-count: 3, infinite;                  /* the number of times the animation will occur */
+    animation-delay: 1s;                                     /* delays the animation for a certain amount of time*/
+    animation-direction: normal, reverse, alternate, alternate-reverse; /* specifies the direction the animation will take 
+        normal: the animation will play exactly how we specified in the @keyframes
+        reverse: the animation will play in reverse order
+        alternate: the animation will first play normally, then it will play in reverse
+        alternate-reverse: the animation will first play in reverse, then it will play normally
+    */
+    animation-timing-function: linear, ease, ease-in, ease-out, ease-in-out, steps(3, jump-start) cubic-bezier(0.075, 0.82, 0.165, 1); /* specifies the speed curve of the animation, 
+        linear: the animation will occur with a constant speed throughout the animation
+        ease: (default) the animation begins slow, then fast, then ends slow
+        ease-in: the animation has a slow start
+        ease-out: the animation has a slow end
+        ease-in-out: the animation has both a slow start and a slow end
+        steps(3, jump-start): it will take 3 'steps' to complete the animation between 25% to 50% or 3 steps to complete the animation between from {} and to {}
+                            for example: if we have an animation of translateX(0px) to translateX(200px), and we specified steps(3), then the steps will look like this: translateX(0px) -> translateX(100px) -> translateX(200px)
+                            'jump-start' will skip the first animation between 0% and 25% or 'from {}'
+                            'jump-end' will skip the last animation between 75% and 100% or 'to{}'
+                            'jump-none' will not skip any animation
+        cubic-bezier(1, 0.3, 0.4, 0.9): this function defines two points in a speed curve graph (1, 0.4) and (0.3, 0.9)
+
+            speed curve of animation defined by cubic-bezier
+                 ---------------X
+                |            /  |
+                |     _____/    | time
+                |   /           |                 // the two points defined by cubic-bezier are the two X's on the graph to the left
+                | /             |                  //and the curve of the graph will 'follow' these points to create a different curve
+                X ---------------
+              duration of animation
+        
+    */    
+    animation-fill-mode: none, forwards, backwards, both;     /* this property specifies the style of the element 
+        when the animation is not playing.
+
+        forwards: the element will retain the style specified by the last keyframe AFTER the animation ends
+        backwards: the element will retain the style specified by the first keyframe AFTER the animation ends 
+        both: if animation-delay is set, then the element will retain the style specified by the first 
+              keyframe for the duration of the delay, and after the animation ends, the element will retain the 
+              style of the last keyframe 
+    */
+}
+
+

@@ -1,0 +1,68 @@
+.Miscellaneous {
+    
+    box-sizing: border-box, content-box;             /* this property lets us calculate the total width and height of a box
+        border-box: the padding, margin and border are NOT added to the width and height of an element, 
+                    the content is shrunk to adjust the padding and margin.
+    
+                    for example: 
+                                 box-sizing: border-box;                               
+                                 width: 100px;                          //final width of the element will still be 100px      
+                                 padding: 10px;                         //but the content box will be 90px and padding will 
+                                                                        //remain at 10px
+    
+        content-box: the padding, margin and border are added to the width and height of an element (this is default)
+    */
+    box-shadow: 5px 10px 15px 20px red;    /* we create a shadow for the box and move it 
+        5px to the left or right, 
+        10px to the top or bottom, 
+        15px defines by how much we blur the shadow
+        20px defines both the height and width of the shadow
+        red is the color of the shadow
+
+        its best to use the filter function equivalent of this one
+    */
+    opacity: 1.0;                        /* defines how transparent the element will be, 1.0 is fully visible, 0.0 is completely transparent*/
+    overflow: hidden, scroll, auto, visible;/* determines how the content of a container will be displayed if it overflows 
+        hidden: content that overflows will be hidden from view
+        scroll: container will have a scroll bar 
+        auto: container will have a scroll bar ONLY in the moment that the content starts to overflow
+    */
+    overflow-x: hidden, scroll, auto, visible; /* determins how the content of a container will be displayed if it overflows 
+        from the left and right sides of the content box
+        look at the notes for overflow for documentation of these values
+    */
+    overflow-y: hidden, scroll, auto, visible; /* determins how the content of a container will be displayed if it overflows 
+        from the top and bottom sides of the content box
+        look at the notes for overflow for documentation of these values
+    */
+    overflow-wrap: normal, break-word;     /* determines if long words that overflow the container will break 
+        normal: long words will not break, this is default
+        break-word: long words will break;
+    */
+    visibility: hidden, visible, collapse; /* this property will determine if an element will be shown onto the DOM 
+        hidden: will hide the element but will reserve the space the element generates
+        visible: will make the element visible to the DOM
+        collapse: will hide the element and will also hide the space the element generates
+    */
+
+    clip-path: circle(20px at 30px 35px)            /*  20px is the size of the circle, 30px 35px is the position of the circle,     30px left or right        35px top or bottom
+                                                        displays a circle inside an element, this circle acts like a viewport to the element
+
+                                                                        ----------------------
+                                                                       |     ____             |
+                                                                       |    /     \           |     //anything outside the circle will not be visible in the DOM
+                                                                       |    \     /           |     //just image that the poorly drawn thing inside the square is actually a circle,
+                                                                       |     ----             |
+                                                                        ----------------------
+                                                    */
+    overflow: hidden;                               /*  you can use these two properties together to display 3 dots next to a number that is overflowing its container*/
+    text-overflow: ellipsis;
+    width: 100%;                                    /* make sure to set a width for the container*/
+    opacity: 1.0;                                   /* defines how transparent the element will be, 1.0 is fully visible, 0.0 is completely transparent*/
+    content: "random content";                      /* this property MUST be used with the ::before and ::after pseudo elements it was designed to insert content before or after an element */
+    accent-color: red;                              /* this property will give a color to <input> elements such as radio-button, checkboxes, and range input elements */
+    vertical-align: baseline, text-top, text-bottom, sub, super;    /* this property helps us align an element relative to the element next to it
+            if the element(A) is bigger than the element(B) next to it, then the ELEMENT(B) will vertically align up or bottom relative to element(A) 
+            if the element(A) is smaller than the element(B) next to it, then the Element(A) will vertically align up or bottom relative to element(B)
+          */
+}

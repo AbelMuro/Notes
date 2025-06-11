@@ -1,0 +1,35 @@
+.BackgroundProperties {
+    background-image: url("images/blue checkered.png");         /* loading an external image file onto an element */
+    background-size: cover, contain, auto, 200px 200px;         /* the width and height of the image background, 
+        cover: will force the image to maintain its aspect-ratio, but will clip the image if the container is too small, and will zoom in if the container is too large 
+        contain: will force the image to maintain its aspect-ratio, the entire image will always be shown but may not cover the entire container
+        auto: will force the image to always maintain it original width/height and its aspect ratio, even after the window has been resized  
+    */
+    background-repeat: no-repeat, repeat, repeat-x, repeat-y;   /* by default, the image will repeat in the background */
+    background-position: center, left, right, top, bottom;      /* determining the position of the image background on the element 
+    (this will work if background-size: 200px 300px, the other values will have no effect)
+    */
+    background-attachment: scroll, fixed;                       /* determining if the image will scroll with the page or stay fixed to one location */
+    background-clip: padding-box, border-box, content-box, text; /* padding-box: image will extend to cover the padding and content, 
+        border-box: image will extend to cover the border, padding and content, 
+        content-box: image will extend to cover the only the content
+        text: color or image will wrap around the text inside the element (make sure you have the following properties)
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+    
+    
+        KEEP IN MIND: background-clip also applies to background-color, not just image
+    */
+    background-origin: padding-box, border-box, content-box;    /* padding-box: image will be positioned from upperleft corner of padding, 
+        border-box: image will be positioned from upperleft corner of border, 
+        content-box: image will be positioned from upperleft corner of content
+    */
+    background-color: white;                                   /* the background color of the element, this color will be hidden if you apply the properties above*/
+
+    background: linear-gradient(red, blue);                   /* creating a gradient that changes from red to blue*/
+    /* 
+        linear-gradient(45deg, red, blue);                    // creating a gradient that is tilted 45deg
+        linear-gradient(red 0% 40%, blue 40% 100%);           // creating a gradient where red wont change UNTIl 40%, then it slowly changes to blue
+    */
+}

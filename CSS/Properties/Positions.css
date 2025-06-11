@@ -1,0 +1,41 @@
+
+.PositionalProperties {
+     /*----------------------------------POSITIONAL PROPERTIES----------------------------------------------------------------------- */
+    position: static;  /* the element is initially positioned according to the normal flow of the document
+        the properties top, bottom, left and right have no effect,
+        this is the default value for all elements
+    */   
+    position: relative; /*  the element is initially positioned according to the normal flow of the document 
+        if top, bottom, left, right properties are used, then the element 
+        will move FROM its current position and be REMOVED from the normal flow
+        FOR EXAMPLE... left: 30px will move the element 30px leftwards 
+        from its LEFT side.
+    */                                                               
+    position: absolute; /* the element is REMOVED from the normal flow of the document 
+        and is positioned relative to its ancestor that has 'position: relative', 
+        if there are none, then it will be positioned relative to the viewport itself,
+        FOR EXAMPLE... left: 30px will move the element 30px leftwards
+        from the LEFT BORDER of its container (or viewport)
+    */
+    position: fixed;   /* the element is REMOVED from the normal flow of the document
+        and the element will stay glued on the screen and will move with the scrolling of the page
+        the properties top, bottom, left and right will move the element relative to the viewport
+    */
+    position: sticky; /* the element is initially positioned according to the normal flow of the document
+        the element will 'stick' onto the page while scrolling when a certain threshold is passed.
+        FOR EXAMPLE.. top: 30px means that the element will stick to the screen when the 
+        top border of the viewport is 30px away from the top border of the element itself...
+        Keep in mind that 'position: sticky' can only work if its inside a block level container
+        element and is bigger than the element that has 'position: sticky'...
+    */
+
+    top: 30px;         /* moving the element 30px from the top side*/
+    bottom: 40px;      /* moving the element 40px from the bottom side*/
+    left: 30px;        /* moving the element 30px from the left side*/
+    right: 30px;       /* moving the element 30px from the right side*/
+
+    z-index: 1;        /* this can be used to stack positioned elements on top of each other 
+        positioned elements with 'z-index: 5' will appear on top of elements with 'z-index: 3'
+    */
+   
+}

@@ -84,17 +84,16 @@ export default defineConfig({
         used to place the bundle.js file
 
                   build: {
-                        outDir: 'dist'                 // Defines the output directory for the build. (/dist)
-                        assetsDir: 'assets'            // Sets the directory for static assets within the output folder.        
+                        outDir: 'dist'                  // Defines the output directory for the build. (/dist)
+                        assetsDir: 'assets'             // Sets the directory for static assets within the output folder.        
                         target: 'esnext', 'es2015'      // Specifies the version of javascript that Vite will compile too (esnext is default)
-                        minify: 'terser',               // allows your source code to be minified ('terser', 'esbuild', or Boolean).
-                        manifest: true,                 // Generates a manifest file that contains a mapping between the file that has the source code and its corresponding bundled file. (this is useful for helping browsers detect changes to the file, some browsers have aggressive caching that makes it difficult to display updates to the file)                                                                       
+                        minify: true,                   // allows your source code to be minified ('terser', 'esbuild', or Boolean).
+                        manifest: true,                 // Generates a manifest file that contains a mapping between the file names to their corresponding hashed file names. (this is useful for helping browsers detect changes to the file, some browsers have aggressive caching that makes it difficult to display updates to the file)                                                                       
                         polyfillModulePreload: true,    // Defines if our project should use pollyfills (a pollyfill is code that implements a certain feature if the browser doesnt support it)
                         cssCodeSplit: true              // Defines if the css should also be code splitted with the JS (each css file will be bundled with the JS file that use it) 
                         chunkSizeWarningLimit: 1200,    // Sets the chunk size warning limit (in KB).    
                         reportCompressedSize: true,     // Reports compressed file sizes (true or false).   
                         emptyOutDir: true,              // Clears the output directory before building (true or false). 
-                        write: true,                    // Controls whether files are written to disk (true or false).
                         sourcemap: '',                  // Enables source maps, source maps are files that map the original code to the bundled code (true (generates separate .map files), 'inline' (embeds the source maps in the output), 'hidden' (does not embed the source maps in the output)).
                         terserOptions: {                // Configures Terser minification options. (minify property must be assigned 'terser')  
                                 compress: {
@@ -130,7 +129,6 @@ export default defineConfig({
                                      sourcemap: true,                             // Enables source maps for rollup (same options as build.sourcemap)
                                 },
                                 external: ['axios', 'react-virtualization'],      // Defines dependencies that should not be bundled.
-                                plugins: [],                                      // Defines plugins that should be used with rollup and vite
                                 treeshake: true,                                  // true will enable treeshaking, false will disabled treeshaking, 'smallest' is an aggresive treeshaking mode that produces the smallest possible bundle
                                 manualChunks(pathname) {                               // the manualChunks method can be used for separating the bundle into different chunks (vite will evaluate every module and check its pathname)
                                      if (pathname.includes('node_modules'))            // if the pathname of the module includes 'node_modules'...
@@ -140,20 +138,6 @@ export default defineConfig({
                                 watch: {                                        // Defines how vite will 'watch' the files in the project for changes, and will update the dev server accordingly
                                    include: 'src/**',                                 // Watches all files inside "src"
                                    exclude: 'node_modules/**',                        // Doesn't watch all files inside node_modules
-                                   chokidar: {
-                                       usePolling: true,                                 // Enables polling (vite will check the project at regular intervals for any changes, instead of relying on the developer clicking on save)
-                                       persistent: true,                                 // Keeps the watcher running (true means indefinitely).
-                                       ignored: ['node_modules/**', '*.log']             // Allows you to exclude specific files or directories                        
-                                       depth: 34,                                        // Defines the number of nested directories that will be watched                                           
-                                       interval: 1000                                    // Sets the polling interval in milliseconds (useful when usePolling is enabled).                       
-                                       awaitWriteFinish: {                               // Ensures that files are fully written before detecting changes. (in other words, when the developer stop writing in the files, Vite will start its detection process of changes in the file system)   
-                                            stabilityThreshold: 2000,                              // Vite will wait 2 seconds after the dev finishes writing in the files before detecting changes to the file system
-                                            pollInterval: 100                                      // Vite will check every 100 milliseconds to see if the developer has stopped writing in the files
-                                       }                                              
-                                       ignoreInitial: true,                              // Prevents the watcher from triggering an update to the dev server when the project first starts                    
-                                       followSymlinks: true,                             // if set to true, then Vite will use system links created with npm link (cd path/to/module npm link,   cd path/to/project npm link)                       
-                                       atomic: true,                                     // ensures that the watcher will update the dev server only once when it detects multiple changes made by the developer in the files
-                                   }
                               }                                             
                         }                  
                   }                               

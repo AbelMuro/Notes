@@ -1,0 +1,136 @@
+
+.flexbox{
+    /*                    --Flex Box Model--
+
+
+
+            ********** FLEX-BOX-ROWS *************
+            ^   <______________main axis________________>
+            |     ------------------------------------
+            |    |              |                     |
+  cross-axis|    | flex-item-1  |   flex-item-2       | 
+            |    |              |                     |
+            |     ------------------------------------
+            v    flex-start       center              flex-end
+
+
+
+
+            ********** FLEX-BOX-COLUMNS ************
+            ^   <________cross axis________>
+            |        ------------------   flex-start
+            |       |                 |        
+            |       |    flex-item-1  |
+            |       |                 |     
+            |       |                 |       
+   main-axis|       |-----------------|    center   
+            |       |                 |      
+            |       |    flex-item-2  |      
+            |       |                 |     
+            |       |                 |     
+            |        -----------------    flex-end     
+            v
+
+    */
+    
+    /* KEEP IN MIND, max-height and min-height will NOT work with flex items in a flex box. However.... look at the example below
+    
+            <div class='flex'>                  
+                <div class='itemOne'>                   //min-height doesnt work 
+                       <div></div>                      //min-height WILL work with this element
+                </div>
+                <div class='itemTwo'>
+                     <div></div>
+                </div>    
+            </div>
+    */
+    
+    /* Flex Container*/
+    display: flex, inline-flex;  /* flex will make the element behave like a block element,
+        inline-flex will make the element behave like an inline element. 
+        
+        Both flex and inline-flex will use the flexbox model to organize its items. 
+        In other words, this will let you use other flex properties
+    */
+    flex-direction: row, row-reverse, column, column-reverse; /* this property will define the 'main-axis'
+        if you use row, then the main axis will be a horizontal line, if you use column, then it will be a vertical line
+        row: (DEFAULT) all flex items will be stacked horizontally to the left with no margin (initially)
+        row-reverse: all flex items will be stacked horizontally to the right with no margin (initially)
+        column: all flex items will be stacked vertically to the top with no margin (initially)
+        reverse-column: all flex items will be stacked vertically to the bottoom with no margin (initially)
+    */ 
+    justify-content: space-around, space-between, space-evenly, center, left, right; /* this property will align ALL items on the MAIN AXIS
+        this property will also give a pre-defined amount of space(that changes with resize) between the flex items in the flex container
+
+        space-around: distribute space evenly but the items near the border will have a half size space (--item----item----item----item--)
+        space-between: distribute space evenly but the items near the border will not have any space (item----item----item----item)
+        space-evenly: distribute space evenly (----item----item----item----item----)
+
+        center: will center all items with no space in between (----itemitemitemitem----)
+        left: will stack all items to the left with no space in between (itemitemitemitem-----)
+        right: will stack all items to the right with no space in between (----itemitemitemitem)
+    */
+    align-items: center, flex-start, flex-end; /* this property will align all items on the CROSS-AXIS of 
+        the flex box. Look at the flex-box model that i drew above to see what each value does to this property
+        keep in mind that this property will assign align-self with the given value to each item in the flex container
+        */
+    align-self: center, flex-start, flex-end; /* this property will align ONE item on the CROSS AXIS of 
+        the flex box, look at the flex-box model that i drew above to see what each value does to this property
+    */
+
+    align-content: space-around, space-between, space-evenly; /* this property will control the spacing between 
+        the items on the CROSS AXIS of the flex-box in the same way that justify-content does to the MAIN axis
+        keep in mind that this property only works with flex-wrap: wrap or wrap-reverse
+         ---------------
+        |       ^       |
+        |       |       |       flex-wrap: wrap;
+        |       v       |
+        |  flex-item-1  |       align-content: space-evenly;
+        |       ^       |
+        |       |       |
+        |       v       |
+        |  flex-item-2  |
+        |       ^       |
+        |       |       |
+        |       v       |       
+         ---------------
+    
+    */
+    flex-wrap: wrap, wrap-reverse; /* this property specifies if the flex items are forced into one line or can wrap around multiple lines 
+        Before window is rezised: viewport is about 1500px
+            [flex-item]--[flex-item]--[flex-item]--[flex-item]
+
+        After window is resized: viewport is about 500px
+            [flex-item]--[flex-item]
+            [flex-item]--[flex-item]
+        */ 
+    gap: 30px 20px;          /* SHORTHAND */
+    row-gap: 30px;           /* specifies a constant amount of space (gap) between each item in a row in the flex box*/
+    column-gap: 20px;        /* specifies a constant amount of space (gap) between each item in a column in the flex box */
+
+    /* Flex items */
+    flex: 1 2 120px;        /* SHORTHAND */
+    flex-grow: 1;           /* this property specifies how much the flex item will grow relative to its flex siblings
+        Before window is resized: (viewport is about 500px small)
+            [flex-grow: 1] -- [flex-grow: 2] -- [flex-grow: 1] -- [flex-grow: 3]
+
+        After window is resized: (viewport is about 1500px large) flex items with a higher flex-grow value will grow faster 
+            [flex-grow: 1] -- [  flex-grow: 2  ] -- [flex-grow: 1] -- [   flex-grow: 3   ]
+
+        FLEX-GROW will not work with JUSTIFY-CONTENT.
+        FLEX-GROW should not be used with FLEX-WRAP, because FLEX-WRAP will not resize the flex-items
+    */         
+    flex-shrink: 2;         /* this property specifies how much the flex item will shrink relative to its flex sibling
+        Before Window is resized: (viewport is about 1500px large)
+            [   flex-shrink: 1   ]----[   flex-shrink: 2    ]----[   flex-shrink:1   ]----[   flex-shrink: 2   ]
+
+        After Window is resized: (viewport is about 500px small) elements with a higher flex-shrink value will shrink FASTER
+            [   flex-shrink: 1   ]----[flex-shrink: 2]----[   flex-shrink:1   ]----[flex-shrink: 2]
+
+        FLEX-GROW should not be used with FLEX-WRAP, because FLEX-WRAP will not resize the flex-items
+        */
+    flex-basis: 120px;      /* if the flex box has rows, then this property will define the width of the flex item 
+            however, if the flex box has columns, then this property will define the height of the flex item
+        */    
+
+}

@@ -1,0 +1,110 @@
+
+.TwoDimensionalTransformProperties {
+    
+        /* keep in mind that if you use % instead of px, it will use the size of the element to move a specific amount */
+    transform: translate(50px, -50px);             /* we move the element 50px to the right and up 50px;
+
+        translate(x-axis, y-axis);      
+        x-axis: positive values move the element to the right and negative values move to the left
+        y-axis: positive values move the element to the bottom and negative values move to the top
+    */
+    transform: translateX(50px);                   /* we move the element 50 px to the right*/
+    transform: translateY(-50px);                  /* we move the element 50 px towards the top*/
+    transform: rotate(20deg);                      /* we rotate the element 20deg towards the right 
+        20deg we rotate to the right
+        -20deg we rotate to the left
+    */
+    transform: scale(2, 3);                        /* we increase the size of the element by 2 times its 
+        normal width and 3 times its normal height 
+
+        0.5 will half the size of the element
+        negative values will flip the element but will still increase the size of the element
+        */ 
+    transform: scaleX(2);                          /* we increase the size of the width of the element 2 times 
+        its normal width
+
+        look at the notes for scale() for more info
+    */
+    transform: scaleY(3);                          /* we increase the size of the height of the element 3 times
+        its normal height
+
+        look at the notes for scale() for more info
+    */
+    transform: skew(20deg, 20deg);                 /* we skew the element along the x-axis and y-axis by the given angles*/
+    transform: skewX(20deg);                       /* we skew the element along the x-axis by the given angle 
+         -----------
+        |           |       before skewX()
+        |           |
+        |           |
+        |           |
+         -----------
+    
+    
+          ----------
+          \         \       after skewX()
+           \         \
+            \         \
+             \         \
+               ---------
+    */
+    transform: skewY(20deg);                       /* we skew the element along the y-axis by the given angle 
+
+         -----------
+        |           |       before skewY()
+        |           |
+        |           |
+        |           |
+         -----------
+
+          _
+         | \
+         |   \
+         |     \
+         |       \          after skewY()
+         |         \
+         |           \
+         \            |
+           \          |
+             \        |
+               \      |
+                 \    |
+                   \  |
+                     -
+    */
+    transform: matrix(1, 0.3, 0, 1, 0);            /* the matrix method combines all the properties above into one function 
+
+        syntax:
+        matrix(scaleX(),skewY(),skewX(),scaleY(),translateX(),translateY())
+    */
+    transform-origin: center, top left, 50px 40px, bottom right;/* this property will set a point (origin) for elements 
+        that are transformed using skew() or rotate()
+         -----------
+        |           |       
+        |           |
+        |     X     |           // transform-origin: center
+        |           |
+        |           |
+         -----------
+
+        X ----------
+        |           |       
+        |           |
+        |           |           // transform-origin: top left
+        |           |
+        |           |
+         -----------
+        
+        KEEP IN MIND: if you use numerical values for transform origin, 
+        the first number will be the distance from the left border of the element.
+        the second number will be the distance from the top border of the element
+        
+        all the transforms will be based on this origin and transform accordingly.
+
+        FOR EXAMPLE: 
+            if we have rotate(45deg), and we set transform-origin: top left
+            then the center of rotation will be the point marked at the top left
+    */ 
+
+                                                    
+
+}

@@ -8,8 +8,8 @@
                                                   BUNDLING PROCESS
         
           1) File Analysys 
-                The bundler will look for the entry point of the application (index.vue) and will analyze all 
-                imports and dependencies used in the application. The bundler will also check for syntax errors 
+                The bundler will look for the entry point of the application (index.html in the directory specified in root property) 
+                and will analyze all imports and dependencies used in the application. The bundler will also check for syntax errors 
         
           2) Dependency Graph:
                 Then the bundler starts a dependency graph by linking all the modules and
@@ -71,7 +71,7 @@ export default defineConfig({})
 
 
 export default defineConfig({
-  root: '/'
+  root: '/'                        //vite will look for the index.html file in the root directory
 })
 
 
@@ -92,7 +92,6 @@ export default defineConfig({
                         polyfillModulePreload: true,    // Defines if our project should use pollyfills (a pollyfill is code that implements a certain feature if the browser doesnt support it)
                         cssCodeSplit: true              // Defines if the css should also be code splitted with the JS (each css file will be bundled with the JS file that use it) 
                         chunkSizeWarningLimit: 1200,    // Sets the chunk size warning limit (in KB).    
-                        reportCompressedSize: true,     // Reports compressed file sizes (true or false).   
                         emptyOutDir: true,              // Clears the output directory before building (true or false). 
                         sourcemap: '',                  // Enables source maps, source maps are files that map the original code to the bundled code (true (generates separate .map files), 'inline' (embeds the source maps in the output), 'hidden' (does not embed the source maps in the output)).
                         terserOptions: {                // Configures Terser minification options. (minify property must be assigned 'terser')  
@@ -117,16 +116,15 @@ export default defineConfig({
                                 
                         }                    
                         rollupOptions: {                // Allows customization of the Rollup bundler. (Vite is built on top of the rollup bundler)
-                                input: {                // Defines multiple entry points for the build.
-                                     main: './src/index.html',
-                                     admin: './src/admin.html',
+                                input: {                // Creates a chunk for each page in the application.
+                                     main: './src/index.html',    // the main chunk is for the index.html
+                                     admin: './src/admin.html',   // the admin chunk is for the admin.html
                                 },
                                 output: {                // Configures output settings like format, file names, and chunk splitting.
                                      format: 'es',       // Sets module format ('es' (ECMAscript), 'cjs' (COMMONjs for Node.js), 'umd' (univeral format, ECMAscript and COMMONjs))
                                      entryFileNames: '[name].[hash].js',         // Defines the naming pattern for entry files like index.js (hash is a unique identifier for the file, everytime the file changes, the hash is generated, this forces the browser to update the file instead of relying on cache)
                                      chunkFileNames: '[name].[hash].js',         // Defines the naming pattern for chunk files (any file that is being lazy-loaded)
                                      assetFileNames: 'assets/[name].[hash].[ext]', // Defines the naming pattern for assets files (images, fonts, and other static files) in the assets folder of the build directory
-                                     sourcemap: true,                             // Enables source maps for rollup (same options as build.sourcemap)
                                 },
                                 external: ['axios', 'react-virtualization'],      // Defines dependencies that should not be bundled.
                                 treeshake: true,                                  // true will enable treeshaking, false will disabled treeshaking, 'smallest' is an aggresive treeshaking mode that produces the smallest possible bundle
@@ -147,14 +145,6 @@ export default defineConfig({
 export default defineConfig({
      build: {
         outputDir: 'dist',
-        assetsDir: 'assets',
-        rollupOptions: {
-                input: {              
-                     main: './src/index.html',
-                     home: './src/home.html',
-                     aboutus: './src/aboutus.html'
-                },
-        }
      }
 })
 
@@ -282,30 +272,6 @@ export default defineConfig(
 
 
 
-
-
-
-
-
-
-import { fileURLToPath, URL } from 'node:url'
-
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
-
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(),
-    vueDevTools(),
-  ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    },
-  },
-})
 
 
 

@@ -1,0 +1,28 @@
+.FloatingProperties {
+    /* keep in mind that if a container has a floating element, the container will not expand with the element. 
+       to make it expand, you must use the clearfix hack
+    */
+    
+    float: left;        /* the element will be REMOVED from the normal flow of the document
+        and will make the element 'float' to the left border of its container, 
+        if there is no container, then it will use the viewport's left border
+        */
+    float: right;       /* the element will be REMOVED from the normal flow of the document
+    and will make the element 'float' to the right border of its container, 
+    if there is no container, then it will use the viewport's right border
+    */
+    float: top;         /* the element will be REMOVED from the normal flow of the document
+    and will make the element 'float' to the top border of its container, 
+    if there is no container, then it will use the viewport's top border
+    */
+    float: bottom;      /* the element will be REMOVED from the normal flow of the document
+    and will make the element 'float' to the bottom border of its container, 
+    if there is no container, then it will use the viewport's bottom border
+    */
+}
+
+.ClearFix::after {
+    content: "";
+    clear: both;
+    display: table;
+}       

@@ -1,0 +1,53 @@
+
+@font-face {                                             /* @font-face lets you use fonts other than the pre selected web-safe fonts*/
+    font-family: "myCustomFont";
+    src: url(./Font/ExoBold.otf);                        /* you should only load .ttf and .otf font files */
+};   
+
+
+@font-face {
+    font-family: 'DM sans';                             /* you can load two static font files with different weights and styles like this*/
+    src: url(./Assets/Font/DMSans-Bold.ttf);
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'DM sans' ;                            /* you can load two static font files with different weights and styles like this*/
+    src: url(./Assets/Font/DMSans-Regular.ttf);
+    font-weight: 400;
+}
+
+
+
+
+.font{
+    /* keep in mind that in typography, there are TypeFaces and there are fonts*/
+    /* TypeFaces are the style of lettering: Helvetica, Times New Roman */
+    /* Fonts are the size and style of a typeface: size: 12pt  style: Bold*/
+
+    font-family: Helvetica, sans-serif, cursive;                /* defines a web-safe TypeFace for your text, just in case Helvetica is not supported by the browser, it will default to the*/
+    font-size: 40px;                                            /* setting the size of the font */ 
+    font-style: italic, oblique;                                /* determines if we should use the italic or oblique face of the font family */
+    font-weight: bold, 100 ,400, 700, 900;                      /* makes the font bolder ... 100(thin), 400(normal), 700(bold), 900(heavy) */
+    font-kerning: normal, none;                                 /* (the font must be able to support this property to use it) normal will define how much space between the letters in the font will have*/                               
+    font-stretch: condensed, expanded, 120%;                    /* (the font must be able to support this property to use it) condensed means the font will shrink, expanded means the font will expand, and 120% means that the font will expand 20% past its normal size*/
+    line-height: 300px;                                         /* this property defines the space between the lines of text in a paragraph */
+    
+    font-variant-caps: small-caps, petite-caps, all-small-caps, all-petite-caps, unicase;   /* these values define how the capitalized letters will look like on our text 
+        small-caps: if you typed Difficult, then the output will be:  DIFFICULT but the D will be bigger than the rest of the letters
+        all-small-caps: if you types Difficult, then the output will be: DIFFICULT all letters will be the same size
+        petite-caps: extremely similar to small-caps, i dont see much of a difference really
+        all-petite-caps: extremely similar to all-small-caps, i dont see much of a difference really
+        unicase: all capitalized letters will be the same size as lowecase letters
+    */
+    font-variant-east-asian: normal, ruby, jis78, proportional-width; /* this property was designed for styling languages from east asia */
+    /* the properties below only work with .otf files that must be included with @font-face*/
+    font-variant-ligatures: common-ligatures, no-common-ligatures;   /*  this property defines if two letters should be joined into one; fi, ffi, th, fl*/
+    font-variant-numeric: slashed-zero, diagonal-fractions, ordinal, oldstyle-nums, tabular-nums, proportional-nums; /* this property defines the styling of numbers of the font; 
+        Ordinal: will put the st in 1st on the top
+        Diagonal-fractions: will put a line through all the zeros
+        oldstyle-nums: will make numbers appear like they are not properly aligned horizontaly
+        tabular-nums: will make two numbers with the same number of digits have the same width 
+        proportial-nums: will make two numbers with the same number of digits NOT have the same width
+    */
+}

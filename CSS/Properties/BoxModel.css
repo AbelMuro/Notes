@@ -1,0 +1,43 @@
+.BoxModel {
+    width: 100px;                       /* the width of the CONTENT of the element */
+    max-width:500px;                    /* the maximum width an element can grow*/
+    min-width: 50px;                    /* the minimum width an element can shrink*/
+    height: 100px;                      /* the height of the CONTENT of the element*/
+    max-height: 500px;                  /* the maximum height an element can grow*/
+    min-height: 50px;                   /* the minimum height an element can shrink*/
+
+    padding: 50px;                      /* the padding of the element on all sides (space between the content and the border of the element) */
+    padding-bottom: 10px;               /* the bottom side padding of the element */
+    padding-top: 10px;                  /* the top side padding of the element */
+    padding-left: 10px;                 /* the left side padding of the element */
+    padding-right: 10px;                /* the right side padding of the element */
+
+    border: 1px solid black;           /* SHORTHAND for border properties */
+    border-width: 1px;                 /* the border width of the element*/   
+    border-style: solid, double ,inset, dotted, dashed, groove;/* the border style of the element*/      
+    border-color: black;               /* the border color of the element*/    
+    border-left: 1px solid red;        /* Shorthand for left border properties */
+    border-right: 1px solid blue;      /* Shorthand for right border properties */
+    border-top: 1px solid green;       /* Shorthand for top border properties */
+    border-bottom: 1px solid orange;   /* Shorthand for bottom border properties */
+    border-radius: 20px;                 /* the corners of the border will have a radius of 20px*/
+    border-image: url(./someImage.png) 20 20px 40px round; /* 
+        Shorthand property lets you upload an image for the border of the element
+        keep in mind that this property only works when you have 'border: 1px solid transparent'
+        
+        border-image-source: url(./someImage.png);
+        border-image-slice: 20 fill;                         //the border image will be sliced up into 9 regions, the middle region can be filled with the border image with the keyword fill
+        border-image-width: 20px;                            //the width of the border image on all side
+        border-image-outset: 40px;                           //specifies by how much the border image will be extended past its initial position
+        border-image-repeat: stretch, repeat, round, space   //round will rescale the image to avoid dividing tiles (if necessary), 
+                                                             //and space will distribute extra space around the tiles (if necessary)
+    */
+
+    margin: 10px;                       /* the margin of the element (space outside the element)*/
+    margin: auto;                       /* the element will be centered by using all the left and right margin */
+    margin-bottom: 5px;                 /* the bottom side margin of the element*/
+    margin-top: 5px;                    /* the top side margin of the element*/
+    margin-left: 5px;                   /* the left side margin of the element*/
+    margin-right: 5px;                  /* the right side margin of the element*/
+
+}

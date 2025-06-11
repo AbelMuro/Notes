@@ -1,0 +1,35 @@
+.ThreeDimensionalTransformProperties {
+    transform: perspective(500px) translate3d(20px, 30px, 100px); /* 
+        we move the element 20px to the right, 30px to the bottom and 100px towards the user(screen)
+
+        keep in mind that the z-index of this function only works with the perspective(500px) function
+        this function defines the closest pixel to the screen, in other words. 
+        500px is the closest an element can get to the screen, 
+        300px is about half way to the screen
+        0px is the normal position of the element
+
+        negative values will start to shrink the element
+     */
+    transform: perspective(500px) translateZ(100px) scale3d(2, 3, 2) ; /* 
+        we increase the size of the element by 2 times its width, 3 times its height, and 2 times its z-index,
+
+        keep in mind that scale() will multiply the width, height and z-index AS LONG AS IT HAS ALREADY BEEN DEFINED
+        Basically, you have to define a z-index with translateZ() and perspective() first
+
+        translateZ(100px) is the initial position of the element in the z-axis
+        perspective(500px) is the closest position the element can reach on the screen
+    */
+    transform: perspective(500px) translateZ(0px) rotate3d(1, 0.5, 1, 25deg); /* 
+        we rotate the element 25deg to the right from its normal position
+
+        rotate3d() creates a 3d vector, this is the basics of linear algebra
+        the element will be positioned based on the 3d vector that we created
+
+        rotate3(1, 2, 1, 25deg) = v1 (1, 2, 1), and the element will be rotated 25deg
+    */
+
+    backface-visibility: hidden            /* Property that decides if the back of an element is to be hidden*/
+    transform-style: preserve-3d;          /* indicates that the child elements should be positioned in the 3d space*/
+        /* To view an example of the two properties above, check out the repository https://github.com/AbelMuro/my-team-website/tree/main/src/Pages/About/MeetDirectors */
+}
+

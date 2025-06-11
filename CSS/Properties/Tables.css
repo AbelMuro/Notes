@@ -1,0 +1,70 @@
+/*-------------------------------------------TABLE PROPERTIES------------------------------------------------------------------ */
+    /* Tables are made for tabular data, however its best to just use HTML for organizing tabular data*/
+    
+    /* container must have one of the two following values*/
+    display: table;           /* the element basically behaves like a block element, but
+        the width of the element will NOT take up the entire width of the viewport,
+        also, you can use display: table-cell
+    */
+    display: inline-table;    /* the element basically behaves like an inline-block element*/
+    
+    /* the child elements can now use the following values to help organize a table of data */
+    display: table-row;       /* the element will be a container for elements that have 'display: table-cell' */
+    display: table-cell;      /* the element will contain the actual data */
+
+    /* How tables are organized in HTML...
+
+        <table>                             //display: table
+            <caption> Title </caption>
+            <th> Row Title 1 </th>
+            <tr>                            //display: table-row
+                <td> column 1 </td>         //display: table-cell
+                <td> column 2 </td>
+                <td> column 3 </td>
+            </tr>
+            <th> Row Title 2 </th>
+            <tr>    
+                <td> column 1 </td>
+                <td> column 2 </td>
+                <td> column 3 </td>            
+            </tr>
+        </table>
+        */
+
+    /* How tables are organized in CSS...
+
+        <div class="table">                  //display: table
+            <div class="tableRow">           //display: table-row
+                <div class="tableCell">      //display: table-cell
+                    111
+                </div> 
+                <div class="tableCell"> 
+                    222
+                </div> 
+                <div class="tableCell"> 
+                    333
+                </div> 
+            </div> 
+            <div class="tableRow">
+                <div class="tableCell"> 
+                    111
+                </div> 
+                <div class="tableCell"> 
+                    222
+                </div> 
+                <div class="tableCell"> 
+                    333
+                </div> 
+            </div>
+        </div>
+    */
+
+    /* 
+            the difference between the two methods shown is..
+
+            <table> already has a set of pre-defined css properties, but 'display: table' doesnt, 
+            so you have to customize your own set of css properties
+
+            its best to just use HTML for tables and use some css properties to create borders
+            and among other things
+*/

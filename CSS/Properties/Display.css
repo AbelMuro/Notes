@@ -1,0 +1,15 @@
+.DisplayProperties {
+    display: block;          /* the element will have line breaks on both sides of the element
+        and the width of the element will take up the entire width of the viewport
+        also, keep in mind that you can use justify-content with block containers
+    */
+    display: inline;         /* the element will NOT have line breaks and the width and height 
+        have no effect on the element. Also, the element will not have top and bottom margins/paddings
+    */
+    display: inline-block;   /* the element will NOT have line breaks but you can use width 
+        and height on the element. You still can't use top and bottom margins on inline-block,
+        but you can use top and bottom paddings. Even though it has left and right margins, using
+        margin: auto will not work with inline-block
+    */
+    display: none;           /* the element will be hidden and the space will also be removed*/
+}

@@ -69,7 +69,7 @@ nav {
 }
 
 
-//this will create two selectors, div and div.some_class
+// & will get replaced by div
 div{
     background-color:blue;                           //this will select all DIVS and assign the property background-color: blue                    
     &.some_class {                                   //the & operator represents the parent selector
@@ -86,7 +86,12 @@ div{
 
 
 //======================================@MIXINS and @INCLUDE=============================================================================================
-//MIXINS are similar to JS functions, below is the different ways to define a @mixin
+/* 
+    @Mixins lets you re-use css properties, instead of writing out 
+    the same lines of code in css, u can use @mixin to group
+    together a bunch of css properties and @include them in a different selector
+
+*/
 
 @mixin group-one($color: red) {                             //instead of writing out the same lines of code in css, u can use @mixin to group
     background-color: $color;                                 //together a bunch of css properties and @include them in a selector
@@ -105,15 +110,11 @@ div{
     border: 1px solid red;
 }
 
-//after you define your @mixin, you must use @include to include the mixin into your css selector 
 
 #someElement {
     @include group-one {
         display: inline-block;                              //you can pass properties to a mixin only if the mixin has @content
     };
-}
-
-p {
     @include group-two(green);                  
     @include group-three;
 }

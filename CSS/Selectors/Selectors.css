@@ -98,6 +98,8 @@ p[class^="top"]
 
 
 
+
+
 /*----------------------------------------------------------- PSEUDO CLASSES -----------------------------------------------------------*/
 
 
@@ -151,6 +153,76 @@ p:nth-of-type(2), i:nth-of-type(2n + 3){
 /* NTH CHILD PESUDO CLASS: will select a <p> element IF its a paragragh element AND it is the second child of a parent */
 p:nth-child(2)  {
     color: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------------------------------------------------- PSEUDO ELEMENTS -----------------------------------------------------------*/
+/* 
+    A pseudo-element is added to a selector when you want to style a specific part of the selected element
+    you can also combine the pseudo elements, in this case, order doesnt matter
+*/
+
+/* this selector will choose the first line inside every <p> element */
+p:first-line{       
+    color:none;
+    content:"";
+}
+
+/* This selector will choose the first letter of every <p> element CAN ONLY BE USED WITH BLOCK LEVEL ELEMENTS*/
+p::first-letter{
+    color:red;
+    font-size: 30px;
+}
+
+/* adding content before the initial content of the element */
+p::before{
+    content: '';        
+}
+
+/* adding content AFTER the initial content of the element */
+p::after{
+    content: '';
+}
+
+/* this selector will style every marker in all lists*/
+ul::marker{
+    color:none;
+}
+
+/* ::selection will change how highlighting text is displayed */
+p::selection{
+    color: purple;
+    background-color: red;
+}
+
+/*  The following properties will style the scrollbar in your element for FIREFOX */
+.pieces{
+    overflow: scroll;
+    scrollbar-width: thin;                                    /* setting this to 'none' will remove the scrollbar and the space used by the scrollbar*/
+    scrollbar-color: var(--scroll-bar-bg) transparent;
+}
+
+/* The following selectors will style the scrollbar for CHROME, SAFARI, and EDGE  */
+.pieces::-webkit-scrollbar{
+    display: none;            /* this will remove the scrollbar AND the space that is used by the scrollbar*/
+    width: 10px;
+    background-color: transparent;
+}
+
+.pieces::-webkit-scrollbar-thumb{
+    display: none;             /* this will remove the scrollbar thumb AND the space that is used by the thumb*/
+    background-color: var(--scroll-bar-bg);
+    border-radius: 10px;
 }
 
 

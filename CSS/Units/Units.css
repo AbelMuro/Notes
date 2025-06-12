@@ -1,0 +1,9 @@
+/*------------------------------- UNITS ------------------------ */
+
+.Units{
+    height: 50px;                       /* px means pixels*/
+    font-size: 2rem                     /* rem is a unit of measurement that is relative to the default font-size of the browser.... which for most browsers, is 16px..... in other words, 1rem represents 16px*/
+    width: 100%;                        /* percentage of the width of the parent element  50% means that the child element will take up 50% of available space in the parent*/
+    grid-template-columns: 50px 1fr;    /* fr represents the available space in a grid */
+    height: calc(100vh - 10px);        /* you can use the calc function to calculate a specific value based on an expression, this is usefull for calculating values with different units*/
+}

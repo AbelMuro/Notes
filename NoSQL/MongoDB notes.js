@@ -442,7 +442,18 @@
                                                                             
         changeStream.on('change', (change) => {                             // change event will be triggered when the document or collection is updated
             const fullDocument = change.fullDocument;                       // contains the whole document that was updated or added to the collection
-            const operationType = change.operationType;                     // will return 'insert' or 'delete'
+            const operationType = change.operationType;         
+            /* 
+                 possible values for change.operationType
+                        insert – A new document was inserted.
+                        update – A document was updated (includes delta changes).      
+                        replace – A document was replaced with a new one.      
+                        delete – A document was deleted.     
+                        invalidate – The Change Stream has been invalidated, often due to collection drops or renames.    
+                        rename – The collection was renamed.  
+                        drop – The collection was dropped.   
+                        dropDatabase – The database containing the collection was dropped.
+            */
         });
 
         changeStream.close();                                           // you can close the change stream connection

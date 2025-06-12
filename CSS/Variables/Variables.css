@@ -1,0 +1,14 @@
+
+:root {
+    --variableOne: 100px;
+    --variableTwo: 50vh;
+    --variableThree: #1e90ff;
+    --variableFour: red;
+}
+
+.usingVariables{
+    width: var(--variableOne);
+    height: var(--variableTwo);
+    color: var(--variableThree);
+    background-color: var(--variableFour);
+}

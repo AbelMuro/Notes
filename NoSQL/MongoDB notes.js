@@ -455,10 +455,10 @@
 
 //---------------- Change Stream Event Handler
 
-       changeStream.on('change', (change) => {                             // change event will be triggered when the document or collection is updated
-                const fullDocument = change.fullDocument;                  // contains the whole document that was updated or added to the collection
-                const timeStamp = change.clusterTime;                      // clusterTime returns the timestamp of the event that was triggered
-                const operationType = change.operationType;         
+       changeStream.on('change', (e) => {                             // change event will be triggered when the document or collection is updated
+                const fullDocument = e.fullDocument;                  // contains the whole document that was updated or added to the collection (the event will only have the full document if you specified {fullDocument: 'updateLookup'} in the second argument of Watch())
+                const timeStamp = e.clusterTime;                      // clusterTime returns the timestamp of the event that was triggered
+                const operationType = e.operationType;         
                 /* 
                      possible values for change.operationType
                             insert – A new document was inserted.
@@ -473,7 +473,7 @@
         });
                                                                
      
-//----------------Close Stream
+//---------------- Close Stream
 
         changeStream.close();                                     
 

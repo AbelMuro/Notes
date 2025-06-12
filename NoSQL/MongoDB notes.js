@@ -413,50 +413,112 @@
     have its event handlers that will be triggered when something happens to 
     the collection (add new document, delete document, change document).
 
-    Look at the Websocket module in Node.js notes for more info on how to integrate
-    a mongoDB change-stream with a websocket.
 
-            wss.on('connection', ws => {                                       
-                changeStream.on('change', (change) => {                         //once the connection has been established
-                    const fullDocument = change.fullDocument;                   //contains the whole document that was added to the collection
-                    const operationType = change.operationType;                 //insert document or delete document
-                    
-                    if(operationType === 'delete'){
-                        ws.close();                                             //you can close the websocket connection
-                        changeStream.close();                                   //you can close the change stream connection
-                    }
-                    else
-                        ws.send('data must be in json format')                  //This is where you send the changes to the front-end 
-                })    
-    	    })
+    Syntax:
+
+        Queue.watch([
+            { 
+                $match: {                                                          // $match is used to specify a specific document in the collection
+                    'fullDocument.username' : 'abel muro',                         // we watch for documents that have the specified username (operation type can be any event EXCEPT delete)
+                    'documentKey._id': new ObjectId(),                             // we watch for a document that has the specified _id (operation type can be any event)
+                    'updateDescription.updatedFields.username': { $exists: true }  // if exists is true, then we only detect update events to the username property of a document; if exists is false, then we detect update events to documents where all properties, except username, were updated (operation type must be update)
+                    'ns.coll'
+                    'ns.db'
+                    'clusterTime'
+                    'operationType': { $in: ['insert', 'update', 'replace', 'delete'] }        // we detect the events 'insert', 'update', 'replace' on the document
+                }       
+            }
+        ], { fullDocument: 'updateLookup' })                                        // all update events will return the full document that was updated
+
+        
+    
+
+            Look at the Websocket module in Node.js notes for more info on how to integrate
+            a mongoDB change-stream with a websocket.
+        
+                    wss.on('connection', ws => {                                       
+                        changeStream.on('change', (change) => {                         //once the connection has been established
+                            const fullDocument = change.fullDocument;                   //contains the whole document that was added to the collection
+                            const operationType = change.operationType;                 //insert document or delete document
+                            
+                            if(operationType === 'delete'){
+                                ws.close();                                             //you can close the websocket connection
+                                changeStream.close();                                   //you can close the change stream connection
+                            }
+                            else
+                                ws.send('data must be in json format')                  //This is where you send the changes to the front-end 
+                        })    
+            	    })
 */
 
         const mongoose = require('mongoose');
         const Queue = mongoose.model();
 
-        const changeStream = Queue.watch();                                 // this will detect any changes made to the collection (new document, delete document, change document)
-        const changeStream = Queue.watch([                                  // this will detect any changes made to a specific document in a collection
-                { $match: { 'fullDocument.username' : username } }
-            ], { fullDocument: 'updateLookup' });                            
 
-                                                                            
-        changeStream.on('change', (change) => {                             // change event will be triggered when the document or collection is updated
-            const fullDocument = change.fullDocument;                       // contains the whole document that was updated or added to the collection
-            const operationType = change.operationType;         
-            /* 
-                 possible values for change.operationType
-                        insert – A new document was inserted.
-                        update – A document was updated (includes delta changes).      
-                        replace – A document was replaced with a new one.      
-                        delete – A document was deleted.     
-                        invalidate – The Change Stream has been invalidated, often due to collection drops or renames.    
-                        rename – The collection was renamed.  
-                        drop – The collection was dropped.   
-                        dropDatabase – The database containing the collection was dropped.
-            */
+
+
+
+//---------------- Document Change Stream
+
+
+        const changeStream = Queue.watch([                                  // this will detect any changes made to a specific document in a collection
+                { 
+                    $match: { 
+                        'fullDocument.username' : username,                    // we detect changes made to a document that has the specified username
+                        operationType: { $in: ['insert', 'update', 'replace'] }}  //we detect the events 'insert', 'update', 'replace'
+                }
+            ], { fullDocument: 'updateLookup' });                             // all update events will return the full document 
+
+
+       changeStream.on('change', (change) => {                             // change event will be triggered when the document or collection is updated
+                const fullDocument = change.fullDocument;                       // contains the whole document that was updated or added to the collection
+                const operationType = change.operationType;         
+                /* 
+                     possible values for change.operationType
+                            insert – A new document was inserted.
+                            update – A document was updated (includes delta changes).      
+                            replace – A document was replaced with a new one.      
+                            delete – A document was deleted.     
+                            invalidate – The Change Stream has been invalidated, often due to collection drops or renames.    
+                            rename – The collection was renamed.  
+                            drop – The collection was dropped.   
+                            dropDatabase – The database containing the collection was dropped.
+                */
         });
 
-        changeStream.close();                                           // you can close the change stream connection
+
+
+
+
+
+//----------------Document Delete Stream
+
+        const deleteStream = Match.watch([                                // this will detect if the specified document was deleted
+            { 
+                $match: {
+                    'documentKey._id': new ObjectId(''),                      // we specify the document with its _id
+                     operationType: { $in: ['delete'] }                        // we detect the event 'delete'
+                }
+            }
+        ])
+
+
+        deleteStream.on('change', (e) => {
+            /* 
+                the delete event has the following properties
+                
+                    e.operationType = "delete"
+                    e.documentKey = { "_id": "..." }
+            */                      
+        })
+
+
+
+                                                                            
+     
+//----------------Close Stream
+
+        changeStream.close();                                     
 
 
 

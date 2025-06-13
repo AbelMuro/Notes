@@ -84,9 +84,9 @@ nav {
 
 
 
-//======================================= FUNCTIONS =======================================
+//======================================= MIXINS =======================================
 /* 
-    @Mixins are functions in SASS that lets you re-use CSS properties
+    @Mixins are re-usable blocks of code in SASS that lets you re-use CSS properties
     You must use @include in a selector to call the function
 */
 
@@ -237,12 +237,18 @@ div{
 
 //======================================= LOOP =======================================
 /* 
-    You can use the @each keyword to loop through a list of values within a variable.
-    This can be usefull for creating multiple selectors or for traversing through the 
-    css variables of a map
+    You can use the following loops to iterate a certain number of times.
+    This can be usefull for creating multiple selectors.
 */
 
-$sizes: 10px, 20px, 30px;           // list
+
+//------------------- @each
+/* 
+    You can use the @each keyword to loop through a list or map.
+*/
+
+
+$sizes: 10px, 20px, 30px;          
 
 @each $size in $sizes {                            
     .icon-#{$size} {                // this will create 3 selectors
@@ -267,7 +273,42 @@ $my-map: (
 
 
 
+//------------------- @for
+/* 
+    You can use @for to loop through a set of numbers. It works similarly to a for loop in JS.
+*/
 
+
+@for $i from 1 through 3 {                                              // 3 will be included
+    .loop-#{$i} {
+        top: $i;
+    }
+}
+
+@for $i from 1 to 3 {                                                    // 3 will be excluded
+    .loop-#{$i} {
+        bottom: $i;
+    }
+}
+
+
+
+
+
+//------------------- @while
+/* 
+    You can use the @while loop in SASS to loop through a set of numbers. It works similarly to while loop in JS
+*/
+
+$number-one: 1;
+$number-two: 10;
+
+@while $number-one < $number-two {
+    $number-one: $number-one + 1;
+    .loop {
+        color: red;
+    }
+}
 
 
 
@@ -338,23 +379,29 @@ $nested-map: map.deep-remove($my-colors, "dark-colors", "fourth-color");    // r
 
 
 
-//============================================ LISTS ================================================================================================
-//similar to maps, but lists dont have keys, they only have values
+//======================================= LISTS =======================================
+/* 
+    Lists are a collection of css values that are assigned to a SASS variable.
+    Lists are similar to arrays in JS, every value is assigned a numeric index.
+*/
 
-$empty-list: ();                                   //creating an empty list
-$random-list: red, green, blue;             //creating a list
+$color-list: red, green, blue;                    // creating a list
 
 
-$my-list: list.append(10px 20px, 30px);             //list.append(list, valueToBeAddedAtEnd, separator)
-$my-other-list: list.append(1px solid, black);
-$joined-list: list.join($my-list, $my-other-list);  //joining two lists
 
-$index: list.index($my-list, 20px);  //returns 2    //searches through a list and returns the index of the value specified in the second parameter
-$indexed-value: list.nth($my-list, 2);                //this will return 20px because that value is indexed by 2
-$another_list: list.set-nth($my-list, -1, 50px);    //positioning a value in a list based on the second argument, -1 means that it will be placed at the end of the list
+//------------------- LIST FUNCTIONS
+/* 
+    You can use the following functions to manipulate lists in SASS
+*/
+
+$my-list: list.append($color-list, yellow);             // we append a new css value to the end of the list and return a new list (does not mutate original list)             
+$my-list: list.join($color-list, $my-other-list);       // we merge two lists into one, and we return the new list (does not mutate original list)
+$my-list: list.index($color-list, 20px);                // searches for a value in a list and returns its index
+$my-list: list.set-nth($color-list, -1, 50px);          // inserting a new css value at index n (does not mutate original list) (-1 means we insert it at the end of the list)
+$color: list.nth($color-list, 2);                       // searches for the value in the list at index 2
 
 .random_list {
-    font: $joined-list;
+    font: $my-list;
 }
 
 
@@ -366,43 +413,34 @@ $another_list: list.set-nth($my-list, -1, 50px);    //positioning a value in a l
 
 
 
-//============================================= INTERPOLATION ========================================================================================
+//======================================= INTERPOLATION =======================================
+/* 
+    You can use interpolation in SASS by using the following syntax. Interpolation allows
+    you to dynamically create css-properties based on the value of a variable
 
-@mixin my-properties($name, $top-or-bottom, $left-or-right) {               //this is interpolation, using a sass variable to define a class name, property
-    .new_class_#{$name} {                                                   // or a string
+    #{$variable}
+*/
+
+
+@mixin my-properties($name, $top-or-bottom) {             
+    .new_class_#{$name} {                                                   
         background-image: url("images/#{$name}.jpg");                       //syntax starts with #{variable-name}
         #{$top-or-bottom}: 50px;    
-        #{$left-or-right}: 40px
     }
 }
 
-@include my-properties("earth_image", top, left);                           //creating a class with @include
 
-
-
-
-
-
-
-
-
-
-//=============================================== LOOPS ===========================================================================================
-
-$base-color: blue;
-
-//REMEMBER, if 'through' is used, then the final number is included, if 'to' is used then the final number is excluded
-@for $i from 1 through 3 {                                              //FOR loops that can iterate through a set of values
-    .loop-#{$i} {
-        background-color: lighten($base-color, $i * 5%);
-    }
+.myClass{
+      @include my-properties("earth_image", top);                           //creating a class with @include  
 }
 
-$number-one: 1;
-$number-two: 10;
-@while $number-one < $number-two {
-    $number-one: $number-one + 1;
-}
+
+
+
+
+
+
+
 
 
 

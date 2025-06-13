@@ -4,7 +4,6 @@
 
 
 @use 'sass:map';                  //loading the map module
-@use 'sass:math';                 //loading the math module
 @use 'sass:color';                //loading the color module
 @use 'sass:list';                 //loading the list module
 @use 'sass:meta';                  //loading the meta module
@@ -33,10 +32,12 @@
 
 
 
-//=======================================SASS VARIABLES============================================================================
-//all SASS variables must start with $
+//======================================= SASS VARIABLES =======================================
+/* 
+    You can create variables in SASS by using the $ operator
+*/
 
-$variable-one: red;                                             //you can create variables in sass and assign them values like in javascript
+$variable-one: red;                                       
 $variable-two: blue;
 $variable-three: 150px;
 $font-stack: 'Times New Roman', sans-serif;
@@ -58,23 +59,20 @@ $font-stack: 'Times New Roman', sans-serif;
 
 
 
-//=====================================NESTING SELECTORS============================================================================
 
+//======================================= NESTING SELECTORS =======================================
+/* 
+    You can nest selectors inside other selectors in SASS, this improves readability.
+*/
 nav {
     ul{
         margin: 0;
         padding: 0;
         list-style-type: none;
     }
-}
-
-
-// & will get replaced by div
-div{
-    background-color:blue;                           //this will select all DIVS and assign the property background-color: blue                    
-    &.some_class {                                   //the & operator represents the parent selector
-        color: red;                                  //this will select div.some_class and assign the property color: red
-    }                                                //but NOT background-color: blue 
+    &.myClass {                                    // & will be replaced by nav
+        color: red;
+    }
 }
 
 
@@ -85,22 +83,21 @@ div{
 
 
 
-//======================================@MIXINS and @INCLUDE=============================================================================================
+
+//======================================= FUNCTIONS =======================================
 /* 
-    @Mixins lets you re-use css properties, instead of writing out 
-    the same lines of code in css, u can use @mixin to group
-    together a bunch of css properties and @include them in a different selector
-
+    @Mixins are functions in SASS that lets you re-use CSS properties
+    You must use @include in a selector to call the function
 */
 
-@mixin group-one($color: red) {                             //instead of writing out the same lines of code in css, u can use @mixin to group
-    background-color: $color;                                 //together a bunch of css properties and @include them in a selector
-    color: $color;                                            //@mixing also works like a function, where you can pass any value
-    box-shadow: 0 0 1px rgba($color, .30);                    //in this case, you dont HAVE to pass a value in this mixin
-    @content;                                                 //you can pass more properties to this mixin with the @content
+@mixin group-one($color: red) {              //optional argument                  
+    background-color: $color;                             
+    color: $color;                                           
+    box-shadow: 0 0 1px $color;                   
+    @content;                                // a selector can pass additional css properties                                      
 }
 
-@mixin group-two($color) {                                   //in this case, you HAVE to pass a value in this mixin                                
+@mixin group-two($color) {                  //required argument                               
     background-color: $color;
 }
 
@@ -111,9 +108,9 @@ div{
 }
 
 
-#someElement {
-    @include group-one {
-        display: inline-block;                              //you can pass properties to a mixin only if the mixin has @content
+.myClass {
+    @include group-one {        
+        display: inline-block;              //this will replace the @content in the @mixin                      
     };
     @include group-two(green);                  
     @include group-three;
@@ -129,21 +126,12 @@ div{
 
 
 
-//===================================== @EXTEND =============================================================================================
-// @extend can be used to give the properties of one class to another
 
-%example-one {                              //this is a placeholder class, it will only print in the css file if 
-    border: 1px solid blue;               // it's @extended in a selector
-    padding: 100px;
-    position: absolute;
-}
+//======================================= EXTENTIONS =======================================
+/* 
+    You can use the @extend keyword to apply the css properties of one selector to another selector
+*/
 
-body {
-    @extend %example-one;                   //this selector will now have the same properties as %example_one
-}
-
-
-// you can also use extend to have one class get all the properties from another class, but still retain unique properties
 .class_one {
     background-color: blue;
     color: red;
@@ -169,12 +157,27 @@ body {
 
 
 
-//=========================================OPERATORS===================================================================================================
-//build in math functions for sass
+
+//======================================= MATH MODULE =======================================
+/* 
+    The Math module is a built in module in SASS that has functions that
+    perform basic math operations
+*/
+
+@use 'sass:math';                             // loading the math module
 
 div {
-    width: math.div(600px, 900px) - 100px;   //using built in math functions in sass
-    height: (9px + 1px) * 45;               //you can also use math operators here like in javascript
+    width: math.div(600, 900);                // dividing two numbers (must be unitless)
+    width: math.round(0.344);                 // rounding an number to the nearest integer (can be any unit)
+    width: math.ceil(23.43);                  // rounding a number up (can be any unit)
+    width: math.floor(45.67px);               // rounding a number down (can be any unit)
+    width: math.abs(-23px);                   // returns the absolute value of a number (can be any unit)
+    width: math.min(23px, 45px, 62px, 34px);  // Returns the smallest number from a list of values. (must be the same units)
+    width: math.max(87px, 76px, 9px, 7px);    // Returns the largest number from a list of values. (must be the same units)
+    width: math.pow(2, 3);                    // Raises a number to a power (base^exponent). (must be unitless)
+    width: math.sqrt(45);                     // Returns the square root of a number. (must be unitless)
+    width: math.clamp(0px, 50px, 100px);      // Restricts a value within a defined range. (0 is min, 100 is max) (must be the same unit)
+    height: (9px + 1px) * 45;                 // you can also use math operators here like in javascript
 }
 
 
@@ -187,13 +190,17 @@ div {
 
 
 
-//===========================================@if, @else-if, @if not ()=========================================================================================
+
+//======================================= CONDITIONAL STATEMENTS =======================================
+/* 
+    You can use @if, @else, @else-if, and @if-not to check a condition and return a set of css-properties
+*/
 
 $random: if(1 == 1, 30px, none);                           //if statements can be defined in one line to assign a value to a variable
 
 @mixin theme($theme) {
-    @if $theme == red {                                  //this IF statement is similar to the IF statement in javascript
-        background-color: red;                          //this can be useful for changing an entire group of variables based on a condition
+    @if $theme == red {                                  
+        background-color: red;                         
         color: orange;
     }
     @else if $theme == blue {
@@ -208,13 +215,13 @@ $random: if(1 == 1, 30px, none);                           //if statements can b
         @error "Color you choose is not black, blue or red, #{theme}";    //@error is used to display an error on the terminal
     }
 
-    @if not ($theme == purple) {                                    //statement must return false for the expression below to be printed in the css file
+    @if not ($theme == purple) {                                    // this is the same as $theme !== purple
         border: purple;
     }
 }
 
 
-div.selection {
+div{
     @include theme(blue);
     width: $random;
 }   
@@ -227,13 +234,19 @@ div.selection {
 
 
 
-//------------------------------------------------------@EACH------------------------------------------------------------------------------
 
-$sizes: 10px, 20px, 30px;           //list
+//======================================= LOOP =======================================
+/* 
+    You can use the @each keyword to loop through a list of values within a variable.
+    This can be usefull for creating multiple selectors or for traversing through the 
+    css variables of a map
+*/
 
-@each $size in $sizes {             //@each is used to loop through the values of a variable                  
-    .icon-#{$size} {                //this will create 3 selectors in the css file with each of 
-        font-size: $size;           // the values defined in the variable array
+$sizes: 10px, 20px, 30px;           // list
+
+@each $size in $sizes {                            
+    .icon-#{$size} {                // this will create 3 selectors
+        font-size: $size;          
         height: $size;
         width: $size;
     }
@@ -245,9 +258,9 @@ $my-map: (
     "width": 50px
 );
 
-@each $property, $value in $my-map {    //you can also iterate through the values of a map
+@each $property, $value in $my-map {    // you can also iterate through the values of a map
     .random_class {                     
-        #{$property}: $value;           //in this case, it will create 3 classes with different properties, not a good example
+        #{$property}: $value;           // in this case, it will create 3 classes with different properties
     }
 }
 
@@ -262,89 +275,56 @@ $my-map: (
 
 
 
-//============================================= MAPS ==================================================================================================================================
 
-$my-colors: (                                                               //this is a map
-    "primary-color": blue,                                                //"key": value
+//======================================= MAPS =======================================
+/* 
+    You can create maps with a SASS variable, maps are used to create a mapping between 
+    a key and a css value
+*/
+
+$my-colors: (                                                        
+    "primary-color": blue,                                                // "key": value
     "secondary-color": red,
-    "third-color": green
-);
-$my-positions: (
-    "top": 30px,
-    "left": 54px,
-    "right": 60px
+    "third-color": green,
+    "function_one": meta.get-function(function_one)                       // maps can also contain functions (scroll down for notes on functions)
 );
 
-$new_map: map.merge($my-colors ,$my-positions);                             // merging two maps together
-$new_map: map.remove($new_map, "left");                                     //removing a key from the map
-.some_class_with_maps {
-    background-color: map.get($new_map, "top");                             // using a built in function to access properties from a map           
-}
 
 
 
 
-//--------------------------------------------------------these are nested maps----------------------------------------------------------------------------------------------------
-$roman-font: (                                                               
-    "Times New Roman": (                                                    //a key has other keys that have their own value
-        "Font-size": 50px,
-        "color": black
+//------------------- NESTED MAPS
+/* 
+    You can also have nested maps within other maps
+*/
+
+$my-colors: (    
+    "primary-colors": blue,
+    "secondary-color": green,
+    "dark-colors": (                                //nested maps                           
+        "fourth-color": grey,
     )
 );
-$courier-font: (
-    "Courier": (
-        "Font-size": 60px,
-        "color": blue
-    )
-);
-$nested-map: map.deep-merge($roman-font, $courier-font);                    //using deep-merge instead of merge
-$nested-map: map.deep-remove($nested-map, "Times New Roman", "color");
-.some_class_with_nested_maps {
-    font: map.get($courier-font, "Courier", "Font-size");                   //using get to get a nested key
-}
 
 
 
 
+//------------------- MAP FUNCTIONS
+/* 
+     You can use the following functions to manipulate maps 
+*/
 
+$bool: map.has-key($map, "color");                                  // returns true or false if the map has the specified key
+$keys: map.keys($map);                                              // returns a list of all the keys in the map
+$values: map.values($map);                                          // returns a list of all the values in the map
+$new-map: map.set($map, "color", blue);                             // setting a new value for a key in the map (replaces the old value if it already exists) and returns the updated map
+$new_map: map.merge($map, $other-map);                              // merging two maps together (returns the updated map)
+$new_map: map.remove($map, "left");                                 // removing a key from the map (returns the updated map)
+$nested-map: map.deep-merge($map, $my-positions);                   // merging two maps together with all of its nested maps (returns the updated map)
+$nested-map: map.deep-remove($my-colors, "dark-colors", "fourth-color");    // removing a property from a nested map
 
-
-
-
-
-
-
-//-------------------------------------------------MAP FUNCTIONS----------------------------------------------------------------------------------------------------------------
-// The map functions being used here are map.has-key(), map.keys(), map.values()
-
-
-$another-map: (
-    "background-color": red,
-    "font-size": 30px
-);
-
-
-$bool: map.has-key($another-map,"color");                                  //returns true or false if the map has the specified key
-@error map.keys($my-colors);                                               //u can use @error to display all the keys in a map on the terminal
-@error map.values($my-colors);                                             //returns all the values from a map
-$new-map: map.set($another-map, "color", blue);                            //setting new values to a map, you can also change an existing value
-$map-value: map.get($another-map, "font-size");                            //getting a value from the map with a key
-
-
-
-//-------------------------------------------------maps containing functions-----------------------------------------------------------------------------------------------
-
-//scroll down below for more info on @functions on sass
-@function function_one() {
-    @return 10px;
-}
-
-//syntax for calling a SASS function
-$function-maps: (
-    "function_one": meta.get-function(function_one)                     //you can use predefine module functions as map values
-);
-.function_maps {
-    width: meta.call(map.get($function-maps, "function_one"));
+.myClass {
+    background-color: map.get($my-colors, "primary-color");                 // getting a property from a map   
 }
 
 

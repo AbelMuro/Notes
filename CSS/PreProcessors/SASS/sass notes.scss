@@ -1,22 +1,20 @@
-//====================================USING variables from other files=============================================================
-//@use loads mixins, functions and variables from other .scss files, these files are called modules
-//the only way to use the variables and mixins from these files is by using a namespace to access them
+//======================================= IMPORTS =======================================
+/* 
+    You can import variables, functions and mixins from other SASS files by using the @use keyword
+*/
 
+@use '_partial.scss' as p;        //p is now a 'NAMESPACE' that can be used to access all the SASS variables as if it were an object
 
-@use 'sass:map';                  //loading the map module
-@use 'sass:color';                //loading the color module
-@use 'sass:list';                 //loading the list module
-@use 'sass:meta';                  //loading the meta module
-@use '_partial.scss' with (       //these variables are being redefined in this file
-    $custom-color: pink,        //the variables were defined as !default, which means their value can be changed here
+@use '_partial.scss' with (       // the variables in the file that were declared as !default
+    $custom-color: pink,         
     $custom-font: "courier",     
     $custom-font-size: 100px,
 );   
-@use '_partial.scss' as c;        //c is now a 'NAMESPACE' that can be used to access all the SASS variables as if it were an object
+
 
 .example_one {
     color: partial.$custom-color;       //you can also use the name of the file as a namespace    
-    background-color: c.$custom-color;  //$custom-color is a variable from _partial.scss
+    background-color: p.$custom-color;  //$custom-color is a variable from _partial.scss
     @include c.random;
 }
 
@@ -149,36 +147,6 @@ nav {
 
 
 
-
-
-
-
-
-
-
-
-
-//======================================= MATH MODULE =======================================
-/* 
-    The Math module is a built in module in SASS that has functions that
-    perform basic math operations
-*/
-
-@use 'sass:math';                             // loading the math module
-
-div {
-    width: math.div(600, 900);                // dividing two numbers (must be unitless)
-    width: math.round(0.344);                 // rounding an number to the nearest integer (can be any unit)
-    width: math.ceil(23.43);                  // rounding a number up (can be any unit)
-    width: math.floor(45.67px);               // rounding a number down (can be any unit)
-    width: math.abs(-23px);                   // returns the absolute value of a number (can be any unit)
-    width: math.min(23px, 45px, 62px, 34px);  // Returns the smallest number from a list of values. (must be the same units)
-    width: math.max(87px, 76px, 9px, 7px);    // Returns the largest number from a list of values. (must be the same units)
-    width: math.pow(2, 3);                    // Raises a number to a power (base^exponent). (must be unitless)
-    width: math.sqrt(45);                     // Returns the square root of a number. (must be unitless)
-    width: math.clamp(0px, 50px, 100px);      // Restricts a value within a defined range. (0 is min, 100 is max) (must be the same unit)
-    height: (9px + 1px) * 45;                 // you can also use math operators here like in javascript
-}
 
 
 
@@ -355,6 +323,8 @@ $my-colors: (
      You can use the following functions to manipulate maps 
 */
 
+@use 'sass:map';                                                    // loading the map module
+
 $bool: map.has-key($map, "color");                                  // returns true or false if the map has the specified key
 $keys: map.keys($map);                                              // returns a list of all the keys in the map
 $values: map.values($map);                                          // returns a list of all the values in the map
@@ -393,6 +363,8 @@ $color-list: red, green, blue;                    // creating a list
 /* 
     You can use the following functions to manipulate lists in SASS
 */
+
+@use 'sass:list';                                       //loading the list module
 
 $my-list: list.append($color-list, yellow);             // we append a new css value to the end of the list and return a new list (does not mutate original list)             
 $my-list: list.join($color-list, $my-other-list);       // we merge two lists into one, and we return the new list (does not mutate original list)
@@ -448,50 +420,35 @@ $color: list.nth($color-list, 2);                       // searches for the valu
 
 
 
-//==================================================== FUNCTIONS ==================================================================================
+//======================================= FUNCTIONS =======================================
+/*
+    You can create functions in SASS with similar syntax as functions from JS
+    Keep in mind that you can pass a list to a function that has the following 
+    syntax for a parameter
 
-@function my_function($number-one, $number-two, $custom: 30){       //functions can also have default values in the arguements
-    @return $number-one * $number-two;                              //which can be overwritten when called
-}
+    @function my_function($list...){}
 
-@function my_other_function ($numbers...){
-    $sum: 0;
+    my_function(1,2,4,5,6,7);
+*/
 
-    @each $digit in $numbers {
-        $sum: $sum + $digit; 
+
+@function my_function($number-one, $number-two, $custom: 30){       
+    $my-variable: 23;
+    $result: 0
+
+    @for 1 through $my-variable{
+        $result: $result + 1;
     }
-
-    @return $sum;
+    @return $result * $number-one;                             
 }
+
 
 .myFunction {
     position: absolute;
     top: my_function(2, 3) * 1px;
-    left: my_other_function(1, 2, 3, 4, 5, 6) * 1px;
 }
 
 
 
 
 
-
-//======================================================= COLOR MODULE =================================================================================
-
-.button {
-    $primary-color: green;
-    color: color.adjust($primary-color, $red: 140);                     //there are more arguments to this, look up the documentation
-    background-color: adjust-hue($primary-color, 100deg);
-    border-color: color.scale($primary-color, $lightness: -30%);         //darkening a color
-    border-color: color.scale($primary-color, $blackness: -30%);         //lightening a color
-    border-color: color.scale($primary-color, $saturation: -30%);        //desaturating a color
-}
-
-
-
-
-//========================================================== META MODULE ==========================================================================================
-
-
-.meta_class {
-    @include meta.load-css("partial.scss");                 //loads all the selectors from the file specified
-}

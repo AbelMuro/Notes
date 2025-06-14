@@ -3,19 +3,36 @@
     You can import variables, functions and mixins from other SASS files by using the @use keyword
 */
 
-@use '_partial.scss' as p;        //p is now a 'NAMESPACE' that can be used to access all the SASS variables as if it were an object
 
-@use '_partial.scss' with (       // the variables in the file that were declared as !default
-    $custom-color: pink,         
-    $custom-font: "courier",     
-    $custom-font-size: 100px,
+//------------------- namespaces
+/* 
+    You can create namespaces in SASS using the 'as' keyword.
+    The name of the file serves as another namespace as well.
+*/
+@use '_partial.scss' as p;       
+
+.myClass {
+    color: p.$custom-color;          // p is a namespace that can be used to access all the variables and functions from another file
+    color: partial.$custom-color;    // you can also use the name of the file as a namespace   
+}
+
+
+
+//------------------- Redefining variables in other modules
+/* 
+    You can redefine variables imported from a different file by using
+    the 'with' keyword
+*/
+
+@use '_partial.scss' with (       
+    $custom-color: pink,                // this SASS variable is from '_partial.scss'
+    $custom-font: "courier",            // this SASS variable is from '_partial.scss'
+    $custom-font-size: 100px,           // this SASS variable is 
 );   
 
 
-.example_one {
-    color: partial.$custom-color;       //you can also use the name of the file as a namespace    
-    background-color: p.$custom-color;  //$custom-color is a variable from _partial.scss
-    @include c.random;
+.example_one { 
+    background-color: partial.$custom-color;  //$custom-color is a variable from _partial.scss
 }
 
 
@@ -88,14 +105,14 @@ nav {
     You must use @include in a selector to call the function
 */
 
-@mixin group-one($color: red) {              //optional argument                  
+@mixin group-one($color: red) {              // optional argument                  
     background-color: $color;                             
     color: $color;                                           
     box-shadow: 0 0 1px $color;                   
-    @content;                                // a selector can pass additional css properties                                      
+    @content;                               // a selector can pass additional css properties                                      
 }
-
-@mixin group-two($color) {                  //required argument                               
+ 
+@mixin group-two($color) {                  // required argument                               
     background-color: $color;
 }
 
@@ -108,7 +125,7 @@ nav {
 
 .myClass {
     @include group-one {        
-        display: inline-block;              //this will replace the @content in the @mixin                      
+        display: inline-block;              // this will replace the @content in the @mixin                      
     };
     @include group-two(green);                  
     @include group-three;

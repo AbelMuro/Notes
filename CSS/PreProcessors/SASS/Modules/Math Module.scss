@@ -1,0 +1,21 @@
+/* ======================================= MATH MODULE ======================================= */
+/* 
+    The Math module is a built in module in SASS that has functions that
+    perform basic math operations
+*/
+
+@use 'sass:math';                             // loading the math module
+
+div {
+    width: math.div(600, 900);                // dividing two numbers (must be unitless)
+    width: math.round(0.344);                 // rounding an number to the nearest integer (can be any unit)
+    width: math.ceil(23.43);                  // rounding a number up (can be any unit)
+    width: math.floor(45.67px);               // rounding a number down (can be any unit)
+    width: math.abs(-23px);                   // returns the absolute value of a number (can be any unit)
+    width: math.min(23px, 45px, 62px, 34px);  // Returns the smallest number from a list of values. (must be the same units)
+    width: math.max(87px, 76px, 9px, 7px);    // Returns the largest number from a list of values. (must be the same units)
+    width: math.pow(2, 3);                    // Raises a number to a power (base^exponent). (must be unitless)
+    width: math.sqrt(45);                     // Returns the square root of a number. (must be unitless)
+    width: math.clamp(0px, 50px, 100px);      // Restricts a value within a defined range. (0 is min, 100 is max) (must be the same unit)
+    height: (9px + 1px) * 45;                 // you can also use math operators here like in javascript
+}

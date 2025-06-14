@@ -11,7 +11,7 @@ $secondary-color: blue;
 
 .button {
     color: color.adjust($primary-color, $lightness: 10%, $saturation: 20%));  //modifies a color by adjusting the saturation and lightness        
-    color: adjust-hue($primary-color, 100deg);                    // adjusts the hue of the color by shifting the color along the hue wheel 
+    color: color.adjust-hue($primary-color, 100deg);                    // adjusts the hue of the color by shifting the color along the hue wheel 
     color: color.change($primary-color, $hue: 200)                // adjust the hue of the color
     color: color.scale($primary-color, $lightness: -30%);         // darkening a color
     color: color.scale($primary-color, $blackness: -30%);         // lightening a color

@@ -1,13 +1,12 @@
 /* 
      To be able to export any variable, function or mixin from a file, all you
-     need to do is declare them and they can be exported automatically
-*/
+     need to do is declare them and they can be exported automatically.
+*/ 
 
-$custom-string: "yes";                                      
+$custom-string: "yes";                                   // this variable can't be changed in a different file        
 $custom-color: red !default;                              
 $custom-font: 'Times New Roman' !default;                  
 $custom-font-size: 30px !default;
-$-private: "whatever";                                      //this is a private variable that can only be used here, these variables starts with - or _
 
 @mixin random {
     border-radius: 30px;

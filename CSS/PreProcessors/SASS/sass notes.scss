@@ -67,6 +67,30 @@ $font-stack: 'Times New Roman', sans-serif;
 
 
 
+//------------------- !default
+/* 
+     Any variable declared with !default means that the variable can be changed 
+     in a different file after its been imported. However, this is optional.
+*/
+
+$variable-three: green !default; 
+
+
+
+
+//------------------- Private variables
+/* 
+    Any variable declared with - or _ will make the variable into a private variable.
+    Private variables can't be exported from the file in which it was declared in.
+*/
+
+$-private: "whatever";                                      //this is a private variable that can only be used here, these variables starts with - or _
+
+
+
+
+
+
 
 
 

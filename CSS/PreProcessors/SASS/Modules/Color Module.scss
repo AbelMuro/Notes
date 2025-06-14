@@ -1,0 +1,23 @@
+
+//======================================= COLOR MODULE =======================================
+/* 
+    You can use the color module to manipulate the contrast, quality and other features of a color
+*/
+
+@use 'sass:color';                                              // loading the color module
+
+$primary-color: green;
+$secondary-color: blue;
+
+.button {
+    color: color.adjust($primary-color, $lightness: 10%, $saturation: 20%));  //modifies a color by adjusting the saturation and lightness        
+    color: adjust-hue($primary-color, 100deg);                    // adjusts the hue of the color by shifting the color along the hue wheel 
+    color: color.change($primary-color, $hue: 200)                // adjust the hue of the color
+    color: color.scale($primary-color, $lightness: -30%);         // darkening a color
+    color: color.scale($primary-color, $blackness: -30%);         // lightening a color
+    color: color.scale($primary-color, $saturation: -30%);        // desaturating a color
+    color: color.mix($primary-color, $secondary-color, 60%);      // mixing two colors at 60% towards the base
+    color: color.invert($primary-color);                          // inverts a color
+    color: color.complement($primary-color);                      // returns the complementary color of the specified color      
+  
+}

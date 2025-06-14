@@ -1,1 +1,19 @@
+//======================================= META MODULE =======================================
+/* 
+    The Meta module lets you inspect and manipulate data types in SASS
+*/
+
 @use 'sass:meta';                 //loading the meta module
+
+$type: meta.type-of(10px);        // returns the data type of a value
+$debug-info: meta.inspect(10px);  // Converts a value into a string for debugging
+$unit-type: meta.unit(5em);       // returns the unit of the value
+$is-unitless: meta.unitless(42);  // returns true or false indicating if the value has not units
+$compatible: meta.math-compatible(10px, 2em); // returns true or false, indication if the two values can be used in a math operation (values must be the same unit)
+
+@function example($width, $height) {
+  
+}
+$function-args: meta.keywords(example); // returns the parameters of a functions
+$my-function: meta.get-function(example); //returns a reference to a function
+$result: meta.call($my-function, 100px, 200px); // calls a function dynamically

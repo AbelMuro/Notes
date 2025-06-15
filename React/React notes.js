@@ -184,26 +184,8 @@
                 npm install babel-loader --save-dev                                 //installs a loader that webpack uses to transpile JS code into valid JS code
                 npm install @babel/preset-react --save-dev                          //installs a group of plugins that will transpile JSX into valid JS
                 npm install @babel/preset-env --save-dev                            //installs a group of plugins that will transpile all the new features of JS 
-                npm install postcss-loader --save-dev                               //installs a loader that will automatically transfrom your selector and styles
+                npm install postcss-loader --save-dev                               //installs a loader that will automatically transform your selector and styles
                 npm install autoprefixer --save-dev                                 //installs a package that will be used with postcss-loader, autoprefixer will automatically apply any prefix vendors to your selectors in css (-webkit-, moz, etc..)
-
-                        in webpack...
-
-                                module: {
-                                    rules: [
-                                       test: /\.css$/,
-                                       use: [{loader: 'postcss-loader'}]    
-                                    ]
-                                }
-
-                        create a file postcss.config.js
-                        
-                                module.exports = {
-                                    plugins: [
-                                        require('autoprefixer')
-                                    ]
-                                }
-
                
               5) npm install html-webpack-plugin --save-dev                          //installs a plugin that will create an html file in the /dist folder based on a template we have in /src
                

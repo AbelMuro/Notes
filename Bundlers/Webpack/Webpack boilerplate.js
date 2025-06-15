@@ -38,7 +38,8 @@ module.exports = {
                                   rootPathSuffix: './src',
                                   rootPathPrefix: '~/'
                                 }
-                              ]
+                                  'src directory'                        //if you are planning on having multiple directories defined here, you need a unique key for each one
+                              ]                                        
                             ]
                           }
                     }  
@@ -53,7 +54,7 @@ module.exports = {
                            options: {
                               postcssOptions: {
                                 plugins: [
-                                  require('autoprefixer')(),
+                                  require('autoprefixer'),
                                 ],
                               },
                             },

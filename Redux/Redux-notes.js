@@ -731,7 +731,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-      dispatch(fetchData('URL'))
+      dispatch(fetchData('URL'))                        // returns a promise
   }, [])
   
   return(<>Hello World</>)
@@ -916,7 +916,7 @@ import {sagaMiddleware} from './store.js';
 
 function App() {
       const dispatch = useDispatch()     
-                                                                        //to my future self: if redux saga isnt working, try to create a function that returns an action for dispatch()
+                                                                        // to my future self: if redux saga isnt working, try to create a function that returns an action for dispatch()
       const handleFetch = () => {
             dispatch({type: 'FETCH_REQUEST'})                           // will be intercepted by redux-saga
       }

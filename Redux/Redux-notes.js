@@ -732,6 +732,9 @@ function App() {
 
   useEffect(() => {
       dispatch(fetchData('URL'))                        // returns a promise
+            .then((result) => {
+                result.meta.rejectedWithValue         // returns a boolean, indicating if the rejectedWithValue() function was called
+            })       
   }, [])
   
   return(<>Hello World</>)

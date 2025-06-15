@@ -19,13 +19,22 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         plugins: [
-                          [
-                            'babel-plugin-root-import',
-                            {
-                              rootPathSuffix: './src',
-                              rootPathPrefix: '~/'
-                            }
-                          ]
+                            [
+                                'babel-plugin-root-import',
+                                {
+                                    rootPathSuffix: "./src",             
+                                    rootPathPrefix: "~/"              
+                                }, 
+                                'src directory'                                              // if you are defining multiple directories under a flag, you need to assign a unique 'key' 
+                            ], 
+                            [
+                                'babel-plugin-root-import',
+                                {
+                                    rootPathSuffix: "./src/Store/Reducers",
+                                    rootPathPrefix: "!/"
+                                },
+                                'reducers directory'
+                            ],
                         ]
                     }
                 }

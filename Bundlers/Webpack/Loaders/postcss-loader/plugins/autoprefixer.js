@@ -21,11 +21,9 @@ module.exports = {
                         loader: 'postcss-loader',
                         options: {
                             postcssOptions: {
-                            plugins: [
-                                  require('postcss-preset-env')({
-                                    browsers: 'last 2 versions',
-                                  }),
-                               ],
+                                 plugins: [
+                                       require('autoprefixer'),
+                                    ],
                             },
                         },
                     }

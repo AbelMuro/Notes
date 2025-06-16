@@ -1877,29 +1877,67 @@ function App() {
         You can use the useBlocker() hook to prevent a user
         from navigating away from the current page until 
         they give consent. This hook will automatically detect
-        any changes made to the navigation. But the component that 
-        uses the hook must have the returned value of the useBlocker hook
+        any changes made to the navigation. If you create a custom hook
+        that uses useBlocker(), the custom hook must return the block
+        object from useBlocker() to the component using the custom hook.
+        
 
         KEEP IN MIND, to use the useBlocker() hook, 
         You need to use createBrowserRouter() and
         <RouterProvider/>
 */
 
+function App() {
+        const block = useBlocker(true);                        // the hook can accept a boolean, indicating if all navigation should be blocked
+        const block = useBlocker(() => shouldBlock)            // the hook can accept a callback that returns a state, indicating conditional navigation blocking
+}
 
-function useConfirmNavigation(shouldBlock = true) {
-    const block = useBlocker(shouldBlock);
 
-    useEffect(() => {
-        if(block.status !== 'blocked') return;
 
-        const confirmed = confirm('Are you sure you want to leave? You will forfeit the match in doing so');
-        if(confirmed)
-            block.proceed();                        
-        else        
-            block.reset();                //prevents the user from navigating away
-    }, [block.status])
 
-    return block;                         //component that uses useConfirmNavigation() must have this object for the blocker to work
+        
+
+//------------------------------------- block.proceed()
+/* 
+        If navigation has been blocked, you can let the user navigate away with the proceed() method
+*/
+
+function App() {
+        block.proceed();
+}
+
+
+//------------------------------------- block.reset()
+/* 
+        If navigation has been blocked, you can prevent the user from navigating away with the reset() method
+*/
+
+function App() {
+        block.reset();
+}
+
+        
+
+//------------------------------------- block.status
+/* 
+        The status property has two possible values, idle and blocked. Initially, the status will always
+        be idle, but if navigation is blocked, then the status will change into 'blocked' if the user
+        tries to navigate away from the current page. A change in this property will cause a re-render,
+        and should be used to handle blocked navigation.
+*/
+
+function App() {
+        const block = useBlocker(true);
+
+        useEffect(() => {
+                if(block.status !== 'blocked') return;
+        
+                const confirmed = confirm('Are you sure you want to leave? You will forfeit the match in doing so');
+                if(confirmed)
+                    block.proceed();                        
+                else        
+                    block.reset();      
+        }, [block.status])
 }
 
 
@@ -1914,6 +1952,7 @@ function useConfirmNavigation(shouldBlock = true) {
 
 
 
+        
 
 
 

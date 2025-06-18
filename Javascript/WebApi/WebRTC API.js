@@ -20,7 +20,8 @@
                                     a=rtpmap:96 opus/48000/2                         // atttributes (codec details like opus)
 
             1) The local client creates a RTCPeerConnection() object and connects to the websocket in the same callstack.
-               Once the connection to the websocket has been established, you can proceed to step 2
+               Once the connection to the websocket has been established, you can proceed to step 2 
+               (Keep in mind, for every object you send through the websocket, there should be a 'from' and 'to' property)
 
                         const signalingServer = new WebSocket();
                         const peerConnection = new RTCPeerConnection();
@@ -52,41 +53,45 @@
                         signalingServer.send(JSON.stringify({ 
                              type: 'offer', 
                              offer: {sdp: offer.sdp, type: offer.type}, 
-                             username: remoteClientUsername, 
+                             to: remoteClientUsername, 
+                             from: localClientUsername
                         })) 
 
             6) The remote client receives the SDP object and calls the .setRemoteDescription() method
+               Once the remote client receives the offer, its a good idea to store the local clients username somewhere
 
                          signalingServer.onmessage = (data) => {
-                                await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+                                if(data.type === 'offer' && peerConnection.signalingState === 'stable')
+                                     await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
                          }
 
             7) The remote client calls the .createAnswer() method to generate its SDP
 
                         signalingServer.onmessage = () => {
-                              const answer = await peerConnection.createAnswer()
+                              if(data.type === 'offer' && peerConnection.signalingState === 'stable')
+                                    const answer = await peerConnection.createAnswer()
                         }
 
             8) The remote client calls the .setLocalDescription() method to declare that the SDP belongs to the remote client.
 
                         signalingServer.onmessage = () => {
-                               await peerConnection.setLocalDescription(answer)
+                               if(data.type === 'offer' && peerConnection.signalingState === 'stable')
+                                     await peerConnection.setLocalDescription(answer)
                         }
 
             9) The remote client sends the SDP object returned from .createAnswer() through the websocket
 
                         signalingServer.onmessage = () => {
-                               signalingServer.send(JSON.stringify({ 
-                                    type: 'answer', 
-                                    answer 
-                               })); 
+                               if(data.type === 'offer' && peerConnection.signalingState === 'stable')
+                                     signalingServer.send(JSON.stringify({ type: 'answer', answer })); 
                         }
 
             10) The local client receives the SDP object and calls the .setRemoteDescription() method to declare that
                the received SDP object belongs to the remote client.
                
                         signalingServer.onmessage = (data) => {
-                             await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+                             if(data.type === 'answer' && peerConnection.signalingState === 'have-local-offer')
+                                    await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
                         }
 
             11) Once both clients have exchangec SDP information, each client will begin gathering ICE candidates
@@ -109,7 +114,9 @@
                         peerConnection.onicecandidate = (e) => {
                              signalingServer.send(JSON.stringify({
                                     type: 'candidate', 
-                                    candidate: e.candidate
+                                    candidate: e.candidate,
+                                    to: remoteClientUsername,
+                                    from: localClientUsername
                              }));
                         }
 
@@ -124,6 +131,7 @@
                by the local client and both clients can finally connect.
 
                             peerConnection.ondatachannel = (e) => {
+                               if(data.type === 'candidate' && peerConnection.signalingState !== 'closed')
                                     const receivedDataChannel = e.channel;
                             }
                             

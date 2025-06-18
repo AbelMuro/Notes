@@ -453,14 +453,18 @@ peerConnection.signalingState
                             global.webSocketHandlers[`/${path}`] = wss;
                     
                             wss.on('connection', (ws) => {
-                                console.log('Front-end and back-end are connected, waiting to initiate signal to clients');
-                            
-                                ws.on('message', (message) => {
-                                    wss.clients.forEach(client => {
-                                        if(client !== ws && client.readyState === WebSocket.OPEN)               
-                                            client.send(message);   
-                                    })
-                                })
+                                const params = url.parse(req.url, true).query;
+                                ws.username = params.username;
+                        
+                                ws.on('message', (offer) => {
+                                     const currentOffer = JSON.parse(offer);
+                                     const offerTo = currentOffer.to;
+                        
+                                     this.clients.forEach(client => {                        //this will traverse through ALL the clients that are connected to the websocket
+                                          if(client !== ws && client.readyState === WebSocket.OPEN && client.username === offerTo)
+                                              client.send(offer);   
+                                     })            
+                                 })
                             });
                         }
                         catch(error){
@@ -478,7 +482,7 @@ peerConnection.signalingState
             Look in node.js notes for more info on websockets
 */
                       
-const signalingServer = new WebSocket('look in node.js notes for more info on websockets');
+const signalingServer = new WebSocket('look in node.js notes for more info on websockets (make sure to include a unique ID in the path from each client when they connect)');
 
 
 

@@ -58,11 +58,13 @@
                         })) 
 
             6) The remote client receives the SDP object and calls the .setRemoteDescription() method
-               Once the remote client receives the offer, its a good idea to store the local clients username somewhere
 
                          signalingServer.onmessage = (data) => {
-                                if(data.type === 'offer' && peerConnection.signalingState === 'stable')
+                                if(data.type === 'offer' && peerConnection.signalingState === 'stable'){
                                      await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+                                     //make sure to store the remote clients username somewhere 
+                                }
+                                     
                          }
 
             7) The remote client calls the .createAnswer() method to generate its SDP

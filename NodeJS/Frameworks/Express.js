@@ -280,15 +280,15 @@ app.use(cookieParser())
 
 app.post('/setting_cookies', (req, res) => {
     const {query} = req.body;
-	const access_token = 'JSON WEB TOKEN';
+    const access_token = 'JSON WEB TOKEN';
 
-	res.cookie('accessToken', access_token);
+    res.cookie('accessToken', access_token);
     res.cookie('searchQuery', query);
 });
 
 
 app.get('/accessing_cookies', (req, res) => {
-	const accessToken = req.cookies.accessToken;		    //accessing the http only cookie
+    const accessToken = req.cookies.accessToken;		    //accessing the http only cookie
 	
     if(!accessToken)
 		return res.status(401).send('User does not have third-party cookies enabled or cross-site tracking enabled');
@@ -308,58 +308,27 @@ app.get('/accessing_cookies', (req, res) => {
 
 app.post('/setting_httpOnlyCookies', (req, res) => {
     const {email, password} = req.body;
-	const access_token = 'JSON WEB TOKEN THAT STORES EMAIL AND PASSWORD';
+    const access_token = 'JSON WEB TOKEN THAT STORES EMAIL AND PASSWORD';
 
-	res.cookie('accessToken', access_token, {
-            httpOnly: true,
-            secure: true,      					//http only cookies will only be used throught https 
-            sameSite: 'Strict or None',				//Strict only allows sites from the same orgins to make requests, None allows cross-site requests
-            maxAge: 1000 * 60 * 60,				//you can have an expiration date for these cookies, but for auth, you shouldnt use this, instead let the front end handle the expiration for these cookies		
-        })
+    res.cookie('accessToken', access_token, {
+	    httpOnly: true,
+	    secure: true,      					//http only cookies will only be used throught https 
+	    sameSite: 'Strict or None',				//Strict only allows sites from the same orgins to make requests, None allows cross-site requests
+	    maxAge: 1000 * 60 * 60,				//you can have an expiration date for these cookies, but for auth, you shouldnt use this, instead let the front end handle the expiration for these cookies		
+    })
 });
 
 app.get('/accessing_httpOnlyCookies', (req, res) => {
-	const accessToken = req.cookies.accessToken;		//accessing the http only cookie
+    const accessToken = req.cookies.accessToken;		//accessing the http only cookie
 
-	if(!accessToken)
-		return res.status(401).send('User does not have third-party cookies enabled or cross-site tracking enabled');
+    if(!accessToken)
+	 return res.status(401).send('User does not have third-party cookies enabled or cross-site tracking enabled');
 	
 });
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//======================================================== JSON WEB TOKENS ========================================================
-/* 
-    One way to authenticate the user is using JSON WEB TOKENS. It is a type of storage that is used to contain 
-    account data. If the storage has data, then we can say the user is logged in, if its empty, they the user 
-    is not logged in
-
-    To share JSON WEB TOKENS across your routes, you may need to use HTTP-only cookies
-*/
-
-
-const jwt = require('jsonwebtoken');
-
-app.post('/login', (req, res) => {
-    const JWT_SECRET = 'my secret key goes here';    		
-	
-    const token = jwt.sign({email: email, otherAccountData: {}}, JWT_SECRET, {expiresIn: '1h'});
-})
 
 
 

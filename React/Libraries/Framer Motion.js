@@ -1106,10 +1106,7 @@ function App(){
             to css properties that require additional information (some properties require units)
                         
                  const blurFilter = useTransform(otherMotionValue, (value) => `blur(${value}px)`)
-
-                 <div style={{filter: blurFilter}}>
-
-                             
+                 const viewBox = useTransform([x, y], ([x, y]) => {})
 */
 
 

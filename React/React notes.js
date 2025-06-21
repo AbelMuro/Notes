@@ -15,12 +15,10 @@
                 11) Conditional Rendering
                 12) React Hooks
                 13) Memo()
-                14) React Router
-                15) Lazy Loading
-                16) Suspense
-                17) Server-side Rendering (Suspense on the server)
-                18) Debouncing
-                19) Advanced Concepts in React (Error Boundaries, Lifting State up, Render Props, High order components)
+                14) Lazy Loading
+                15) Suspense
+                16) Debouncing
+                17) Advanced Concepts in React (Error Boundaries, Lifting State up, Render Props, High order components)
 
 
                                                              FEATURES OF REACT 

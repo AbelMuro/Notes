@@ -34,9 +34,10 @@
 	                                              If the server uses server-side rendering, then the server will generate the website in the server first before sending a response
 	                                              If the server uses client-side rendering, then the server will first send the HTML files to the browser, then the JS files
 			
-			                  4) Once the server receives the html, css, and JS files, the browser will start building an HTML-only DOM tree
-		       			     
-			                  5) Then the browser will build a CSS-only DOM tree.
+			                  4) Then the browser will start building an HTML-only DOM tree. This tree is updated when the HTML elements are removed, updated or added
+		     	     
+			                  5) Then the browser will build a CSS-only DOM tree. This tree is updated when a reflow occurs. A reflow will occur when certain CSS properties are
+		     			     updated (width, height, margin, padding). Other css properties (transform, opacity, background, clip-path) will not cause a reflow
 			
 			                  6) The browser will combine these two trees to form the Render DOM tree. This is what actually gets displayed on the screen.
 			              
@@ -47,9 +48,6 @@
 					  9) The browser may create separate layers for different elements, this process is called Compositing. The render tree will start with a 
        					     default layer where all elements are initially placed. If an element has 'position: absolute' or 'transform: translate()', then it will 
 		 			     have its own layer in the render tree. 
-
-      					  10) When the HTML elements are updated, removed, or added, this will cause a change in the HTML-only dom tree, which in turn will trigger a re-render in the Render tree
-	     				      When certain css properties (width, height, margin, padding,...) are changed, this will cause a REFLOW for the CSS-only dom tree, which in turn will trigger a re-render in the Render tree
 	     
     
 */

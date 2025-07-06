@@ -44,7 +44,7 @@
                         8.2) useMotionValueEvent() Hook
                         8.3) useSpring() hook
                         8.4) useTransform() hook
-
+                        8.5) useMotionTemplate() hook
 
 
             A FEW THINGS TO NOTE HERE:
@@ -1048,6 +1048,24 @@ function App() {
     )         
 }
 
+
+
+
+
+//------------------------ useMotionTemplate() hook
+/* 
+            You can use the useMotionTemmplate() hook to interpolate multiple motion values into a single string
+            this is useful for applying multiple transformations into a single css property (transform)
+*/
+
+function App() {
+     const z = useTransform(scrollY, [100, 300], [0, 15]);
+     const scale = useTransform(scrollY, [300, 800], [1, 3]); 
+
+     const transform = useMotionTemplate`translateZ(${smoothZ}px) scale(${smoothScale}`;   
+
+     return(<motion.div style={{transform}}></motion.div>)
+}
 
 
 

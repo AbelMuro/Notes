@@ -1007,6 +1007,7 @@ function App() {
                         x              the motion value as an object
                         x.set(200);    the set method allows us to instantly set a value for the motion value
                         x.get();       the get method allows us to get the current value of the motion value
+                        x.jump(21);    the jump method allows us to update the current value of the motion value, but skips the animation
                         x.on('change', () => {})  the on method allows us to create an event listener everytime there is a change in the motion value
             
 */

@@ -791,12 +791,26 @@ function App() {
             |          |            <--- if scroll bar is halfway, then scrollYProgress will be 0.5
             |          |
             |__________|
+
+            
+                        arguments..
+
+            useScroll({container, target, offset})
+
+            container  =  this property is a ref object that is used to specify the parent element that contains the child element we are tracking (the parent element must have a scroll bar)
+            target  =  this property is a ref object that references an element that we want to track scroll progress
+            offset =  this property defines how the element intersects with the container (usually the viewport)
+                        ['start start'] =  this means when the top border of the child element touches the top border of the viewport/container
+                        ['start end'] = this means when the top border of the child element touches the bottom border of the viewport/container
+                        ['end end'] = this means when the bottom border of the child element touches the bottom border of the viewport/container
+            
 */
 
 function App() {
     const ref = useRef();
     const {scrollYProgress, scrollXProgress, scrollX, scrollY } = useScroll();                  // by default, this will get the current scrolling progress of the body tag
-    const {scrollYProgress, scrollXProgress } = useScroll({container: ref});                     // this will get the current scrolling progress of a specific element
+    const {scrollYProgress, scrollXProgress } = useScroll({container: ref});                    // this will get the current scrolling progress of an element within a parent element
+    const {scrollYProgress} = useScroll({target: ref, offset: ['start end', 'end end']})        // this will get the relative scroll progress between the top border of an element and the bottom border of the viewport
   
     return(
           <motion.div      

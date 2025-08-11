@@ -1,9 +1,19 @@
 //---------------------------------------- NODEMAILER MODULE ----------------------------------------
-//you can use this mail module to send emails from the server
+/* 
+
+	You can use this mail module to send emails from the server 
+	
+	Keep in mind that you will need crete an app with an app password in Gmail.
+ 	Use the following link to generate that app password
+
+		https://myaccount.google.com/apppasswords
+*/
 
 	var nodemailer = require('nodemailer');
 	
-	app.put('/send_email', () => {
+	app.put('/send_email', (req, res) => {
+		const {email} = req.body;
+		
 		const transporter = nodemailer.createTransport({			//nodemailer is a module we can use to send an email to the user
 		    service: 'Gmail',
 		    auth: {

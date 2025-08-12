@@ -61,13 +61,13 @@
 		HOW TO INSTALL NODE.JS
 
 			For current user only
-	  			1) sudo apt update		 // updates the package manager
+	  				1) sudo apt update		 // updates the package manager
 	     
 			        2) sudo apt install curl -y	 // install curl
 	
 	    			3) curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash		// installs nvm
 		
-				4) nvm install node		// installs the latest version of Node
+					4) nvm install node		// installs the latest version of Node
 
 			Globally
    				sudo apt install nodejs -y
@@ -118,16 +118,19 @@
 		
 		    	2) in the app.js file...
 		
-			     	const serverless = require('serverless-http'); 
-				const app = require('../src/index.js'); 		//make sure you export the app module from the index.js
-		  		const connectDB = require('../src/Database/db.js');	//if you are using mongoose
+					    const serverless = require('serverless-http'); 
+						const app = require('../src/index.js'); 			//make sure you export the app module from the index.js
+				  		const connectDB = require('../src/Database/db.js');	//if you are using mongoose
+						
+						const handler = serverless(app);  		      
+			
+		 			    module.exports.handler = handler      
 				
-				const handler = serverless(app);  		       //you can use     module.exports.handler = handler       as well
-				module.exports.handler = async (e, context) => {	//you can use a callback to connect to databases or some other async logic that must be implemented before every request
-		  		    await connectDB();					// you will need to call the connectDB() everytime there is a request made by the front end
-				    const result = await handler(e, context);
-				    return result;
-				};
+						module.exports.handler = async (e, context) => {	//you can use a callback to connect to databases or some other async logic that must be implemented before every request
+				  		    await connectDB();								// you will need to call the connectDB() everytime there is a request made by the front end
+						    const result = await handler(e, context);
+						    return result;
+						};
 		
 		  	3) Then create a netlify.toml file
 		

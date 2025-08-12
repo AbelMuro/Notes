@@ -107,16 +107,16 @@
 	  	HOW TO DEPLOY YOUR NODE.JS APP WITH NETLIFY
 	 		(this service uses serverless functions)
 	
-		 	1) create a functions folder
+		 	1) create a functions folder and an app.js file
 		
 		  		node_modules
 		    		src
 		      		functions
-					/app.js
+						/app.js
 				package.json
 		  		...
 		
-		    	2) in the app.js file...
+		    	2) In the app.js file...
 		
 					    const serverless = require('serverless-http'); 
 						const app = require('../src/index.js'); 			//make sure you export the app module from the index.js
@@ -154,7 +154,7 @@
 		  	5) In your package.json file, use script
 		   
 		     		"scripts": {
-		   			"build": "netlify deploy --prod"
+		   			"build": "netlify deploy --prod"				// you must npm install netlify-cli -g
 		      		}
 			
 			6) In your .gitignore file...
@@ -163,7 +163,7 @@
 		
 			7) npm run build 
 		 		the command above will ask you a few questions, make sure the publish directory is set to .
-		   		it will then generate a url that you can use to make fetch requests
+		   		this will deploy your node app on netlify
 
 
 */

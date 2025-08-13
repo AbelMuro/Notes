@@ -1,0 +1,5 @@
+/* 
+      Pinia is a state management library that is primarily used for newer Vue apps. Legacy Vue apps still use Vuex.
+
+      
+*/

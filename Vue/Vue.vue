@@ -178,10 +178,18 @@
 
       1) npm init -y
 
+                (make sure your package.json file looks like this...)
+
+                       "type": "module",
+                       "scripts": {
+                            "start": "vite",
+                            "build": "vite build"
+                          },   
+
       2) npm install vue
-         npm install vite
-         npm install vite-plugin-vue-devtools
-         npm install @vitejs/plugin-vue
+         npm install vite -D
+         npm install vite-plugin-vue-devtools -D
+         npm install @vitejs/plugin-vue -D
 
       3) create a vite.config.js file 
 

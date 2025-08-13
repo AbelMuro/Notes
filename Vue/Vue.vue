@@ -212,7 +212,7 @@
                   <title>Vite App</title>
               </head>
               <body>
-                  <div id="app"></div>
+                  <div id="root"></div>
                   <script type="module" src="/index.js"></script>            //this is the most important part, make sure your script tag imports the index.js file correctly
               </body>
           </html>
@@ -222,7 +222,7 @@
           import { createApp } from 'vue'
           import App from './App.vue'
           
-          createApp(App).mount('#app')                                      //make sure that you reference the div element in your html file correctly
+          createApp(App).mount('#root')                                      //make sure that you reference the div element in your html file correctly
 
       6) Create an App.vue file
 

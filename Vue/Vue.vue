@@ -262,7 +262,7 @@
     The template tag will automatically be exported from the file
 -->
 
-<!-- script tag allows you to write JS code -->
+<!-- script tag allows you to write JS code (Keep in mind, the script tag is only called once, a re-render will NOT execute the script tag again) -->
 <script setup>
     const x = 2 + "3";
     const str = "random";
@@ -1462,7 +1462,7 @@
        of properties will be tracked. By default, watchEffect() will be called after the mounting phase.  
 
         Keep in mind, watchEffect() will only keep track of state objects that are ACCESSED within the callback. Any state object
-        that is assigned a new value in the callback will not be a dependency.
+        that is assigned a new value in the callback will not trigger a call to the watchEffect().
 -->
 
 <script setup>

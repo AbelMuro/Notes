@@ -38,7 +38,7 @@
 
                   4) You can now import the store in your single file components
 
-                        <script>
+                        <script setup>
                               import useCounterStore from '~/Store';
                               import {storeToRefs} from 'pinia';
                         
@@ -71,6 +71,20 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //========================================== GLOBAL STORE =====================================================
 /* 
       You can create a global store in Pinia by using the defineStore() function. The first argument defines the name 
@@ -82,7 +96,7 @@
       In Pinia, there are two types of stores; The options stores and the setup stores
 */
 
-//------------------------- Option Store
+//------------------------- Options API Store
 
 // Store.js
 import {defineStore} from 'pinia'
@@ -105,7 +119,7 @@ export default useCounterStore;
 
 
 
-//------------------------- Setup Store
+//------------------------- Compositions API Store
 
 // Store.js
 import {defineStore} from 'pinia'
@@ -123,7 +137,7 @@ export default useCounterStore;
 
 
 
-//------------------------- accessing the store
+//------------------------- Accessing the store
 /* 
       There are two different ways of accessing the properties and actions of the store
       You can use storeToRefs() or you can simply destructure the state within the single 
@@ -163,8 +177,8 @@ export default useCounterStore;
       
 */
 
-
-<script>
+// Composition API only
+<script setup>
       import useCounterStore from '~/Store';
       import {storeToRefs} from 'pinia';
 
@@ -178,5 +192,33 @@ export default useCounterStore;
       const {increment} = store;                                      //all actions/functions should be destructured
 
 </script>
+
+
+
+
+// Options API only
+<script>
+      import { mapState, mapActions, mapWritableState } from 'pinia'
+      import { useCounterStore } from '../stores/counter'
+      
+      export default {
+              computed: {
+                ...mapState(useCounterStore, ['count']),                  // the component can access the count property of the global state
+                ...mapWritableState(useCounterStore, ['count']),          // the component can access AND mutate the count property of the global state 
+              },
+              methods: {
+                ...mapActions(useCounterStore, ['increment']),            // the component can access the increment action of the global state
+              }
+      }     
+</script>
+
+
+
+
+
+
+
+
+
 
 

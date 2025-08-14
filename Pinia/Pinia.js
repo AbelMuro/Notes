@@ -23,18 +23,15 @@
 
 
 
-                                    FEATURES OF PINIA
+                                                            FEATURES OF PINIA
 
 
-                                          GLOBAL STORE
+                                                                STORE
+            The store in Pinia is a centralized object that represents the single source of truth. The entire state object of the application
+            is stored here.
 
-                        Just like redux, pinia also has a global store that serves as a centralized entity that contains the state
-                        of the application. 
-
-
-
-                                             STATE
-                        Pinia centralizes the state of the application within the global store.                  
+                                                              GLOBAL STATE
+            The global state is the applications entire state object, it is stored within the Store and updated and tracked by Vue's reactivity system. 
         
 */
 
@@ -96,7 +93,7 @@ export default useCounterStore;
 
 
 
-//------------------------- Using the store
+//------------------------- accessing the store
 /* 
       There are two different ways of accessing the properties and actions of the store
       You can use storeToRefs() or you can simply destructure the state within the single 
@@ -106,8 +103,34 @@ export default useCounterStore;
       the single file component
 
       -Destructuring the state will lose the reactivity of the state, this will NOT
-      cause a re-render
+      cause a re-render of the single file component
 
+            -USEFULL STORE METHODS
+
+                  const store = useCounterStore();
+                  
+                  store.$state = {count: 24};            // $state() will replace the entire state      
+                  store.$reset();                        // $reset() will reset all properties of the state to their initial value (this only works for options API stores)
+                  
+                  store.$patch({                         // $patch() can be used to update multipe properties of the state     
+                        count: 2,
+                        age: 120,
+                        name: 'Carlos',
+                  });    
+                  store.$patch((state) => {              // $patch() can also accept a function for more complex logic
+                        state.count++;
+                        state.age = 1244;
+                        state.name = 'David';
+                  })
+
+                  store.$subscribe((mutation, state) => {  // $subscribe() is similar to watch() but it will only trigger once after $patch() is called with a callback
+                        mutation.type;                     // 'direct' | 'patch object' | 'patch function'
+                        mutation.storeId;                  // 'counter'
+                        mutation.payload;                  // patch object passed to .$patch()
+                  }, {detached: true})                     // the second argument accepts the same property objects as the third argument of the watch method
+                                                                  //detached: true will 'detach' the subscribe method from the component, so event after the component
+                                                                    has been unmounted, the subscribe method will continue to persist
+      
 */
 
 

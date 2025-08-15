@@ -22,7 +22,7 @@
                             
                                                  STATE CHANGE PROCESS
         A component will be re-rendered (updated) when there is a change in the state object.
-        All updates to the state are synchronous, but all updates to the DOM behave asynchronously.
+        All updates to the state are synchronous, but all updates to the DOM are asynchronous.
         Vue updates the state immediately when the value property is changed, but will schedule 
         the most optimal time to trigger the re-render. Typically, Vue will batch all the re-renders and 
         place them in the Queue. Vue will then wait until the callstack is empty to trigger the re-render, 

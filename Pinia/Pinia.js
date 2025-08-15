@@ -61,7 +61,20 @@
                         </script>
 
 
+
+
+
+
+
+                        
+
+
                                                             FEATURES OF PINIA
+      
+                                                          STATE UPDATE PROCESS
+            All updates to the global state are synchronous, but all updates to the DOM are asynchronous. Pinia will use Vue's reactivity system
+            to detect any changes made to the global state. Any component that imports the global state AND maintains the reactivity 
+            will be re-rendered.
 
 
                                                                 STORE
@@ -74,6 +87,8 @@
 
                                                                  ACTIONS
             Actions are setter methods in pinia that are used to update the properties of the global state
+
+                        
 
             
         

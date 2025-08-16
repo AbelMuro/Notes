@@ -521,6 +521,10 @@
     function decrement() {
         count.value--;                           
     }
+
+    function displayCount() {              // Vue's reactivity will ensure that the function will always return the latest value of the state
+        return count.value;
+    }
     
     console.log(count);             //{value: 0}
     count.value++;                  //All updates to the state are synchronous
@@ -1541,16 +1545,17 @@
     
     // 1) computed() will only be called when the count state is updated
     const computedRef = computed(() => {       
-          return count > 34 ? 'yes' : 'no';           //count is now a dependency of computedRef
+          return count.value > 34 ? 'yes' : 'no';           //count is now a dependency of computedRef
     })
 
     // 2) you can use computed() to get and set a state object
     const fullName = computed({                  
           get(previous) {                            //you can also get the previous state in the getter method
-            return firstName + ' ' + lastName
+            return firstName.value + ' ' + lastName.value
           }
           set(newValue) {
-            [firstName, lastName] = newValue.split(' ')
+            firstName.value = newValue.split(' ')[0];
+            secondName.value = newValue.split(' ')[1];
           }
     })
     fullName = 'Carlos barrang';        //will trigger the setter method
@@ -1559,15 +1564,15 @@
 
     // 3) you can get the previous state with callbacks
     const previousState = computed((previous) => {   
-          if(count < 3)
-             return count;
+          if(count.value < 3)
+             return count.value;
           return previous
     })
 
     //4) you can use a computed value and assign it to a directive
     const dynamicClasses = computed({
-        classOne: firstName === 'my name',
-        classTwo: lastName === 'my other name'
+        classOne: firstName.value === 'my name',
+        classTwo: lastName.value === 'my other name'
     })
 
 </script>

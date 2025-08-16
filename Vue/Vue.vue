@@ -435,14 +435,15 @@
 
     Using the ref() and reactive() functions will have deep reactivity by default
 
-        const countRef = ref(0);                                    //will keep track of the 'value' property only (and all its nested objects)
-        const countReactive = reactive({count: 1, people: 23});     //will keep track of ALL the properties (and all its nested objects)
+        const countRef = ref(0);                                    // you must use .value within the script tag, but not inside the template tag
+        const countReactive = reactive({count: 1, people: 23});     // you don't have to use .value within the script tag or the template tag
 
 
-    Using the shallowRef() and shallowReactive() will have shallow reactivity by default
+    Using the shallowRef() and shallowReactive() will have shallow reactivity by default 
+        (follows the same rules for .value as ref() and reactive())
 
-        const countRef = shallowRef();                             //will keep track of the 'value' property only (but NOT its nested objects)
-        const countReactive = shallowReactive({count: [{n: '2'},2,3]}) //will keep track of ALL the properties (but NOT its nested objects)
+        const countRef = shallowRef();                                     // will keep track of the 'value' property only (but NOT its nested objects)
+        const countReactive = shallowReactive({count: [{n: '2'}, 2, 3]})  // will keep track of ALL the properties (but NOT its nested objects)
 
 
 

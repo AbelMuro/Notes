@@ -239,6 +239,16 @@
                     Hello world
                 </div>
             </template>
+
+        7) If you want to use font files for your project, you will need to use relative paths 
+           in your style tag
+
+                <style>
+                       @font-face {
+                           font-family: 'ubuntu';
+                           src: url('../public/fonts/Ubuntu-Regular.ttf');                //always use relative paths
+                        }
+                </style>
 -->
 
 

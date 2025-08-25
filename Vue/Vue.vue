@@ -1403,8 +1403,6 @@
 <!-- =========================================== WATCHERS =============================================== -->
 <!-- 
         You can use watchers in Vue to apply side-effects to a component when a state change occurs.
-        Watchers are functions that are called after a state change occurred, but BEFORE the re-render happens. 
-        All watchers will be called once, even if there are multiple state updates that happen consecutively. 
         If there are one thousand state updates, Vue will 'batch' all these state updates into one invocation of the watcher.
         Calling synchronous watchers will create an asynchronous task in the queue. The task will wait until the callstack
         is empty before being called. Watchers by default are bound to the component, if the component is unmounted,
@@ -1413,18 +1411,7 @@
                 Stopping a watcher:
 
                         const unwatch = watch(state, callback);
-                        unwatch();                                //will free up the watcher from memory and stop the calls to the function
-
-                Third argument for watchers: 
-        
-                        watch(state, callback, {        //This watcher will be executed AFTER the re-render occurs
-                          flush: 'post'
-                        })
-
-                        watch(state, callback, {        //This watcher will be called synchronously after EVERY state update
-                          flush: 'sync'
-                        })
-        
+                        unwatch();                                //will free up the watcher from memory and stop the calls to the function        
 -->            
 
 
@@ -1441,10 +1428,23 @@
                 Different ways of using watch():
 
                 watch([state, otherState], ([newState, oldState], [newOtherState, oldOtherState]) => {})     // you can have watchers watching multiple state objects
-                watch(state, () => {}, {deep: 2});                                                           // Watcher will be called if the properties on the first and second nested level in state object are updated
-                watch(state, () => {}, {immediate: true})                                                    // Watcher will be called after the component has mounted
-                watch(() => state.value + otherState.value, (combinedState) => {})                           // you can use getter functions in watchers, if one of the states changes in the getter, it will trigger the watcher
-                watch(state, () => {}, {once: true})                                                         // Watcher will be called only once
+                watch(() => state.value + otherState.value, (combinedState) => {})                           // you can use getter functions in watchers, if one of the states changes in the getter, it will trigger the watcher   
+        
+                watch(state, () => {}, {
+                        deep: 2                                                                              // Watcher will be called if the properties on the first and second nested level in state object are updated
+                });                                                           
+                watch(state, () => {}, {
+                        immediate: true                                                                      // Watcher will be called after the component has mounted
+                })                                                    
+                watch(state, () => {}, {
+                        once: true                                                                           // Watcher will be called only once
+                })                                                       
+                watch(state, callback, {                                                                    
+                       flush: 'post'                                                                         // This watcher will be executed AFTER the re-render occurs
+                });
+                watch(state, callback, {                                                                     
+                       flush: 'sync'                                                                        // This watcher will be called synchronously after EVERY state update
+                });
 -->
 
 <script setup>

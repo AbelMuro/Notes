@@ -1402,7 +1402,7 @@
 
 <!-- =========================================== WATCHERS =============================================== -->
 <!-- 
-        You can use watchers in Vue to apply side-effects to a component when a state change occurs.
+        You can use watchers in Vue to apply side-effects to a component before or after a state change occurs.
         If there are one thousand state updates, Vue will 'batch' all these state updates into one invocation of the watcher.
         Calling synchronous watchers will create an asynchronous task in the queue. The task will wait until the callstack
         is empty before being called. Watchers by default are bound to the component, if the component is unmounted,

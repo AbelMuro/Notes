@@ -634,7 +634,7 @@
 
 <template>
     <ChildComponent>
-            <div> hello world </div>
+            <div> hello world </div>        //this is the content that will be passed to the child component as child props
     </ChildComponent>
 </template>
 
@@ -648,7 +648,9 @@
     <div>
         Goodbye world
     </div>
-    <Slot/>
+    <slot>
+        Hello world                   // this is fallback content, will be replaced by child props
+     </slot>
 </template>
 
 

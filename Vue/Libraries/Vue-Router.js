@@ -61,7 +61,8 @@ app.mount('#root');
 
 //-------------------- useRouter()
 /* 
-    You can use the userRouter() hook to navigate to different components
+    You can use the userRouter() hook to navigate to different components.
+    This hook should only be used with the Composition API
 */
   
 <script setup>
@@ -80,4 +81,29 @@ app.mount('#root');
           Play Game
       </button> 
 </template>
+
+
+
+
+
+
+
+//-------------------- this.$router
+/* 
+      You can use this.$router object to nagivate to different routes.
+      This object should only be used with the Options API
+
+            
+*/
+
+<script>
+            export default {
+               methods: {
+                  handleNav() {
+                      this.$router.push('/about')
+                  },
+               },
+            }
+</script>
+
 

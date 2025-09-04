@@ -93,3 +93,43 @@
 
 
 
+
+
+
+
+
+//------------------- useDrop() and useDrag()
+/* 
+    To make an element draggable and also a container that receives other elements,
+    you can use useDrop() and useDrag() together as show below
+*/
+
+
+<script setup>
+    import {useTemplateRef} from 'vue';
+
+    const dragAndDrop = useTemplateRef('dragAndDrop');
+        
+    const [collect, drop] = useDrop({      
+    })
+
+    const [collect, drag] = useDrag({     
+    })
+
+    drag(drop(dragAndDrop));                          //this will enable the current component to be a container that receives draggable items AND be an item that is draggable
+        
+</script>
+
+
+<template>
+    <div ref="dragAndDrop">
+    </div>
+</template>
+
+
+
+
+
+
+
+

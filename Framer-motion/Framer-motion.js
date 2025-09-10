@@ -932,12 +932,12 @@ function Accordion() {
    }
             
   return (
-    <motion.div layout onClick={handleOpen>               //this component will expand when we click on it, triggering a smooth animation
+    <motion.div layout onClick={handleOpen}>               //this component will expand when we click on it, triggering a smooth animation
         <motion.h2 layout> 'header' </motion.h2>
         {isOpen && 
-            <div layout> 
+            <motion.div layout> 
                  'Content'   
-             </div>
+             </motion.div>
         }
     </motion.div>
   )

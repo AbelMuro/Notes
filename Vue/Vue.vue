@@ -1623,8 +1623,10 @@
 
 <!-- Parent Component -->
 <script setup>
-    import {useTemplateRef, onMount, ChildComponent} from 'vue';
+    import {useTemplateRef, onMount} from 'vue';
+    import ChildComponent from './ChildComponent';
 
+    const myRef = useTemplateRef('any-name goes here');//You can use any name to define a ref object
     const inputRef = useTemplateRef('text-input');     //You can use ref objects to reference an element
     const childRef = useTemplateRef('child');          //You can use ref objects to reference components
     const listRef = useTemplateRef('list')             //You can use ref objects to reference lists created with v-for

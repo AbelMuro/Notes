@@ -1020,22 +1020,22 @@
             on the img tag to avoid any visual bugs
 */
 
-function App() {
-  const [state, setState] = useState(false)
+<script setup>
+     import {ref} from 'vue';
 
-  return (
-    <>
+     const state = ref(true);
+</script>
+
+<template>
         <div>
-              {state && <motion.div layoutId="underline" />  }   // this element will make an animated transition to the div in the bottom when its removed from the DOM
+              <motion.div v-if="state" layoutId="underline" />     // this element will make an animated transition to the div in the bottom when its removed from the DOM
         </div>
         <div>
-              {!state && <motion.div layoutId="underline" />  }    // this element will make an animated transition to the div at the top when its removed from the DOM
-        </div>
-    <>
+              <motion.div v-if="!state" layoutId="underline" />     // this element will make an animated transition to the div at the top when its removed from the DOM
+        </div>    
+</template>
 
-  )
-}
-    
+
 
 
 
@@ -1086,15 +1086,21 @@ function App() {
             
 */
 
-function App() {
-    const x = useMotionValue(200);  
-    const opacity = useMotionValue(0.7)
+<script setup>
+      import {useMotionValue} from 'motion-v';
 
-    return (
-        <motion.div style={{x, opacity}}> </motion.div>
-    )     
-}
-            
+      const x = useMotionValue(200);
+      const opacity = useMotionValue(0.7);
+</script>
+
+<template>
+     <motion.div :style="{x, opacity}"> </motion.div> 
+</template>
+
+
+
+
+
 
 
 //-------------------------- useMotionValueEvent() Hook
@@ -1111,17 +1117,23 @@ function App() {
                              callback:      function that has access to the latest value of the motionValue 
 */
 
-function App() {
+<script setup>
+     import {useMotionValue, useMotionValueEvent} from 'motion-v';
+
      const width = useMotionValue(0);
 
      useMotionValueEvent(y, "change", (latest) => {
          console.log("current value of width is: ", latest);
      });
+            
+</script>
 
-     return (
-        <motion.div style={{width}}> </motion.div>
-    )         
-}
+<template>
+      <motion.div :style="{width}"> </motion.div>
+</template>
+
+
+
 
 
 
@@ -1133,14 +1145,21 @@ function App() {
             this is useful for applying multiple transformations into a single css property (transform)
 */
 
-function App() {
+<script setup>
+     import {useTransform, useMotionTemplate} from 'vue';
+            
      const z = useTransform(scrollY, [100, 300], [0, 15]);
      const scale = useTransform(scrollY, [300, 800], [1, 3]); 
-
      const transform = useMotionTemplate`translateZ(${smoothZ}px) scale(${smoothScale}`;   
+</script>
 
-     return(<motion.div style={{transform}}></motion.div>)
-}
+<template>
+    <motion.div :style="{transform}"></motion.div>   
+</template>
+
+
+
+
 
 
 
@@ -1158,21 +1177,25 @@ function App() {
                              transition:     an object containing the transition properties for the spring animation
 */
 
-function App(){
-    const scale = useSpring(0, {                
+<script setup>
+       import {useSpring} from 'motion-v';
+
+       const scale = useSpring(0, {                
            stiffness: 100,                      
            damping: 30,                         
            restDelta: 0.001
-    })
+      })
 
-    scale.set(20);
- 
-    return (
-        <motion.div style={{scale}}> </motion.div>
-    )
-}
+      scale.set(20);
+</script>
+
+<template>
+      <motion.div style={{scale}}> </motion.div>
+</template>
 
 
+
+            
 
 //-------------------------- useTransform() Hook
 /* 
@@ -1203,14 +1226,21 @@ function App(){
 */
 
 
-function App() {
+            
+<script setup>
+    import {useMotionValue, useTransform} from 'motion-v';
+            
     const x = useMotionValue(0);
     const opacity = useTransform(x, 
                         [0, 100],             // if 'x' is currently at 25
                         [0, 1]                // then 'opacity' will be at 0.25
     );
-    opacity.set(15);
-  
+    opacity.set(15);      
+            
+</script>
 
-    return <motion.div style={{ x, opacity }} />;
-}
+<template>
+      <motion.div :style="{ x, opacity }" />   
+</template>
+
+

@@ -1418,35 +1418,29 @@
 
 
 <!--    
-
                                         Watch()   
         You can use the watch() method in vue to keep track of a small number of state objects. You have to explicitly define 
         the state objects as dependencies. On a positive note, Watch() provides better control on when the function
         will be called, and which levels of nested properties will be tracked. By default, Watch() will NOT be called 
         after the mounting phase. 
 
-                
-                
-                Different ways of using watch():
 
-                watch([state, otherState], ([newState, oldState], [newOtherState, oldOtherState]) => {})     // you can have watchers watching multiple state objects
-                watch(() => state.value + otherState.value, (combinedState) => {})                           // you can use getter functions in watchers, if one of the states changes in the getter, it will trigger the watcher   
+                -Third argument for watchers
+
+                        watch(state => {}, {
+                            deep: 2,                                         // Watcher will be called if the properties on the first and second nested level in state object are updated
+                            immediate: true,                                 // Watcher will be called after the component has mounted
+                            once: true,                                      // Watcher will be called only once
+                            flush: 'post or sync'                            // If its post, then watcher will be called AFTER the re-render occurs
+                        })                                                   // if its sync, then watcher will be called synchronously after EVERY state update
+
+
         
-                watch(state, () => {}, {
-                        deep: 2                                                                              // Watcher will be called if the properties on the first and second nested level in state object are updated
-                });                                                           
-                watch(state, () => {}, {
-                        immediate: true                                                                      // Watcher will be called after the component has mounted
-                })                                                    
-                watch(state, () => {}, {
-                        once: true                                                                           // Watcher will be called only once
-                })                                                       
-                watch(state, callback, {                                                                    
-                       flush: 'post'                                                                         // This watcher will be executed AFTER the re-render occurs
-                });
-                watch(state, callback, {                                                                     
-                       flush: 'sync'                                                                        // This watcher will be called synchronously after EVERY state update
-                });
+                -Different way of using watch():
+
+                watch([state, otherState], ([newState, newOtherState]) => {   // you can have watchers watching multiple state objects  
+        
+                })     
 -->
 
 <script setup>

@@ -2,12 +2,10 @@
             Framer-motion is an animation library used to create animations for React and Vue
 
 
-            REACT ONLY
-                        npm install framer-motion
 
-            VUE ONLY
-                        npm install motion-v
-                        npm install @vueuse/core
+                npm install framer-motion
+
+
             
 
             Bookmarks

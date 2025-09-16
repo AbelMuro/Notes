@@ -1,4 +1,0 @@
-/* 
-    MySQL is a relational database system
-
-*/

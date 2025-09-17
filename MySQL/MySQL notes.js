@@ -42,7 +42,7 @@
 //=============================================================== MYSQL Module ========================================================================
 
 /* 
-            1) npm install mysql
+            1) npm install mysql2
 
             2) In your 'db.js' file, write the following lines of code
     
@@ -62,29 +62,150 @@
 
 
 
-
-
-
-//---------------------------------------------------- Creating a query
+//--------------- EXECUTE METHOD
 /* 
-    A query is a request to either update or retrieve data from a database.
-    You can create a query by using the query() method.
+    The execute method allows developers to run a command that can update a database
+    
 */
 
+   const db = require('./db.js');
 
-//--------------- Retrieving Data from a database
+    db.execute(
+        '',                //Commands
+        [''],              //data to send to database
+        (err, results, fields) => {
+        }
+    )
+
+
+
+
+        
+
+//--------------- 'SELECT' COMMAND
 /* 
-    You can retrieve data from a database using a SELECT query
+    You can retrieve data from a database using the SELECT command with the .execute() method
+
+    syntax: 
+
+            SELECT * FROM table-name WHERE first-column-name = ? AND second-column-name = ?
+            SELECT first-column-name, second-column-name FROM table-name
 */
 
-        const db = require('./db.js');
+    const db = require('./db.js');
 
-        db.query('SELECT * FROM users', (err, results) => {               
-              if (err) {
-                console.error('Query error:', err);
-                return;
-              }
-              console.log('Results:', results);
+    db.execute(
+        'SELECT * FROM accounts WHERE email = ?', 
+        ['myEmail@gmail.com'], 
+        (err, results) => {
+            results;  //an array of rows that match the query
         });
+
+
+
+
+
+
+
+
+//--------------- 'INSERT INTO' COMMAND
+/* 
+    You can insert new data into a database using the INSERT INTO command with the .execute() method
+
+    syntax:
+
+        INSERT INTO table-name (first-column-name, second-column-name) VALUES (?, ?), (?, ?)
+
+            VALUES = data can be inserted inside an array, the array is passed to the second argument
+                     of .execute()
+
+            VALUES(?, ?) = ['email', 'password'];
+
+            VALUES (?, ?), (?, ?) = ['email', 'password', 'email', 'pasword']
+*/
+
+    const db = require('./db.js');
+
+    db.execute(
+        'INSERT INTO accounts (email, password) VALUES (?, ?)', 
+        [email, password], 
+        (err, results) => {
+                results = {
+                  fieldCount: 0,          //number of columns that were selected by the query
+                  affectedRows: 1,        //number of rows that were deleted/updated somehow
+                  insertId: 42,           //id that identifies the action performed by the .execute method()
+                  serverStatus: 2,        //the status of the server
+                  warningCount: 0,        //the number of warnings
+                  message: '',            //status message from the server
+                  protocol41: true,       //indicates the protocol version that the server is using
+                  changedRows: 0,         //number of rows that were updated
+                }; 
+        });
+
+
+
+//--------------- 'UPDATE' COMMAND
+/* 
+    You can update data in a database by using the UPDATE command with the .execute() method
+
+    syntax: 
+
+        UPDATE table-name SET column-name = ? WHERE other-column-name = ?
+*/
+
+
+    const db = require('./db.js');
+
+    db.execute(
+        'UPDATE accounts SET password = ? WHERE email = ?', 
+        ['newpassword', 'email'],
+        (err, results) => {
+                results = {
+                  fieldCount: 0,          //number of columns that were selected by the query
+                - affectedRows: 1,        //number of rows that were deleted/updated somehow
+                  insertId: 42,           //id that identifies the action performed by the .execute method()
+                  serverStatus: 2,        //the status of the server
+                  warningCount: 0,        //the number of warnings
+                  message: '',            //status message from the server
+                  protocol41: true,       //indicates the protocol version that the server is using
+                  changedRows: 0,         //number of rows that were updated
+                }; 
+        });
+
+
+
+//--------------- 'DELETE FROM' COMMAND
+/* 
+    You can delete data from a database using the DELETE FROM command with the .execute() method.
+
+    syntax: 
+
+         DELETE FROM table-name WHERE column-name = ?
+
+*/
+
+    const db = require('./db.js');
+
+    db.execute(
+        'DELETE FROM accounts WHERE email = ?', 
+        ['someEmail@gmail.com'], 
+        (err, results) => {
+                results = {
+                  fieldCount: 0,          //number of columns that were selected by the query
+                - affectedRows: 1,        //number of rows that were deleted/updated somehow
+                  insertId: 42,           //id that identifies the action performed by the .execute method()
+                  serverStatus: 2,        //the status of the server
+                  warningCount: 0,        //the number of warnings
+                  message: '',            //status message from the server
+                  protocol41: true,       //indicates the protocol version that the server is using
+                  changedRows: 0,         //number of rows that were updated
+                }; 
+        });
+
+
+
+
+
+
 
 

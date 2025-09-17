@@ -21,6 +21,21 @@
         
                         https://dev.mysql.com/downloads/workbench/
 
+
+            HOW TO CREATE A DATABASE IN MYSQL WORKBENCH
+
+                1) Click on the 'Create Schema' button on the top left corner
+                   and choose a name for the schema. Then click 'apply'
+
+                2) Then on the left hand side, right click on Tables and select 'Create Table'
+
+                3) You can create the columns of the Table. Each column will represent a piece of data.
+                   Each column must have a name, and a data type.
+
+                4) Then right click on the table and select 'Select Rows'
+
+                5) A list of all the data in the schema will be displayed
+
 */
 
 
@@ -34,10 +49,10 @@
                     const mysql = require('mysql');
     
                     const pool = mysql.createPool({
-                          host: 'localhost',            
-                          user: 'your_user',
-                          password: 'your_password',
-                          database: 'your_database',
+                          host: '',                            // Administration -> Client Connections -> Copy the host
+                          user: '',                            // Administration -> Users and Privileges -> 
+                          password: '',
+                          database: '',
                           connectionLimit: 10,
                     });
                     

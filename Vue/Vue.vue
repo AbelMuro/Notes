@@ -182,7 +182,7 @@
 
                        "type": "module",
                        "scripts": {
-                            "start": "vite",
+                            "start": "vite --open",
                             "build": "vite build"
                           },   
 

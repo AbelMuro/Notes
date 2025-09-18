@@ -36,6 +36,21 @@
 
                 5) A list of all the data in the schema will be displayed
 
+
+
+            HOW TO ENABLE HTTPS QUERIES FOR MYSQL (WINDOWS)
+
+                1) Open MYSQL workbench and go to MySQL connections home page
+
+                2) Right click on the connection that you want to upgrade and click on Edit Connection
+
+                3) Click on the SSL tab and click on SSL wizard
+
+                4) The wizard will walk you through the process of generating the SSL files required
+                   for HTTPS connection (You will need to have openSSL installed and the path environment variable pointing to the openSSL folder)
+
+                5) 
+
 */
 
 

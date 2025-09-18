@@ -21,6 +21,12 @@
         
                         https://dev.mysql.com/downloads/workbench/
 
+                3) Installing the mysql command line (this will install mysql command line globally)
+
+                        brew install mysql
+                        brew services start mysql
+                        mysql_secure_installation
+
 
             HOW TO CREATE A DATABASE IN MYSQL WORKBENCH
 
@@ -38,7 +44,7 @@
 
 
 
-            HOW TO ENABLE HTTPS QUERIES FOR MYSQL (WINDOWS)
+            HOW TO ENABLE SSL/TCP CONNECTION FOR MYSQL (WINDOWS)
 
                 1) Open MYSQL workbench and go to MySQL connections home page
 
@@ -51,6 +57,20 @@
 
                 5) 
 
+            HOW TO ENABLE SSL/TCP CONNECTION FOR MYSQL (MACOS)
+
+                1) Open MYSQL workbench and go to MySQL connections home page
+
+                2) Right click on the connection that you want to upgrade and click on Edit Connection
+
+                3) Click on the SSL tab and click on SSL wizard
+
+                4) The wizard will walk you through the process of generating the SSL files required
+                   for HTTPS connection (You will need to have openSSL installed)
+
+                5)
+
+        
 */
 
 

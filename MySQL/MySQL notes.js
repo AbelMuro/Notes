@@ -55,7 +55,9 @@
                 4) The wizard will walk you through the process of generating the SSL files required
                    for HTTPS connection (You will need to have openSSL installed and the path environment variable pointing to the openSSL folder)
 
-                5) 
+                5) Next you need to update the my.ini file. Go to C:\ProgramData\MySQL\MySQL Server 8.0/my
+
+                
 
             HOW TO ENABLE SSL/TCP CONNECTION FOR MYSQL (MACOS)
 
@@ -68,7 +70,7 @@
                 4) The wizard will walk you through the process of generating the SSL files required
                    for HTTPS connection (You will need to have openSSL installed)
 
-                5)
+                5) 
 
         
 */

@@ -46,16 +46,28 @@
 
             HOW TO ENABLE SSL/TCP CONNECTION FOR MYSQL (WINDOWS)
 
-                1) Open MYSQL workbench and go to MySQL connections home page
+                1) Open MYSQL workbench home page and go to the connection that you want to access remotely
 
-                2) Right click on the connection that you want to upgrade and click on Edit Connection
+                2) On the query tab, write the following commands
 
-                3) Click on the SSL tab and click on SSL wizard
+                        Create user 'root'@'%' identified by 'Darkness33!';
+                        grant all privileges on *.* to 'root'@'%' with grant option;
+                        flush privileges;
 
-                4) The wizard will walk you through the process of generating the SSL files required
-                   for HTTPS connection (You will need to have openSSL installed and the path environment variable pointing to the openSSL folder)
+                3) Then go back to the home page again and right click on the connection, then click on Edit Connection
 
-                5) Next you need to update the my.ini file. Go to C:\ProgramData\MySQL\MySQL Server 8.0/my
+                4) On the parameters tab, 
+                    Hostname = ipv4 address of your computer (open command line and enter 'ipconfig' as the command)
+                    port = 3306 
+                    Password = click on store in Vault and enter the password specifed on step 2
+
+                5) You will need to configure the firewall of your computer. Go to firewall ->  Advanced Settings.
+
+                    For inbound rules, make sure port 3306 is there and allows access to all programs
+                    For Outbound rules, create a rule that allows traffic on Port 3306 (rule must apply to TCP)
+                   
+
+                5) Click on test connection
 
                 
 

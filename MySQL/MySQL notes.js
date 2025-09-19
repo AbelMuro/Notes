@@ -59,7 +59,7 @@
                 4) On the parameters tab, 
                     Hostname = ipv4 address of your computer (open command line and enter 'ipconfig' as the command)
                     port = 3306 
-                    Password = click on store in Vault and enter the password specifed on step 2
+                    Password = click on 'store in Vault' and enter the password specifed on step 2
 
                 5) You will need to configure the firewall of your computer. Go to firewall ->  Advanced Settings.
 
@@ -73,17 +73,26 @@
 
             HOW TO ENABLE SSL/TCP CONNECTION FOR MYSQL (MACOS)
 
-                1) Open MYSQL workbench and go to MySQL connections home page
+                1) Open MYSQL workbench home page and open the connection you want to have remote access for
 
-                2) Right click on the connection that you want to upgrade and click on Edit Connection
+                2) Click on the query tab and write the following commands       
+                
+                        Create user 'root'@'%' identified by 'Darkness33!';
+                        grant all privileges on *.* to 'root'@'%' with grant option;
+                        flush privileges;
+                        
+                3) Go back to the home page and click on 'Edit Connections'. Then click on the parameters tab
 
-                3) Click on the SSL tab and click on SSL wizard
+                       Host: the ipv4 address of your computer, open command prompt and run 'ipconfig getifaddr en0'
+                       port: 3306
+                       password: click on 'store in Vault' and enter the password specifed on step 2
 
-                4) The wizard will walk you through the process of generating the SSL files required
-                   for HTTPS connection (You will need to have openSSL installed)
+                4) Open firewall, click on Options, Click on the plus sign and add the mySQL binary file
+                   located in this directory
 
-                5) 
-
+                       /usr/local/mysql/bin/mysqld
+                       
+                5) Click on test connection
         
 */
 

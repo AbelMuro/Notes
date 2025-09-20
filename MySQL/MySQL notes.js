@@ -44,7 +44,7 @@
 
 
 
-            HOW TO ENABLE SSL/TCP CONNECTION FOR MYSQL (WINDOWS)
+            HOW TO ENABLE REMOTE ACCESS FOR MYSQL (WINDOWS)
 
                 1) Open MYSQL workbench home page and go to the connection that you want to access remotely
 

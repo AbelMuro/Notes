@@ -28,6 +28,9 @@
                         mysql_secure_installation
 
 
+
+
+
             HOW TO CREATE A DATABASE IN MYSQL WORKBENCH
 
                 1) Click on the 'Create Schema' button on the top left corner
@@ -44,7 +47,23 @@
 
 
 
+
+
+
+
+
             HOW TO ENABLE REMOTE ACCESS FOR MYSQL (WINDOWS)
+
+
+                1) Open the 'my.ini' file, C:\ProgramData\MySQL\MySQL Server X.X\my and change the following option
+
+                    bind-address = 0.0.0.0
+
+                2) ?
+
+
+
+            
 
                 1) Open MYSQL workbench home page and go to the connection that you want to access remotely
 
@@ -71,7 +90,7 @@
 
                 
 
-            HOW TO ENABLE SSL/TCP CONNECTION FOR MYSQL (MACOS)
+            HOW TO ENABLE REMOTE ACCESS FOR MYSQL (MACOS)
 
                 1) Open MYSQL workbench home page and open the connection you want to have remote access for
 

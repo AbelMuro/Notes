@@ -123,7 +123,7 @@
 
             2) In your 'db.js' file, write the following lines of code
     
-                    const mysql = require('mysql');
+                    const mysql = require('mysql2');
     
                     const pool = mysql.createPool({
                           host: '',                            // Administration -> Client Connections -> Copy the host

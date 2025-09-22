@@ -83,7 +83,7 @@
 
                         Port: 3306
 
-                        Source: Select the IP address of the computer that has the node.js app that is making the queries
+                        Source: Select the IP address of the computer that is making the queries to the database
 
                         click on 'Save Rules'
 

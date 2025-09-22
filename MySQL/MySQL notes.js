@@ -34,7 +34,7 @@
 
 
 
-            HOW TO CREATE A DATABASE IN MYSQL WORKBENCH
+            HOW TO CREATE A DATABASE IN MYSQL WORKBENCH (the workbench should be used development purposes only)
 
                 1) Click on the 'Create Schema' button on the top left corner
                    and choose a name for the schema. Then click 'apply'
@@ -49,7 +49,64 @@
                 5) A list of all the data in the schema will be displayed
 
 
-*/
+            HOW TO CREATE A SQL DATABASE IN AWS RDS
+
+                    1) Go to the AWS console and click on Aurora and RDS
+
+                    2) CLick on Dashboard on the right hand side of the page and then click on Create Database
+
+                    3) Click on the following options
+
+                            Engine Options: 'MySQL'
+
+                            Settings: Enter a name for the database
+
+                            Credentials management: set the username and the password for your database
+
+                            Templates: 'Free tier' for development, 'Production' for production
+
+                            Connectivity: 'Public access'
+
+                            Click on 'create database'
+
+                    4) Next click on 'Databases' on the left hand side and click on the database you want to use
+
+                    5) On the Connectivity & Security tab, click on the VPC security groups
+
+                    6) Click on the inbound rules tab, and then click on Edit Inbound rules, then click on Add rule.
+                       Keep in mind that if you are planning on making queries to the database through a node.js app
+                       that is deployed on a different machine, you will need the IP address of that machine
+
+                    7) Select the following options
+
+                        Protocol: TCP
+
+                        Port: 3306
+
+                        Source: Select the IP address of the computer that has the node.js app that is making the queries
+
+                        click on 'Save Rules'
+
+                    8) Go back to the home page of AWS RDS and click on databases on the left hand side
+                       and select the database you want to use.
+
+                    9) On the Connectivity & Security tab, copy the Endpoint URL
+
+                    10) You can open up workbench and create a new connection that connects to the database created in AWS RDS
+
+                            hostname: endpoint url
+
+                            port: 3306
+
+                            username: the username that you used when you created the database
+
+                            password: the password that you used when you created the database
+
+                    11) 
+                            
+                    
+                        
+*/    
 
 
 //=============================================================== MYSQL Module ========================================================================

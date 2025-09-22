@@ -1,6 +1,9 @@
 /* 
-    MySQL is a relational database system that can be installed on any computer
+    MySQL is a relational database system that can be installed on any computer. Keep in mind that if you run a MySQL server on your local machine,
+    any node.js app that wants to make queries to the schemas within the server must be done within the same computer
 
+    If you want to use a remote database within a MySQL server, then you should use AWS RDS or Google Cloud SQL
+    
             For windows users:
         
                 1) You must install mySQL using the following link
@@ -46,73 +49,6 @@
                 5) A list of all the data in the schema will be displayed
 
 
-
-
-
-
-
-
-            HOW TO ENABLE REMOTE ACCESS FOR MYSQL (WINDOWS)
-
-
-                1) Open the 'my.ini' file, C:\ProgramData\MySQL\MySQL Server X.X\my and change the following option
-
-                    bind-address = 0.0.0.0
-
-                2) ?
-
-
-
-            
-
-                1) Open MYSQL workbench home page and go to the connection that you want to access remotely
-
-                2) On the query tab, write the following commands
-
-                        Create user 'root'@'%' identified by 'Darkness33!';
-                        grant all privileges on *.* to 'root'@'%' with grant option;
-                        flush privileges;
-
-                3) Then go back to the home page again and right click on the connection, then click on Edit Connection
-
-                4) On the parameters tab, 
-                    Hostname = ipv4 address of your computer (open command line and enter 'ipconfig' as the command)
-                    port = 3306 
-                    Password = click on 'store in Vault' and enter the password specifed on step 2
-
-                5) You will need to configure the firewall of your computer. Go to firewall ->  Advanced Settings.
-
-                    For inbound rules, make sure port 3306 is there and allows access to all programs
-                    For Outbound rules, create a rule that allows traffic on Port 3306 (rule must apply to TCP)
-                   
-
-                5) Click on test connection
-
-                
-
-            HOW TO ENABLE REMOTE ACCESS FOR MYSQL (MACOS)
-
-                1) Open MYSQL workbench home page and open the connection you want to have remote access for
-
-                2) Click on the query tab and write the following commands       
-                
-                        Create user 'root'@'%' identified by 'Darkness33!';
-                        grant all privileges on *.* to 'root'@'%' with grant option;
-                        flush privileges;
-                        
-                3) Go back to the home page and click on 'Edit Connections'. Then click on the parameters tab
-
-                       Host: the ipv4 address of your computer, open command prompt and run 'ipconfig getifaddr en0'
-                       port: 3306
-                       password: click on 'store in Vault' and enter the password specifed on step 2
-
-                4) Open firewall, click on Options, Click on the plus sign and add the mySQL binary file
-                   located in this directory
-
-                       /usr/local/mysql/bin/mysqld
-                       
-                5) Click on test connection
-        
 */
 
 

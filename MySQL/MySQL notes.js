@@ -57,17 +57,17 @@
 
                     3) Click on the following options
 
-                            Engine Options: 'MySQL'
-
-                            Settings: Enter a name for the database
-
-                            Credentials management: set the username and the password for your database
-
-                            Templates: 'Free tier' for development, 'Production' for production
-
-                            Connectivity: 'Public access'
-
-                            Click on 'create database'
+                                Engine Options: 'MySQL'
+    
+                                Settings: Enter a name for the database
+    
+                                Credentials management: set the username and the password for your database
+    
+                                Templates: 'Free tier' for development, 'Production' for production
+    
+                                Connectivity: 'Public access'
+    
+                                Click on 'create database'
 
                     4) Next click on 'Databases' on the left hand side and click on the database you want to use
 
@@ -79,13 +79,13 @@
 
                     7) Select the following options
 
-                        Protocol: TCP
-
-                        Port: 3306
-
-                        Source: Select the IP address of the computer that is making the queries to the database
-
-                        click on 'Save Rules'
+                                Protocol: TCP
+        
+                                Port: 3306
+        
+                                Source: Select the IP address of the computer that is making the queries to the database
+        
+                                click on 'Save Rules'
 
                     8) Go back to the home page of AWS RDS and click on databases on the left hand side
                        and select the database you want to use.
@@ -93,20 +93,33 @@
                     9) On the Connectivity & Security tab, copy the Endpoint URL
 
                     10) You can open up workbench and create a new connection that connects to the database created in AWS RDS
+                        At this point, you will need to create a schema for queries
 
-                            hostname: endpoint url
+                                hostname: endpoint url
+    
+                                port: 3306
+    
+                                username: the username that you used when you created the database
+    
+                                password: the password that you used when you created the database
 
-                            port: 3306
+                    11) To create queries in a node.js app, you will need to use the endpoint as the hostname
+                        and the username and password that you specified when you created the database
 
-                            username: the username that you used when you created the database
-
-                            password: the password that you used when you created the database
-
-                    11) 
-                            
-                    
-                        
+                                const pool = mysql.createPool({
+                                      host: '',                            // endpoint url
+                                      user: '',                            // username of the database in AWS RDS
+                                      password: '',                        // password of the database in AWS RDS
+                                      database: '',                        // The name of the schema/database
+                                      connectionLimit: 10,                
+                                });    
 */    
+
+
+
+
+
+
 
 
 //=============================================================== MYSQL Module ========================================================================

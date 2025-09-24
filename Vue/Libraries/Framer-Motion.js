@@ -421,47 +421,6 @@
 
 
 
-//-------------------------- useCycle() hook
-/* 
-            useCycle() hook is similar to useState(), it is used to toggle between two different sets of styles
-*/
-
-
-<script setup>
-    import {useCycle} from 'motion-v';
-    const [toggle, setToggle] = useCycle(false, true);               //toggle will have either true or false as the values, setToggle() is a function used to toggle between true and false
-    
-    const handleClick = () => {
-        setToggle();
-    }
-</script>
-
-<template>
-        <motion.div
-            :initial="false"                                          // we have to set initial to false for useCycle to work here
-            :animate="toggle ? {color: 'red'} : {color: 'blue'}">                             
-        </motion.div>    
-
-        <button @click="handleClick">                              //clicking on this button will toggle between the 'open' styles and the 'closed' styles
-            click me
-        </button>    
-</template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

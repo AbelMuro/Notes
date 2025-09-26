@@ -209,7 +209,7 @@ p::selection{
 .pieces{
     overflow: scroll;
     scrollbar-width: thin;                                    /* setting this to 'none' will remove the scrollbar and the space used by the scrollbar*/
-    scrollbar-color: var(--scroll-bar-bg) transparent;
+    scrollbar-color: var(--scroll-bar-bg) var(--scroll-bar-thumb);
 }
 
 /* The following selectors will style the scrollbar for CHROME, SAFARI, and EDGE  */

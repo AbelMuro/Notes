@@ -2454,6 +2454,20 @@ const day = date.getDay();                                            //this wil
 
 
 
+//------------------ Getting the current day of the month
+/* 
+	You can get the current day of the month using the .getDate() method.
+	The method will return an integer between 1 and 31, depending on the 
+	current month
+*/
+
+const dayOfMonth = date.getDate();
+
+
+
+
+
+
 //------------------ Getting the milliseconds between today and the epoch
 /* 
 	You can use the .now() method to get the milliseconds between today and

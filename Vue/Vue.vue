@@ -240,15 +240,16 @@
                 </div>
             </template>
 
-        7) If you want to use font files for your project, you will need to use relative paths 
-           in your style tag
+        7) If you want to add .env variables to your project, create a .env file and declare your env variables like this..
 
-                <style>
-                       @font-face {
-                           font-family: 'ubuntu';
-                           src: url('../public/fonts/Ubuntu-Regular.ttf');                //always use relative paths
-                        }
-                </style>
+                VITE_API_KEY=w3yodgbaodb22
+
+           Then, in your components, use the following syntax to utilize the env variable
+
+                import.meta.env.VITE_API_KEY
+
+           KEEP IN MIND, the .env file has to be declared in the root directory. Check your vite.config.js file for the actual root
+           directory. I usually use the ./src folder as the root directory.
 -->
 
 

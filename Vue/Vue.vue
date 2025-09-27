@@ -1428,7 +1428,7 @@
 
                 -Third argument for watchers
 
-                        watch(state => {}, {
+                        watch(state, () => {}, {
                             deep: 2,                                         // Watcher will be called if the properties on the first and second nested level in state object are updated
                             immediate: true,                                 // Watcher will be called after the component has mounted
                             once: true,                                      // Watcher will be called only once
@@ -1447,6 +1447,9 @@
 <script setup>
     import { ref, watch } from 'vue';
 
+    const {data} = defineProps({
+            data: String
+    })
     const state = ref('');
     const otherState = ref(0);
 
@@ -1454,7 +1457,8 @@
         state.value = 'new state'
     }
 
-    watch(state, async (newState, oldState) => {})                                          //you have access to the old state and new state from here        
+    watch(state, (newState, oldState) => {})                                          // watcher will be called after a state change has occured    
+    watch(() => data, () => {})                                                        // watcher will be called after a prop change has occured
 </script>
 
 
@@ -1526,6 +1530,14 @@
 
 
 
+
+
+
+
+
+
+
+        
 
                  
 <!-- =========================================== COMPUTED() =============================================== -->
@@ -1600,6 +1612,13 @@
 
 
 
+
+
+
+
+
+
+        
 
 <!-- =========================================== TEMPLATE REFS =============================================== -->
 <!-- 

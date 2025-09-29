@@ -19,25 +19,24 @@
                 14) Watchers (side-effects)
                 15) Computed (caching values)
                 16) Template Refs
+
+
+                                                   RENDERING PROCESS
+        1) Before a component is first mounted, the templates are compiled into render functions, which will then generate a branch
+           in the virtual dom tree. 
+
+        2) Once the component is mounted, the render function is called, creating the nodes in the virtual dom.
+
+        3) When a state change occurs, the render function is called again, and a new virtual dom is created.
+           At this point, there will be two virtual doms in memory, and each node from both trees are going to be compared.
+           Once the comparison is complete, the real dom will be updated accordingly
+
+
                             
                                                  STATE CHANGE PROCESS
         A component will be re-rendered (updated) when there is a change in the state object.
         All updates to the state are synchronous, but all updates to the DOM are asynchronous.
-        Vue updates the state immediately when the value property is changed, but will schedule 
-        the most optimal time to trigger the re-render. Typically, Vue will batch all the re-renders and 
-        place them in the Queue. Vue will then wait until the callstack is empty to trigger the re-render, 
-        but if the callstack has an asynchronous function (fetch, promise) Vue will then get all the batched 
-        re-renders and trigger one re-render
-
-                                const handleClick = () => {
-                                    loading.value = true;           // Vue will schedule the re-render 
-                                }                                   // Vue will now cause the re-render
-
-                                const handleClick = async () => {
-                                    loading.value = true;           // Vue will schedule the re-render 
-                                    await fetch();                  // Vue will immediately trigger the scheduled re-render from 'loading.value = true' 
-                                    loading.value = false;          // Vue will schedule the re-render 
-                                }                                   // Vue will now trigger the re-render from 'loading.value = false'
+        
                                         
 
                                                 REACTIVITY SYSTEM:
@@ -65,16 +64,6 @@
                         trigger_re_render();        // we will cause a re-render on all components tracking this state object
                       }
                 }
-
-
-                                                   RENDERING PROCESS
-        The rendering process for Vue is similar to Reacts Reconciliation algorithm, the main difference is how React and Vue detect state changes.
-        When a component is first mounted, Vue will generate a Virtual DOM in memory that represents the component. Then, when the 
-        state of a component is updated, it will create another Virtual DOM in memory. At this point, we have two Virtual DOM's 
-        in memory. Vue will use a process called 'diffing' to compare all nodes from both Virtual DOM trees, and decide which 
-        nodes to update in the Real DOM. Once Vue has decided which nodes to update in the Real DOM, it will use a process 
-        called 'patching' to update the nodes in the Real DOM, instead of recreating the nodes. Patching is only used when 
-        the node have been updated. If the node has been removed, it will simply unmount the node.
 
                                                        PATCHING
         Patching is the process in Vue that updates nodes in the Real DOM when the state changes.
@@ -135,7 +124,8 @@
 
                                                       BATCHING
           Vue has a similar batching process to the automatic batching used in React. When there are multiple state updates
-          that happen synchronously, Vue will 'batch' all these state updates into one asynchronous re-render.
+          that happen synchronously, Vue will 'batch' all these state updates into one asynchronous re-render. Keep in mind that
+          state updates that occur inside promises and setTimeout() will also be batched together.
 
 
                                                 NATIVE EVENT SYSTEM
@@ -1433,15 +1423,7 @@
                             immediate: true,                                 // Watcher will be called after the component has mounted
                             once: true,                                      // Watcher will be called only once
                             flush: 'post or sync'                            // If its post, then watcher will be called AFTER the re-render occurs
-                        })                                                   // if its sync, then watcher will be called synchronously after EVERY state update
-
-
-        
-                -Different way of using watch():
-
-                watch([state, otherState], ([newState, newOtherState]) => {   // you can have watchers watching multiple state objects  
-        
-                })     
+                        })                                                   // if its sync, then watcher will be called synchronously after EVERY state update  
 -->
 
 <script setup>
@@ -1458,7 +1440,8 @@
     }
 
     watch(state, (newState, oldState) => {})                                          // watcher will be called after a state change has occured    
-    watch(() => data, () => {})                                                        // watcher will be called after a prop change has occured
+    watch(() => data, () => {})                                                       // watcher will be called after a prop change has occured
+    watch([state, otherState], ([newState, newOtherState]) => {});                    // watcher that has multiple dependencies
 </script>
 
 

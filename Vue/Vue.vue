@@ -1400,21 +1400,22 @@
         Calling synchronous watchers will create an asynchronous task in the queue. The task will wait until the callstack
         is empty before being called. Watchers by default are bound to the component, if the component is unmounted,
         the watcher will be freed from memory as well. But this is only true if watcher is called synchronously
-
-                Stopping a watcher:
-
-                        const unwatch = watch(state, callback);
-                        unwatch();                                //will free up the watcher from memory and stop the calls to the function        
 -->            
 
 
 <!--    
                                         Watch()   
+        
         You can use the watch() method in vue to keep track of a small number of state objects. You have to explicitly define 
         the state objects as dependencies. On a positive note, Watch() provides better control on when the function
         will be called, and which levels of nested properties will be tracked. By default, Watch() will NOT be called 
         after the mounting phase. 
 
+
+                -First argument for watchers 
+
+                        watch(state, callback);                             // Watcher will keep track of any reference changes made to the state
+                        watch(() => state.value, callback)                  // Watcher will keep track of any changes made to the value property of the state
 
                 -Third argument for watchers
 
@@ -1424,6 +1425,10 @@
                             once: true,                                      // Watcher will be called only once
                             flush: 'post or sync'                            // If its post, then watcher will be called AFTER the re-render occurs
                         })                                                   // if its sync, then watcher will be called synchronously after EVERY state update  
+
+
+                const unwatch = watch(state, callback);
+                unwatch();                                                   //will free up the watcher from memory and stop the calls to the function    
 -->
 
 <script setup>
@@ -1433,13 +1438,11 @@
             data: String
     })
     const state = ref('');
-    const otherState = ref(0);
-
     const handleClick = () => {
         state.value = 'new state'
     }
 
-    watch(state, (newState, oldState) => {})                                          // watcher will be called after a state change has occured    
+    watch(() => state.value, (newState, oldState) => {})                              // watcher will be called after a state change has occured
     watch(() => data, () => {})                                                       // watcher will be called after a prop change has occured
     watch([state, otherState], ([newState, newOtherState]) => {});                    // watcher that has multiple dependencies
 </script>

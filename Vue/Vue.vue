@@ -35,7 +35,19 @@
                             
                                                  STATE CHANGE PROCESS
         A component will be re-rendered (updated) when there is a change in the state object.
-        All updates to the state are synchronous, but all updates to the DOM are asynchronous.
+        All updates to the state are synchronous, but all updates to the DOM behave asynchronous.
+        Vue will wait until the callstack is empty before triggering a re-render, but if the callstack contains
+        an async function, it will be taken out of the callstack and Vue will immediately trigger a re-render
+
+                    const handleClick = () => {
+                            setLoading(true);               // we schedule a change in the loading state
+                    }                                       // once we exit from the function, React will update the state and cause a re-render
+
+                    const handleClick = async () => {
+                          setLoading(true);                // scheduling a state update 
+                          await fetch();                   // React will immediately trigger the state update and re-render for setLoading(true), before this async function is taken out of the callstack
+                          setLoading(false)                // scheduling another state update
+                    }                                      // once we exit from the function, React will trigger the state update and re-render for setLoading(false) 
         
                                         
 

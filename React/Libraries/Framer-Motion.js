@@ -132,7 +132,7 @@ function Circle () {
               type: 'tween',                                    // Duration-based animation
               duration: 3,                                      // duration of the animation
               delay: 0.5,                                       // can delay the animation in seconds                                        
-              ease: [0, 0.71, 0.2, 1.01],                       // defines a timing function, can be 'linear', 'ease-in', 'ease-out', or an array of integers
+              ease: [0, 0.71, 0.2, 1.01],                       // defines a timing function, can be 'linear', 'easeIn', 'easeOut', or an array of integers
 
               type: 'keyframes',                                // Sequence-based animation (typically used for animating css properties through an array)
 

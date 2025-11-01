@@ -25,134 +25,6 @@
                   return -1;
                 };
 
-2)         //Binary search with duplicate values
-
-            var targetIndices = function(nums, target) {
-                let answers = [];
-                let l = 0;
-                nums.sort((a, b) => a - b);
-            
-                for(let r = nums.length - 1; l <= r;){                      //we want to find the leftmost occurence of the target in the array
-                    let middle = Math.floor((l + r)/2);
-            
-                    if(nums[middle] >= target)
-                        r = middle - 1;
-                    else
-                        l = middle + 1;
-                }
-            
-                while(nums[left] === target){
-                    answers.push(left++);
-                }     
-                
-                return answers;
-            };
-
-3)         //Binary search that counts the left and right pointers
-
-            const binarySearch = (target, arr) => {
-                  let left = 0;
-                  let right = arr.length;
-              
-                  while (left < right) {
-                      let mid = Math.floor((left + right) / 2);
-                      if (arr[mid] > target) {
-                          right = mid;
-                      } else if (arr[mid] < target) {
-                          left = mid + 1;
-                      } else {
-                          return mid;
-                      }
-                  }
-                  return -1
-            }
-
-
-
-4)      //Binary Search: Aggressive Cows, used for searching the maximum value of the minimum distance between any two elements within a subarray of k length in an array
-        //EX: given an array of numbers, find the largest minimum distance between any two numbers in the array
-
-         [1,    2 ,    4,     8,     9]
-
-        // what we do here is create a range between 0 and 9, we use binary search on this range
-        // each of these numbers IN THE RANGE represents a possible distance that can be used to place k cows
-       
-        // k = 3
-        // Each line below represents a cow
-                                                   //keep in mind that mid is the distance that you MUST maintain when you place the cows
-        1)        [1,    2 ,    4,     8,     9]            mid = 4   // we could not place 3 cows, so this distance cannot be used as an answer
-                   |                   |                              // (we continue looking on the left side of the current range)
-        
-        2)        [1,    2 ,    4,     8,     9]            mid = 2   // we were able to place 3 cows, so this distance is a possible answer
-                   |            |      |                               // (we continue looking on the left side of the current range)
-        
-        2)        [1,    2 ,    4,     8,     9]            mid = 3   // we were able to place 3 cows, so this distance is a possible answer 
-                   |            |      |                              // (but since we are finding the MAX distance, we continue looking on the right side of current range)
-
-          The answer is mid = 3;
-
-          var AggressiveCoews = function(price, k) {
-                price.sort((a, b) => a - b);                        //sorting is required
-                
-                let result = 0;
-                let left = 0;
-                let right = price[price.length - 1];
-                
-                while (low <= high) {                               //we traverse through a range of distances
-                  const mid = Math.floor((left + right) / 2);
-                  if (hasAtLeastKCows(mid, price, k)) {
-                      result = mid;        
-                      left = mid + 1;                               
-                  } 
-                  else 
-                      right = mid - 1;                              //if we cannot place k = 3 cows with distance 'mid', then everything on the right side will be invalid
-                  }
-                
-                  return result;
-          };
-
-          function hasAtLeastKCows(distance, price, k) {            //we determine if the distance given here is possible 
-                  let lastVal = price[0];
-                  let cows = 1;
-                
-                  for (let i = 1; i < price.length; i++) {
-                    const diff = price[i] - lastVal;
-                    if (diff >= distance) {
-                      cows++;
-                      lastVal = price[i];
-                    }
-                  }
-                
-                  return cows >= k;
-          };
-          
-
-
-
-
-5)      //Binary Search: when k represents the data about the number that we are looking for (smallest number, largest number)
-        //In this case, you should always create a range of possible values within the array
-
-         matrix = [1,5,9,10,11,12,13,13,15];
-
-        let left = matrix[0];
-        let answer = matrix[0];
-        let right = matrix[matrix.length - 1];
-
-        while(left < right){
-          let middle = Math.floor((left + right)/2);
-          
-          for(let i = 0; i < matrix.length; i++){
-              //search through the original array and compare 'middle' with the values here somehow
-          }
-
-          if(/*mid does not meet some condition*/){
-             left = mid + 1;      
-             answer = mid + 1;
-          }
-          else  //if mid meets some condition, we keep mid within the range but cut the range by half
-            right = mid;
-        }
 
 
 
@@ -167,20 +39,14 @@
 
 
 
+/* 
+      TWO POINTER MANIPULATION ALGORITHM: 
+      
+      Two pointers is an easy and effective technique that is typically used for searching pairs in a SORTED array.
+      Different variations of this algorithm can be used when a certain condition can move the pointers in a specified direction
 
+*/
 
-
-
-
-
-
-
-
-
-//TWO POINTER MANIPULATION ALGORITHM: Two pointers is an easy and effective technique that is typically used for searching pairs in a SORTED array.
-
-//Given a sorted array A (sorted in ascending order), having N integers, find if there exists any pair of elements (A[i], A[j]) such that their sum is equal to X.
-//The time complexity for this algorithm is O(n)
 
 1)          //Two pointer that is used for a single sorted array
             EX:
@@ -200,62 +66,17 @@
               }
     
 
-2)            // Two pointer that is used for two sorted arrays 
-              // EX: look for a MINIMUM common value in both arrays
-                  let i = 0;
-                  let j = 0;
-
-                  while (i < nums1.length && j < nums2.length) {
-                      if (nums1[i] === nums2[j]) 
-                          return nums1[i]
-                        
-                      else if (nums1[i] < nums2[j])              //the logic here is the smaller number must keep incrementing
-                          i++;    
-                        
-                      else if(nums1[i] > nums2[j])
-                          j++;                     
-                  }              
-
-
-
-
-3)           //Two pointers that will change the order of the values based on a condition
-              //EX: move all the zeroes to the left side and non-zeroes to the right side of array
-
-            let l = 0;
-            let r = nums.length - 1;
-
-            while (l < r){
-                while(l < r && nums[l] === 0)
-                  l++;
-                while(l < r && nums[r] !== 0)
-                  r--;
-                [nums[l], nums[r]] = [nums[r], nums[l]];
-            }
-            
 
 
 
 
 
+/* 
+      SLIDING WINDOW ALGORITHM: 
+      
+      This algorithm is designed save some re-calculation, the time complexity for this algorithm is O(n)
+*/
 
-
-
-
-
-
-
-
-
-
-
-    
-    
-//SLIDING WINDOW ALGORITHM: This algorithm is designed save some re-calculation, the time complexity for this algorithm is O(n)
-
-
-1)      //Sliding Window when k represents the length of the window
-        //EX:  Given an array of integers, Our aim is to calculate the maximum sum of 5 consecutive elements in the array.
                      __    __ 
         VISUAL:     |  |  |  | 
                 [1, 2, 3, 4, 5]           
@@ -279,35 +100,6 @@
 
 
 
-2)        // Sliding window when k represents the maximum number of operations allowed
-          // This method only works if we can perform operations on BOTH T and F
-
-          // EX: Return the maximum number of consecutive 'T's or 'F's in the string s
-          // after performing the operation(changing 'T' to 'F' or vice versa) at most k times.
-            VISUAL:  
-                     'TTFFTTFTFFTT'    'TTFFTTFTFFTT'      'TTFFTTFTFFTT'        'TTFFTTFTFFTT'
-                      |  |              |       |           |          |               |     |
-                      ----               -------             ----------                 -----
-                          ->                      ->                       ->
-
-              
-            var maxConsecutiveAnswers = function(answerKey, k) {
-                let maxSubstring = 0;
-                let left = 0;
-                let count = {T: 0, F: 0};
-            
-                for(let right = 0; right < answerKey.length; right++){
-                    count[answerKey[right]]++                            // we count the occurences of 'T' and 'F'
-            
-                    if(Math.min(count.T, count.F) > k)                   // if we had 'T T T F F', then we can only make changes to 'F F' because k = 2
-                        count[answerKey[left++]]--;                      // so we need to make sure that the minimum occurence of 'T' or 'F 'is less than or equal to k
-      
-                    let windowLength = right - left + 1;
-                    maxSubstring = Math.max(maxSubstring, windowLength);
-                }  
-            
-                return maxSubstring; 
-            };
 
 
 
@@ -316,56 +108,16 @@
 
 
 
-
-3)          //Sliding Window when k represents the maximum number of operations allowed
-            //This method only works if when can perform on ONE type of data (changing 0's but not 1's)
-
-            //EX: Given a binary array nums and an integer k, return the maximum number of 
-            // consecutive 1's in the array if you can flip at most k 0's.
-
-            var longestOnes = function(nums, k) {
-                  let zeroCount = 0;                            //we only keep track of the number of zeroes in the window
-                  let left = 0;
-                  let maxSubstring = 0;        
-                  let windowLength;
-              
-                  for(let right = 0; right < nums.length; right++){
-                      if(nums[right] === 0)
-                          zeroCount++;
-              
-                      if(zeroCount <= k){                        //as long as the zero-count is less than k (maximum allowable operations)
-                          windowLength = right - left + 1;                
-                          maxSubstring = Math.max(maxSubstring, windowLength);
-                      }
-                      else if(zeroCount > k){                    //if zeroes exceed k, then we shrink the window
-                          if(nums[left++] === 0)
-                              zeroCount--;
-                      }       
-                  }
-                  
-                  return maxSubstring;
-              };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//PREFIX SUM: This is a technique that creates an array where each value is the sum of all the values before it
+/* 
+    PREFIX SUM: 
+    
+    This is a technique that creates an array where each value is the sum of all the values before it
+*/
 
             let arr = [10, 20, 10, 5, 15];
             let prefixSumArr = [10, 30, 40, 45, 60];              //0 + 10 = 10        20 + 10 = 30         10 + 20 + 10 = 40
 
-1)          // Left prefix sum that doesnt include a 0 in the beginning
+
 
               function fillPrefixSum() { 
                     let arr = [10, 4, 16, 20]; 
@@ -379,44 +131,25 @@
 
 
 
-2)          // Left prefix sum that includes a 0 in the beginning
 
-              function fillPrefixSum() {
-                    let arr = [10, 20, 10, 5, 15];
-                    let prefixSumArr = [0];              
+
+
+
+
+
+
+
+
+
+/* 
+    RECURSION: 
     
-                    for(let i = 0; i < arr.length; i++){
-                          prefix[i + 1] = prefix[i] + arr[i];
-                    }                
-              }
+    its the ability of a function to call it self many times. The whole point of recursion is to break a problem into smaller parts, thereby reducing the
+    complexity of the problem at hand. Typically, all recursive functions have a base case that will terminate the recursive calls once the case is true
 
+    Keep in mind that every recursive call will create a separate execution context in the callstack.
 
-
-
-3)             // Right prefix sum that includes a 0 in the end (first value will contain the sum of the last value and everything after that)
-
-                function fillPrefixSum(){
-                      let arr = [10, 20, 30, 40, 40];
-                      let rightSum = [0];
-                  
-                      for(let r = nums.length - 2; r >= 0; r--){
-                          rightSum.unshift(rightSum[0] + nums[r + 1]);
-                      }                  
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-//RECURSION: its the ability of a function to call it self many times. The whole point of recursion is to break a problem into smaller parts, thereby reducing the
-//complexity of the problem at hand. Typically, all recursive functions have a base case that will terminate the recursive calls once the case is true
+*/
 
                 function recursion(n){
                       if(n == 0)                //base case
@@ -432,184 +165,6 @@
 
 
 
-
-
-
-
-1)    // Reverse a stack using recursion
-      // (this method lets you use an instance of a function to store data)
-
-        function recurse(i, j){
-            if(j < 0)
-                return 0;
-                
-            let prev = St[i];                      //every instance will have its own prev
-            let current = recurse(i + 1, j - 1)   
-            St[current] = prev;
-            return current + 1;
-
-        }
-
-        recurse(0, St.length - 1);
-
-
-
-
-  VISUAL:
-
-        stack = [1,2,3,4,5]
-    
-        reverse(0, 4)     prev = 1            //every instance will have its own prev that can be used by another instance
-            |
-            |
-        reverse(1, 3)     prev = 2
-            |
-            |
-        reverse(2, 2)     prev = 3
-            |
-            |
-        reverse(3, 1)     prev = 4
-            |
-            |
-        reverse(4, 0)     prev = 5
-            
-
-
-
-
-2)     // Generate a sequence that looks like this 
-       // 16, 11, 6, 1, -4, 1, 6, 11, 16
-
-        let sequence = [];
-        function printSequence(n) {
-            sequence.push(n);
-            if (n <= 0)
-                return;
-            
-            printSequence(n - 5);
-            sequence.push(n);      //remember that n will be different for every instance
-          }
-
-         printSequence(n);
-        
-
-
-  VISUAL: 
-          printSequence(16)    n = 16
-                |
-                |
-          printSequence(11)    n = 11
-                |
-                |
-          printSequence(6)     n = 6
-                |
-                |
-          printSequence(1)     n = 1
-                |
-                |
-          printSequence(-4)   // back tracking starts here
-
-
-
-
-
-
-3)   //Find the middle node of a linked list
-     //(this function is using floyds algorithm recursively)
-    let head = linkedList;
-
-    function traverse(fast, slow) {
-        if(fast && fast.next){
-             return traverse(fast.next.next, slow.next);            
-        }
-        else {
-            return slow;            
-        }           
-    }
-    traverse(head, head);
-
-
-
-
-
-
-4)   // Find the sum of all the digits using recursion 
-     // (this method breaks down the problem into smaller sub problems)
-
-      function sumOfDigits(number) {
-          if (number < 10) 
-              return number;
-              
-          // Extract the last digit
-          const lastDigit = number % 10;
-          
-          // Recursively call the function with the remaining digits
-          const remainingNumber = Math.floor(number / 10);
-          return lastDigit + sumOfDigits(remainingNumber);
-       }
-          
-      sumOfDigits(1234);
-
-  
-      VISUAL: 
-                sumOfDigits(1234) = 6 + 4 = 10       last = 4
-                      |             ^_______
-                      |                     |
-                      v                     | 
-                sumOfDigits(123) = 3 + 3  = 6        last = 3
-                      |            ^_______
-                      |                   |
-                      V                   |
-                sumOfDigits(12) = 1 + 2 = 3         last = 2
-                      |          ^
-                      |          |
-                      V          |
-                sumOfDigits(1) = 1                   //we start the backtracking process here
-
-
-
-
-
-
-
-
-
-
-5)   // Prints all possible strings of length k that can be formed from a array of n characters
-    //( this method creates multiple instances of a problem and checks every instance)
-
-    const arr = ['a', 'b'];
-    const k = 3;
-    let answer = []
-
-    function findAllKLength(prefix, n, k) {
-        if (k === 0) {
-            answer.push(prefix);
-            return;
-         }
-
-        for (let i = 0; i < n; i++) {
-            const newPrefix = prefix + arr[i];
-            findAllKLength(newPrefix, n, k - 1);
-        }
-    }
-
-    findAllKLength('', arr.length, k);
-
-
-
-    VISUAL:
-
-                                                                                            findAllKLength('')                 k = 3
-                                                                                                   |
-                                                                                                   |
-                                        findAllKLength('a')                                                                                  findAllKLength('b')       k = 2
-                                                |                                                                                                    |
-                                                |                                                                                                    |
-                findAllKLength('aa')                          findAllKLength('ab')                                 findAllKLength('ba')                               findAllKLength('bb')    k = 1
-                        |                                              |                                                   |                                                   |
-                        |                                              |                                                   |                                                   |
-  findAllKLength('aaa')  findAllKLength('aab')       findAllKLength('aba') findAllKLength('abb')        findAllKLength('baa') findAllKLength('bab')          findAllKLength('bba') findAllKLength('bbb')   k = 0;
 
 
 
@@ -667,7 +222,7 @@
       
       
       
-------------------------------------------------------- DATA STRUCTURES ----------------------------------------------------------
+//------------------------------------------------------- DATA STRUCTURES ----------------------------------------------------------
 
 
 /*   
@@ -696,21 +251,7 @@
       
 */
 
-1)   //find the next greater element to the right for every index i, if there is no greater element, return -1;
 
-  function nextGreaterElement(nums) {
-     let map = [];
-     let stack = [];
-
-     for(let i = 0; i < nums.length; i++){
-         while(stack.length && stack[stack.length - 1] < nums[i])
-             map[stack.pop()] = nums[i];                         //we map a value in nums array with the next greatest element
-         stack.push(nums[i]);
-     }
-
-    return nums.map((num) => map[num] || -1 );
-  }
-  
 
 
 /*
@@ -744,42 +285,20 @@
 
 
 /* 
-    PRIORITY QUEUE (heap): a structure that organizes elements based on a hierachy, typically the first element has the highest priority while the last element has the lowest priority
+    PRIORITY QUEUE (heap): 
+    
+    a data structure that organizes elements based on a hierachy, 
+    typically the first elements has the highest priority 
+    while the last element has the lowest priority
+
+
+
+    |   a  |      //highest priority
+    |   b  |
+    |   c  |      //lowest priority
+    |______|
 */
 
-      //1) find the k weakest rows in a matrix
-
-      let mat = [
-          [1,1,1,0,0],
-          [1,0,0,0,0],
-          [1,1,0,0,0],
-          [1,1,1,1,1];
-      ]
-
-
-      var kWeakestRows = function(mat, k) {
-          let heap = [];
-          let answer = [];
-      
-          for(let i = 0; i < mat.length; i++){          
-              let soldiers = 0;
-              for(let j = 0; j < mat[i].length; j++){
-                  if(mat[i][j] === 1)
-                      soldiers++;
-                  else
-                      break;
-              }
-              heap.push([i, soldiers]);                //you map the index with the total number of soldiers
-          }
-      
-          heap.sort((a, b) => a[1] - b[1]);            //this is where you sort the heap based on priority
-      
-          for(let i = 0; i < k; i++){                  //now we can easily access the first k elements because we know those k elements are the weakest rows
-              answer.push(heap[i][0]);
-          }
-      
-          return answer;
-      };
 
 
 
@@ -812,151 +331,13 @@
                      |_________________________________________________________________|
                                                                               
 
-
-
-     1)  /* Detecting a cycle within a linked list.
-     
-            Floyd’s Cycle Finding Algorithm (Hare-Tortoise algorithm): 
-  
-            This algorithm uses two pointers to find a cycle in a linked list 
-            One pointer will traverse through the list slowly,
-            While the other pointer will traverse through the list quickly
-      */
-
+  // Floyds Algorithm; this algorithm utilizes two pointers to traverse through the linked list, these pointers
+  // will differ in the speed that they traverse. One pointer will traverse slowly, while the other pointer
+  // will traverse quickly. The purpose of this algorithm is to eventually have both pointers reference the
+  // same node in the linked list based on a certain condition.
                 
-        3  -->  2 -->  0 -->  -4 
-                ^              v
-                |______________|     cycle
-                
-      var hasCycle = function(head) {
-          let slow = head;
-          let fast = head;
-        
-          while (fast !== null && fast.next !== null) {    //if 'fast' points to a null value, then we know there is no cycle
-              slow = slow.next;
-              fast = fast.next.next;
-              if (slow === fast)                            //at some point in the cycle, slow and fast will eventually point to the same node
-                  return true;
-              
-          }
-          return false;
-      };
 
-      //RECURSIVELY
-
-
-
-
-
-  2)  //Reversing a Linked list:
-
-      1 -> 2 -> 3 -> 4 -> 5 ->  null      ----->      5 -> 4 -> 3 -> 2 -> 1 -> null
-
-      var reverseList = function(head){
-        let reversed = null;                                //this will contain the reversed list
-        let temp = null                                     //this will be used to temporarily save a portion of the list
-        let currentNode = head;
-
-        while(currentNode){                                 // currenttNode = 1                                            next iteration: currentNode = 2
-            temp = currentNode.next;                        // we are saving 2 -> 3 -> 4 -> 5 -> null                      next iteration: 3 -> 4 -> 5 -> null
-            currentNode.next = reversed;                    // we disconnect 1 from the list, 1 -> null                    next iteration: 2 -> 1 -> null
-            reversed = currentNode;                          // reverse = 1 -> null                                         next iteration: 2 -> 1 -> null
-            currentNode = temp;                             // we move to node 2                                           next iteration: we move to node 3 
-        }
-        return reversed;                                
-      }
-
-      //RECURSIVELY
-
-      function reverse(next){
-        if(!next.next){
-            reverseList = next;
-            return next;
-        }
-
-        let prevNode = reverse(next.next);
-        prevNode.next = next;
-        next.next = null;
-        return next; 
-    }
-
-    reverse(head);
-      
-
-
-  3)    //Removing duplicates from a Linked List
-
-      1 -> 1 -> 2 -> 3 -> 4 -> 5 -> 5 -> null;
-  
-      var deleteDuplicates = function(head) {
-        var current = head;
-        
-        while(current) {
-            if(current.next && current.val === current.next.val)            // we check if 2 consecutive nodes are duplicates        1 -> 1 -> 2
-                current.next = current.next.next;                           // we sever one of the duplicated nodes from the list    1 -> 2 
-            else                                                            // keep in mind that current is still referencing the same node, 
-                current = current.next;                                     // we will continue to reference the same node until the 'if' statement is false 
-        }
-        
-        return head;
-    };
-
-    //RECURSIVELY
-
-    var deleteDuplicates = function(head) {
-        if (!head) 
-            return null;
-    
-        while (head.next && head.val == head.next.val) {
-            head.next = head.next.next;
-        }
-        head.next = deleteDuplicates(head.next)
-        return head;
-    };
-
-
-
-
-
-  4) //Removing all occurences of a number in a linked list
-
-      var removeElements = function(head, val) {
-
-          while(head){                                 //this loop guarantees that the first nodes will not contain the value to be removed
-              if(head.val === val)
-                  head = head.next;
-              else
-                  break;
-          }
-      
-          let currentNode = head;
-          while(currentNode && currentNode.next) {      
-              if (currentNode.next.val === val)         
-                  currentNode.next = currentNode.next.next;
-              else 
-                  currentNode = currentNode.next;      //we only move the pointer to the next node IF node.next !== val
-          }
-          return head;
-      };
-
-      //RECURSIVELY
-      let del = 5;
-  
-      function traverse(next) {
-          while(next && next.val === del)
-              next = next.next;
-          
-          if(!next)
-              return null
-        
-          next.next = traverse(next.next);
-          return next;  
-      }
-
-      traverse(head);
-
-
-  5) //Finding the middle node of a linked list (using floyds algorithm)
+    //ITERAVELY
 
     var findMiddleNode = function(head){
         let slow;
@@ -983,97 +364,6 @@
 
 
 
-  6) //Traversing through a double linked list
-
-    var traversingBack =  function(steps) {        //steps is the number of nodes that we have to traverse
-      
-      while (currentNode.back && steps) {
-          currentNode = currentNode.back;
-          steps--;
-      }
-      
-      return currentNode;
-  };
-
-    var traversingForward =  function(steps) {        //steps is the number of nodes that we have to traverse
-      
-      while (currentNode.next && steps) {
-          currentNode = currentNode.next;
-          steps--;
-      }
-      
-      return currentNode;
-  };
-
-
-
-7)   //Merging two sorted lists into one sorted list
-     // (RECURSIVELY)
-
-    var mergeTwoLists = function (l1, l2) {
-        if (!l1) 
-            return l2;
-        else if (!l2) 
-            return l1;
-        else if (l1.val <= l2.val) {
-            l1.next = mergeTwoLists(l1.next, l2);
-            return l1;
-        } 
-        else {
-            l2.next = mergeTwoLists(l1, l2.next);
-            return l2
-        }
-    };
-
-
-8)  //Check if the linked list is a palindrome
-
-    let next2 = head;
-    let flag = true;
-
-    function traverse(next) {            //the idea here is that as we start to backtrack
-        if(node.next)                    // we will use another pointer that traverses from the beginning
-            traverse(next.next);
-        if(next.val !== next2.val)
-            flag = false;
-        next2 = next2.next;
-    }
-    traverse(head)
-
-
-
-9) //Traversing a linked list and saving a reference to the previous node
-
-  var deleteNode = function(node, prev) {
-
-    if (node.next) {
-        prev = node;                  //this is where we save a reference to the previous node
-        node.val = node.next.val;
-        deleteNode(node.next, prev);
-    } else {
-        prev.next = null;
-    }
-};
-
-
-10) // Deleting the Nth node from the end of a linked list
-
-var removeNthFromEnd = function(head, n) {
-    let fast = head;
-    let slow = head;
-    
-    for(let i = 0; i < n; i++)         //we make sure that fast pointer will point to the node BEFORE the Nth node
-        fast = fast.next;
-
-    if(!fast) return head.next;        //If fast points to null, then there is only one node in the list, so we return null
-
-    while(fast.next) {
-        fast = fast.next;              //eventually, slow will point to the node that fast initially points too
-        slow = slow.next
-    }
-    slow.next = slow.next.next          // we disconnect the Nth node of the list
-    return head;
-};
 
 
 
@@ -1214,58 +504,6 @@ var removeNthFromEnd = function(head, n) {
 
 
 
-/* ITERATION: You can use iteration to traverse through a binary tree*/
-
-                      function traverse(head){
-                            const queue = [head];                          //all the nodes will be placed in an array
-                        
-                            while(queue.length) {
-                                const current = queue.shift();             //we initially remove the first node from the array           
-                                console.log(current.val)                   //we can access the node from here
-                                                        
-                                if(current.left)                           //we start to traverse through both branches of a node, if they exist
-                                    queue.push(current.left);
-                                if(current.right) 
-                                    queue.push(current.right);
-                            }                        
-                      }
-
-                      traverse(head);
-
-
-
-
-
-                1) //Traverse through a binary SEARCH tree and return a node that has a specific value
-                  // (this method traverses only ONE branch, this ONLY works with binary SEARCH trees)
-
-                        function traverse(next){
-                            if(!next)
-                                return null;
-                            if(next.val === val)
-                                return next;                
-                            else if(next.val > val)
-                                return traverse(next.left);
-                            else
-                                return traverse(next.right);        
-                          }
-                      
-                          traverse(root);
-
-
-                2) // Merge two binary tree into one tree, if there are two overlapping nodes in both trees, then add both node values. 
-                  
-                        var mergeTrees = function(root1, root2) {
-                              if(!root1 || !root2)                                        //if one branch is null, we return the other branch that is NOT null
-                                  return root1 || root2;
-                          
-                              let node = new TreeNode(root1.val + root2.val);              //with every recursive call, we save a reference to this node
-                          
-                              node.left = mergeTrees(root1.left, root2.left)
-                              node.right = mergeTrees(root1.right, root2.right);
-                          
-                              return node;
-                          };
 
 
 

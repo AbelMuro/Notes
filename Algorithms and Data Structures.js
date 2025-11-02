@@ -7,9 +7,7 @@
 //BINARY SEARCH ALGORITHM: is a searching algorithm used in a SORTED array by repeatedly dividing the search interval in half. 
 //This algorithm is designed to find a target in an array
 //The time complexity is O(Log n). 
-               
-1)            //Binary search that excludes the left and right pointers;
-               
+                           
                 var search = function(nums, target) {
                   let middle;
 

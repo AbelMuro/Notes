@@ -299,8 +299,23 @@
     |______|
 */
 
+  const queue = []
+  const newNode = { element = 'wash dishes', priority = 2 };
+  let added = false;
 
+  // Insert based on priority
+  for (let i = 0; i < queue.length; i++) {
+    if (newNode.priority < queue[i].priority) {      //a bit counter-intuitive, but a 'lower' priority will be placed before a node will 'higher' priority
+        queue.splice(i, 0, newNode);
+        added = true;
+        break;
+    }
+  }
 
+  // If not added, push to the end
+  if (!added) {
+    this.queue.push(newNode);
+  }
 
 
 

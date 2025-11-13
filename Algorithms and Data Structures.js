@@ -250,6 +250,23 @@
 */
 
 
+/* 
+    Mono Decreasing Stack
+
+
+    A stack that keeps its values in a strictly decreasing order (duplicate values may be allowed, depending on the context)
+
+
+                                  |   4     |      
+                                  |   8     |                             
+                                  |   12    |        
+                                  |   17    |        
+                                  ---------- 
+      If we push the value 10, we must pop the two values 4 and 8 before we can add 10 to the stack
+          
+*/
+
+
 
 
 /*

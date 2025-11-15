@@ -211,8 +211,9 @@
                             <base href="/" />                                                                    //this will set the base url to '/'    this will force all relative urls to resolve to '/'     profile/overview will resolve to  /profile/overview
               
               9) generally, index.js will have..
-              
-                 import {App} from './components/App.js'
+
+                 import ReactDOM from 'react-dom/client';
+                 import {App} from './components/App.js';
                  const root = ReactDOM.createRoot(document.getElementById('root'));
                  root.render(<App/ >)
                  

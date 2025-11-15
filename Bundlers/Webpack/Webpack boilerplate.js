@@ -30,18 +30,17 @@ module.exports = {
                     loader: 'babel-loader',  
                     options: {
                         presets: ['@babel/preset-env', '@babel/preset-react'],
-                         options: {
-                            plugins: [
-                              [
-                                'babel-plugin-root-import',
-                                {
-                                  rootPathSuffix: './src',
-                                  rootPathPrefix: '~/'
-                                }
-                                  'src directory'                        //if you are planning on having multiple directories defined here, you need a unique key for each one
-                              ]                                        
-                            ]
-                          }
+                        plugins: [
+                          [
+                            'babel-plugin-root-import',
+                            {
+                              rootPathSuffix: './src',
+                              rootPathPrefix: '~/'
+                            }
+                              'src directory'                        //if you are planning on having multiple directories defined here, you need a unique key for each one
+                          ]                                        
+                        ]
+                          
                     }  
                 }                                                                 
             },

@@ -1,7 +1,34 @@
 /* 
       Typescript is a superset of javascript that is designed to add static typing to a language.
 
+
+                                    STRUCTURAL TYPE CHECKING
+      
+      Typescript also uses a structural type system that checks the 'shape' of a object during type checking
+      As long as the object has the specified properties and data types defined in the interface, it will pass 
+      the type checking. This also implies that the object can have multiple properties that are not included in 
+      interface.
+
+                  interface User {
+                      name: string;
+                      id: number;
+                  }
+                  
+                  const user = {            // this object doesnt have to be declared with an interface to be accepted as an argument to getUser();
+                      name: 'abel',        
+                      id: 123,
+                      random: 'random',      //even though this property is not defined in the interface, it will still be accepted as an argument
+                  }
+
+                  getUser(user)
+                        
+                  function getUser(user: User){}
+
+
 */
+
+
+
 
 
 
@@ -75,7 +102,13 @@ interface User{
 
 function myUser(user: User){}
 
-function getUser(): User {}    //object returne
+function getUser(): User {}    //object returned must be of type 'User'
+
+const user = {                 //objects passed to the function above don't have to be declared with :User
+      name: 'abel',
+      id: 123
+}
+myUser(user);
 
 
 
@@ -83,16 +116,55 @@ function getUser(): User {}    //object returne
 
 
 
-//==================================================== TYPES ====================================================
+//==================================================== COMPOSING TYPES ====================================================
 /* 
     You can create complex types using the Types keyword in typescript
 */
 
 
+//---------------------------------- Unions
+/*
+      You can use unions to force a variable to only accept a 
+      specific value. The syntax for unions is using the 'OR' operator.
+*/
+
+
+//------- Variables
+type MyBool = true | false;
+type MyStr = 'closed' | 'open' | 'opening' | 'closing';
+type MyNum = 1 | 2 | 3 | 4 | 5;
+
+
+//------- Function arguments
+function getLength(obj: string | string[]) {     
+  typeof obj;                  //this will return the type of the argument
+}
 
 
 
 
+
+
+
+
+//---------------------------------- Generics
+/* 
+      You can use genetics to force an array to only accept a value of a specific type
+*/
+
+//------- Arrays
+type StringArray = Array<string>;            //must be a real data type
+type NumberArray = Array<number>;
+
+
+
+//------- Interfaces and generics
+interface Backpack<Type> {                  //interfaces can also have generics
+  add: (obj: Type) => void;                 //Type is just a placeholder
+  get: () => Type;
+}
+
+let stringBackpack: Backpack<string>;       //declaring an object with the data type 'Backpack', you must pass a real data type
 
 
 

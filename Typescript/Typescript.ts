@@ -1,6 +1,8 @@
 /* 
       Typescript is a superset of javascript that is designed to add static typing to a language.
 
+      npm install @types/react @types/react-dom
+
 
                                     STRUCTURAL TYPE CHECKING
       

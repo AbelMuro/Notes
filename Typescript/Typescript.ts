@@ -92,6 +92,12 @@
 */
 
 
+//---------------------------------- Variables
+let example : string;
+let otherExample: number;
+
+
+
 //---------------------------------- Objects
 /* 
    You can use interfaces to statically type an object. 
@@ -200,6 +206,8 @@ function getLength(obj: string | string[]) {
       You can use genetics to force an array to only accept a value of a specific type
 */
 
+
+
 //------- Arrays
 type StringArray = Array<string>;            //must be a real data type
 type NumberArray = Array<number>;
@@ -213,6 +221,42 @@ interface Backpack<Type> {                  //interfaces can also have generics
 }
 
 let stringBackpack: Backpack<string>;       //declaring an object with the data type 'Backpack', you must pass a real data type
+
+
+
+
+
+
+
+
+
+
+
+
+//==================================================== EVENT TYPES ====================================================
+/* 
+      Typescript also supports event types that can be used in event handlers
+*/
+
+import {ChangeEvent} from 'react';
+
+const handleClick = (e: ChangeEvent<HTMLInputElement>) => {
+      e.target;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

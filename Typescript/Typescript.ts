@@ -1,8 +1,6 @@
 /* 
       Typescript is a superset of javascript that is designed to add static typing to a language.
 
-      npm install @types/react @types/react-dom
-
 
                                     STRUCTURAL TYPE CHECKING
       
@@ -31,6 +29,8 @@
 
 
       HOW TO INTEGRATE TYPESCRIPT INTO A REACT APP
+
+            0) npm install @types/react @types/react-dom
 
             1) Create a tsconfig.json file and put it in the root directory
 

@@ -136,9 +136,9 @@
                     const mysql = require('mysql2');
     
                     const pool = mysql.createPool({
-                          host: '',                            // Administration -> Client Connections -> Copy the host
-                          user: '',                            // Administration -> Users and Privileges -> Copy the user name
-                          password: '',                        // Use the password that you entered when you installed mySQL
+                          host: '',                            // Go to Administration -> Users and privileges -> select a user and host
+                          user: '',                            // Go to Administration -> Users and privileges -> select a user and host
+                          password: '',                        // Go to Administration -> Users and privileges -> select a user and create a password
                           database: '',                        // The name of the schema/database
                           connectionLimit: 10,
                     });

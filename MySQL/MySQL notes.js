@@ -217,6 +217,8 @@
         'INSERT INTO accounts (email, password) VALUES (?, ?)', 
         [email, password], 
         (err, results) => {
+                err.code = 'ER_DUP_ENTRY'  //the specific column already has the specified value
+                
                 results = {
                   fieldCount: 0,          //number of columns that were selected by the query
                   affectedRows: 1,        //number of rows that were deleted/updated somehow

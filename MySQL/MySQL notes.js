@@ -149,6 +149,11 @@
 
 
 
+
+
+
+
+
 //--------------- EXECUTE METHOD
 /* 
     The execute method allows developers to run a command that can update a database
@@ -167,6 +172,11 @@
 
 
 
+
+
+
+
+
         
 
 //--------------- 'SELECT' COMMAND
@@ -179,6 +189,9 @@
             SELECT first-column-name, second-column-name FROM table-name
 */
 
+
+
+// --------------------------- Callback based
     const db = require('./db.js');
 
     db.execute(
@@ -187,6 +200,18 @@
         (err, results) => {
             results;  //an array of rows that match the query
         });
+
+
+
+// --------------------------- Promise based
+    const [accounts, columnMetaData] = await db.execute(
+        'SELECT * FROM accounts WHERE email = ?',
+        [email])
+
+    accounts[0].name;
+    accounts[0].otherData;
+
+
 
 
 
@@ -211,6 +236,8 @@
             VALUES (?, ?), (?, ?) = ['email', 'password', 'email', 'pasword']
 */
 
+
+// --------------------------- Callback based
     const db = require('./db.js');
 
     db.execute(
@@ -231,6 +258,28 @@
                 }; 
         });
 
+// --------------------------- Promise based
+    const [results] = await db.execute(
+        'INSERT INTO accounts (email, password, name) VALUE (?, ?, ?)',
+        [email, password, name]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //--------------- 'UPDATE' COMMAND
@@ -243,6 +292,7 @@
 */
 
 
+// --------------------------- Callback based
     const db = require('./db.js');
 
     db.execute(
@@ -260,6 +310,21 @@
                   changedRows: 0,         //number of rows that were updated
                 }; 
         });
+
+// --------------------------- Promise based
+        const results = await db.execute(
+            'UPDATE accounts SET reset_token = ?, reset_token_expiration = ? WHERE email = ?',
+            [resetPasswordToken, resetPasswordExpires, email])    
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -14,13 +14,15 @@
 	app.put('/send_email', (req, res) => {
 		const {email} = req.body;
 		
-		const transporter = nodemailer.createTransport({			//nodemailer is a module we can use to send an email to the user
-		    service: 'Gmail',
-		    auth: {
-			user: process.env.email,
-			pass: process.env.app_password                          	//you must create an app password for an app in your gmail acount
-		    }
-		})
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            secure: true,
+            port: 465,
+            auth: {
+                user: process.env.email,
+                pass: process.env.app_password
+            },
+        });
 	
 		const mailOptions = {
 		    from: process.env.email,

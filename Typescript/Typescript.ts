@@ -156,6 +156,8 @@ interface User{
 
 function myUser(user: User){}
 
+function otherUser(user: string){}      //you can also assign primitive types to the arguments
+
 function getUser(): User {}    //object returned must be of type 'User'
 
 const user = {                 //objects passed to the function above don't have to be declared with :User

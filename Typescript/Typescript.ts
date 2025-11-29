@@ -216,7 +216,7 @@ type NumberArray = Array<number>;
 
 
 
-//------- Interfaces and generics
+//------- Interfaces
 interface Backpack<Type> {                  //interfaces can also have generics
   add: (obj: Type) => void;                 //Type is just a placeholder
   get: () => Type;
@@ -225,7 +225,16 @@ interface Backpack<Type> {                  //interfaces can also have generics
 let stringBackpack: Backpack<string>;       //declaring an object with the data type 'Backpack', you must pass a real data type
 
 
+//------- Functions
+/* 
+      Generic functions have the following syntax, when calling the function
+      you must use <> to declare the static data type that the function will use
+*/
+function identity<T>(value: T): T {            
+  return value;
+}
 
+const result = identity<string>("Hello"); // result is typed as string
 
 
 

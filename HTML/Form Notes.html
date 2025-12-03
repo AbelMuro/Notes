@@ -50,6 +50,7 @@
     
     DOM properties for <form/>
         e.target.elements;                                      //this will return an node list of all the inputs, fieldset, selects, buttons in the form
+        e.target.contains(node);                                //this will check if a node is a descendant of another node
         e.target.elements.password                              //this will return a reference to an <input/> that has the name attribute set to 'password'
         e.target.elements.password.value                        //gets the value of the <input name='password'>
         e.target.elements.radioButtons.value                    //allCheckboxes will return a collection of <input type='radio' name='radioButtons'>, the value will be from the radio that is currently selected

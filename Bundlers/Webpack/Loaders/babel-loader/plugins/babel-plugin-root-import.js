@@ -5,6 +5,46 @@
 
       ~/     can represent    ./src
 
+
+      For typescript support, you will need to do the following additional steps
+
+            1) add the following code to your webpack.config.js file
+
+                    resolve: {
+                      alias: {
+                        '~': path.resolve(__dirname, 'src')
+                      }
+                    }
+
+            2) In your tsconfig.js file, add the following lines of code
+            
+                  compilerOptions: {
+                        "baseUrl": "./src",
+                            "paths": {
+                              "~/*": ["*"]
+                            }             
+                  }
+
+            3) npm install @babel/preset-typescript and update your webpack.config.js file again
+
+                  module.exports = {
+                        module: {
+                              rules: [
+                                    {                                 
+                                        test: /\.js?$/, 
+                                        use: {
+                                            loader: 'babel-loader',  
+                                            options: {
+                                                presets: ['@babel/preset-typescript'],
+                                                plugins: []  
+                                            }  
+                                        }                                                                 
+                                    },
+                              ]
+                        }
+                  }
+
+
 */
 
 // npm install babel-plugin-root-import
@@ -41,4 +81,9 @@ module.exports = {
             }
         ]
       },
+        resolve: {                                                                        // this property is specifically for typescript support only
+          alias: {
+            '~': path.resolve(__dirname, 'src')
+          }
+  }
 };

@@ -22,6 +22,7 @@
                         "baseUrl": "./src",
                             "paths": {
                               "~/*": ["*"]
+                              "!/*": ["Pages/Home/*"]            //this will resolve to ./src/Pages/Home/*
                             }             
                   }
 
@@ -35,7 +36,7 @@
                                         use: {
                                             loader: 'babel-loader',  
                                             options: {
-                                                presets: ['@babel/preset-typescript'],
+                                                presets: ['@babel/preset-typescript'],                  //just add the preset that supports typescript
                                                 plugins: []  
                                             }  
                                         }                                                                 

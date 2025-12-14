@@ -81,9 +81,9 @@
 
 
 
-//==================================================== INTERFACES ====================================================
+//==================================================== STATIC TYPING ====================================================
 /* 
-    Interfaces allow variables to have a static type. Keep in mind that typescript allows additional data types to be used
+    Interfaces and Types allow variables to have a static type. Keep in mind that typescript allows additional data types to be used
 
     any - allows any data type
     unknown - user must declare the data type
@@ -92,10 +92,41 @@
 */
 
 
-//---------------------------------- Variables
-let example : string;
-let otherExample: number;
 
+//---------------------------------- Interfaces
+interface Backpack<T> {                  //interfaces can also have generics
+  add: (obj: T) => void;                 //add() method will accept an argument of type string
+  get: () => T;                          //get() method will return a string
+}
+
+let stringBackpack: Backpack<string>;       //declaring an object with the data type 'Backpack', you must pass a real data type
+
+
+
+
+//---------------------------------- Types
+
+type open = 'closed' | 'open' | 'opening' | 'closing';      //variables of type 'open' will only accept the strings to the left
+
+let isOpen : open = 'closed'; 
+
+
+//---------------------------------- Primitive types
+let example : string;
+let otherExample : number;
+let yetOtherExample : number | string;                  //Composing types
+
+
+
+//---------------------------------- Arrays
+type Bookmark = {
+      name: string,
+      age: number
+}
+
+let myArr : Array<Bookmark> = [];
+let otherArr : Array<string> = [];
+let finalArr : string[] = [];
 
 
 //---------------------------------- Objects
@@ -104,7 +135,7 @@ let otherExample: number;
    The object created from the interface must have the 
    same property names and data types as the interface
 */
-interface User {
+type User {
   name: string;
   id: number;
 }
@@ -124,7 +155,7 @@ const user: User = {
   You can use interfaces to statically type an object created from a class. 
   The object created from the class must follow the rules of the interface
 */
-interface User {
+type User {
   name: string;
   id: number;
 }
@@ -149,92 +180,29 @@ const user: User = new UserAccount("Murphy", 1);
     You can use an interface to statically type the arguments and the return type of a function.
 */
 
-interface User{
+type User{
     name: string,
     id: number,
 }
 
-function myUser(user: User){}
+function myUser(user: User){          //object passed as argument must be of type User
+      
+}
 
-function otherUser(user: string){}      //you can also assign primitive types to the arguments
+function otherUser(user: string){     //you can also assign primitive types to the arguments
+      
+}      
 
-function getUser(): User {}    //object returned must be of type 'User'
+function getUser(): User {            //object returned must be of type 'User'
+      
+}    
 
-const user = {                 //objects passed to the function above don't have to be declared with :User
+myUser({                             //objects passed to the function above don't have to be declared with :User
       name: 'abel',
       id: 123
-}
-myUser(user);
+});
 
 
-
-
-
-
-
-//==================================================== COMPOSING TYPES ====================================================
-/* 
-    You can create complex types using the Types keyword in typescript
-*/
-
-
-//---------------------------------- Unions
-/*
-      You can use unions to force a variable to only accept a 
-      specific value. The syntax for unions is using the 'OR' operator.
-*/
-
-
-//------- Variables
-type MyBool = true | false;
-type MyStr = 'closed' | 'open' | 'opening' | 'closing';
-type MyNum = 1 | 2 | 3 | 4 | 5;
-
-
-//------- Function arguments
-function getLength(obj: string | string[]) {     
-  typeof obj;                  //this will return the type of the argument
-}
-
-
-
-
-
-
-
-
-//---------------------------------- Generics
-/* 
-      You can use genetics to force an array to only accept a value of a specific type
-*/
-
-
-
-//------- Arrays
-type StringArray = Array<string>;            //must be a real data type
-type NumberArray = Array<number>;
-
-
-
-//------- Interfaces
-interface Backpack<Type> {                  //interfaces can also have generics
-  add: (obj: Type) => void;                 //Type is just a placeholder
-  get: () => Type;
-}
-
-let stringBackpack: Backpack<string>;       //declaring an object with the data type 'Backpack', you must pass a real data type
-
-
-//------- Functions
-/* 
-      Generic functions have the following syntax, when calling the function
-      you must use <> to declare the static data type that the function will use
-*/
-function identity<T>(value: T): T {            
-  return value;
-}
-
-const result = identity<string>("Hello"); // result is typed as string
 
 
 

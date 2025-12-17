@@ -102,8 +102,6 @@ interface Backpack<T> {                  //interfaces can also have generics
 let stringBackpack: Backpack<string>;       //declaring an object with the data type 'Backpack', you must pass a real data type
 
 
-
-
 //---------------------------------- Types
 
 type open = 'closed' | 'open' | 'opening' | 'closing';      //variables of type 'open' will only accept the strings to the left
@@ -111,10 +109,18 @@ type open = 'closed' | 'open' | 'opening' | 'closing';      //variables of type 
 let isOpen : open = 'closed'; 
 
 
+
+
+
+
+
+
+
+
 //---------------------------------- Primitive types
 let example : string;
-let otherExample : number;
-let yetOtherExample : number | string;                  //Composing types
+let example : number;
+let example : number | string;                  //Composing types
 
 
 
@@ -125,8 +131,9 @@ type Bookmark = {
 }
 
 let myArr : Array<Bookmark> = [];
-let otherArr : Array<string> = [];
-let finalArr : string[] = [];
+let myArr : Array<string> = [];
+let myArr : Array<[string, number]> = [];                  //will only accept an array with 2 elements of a string value and a number value
+let myArr : string[] = [];
 
 
 //---------------------------------- Objects

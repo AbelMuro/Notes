@@ -102,13 +102,44 @@ interface Backpack<T> {                  //interfaces can also have generics
 let stringBackpack: Backpack<string>;       //declaring an object with the data type 'Backpack', you must pass a real data type
 
 
+
+// How to import and exports interfaces
+
+// Types.ts
+
+      export interface = {
+            name: string
+      }
+
+// index.ts
+
+      import type { Bookmark } from "./Types";
+      export type {Bookmark};
+
+
+
 //---------------------------------- Types
 
-type open = 'closed' | 'open' | 'opening' | 'closing';      //variables of type 'open' will only accept the strings to the left
+type myType = {
+      open: 'closed' | 'open' | 'opening' | 'closing'
+}
+type open = string;   
 
 let isOpen : open = 'closed'; 
 
 
+// How to import and exports types
+
+// Types.ts
+
+      export type = {
+            name: string
+      }
+
+// index.ts
+
+      import type { Bookmark } from "./Types";
+      export type {Bookmark};
 
 
 
@@ -208,7 +239,6 @@ myUser({                             //objects passed to the function above don'
       name: 'abel',
       id: 123
 });
-
 
 
 

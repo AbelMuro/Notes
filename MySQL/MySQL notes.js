@@ -34,7 +34,9 @@
 
 
 
-            HOW TO CREATE A DATABASE IN MYSQL WORKBENCH (the workbench should be used development purposes only)
+
+
+            -HOW TO CREATE A DATABASE IN MYSQL WORKBENCH (the workbench should be used development purposes only)
 
                 0) Keep in mind that Mysql must be running on the local machine.
                     windows - open services.msc and start MYSQL80 
@@ -53,7 +55,85 @@
                 5) A list of all the data in the schema will be displayed
 
 
-            HOW TO CREATE A SQL DATABASE IN AWS RDS
+
+
+
+
+
+
+            -HOW TO DEPLOY A MYSQL DATABASE WITH AIVEN
+
+                1) Log into Aiven and go to the console
+
+                2) Click on create service on the top right corner
+
+                3) Select MySQL and fill out the appropriate fields
+
+                4) Open up the MySQL service and make sure that its running
+
+                5) Go to Connection Information and get the host, port, database name, ca.pem file, etc...
+                   and update your node.js app with the following code...
+
+                            const pool = mysql.createPool({
+                                host: 'aiven host',
+                                port: 'aiven port',
+                                user: 'aiven username',                   
+                                password: 'aiven password',                        // Use the password that you entered when you installed mySQL
+                                database: 'aiven database',                        // The name of the schema/database
+                                connectionLimit: 10,
+                                ssl: {
+                                    rejectUnauthorized: true,
+                                    ca: fs.readFileSync(path.join(__dirname, '../SSL/ca.pem'))
+                                }
+                            });
+
+                6) Open up MySQL workshop and create a new connection
+
+                7) Use the connection information that you got from step 5 and put it
+                   in the new connection, also dont forget about the ca.pem file
+
+                8) Click on test connection
+
+                9) Now you can create the tables and columns for the database
+
+
+
+
+
+
+
+
+
+            -HOW TO MIGRATE A DATABASE USING MYSQL WORKBENCH
+
+                1) Go to mySQL workbench and open up the connection/database that you want to migrate
+
+                2) Click on Server -> Data Export
+
+                3) Select the schemas that you want to export
+
+                4) Select Dump structure and data
+
+                5) Select Export to self contained file and choose a location for the file
+
+                6) Click on Start Export. This will save the .sql file in your pc
+
+                7) NEXT go to the connection/database where the migration will occur.
+
+                8) Select 'import from self contained file' and find the file that was exported in step 5
+
+                9) select dump structure and data
+
+                10) Click on Start Import
+                
+
+
+
+
+
+
+
+            -HOW TO CREATE A SQL DATABASE IN AWS RDS
 
                     1) Go to the AWS console and click on Aurora and RDS
 

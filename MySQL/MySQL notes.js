@@ -350,7 +350,8 @@ DELETE FROM table_name WHERE column_three = 5;
 
             2) In your 'db.js' file, write the following lines of code
     
-                    const mysql = require('mysql2');
+                    const mysql = require('mysql2 or mysql2/promise');      
+                    
     
                     const pool = mysql.createPool({
                           host: '',                            // Go to Administration -> Users and privileges -> select a user and host

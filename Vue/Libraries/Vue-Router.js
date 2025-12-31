@@ -5,22 +5,31 @@
 
       INITIALIZING VUE ROUTER
 
-            npm install vue-router@4
+           1) npm install vue-router@4
+            
 
-            import {createWebHistory, createRouter} from 'vue-router';
-            import Home from './Pages/Home';
-            import AboutUs from './Pages/'
-            
-            const router = createRouter({
-                history: createWebHistory(),                        //this will save the URL endpoint of every route, and display it in the URL
-                routes: [
-                    {path: '/', component: Home},
-                    {path: '/aboutus', component: AboutUs}
-                ],
-            })
-            
-            app.use(router);
-            app.mount('#root');  
+           2) Paste the following lines of code in your index.js file
+           
+                  import {createWebHistory, createRouter} from 'vue-router';
+                  import Home from './Pages/Home';
+                  import AboutUs from './Pages/'
+                  
+                  const router = createRouter({
+                      history: createWebHistory(),                        //this will save the URL endpoint of every route, and display it in the URL
+                      routes: [
+                          {path: '/', component: Home},
+                          {path: '/aboutus', component: AboutUs}
+                      ],
+                  })
+                  
+                  app.use(router);
+                  app.mount('#root');  
+
+            3) In you App.vue file, make sure you use the RouterView component
+
+                  <template>
+                      <RouterView/>
+                  </template>
       
 */
 

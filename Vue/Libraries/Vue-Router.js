@@ -161,7 +161,9 @@ const router = createRouter({
       You can create dynamic routes by using a colon :
       You can access the current dynamic route by using useRouter()
 
-            const router = useRouter();
+            import {useRoute} from 'vue-router';
+
+            const router = useRoute();
             router.params.id;
 */
 

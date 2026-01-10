@@ -7,6 +7,18 @@
     in a global state
 */
 
+
+//------- cookie-parser
+/* 
+	you need to install cookie-parser and use it on your index.js
+*/
+const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies
+app.use(cookieParser())
+
+
+
+
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 

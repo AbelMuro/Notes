@@ -8,7 +8,7 @@ app.use(cookieParser())
 
 router.delete('/logout', (req, res) => {
     try{
-        res.cookie('accessToken', null);
+        res.clearCookie('accessToken');
         res.status(200).send('User has successfully logged out');
     }
     catch(error){

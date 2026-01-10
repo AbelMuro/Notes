@@ -3,6 +3,15 @@
 	  We can access account data using JSON web tokens and HTTP-only cookies
 */
 
+//------- cookie-parser
+/* 
+	you need to install cookie-parser and use it on your index.js
+*/
+const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies
+app.use(cookieParser())
+
+
+
 
 app.get('/account', async (req, res) => {
      const JWT_SECRET = 'my secret key goes here'; 

@@ -1,3 +1,11 @@
+//------- cookie-parser
+/* 
+	you need to install cookie-parser and use it on your index.js
+*/
+const cookieParser = require('cookie-parser');                //npm install cookie-parser, this will parse all cookies
+app.use(cookieParser())
+
+
 router.delete('/logout', (req, res) => {
     try{
         res.cookie('accessToken', null);

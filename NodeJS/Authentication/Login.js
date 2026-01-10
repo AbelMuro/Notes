@@ -22,6 +22,6 @@ app.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign({email: email, otherAccountData: {}}, JWT_SECRET);			// 3) we create a JSON web token and store the account data in it	
-    res.cookies('accessToken', token, {httpOnly: true, secure: true, sameSite: 'None'});	// 4) we can use http-only cookies to securely store the json web token
+    res.cookie('accessToken', token, {httpOnly: true, secure: true, sameSite: 'None'});	// 4) we can use http-only cookies to securely store the json web token
     res.status(200).send('User has successfully logged in');					            // 5) or we can send the token to the front-end to be stored in some global state
 })

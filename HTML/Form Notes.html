@@ -153,7 +153,7 @@
             
 
             
-            <!-- PASSWORD INPUTS-->                                                                <!-- ::-ms-reveal{}  is a pseudo element that lets you style the visibility button in password inputs -->
+            <!-- PASSWORD INPUTS-->                                                                
             <fieldset> 
                 <label for='password'>
                     Enter Password
@@ -162,11 +162,14 @@
             </fieldset>
 
             <!-- 
-                you can also use the following pattern value
 
-                pattern='(?=.*[a-zA-Z]) (?=.*\d) (?=.*[!@#$%^&*]).{8,}'            //remember to delete the spaces here
-
-                this will make sure that the user must enter a letter, a number and a symbol, and password must have a length of 8 characters
+                
+                 pattern='(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}'            //this will make sure that the user must enter a letter, a number and a symbol, and password must have a length of 8 characters
+            
+                 input[type='password']::-ms-reveal,                              //this is a pseudo element that lets you style the visibility button in password inputs  
+                 input[type='password']::-ms-clear{
+                     display: none !important
+                }
             -->
 
 

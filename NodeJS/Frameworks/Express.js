@@ -144,12 +144,33 @@
 
 
 
+//================================================ REAL-URL ROUTES ================================================
+/* 
+	You can create a route that serves an image to the front end that uses an img tag
+*/
+
+router.get('/image', async (req, res) => {
+    try{
+		const account = getAccountFromDatabase();
+
+        const imageData = account.imageData;
+        const mimeType = imageData.mime_type;
+        const data = imageData.data;				//this will be the buffer property from the req.file object
+
+        res.set('Content-Type', mimeType);
+        res.send(data)  
+    }
+    catch(error){
+        const message = error.message;
+        console.log(message);
+        res.status(500).send(message);
+    }
+});
 
 
+//---------- Front end
 
-
-
-
+<img src="http://localhost:4000/image"/>
 
 
 
@@ -188,7 +209,7 @@
 
 
 
-//======================================================= HTTPS SERVER============================================================================
+//======================================================= HTTPS SERVER ============================================================================
 
 /* 
         The https module can enabled you to run your express app with HTTPS

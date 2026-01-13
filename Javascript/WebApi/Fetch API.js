@@ -87,7 +87,7 @@ promise
 /* 
 	When we get a file from a form and store in FormData(), the file is stored as a Blob(binary large object) and then send to the back end
 
-	Look at your node.js notes, more specifically, look at the 'multer' module notes
+	Look at your node.js notes, more specifically, look at the 'multer' module notes on how to save image data in a database
 */
 
 const email = e.target.elements.email.value;

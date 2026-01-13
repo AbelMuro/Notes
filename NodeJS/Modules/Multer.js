@@ -1,7 +1,7 @@
 //---------------------------------------- MULTER MODULE ----------------------------------------
 /* 
 	Multer module is used for uploading files from the front-end
-	(look at the Fetch API notes on how to send files from the front-end with a fetch request)
+	(look at your 'express' notes for REAL-URL ROUTE on how to send the image file from the database to the front end)
 
 	You can use the multer module to get a file(image) from the front end
  	and store it as a buffer in memory.

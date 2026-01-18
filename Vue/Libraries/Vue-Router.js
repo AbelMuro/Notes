@@ -166,8 +166,22 @@ const router = createRouter({
 
 
 
+//-------------------- useRoute()
+/* 
+      You can use the useRoute() hook to get the info of the URL
+*/
 
+<script setup>
+      import {useRoute} from 'vue-routers';
 
+      const route = useRoute();
+
+      route.path;            /* /account/settings                 */
+      route.fullPath;        /* /dashboard/settings?tab=profile   */
+      route.params;          /* dynamic params */
+      route.query;            /* query string object */
+</script>
+          
 
           
 //-------------------------------- Components -------------------------------- 

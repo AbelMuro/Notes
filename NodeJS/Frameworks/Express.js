@@ -172,6 +172,12 @@ router.get('/image', async (req, res) => {
 
 <img src="http://localhost:4000/image"/>
 
+<img :src="`http://localhost:4000/image?cache=${Date.now()}`">  
+/*
+	using the cache parameter will ensure that the browser doesnt rely on
+	the cache to display the image, this is particularly useful when the
+	user updates their photo in their account
+*/
 
 
 

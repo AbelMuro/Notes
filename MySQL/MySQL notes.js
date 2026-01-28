@@ -447,16 +447,34 @@ DELETE FROM table_name WHERE column_three = 5;
 /* 
     You can insert new data into a database using the INSERT INTO command with the .execute() method
 
-    syntax:
+            syntax:
+        
+                    INSERT INTO table-name (first-column-name, second-column-name) VALUES (?, ?), (?, ?)
+        
+                    VALUES = data can be inserted inside an array, the array is passed to the second argument
+                             of .execute()
+        
+                    VALUES(?, ?) = ['email', 'password'];
+        
+                    VALUES (?, ?), (?, ?) = ['email', 'password', 'email', 'pasword']
 
-        INSERT INTO table-name (first-column-name, second-column-name) VALUES (?, ?), (?, ?)
+            Return values: 
+            
+                results = {
+                      fieldCount: 0,          //number of columns that were selected by the query
+                      affectedRows: 1,        //number of rows that were deleted/updated somehow
+                      insertId: 42,           //id that identifies the action performed by the .execute method()
+                      serverStatus: 2,        //the status of the server
+                      warningCount: 0,        //the number of warnings
+                      message: '',            //status message from the server
+                      protocol41: true,       //indicates the protocol version that the server is using
+                      changedRows: 0,         //number of rows that were updated
+                    }; 
 
-            VALUES = data can be inserted inside an array, the array is passed to the second argument
-                     of .execute()
 
-            VALUES(?, ?) = ['email', 'password'];
-
-            VALUES (?, ?), (?, ?) = ['email', 'password', 'email', 'pasword']
+            Error Codes: 
+            
+                err.code = 'ER_DUP_ENTRY'      //the specific column already has the specified value
 */
 
 
@@ -467,24 +485,19 @@ DELETE FROM table_name WHERE column_three = 5;
         'INSERT INTO accounts (email, password) VALUES (?, ?)', 
         [email, password], 
         (err, results) => {
-                err.code = 'ER_DUP_ENTRY'  //the specific column already has the specified value
-                
-                results = {
-                  fieldCount: 0,          //number of columns that were selected by the query
-                  affectedRows: 1,        //number of rows that were deleted/updated somehow
-                  insertId: 42,           //id that identifies the action performed by the .execute method()
-                  serverStatus: 2,        //the status of the server
-                  warningCount: 0,        //the number of warnings
-                  message: '',            //status message from the server
-                  protocol41: true,       //indicates the protocol version that the server is using
-                  changedRows: 0,         //number of rows that were updated
-                }; 
+           
         });
 
 // --------------------------- Promise based
-    const [results] = await db.execute(
-        'INSERT INTO accounts (email, password, name) VALUE (?, ?, ?)',
-        [email, password, name]);
+    try{
+        const [results] = await db.execute(
+            'INSERT INTO accounts (email, password, name) VALUE (?, ?, ?)',
+            [email, password, name]);
+    }
+    catch(error){
+        const message = error.code;
+    }
+
 
 
 
@@ -509,9 +522,24 @@ DELETE FROM table_name WHERE column_three = 5;
 /* 
     You can update data in a database by using the UPDATE command with the .execute() method
 
-    syntax: 
+        syntax: 
+    
+            UPDATE table-name SET column-name = ? WHERE other-column-name = ?
+    
+        Return Values: 
+    
+                results = {
+                      fieldCount: 0,          //number of columns that were selected by the query
+                      affectedRows: 1,        //number of rows that were deleted/updated somehow
+                      insertId: 42,           //id that identifies the action performed by the .execute method()
+                      serverStatus: 2,        //the status of the server
+                      warningCount: 0,        //the number of warnings
+                      message: '',            //status message from the server
+                      protocol41: true,       //indicates the protocol version that the server is using
+                      changedRows: 0,         //number of rows that were updated
+                    }; 
 
-        UPDATE table-name SET column-name = ? WHERE other-column-name = ?
+    
 */
 
 
@@ -522,22 +550,21 @@ DELETE FROM table_name WHERE column_three = 5;
         'UPDATE accounts SET password = ? WHERE email = ?', 
         ['newpassword', 'email'],
         (err, results) => {
-                results = {
-                  fieldCount: 0,          //number of columns that were selected by the query
-                - affectedRows: 1,        //number of rows that were deleted/updated somehow
-                  insertId: 42,           //id that identifies the action performed by the .execute method()
-                  serverStatus: 2,        //the status of the server
-                  warningCount: 0,        //the number of warnings
-                  message: '',            //status message from the server
-                  protocol41: true,       //indicates the protocol version that the server is using
-                  changedRows: 0,         //number of rows that were updated
-                }; 
+            
         });
 
 // --------------------------- Promise based
-        const results = await db.execute(
+
+    try{
+        const [results] = await db.execute(
             'UPDATE accounts SET reset_token = ?, reset_token_expiration = ? WHERE email = ?',
-            [resetPasswordToken, resetPasswordExpires, email])    
+            [resetPasswordToken, resetPasswordExpires, email])   
+    }
+    catch(error){
+        const code = error.code;
+        
+    }
+ 
 
 
 
@@ -555,21 +582,15 @@ DELETE FROM table_name WHERE column_three = 5;
 /* 
     You can delete data from a database using the DELETE FROM command with the .execute() method.
 
-    syntax: 
+        syntax: 
+    
+             DELETE FROM table-name WHERE column-name = ?
 
-         DELETE FROM table-name WHERE column-name = ?
+        Return Values: 
 
-*/
-
-    const db = require('./db.js');
-
-    db.execute(
-        'DELETE FROM accounts WHERE email = ?', 
-        ['someEmail@gmail.com'], 
-        (err, results) => {
-                results = {
+            results = {
                   fieldCount: 0,          //number of columns that were selected by the query
-                - affectedRows: 1,        //number of rows that were deleted/updated somehow
+                  affectedRows: 1,        //number of rows that were deleted/updated somehow
                   insertId: 42,           //id that identifies the action performed by the .execute method()
                   serverStatus: 2,        //the status of the server
                   warningCount: 0,        //the number of warnings
@@ -577,11 +598,30 @@ DELETE FROM table_name WHERE column_three = 5;
                   protocol41: true,       //indicates the protocol version that the server is using
                   changedRows: 0,         //number of rows that were updated
                 }; 
+
+*/
+
+
+// --------------------------- Callback based
+    const db = require('./db.js');
+
+    db.execute(
+        'DELETE FROM accounts WHERE email = ?', 
+        ['someEmail@gmail.com'], 
+        (err, results) => {
         });
 
 
 
-
+// --------------------------- Promise based
+    try{
+        const [results] = await db.execute(
+            'DELETE FROM accounts WHERE email = ?',
+            [email])   
+    }
+    catch(error){
+        const code = error.code;
+    }
 
 
 

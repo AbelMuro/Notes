@@ -30,13 +30,22 @@
 		    subject: 'Reset Link for Note-taking app',
 		    text: `Please click on the following link to reset your password ${resetPasswordLink}`    //you can either use html or text here
 		}
-	
+
+
+		// ------------------ Callback Based
 		transporter.sendMail(mailOptions, (error, info) => {
 		    if(error){
-			res.status(401).send(error.message);
-			return;
+				res.status(401).send(error.message);
+				return;
 		    }
 		    
 		    res.status(200).send('Email sent successfully');
 		})
+
+
+		// ------------------ Promised Based
+		await transporter.sendMail(mailOptions);		//this method will automatically throw an error
+		
+		res.status(200).send('Email sent successfully');	
+		
 	})

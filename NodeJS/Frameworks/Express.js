@@ -149,6 +149,8 @@
 	You can create a route that serves an image to the front end that uses an img tag
 */
 
+//------------------- Back end
+
 router.get('/image', async (req, res) => {
     try{
 		const account = getAccountFromDatabase();
@@ -168,16 +170,35 @@ router.get('/image', async (req, res) => {
 });
 
 
-//---------- Front end
+//------------------- Front end
 
-<img src="http://localhost:4000/image"/>
-
-<img :src="`http://localhost:4000/image?cache=${Date.now()}`">  
 /*
-	using the cache parameter will ensure that the browser doesnt rely on
-	the cache to display the image, this is particularly useful when the
-	user updates their photo in their account
+	You can directly call the real-url route via the src attribute of a img tag
 */
+<img src="http://localhost:4000/get_image"/>
+
+
+	
+/* 
+	You can also make a fetch request to the real-url route 
+
+	(using the cache parameter will ensure that the browser doesnt rely on
+	the cache to display the image, this is particularly useful when the
+	user updates their photo in their account)
+*/
+
+const getImage = async () => {
+	const response = await fetch(`http://localhost:4000/get_image?cache=${Date.now()}`, {method: 'GET'});
+	const imageData = await response.blob();
+	const imageSrc = URL.createObjectURL(imageData);	//you can assign the imageSrc variable to an img tag via the src attribute
+} 
+
+
+
+
+
+
+	
 
 
 

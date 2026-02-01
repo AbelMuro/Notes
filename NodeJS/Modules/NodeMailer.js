@@ -28,7 +28,11 @@
 		    from: process.env.email,
 		    to: email,
 		    subject: 'Reset Link for Note-taking app',
-		    text: `Please click on the following link to reset your password ${resetPasswordLink}`    //you can either use html or text here
+		    text: `Please click on the following link to reset your password ${resetPasswordLink}`,    //you can either use html or text here
+			html: `
+			    <h1 style="color: #4A90E2;">Hello Abel</h1>
+			    <p>Thanks for signing up. You're awesome.</p>
+			  `
 		}
 
 

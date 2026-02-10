@@ -176,20 +176,21 @@
 
                     9) On the Connectivity & Security tab, copy the Endpoint URL
 
+
                     10) You can open up workbench and create a new connection that connects to the database created in AWS RDS
                         At this point, you will need to create a schema for queries
 
-                                hostname: endpoint url
+                                hostname: 'endpoint url'
     
                                 port: 3306
     
-                                username: the username that you used when you created the database
+                                username: 'the username that you used when you created the database'
     
-                                password: the password that you used when you created the database
-
-                    11) To create queries in a node.js app, you will need to use the endpoint as the hostname
+                                password: 'the password that you used when you created the database'
+    
+                     11) To create queries in a node.js app, you will need to use the endpoint as the hostname
                         and the username and password that you specified when you created the database
-
+    
                                 const pool = mysql.createPool({
                                       host: '',                            // endpoint url
                                       user: '',                            // username of the database in AWS RDS
@@ -197,6 +198,20 @@
                                       database: '',                        // The name of the schema/database
                                       connectionLimit: 10,                
                                 });    
+
+                     12) Exporting database from Workbench and importing database into AWS
+
+                            -If you have been using MySQL workbench to design a database, you can export a 
+                            schema by doing the following steps
+                            
+                                1) Connect to the database that you want to export in workbench
+        
+                                2) Click on Database on the top left corner
+        
+                                3) Click on Schema Transfer Wizard
+        
+                                4) Follow the steps to transfer the schema to AWS RDS
+                        
 */    
 
 

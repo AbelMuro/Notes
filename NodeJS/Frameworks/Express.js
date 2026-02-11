@@ -147,6 +147,8 @@
 //================================================ REAL-URL ROUTES ================================================
 /* 
 	You can create a route that serves an image to the front end that uses an img tag
+
+	KEEP IN MIND, this method will not work in a serverless environment (AWS lambda, Netlify functions, etc...)
 */
 
 //------------------- Back end

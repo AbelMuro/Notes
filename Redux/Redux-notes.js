@@ -129,26 +129,31 @@
 
             INTEGRATING TYPESCRIPT WITH REDUX
 
-                        1) In your store.js file, update the following lines of code
+                        1) In your store.tsx file, update the following lines of code
 
-                                    import {configureStore} from '@reduxjs/toolkit';
-                                    import rootReducer from './Reducers';
+                                    import { configureStore } from "@reduxjs/toolkit";
+                                    import {useDispatch, TypedUseSelectorHook, useSelector} from 'react-redux';
+                                    import rootReducer from "./Reducers";
                                     
-                                    const store = configureStore({
-                                        reducer: rootReducer,
+                                    const Store = configureStore({
+                                        reducer: rootReducer
                                     });
                                     
-                                    export type RootState = ReturnType<typeof store.getState>;
-                                    export type TypedDispatch = typeof store.dispatch;
-                                    export default store;
+                                    type RootState = ReturnType<typeof Store.getState>;
+                                    type TypedDispatch = typeof Store.dispatch;
+                                    
+                                    const useTypedDispatch = () => useDispatch<TypedDispatch>();
+                                    const useTypedSelector : TypedUseSelectorHook<RootState> = useSelector;
+                                    
+                                    export {useTypedDispatch, useTypedSelector};
+                                    export default Store;
 
                         2) In your index.js file, update the following lines of code
 
-                                    import store from './Store';
-                                    import type {RootState, TypedDispatch} from './Store';
+                                    import Store, {useTypedDispatch, useTypedSelector} from './Store.tsx';
                                     
-                                    export {RootState, TypedDispatch};
-                                    export default store;
+                                    export {useTypedDispatch, useTypedSelector}
+                                    export default Store;
 
                         3) In your reducer, make sure to create cases similar to the one below
                                     import { PayloadAction } from '@reduxjs/toolkit'
@@ -160,21 +165,11 @@
 
                         3) useTypedSelector();
 
-                                     import {RootState} from '../../Store';
-                                     import {TypedUseSelectorHook, useSelector} from 'react-redux';
-                                     
-                                     const useTypedSelector : TypedUseSelectorHook<RootState> = useSelector;
-
                                     function App() {
                                           const open = useTypedSelector<boolean>(state => state.popup.open);
                                     }
 
                         4) useTypedDispatch();
-
-                                    import { useDispatch} from "react-redux";
-                                    import {TypedDispatch} from '../../Store';
-                                    
-                                    const useTypedDispatch = () => useDispatch<TypedDispatch>();
 
                                     function App() {
                                         const dispatch = useTypedDispatch();

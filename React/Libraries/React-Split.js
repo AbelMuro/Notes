@@ -23,6 +23,7 @@ function Example() {
 
 /* 
     //you must define the following class selectors to make the bar visible
+    // you may need to use positional properties to place the gutter in the Split component
 
     .gutter {
         background-color: var(--gutter);                

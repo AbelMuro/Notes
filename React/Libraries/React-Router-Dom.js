@@ -356,24 +356,26 @@ function App() {
 
         
 
-//------------------------------------- block.status
+//------------------------------------- block.state
 /* 
-        The status property has two possible values, idle and blocked. Initially, the status will always
+        The state property has two possible values, idle and blocked. Initially, the status will always
         be idle, but if navigation is blocked, then the status will change into 'blocked' if the user
         tries to navigate away from the current page. A change in this property will cause a re-render,
         and should be used to handle blocked navigation.
 */
 
-function App() {
+function useBlockNavigation() {
         const block = useBlocker(true);
 
         useEffect(() => {
-                if(block.status !== 'blocked') return;
-        
-                const confirmed = confirm('Are you sure you want to leave? You will forfeit the match in doing so');
-                if(confirmed)
-                    block.proceed();                        
-                else        
-                    block.reset();      
-        }, [block.status])
+             if(block.state !== 'blocked') return;
+ 
+             const confirmed = confirm('Are you sure you want to leave? You will forfeit the match in doing so');
+             if(confirmed)
+                 block.proceed();                        
+             else        
+                 block.reset();      
+        }, [block.state])
+
+       return block
 }

@@ -93,7 +93,13 @@
 
 
 
-//---------------------------------- Interfaces
+
+
+
+
+
+
+//------------------------------------------------- Interfaces
 interface Backpack<T> {                  //interfaces can also have generics
   add: (obj: T) => void;                 //add() method will accept an argument of type string
   get: () => T;                          //get() method will return a string
@@ -118,7 +124,14 @@ let stringBackpack: Backpack<string>;       //declaring an object with the data 
 
 
 
-//---------------------------------- Types
+
+
+
+
+
+
+
+//------------------------------------------------ Types
 
 type myType = {
       open: 'closed' | 'open' | 'opening' | 'closing'
@@ -142,12 +155,6 @@ let isOpen : open = 'closed';
       export type {Bookmark};
 
 
-
-
-
-
-
-
 //---------------------------------- Primitive types
 let example : string;
 let example : number;
@@ -167,20 +174,25 @@ let myArr : Array<[string, number]> = [];                  //will only accept an
 let myArr : string[] = [];
 
 
+
+
 //---------------------------------- Objects
 /* 
    You can use interfaces to statically type an object. 
    The object created from the interface must have the 
    same property names and data types as the interface
 */
+
 type User {
   name: string;
   id: number;
+  [key: string] : number;            //this syntax can represent any property name 
 }
 
 const user: User = {
   name: 'abel',        //must be 'name'
-  id: 123              //must be 'id'
+  id: 123,              //must be 'id'
+  anyProperty: 2        //can be any and many properties
 }
 
 

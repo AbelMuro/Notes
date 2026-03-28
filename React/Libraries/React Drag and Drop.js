@@ -41,7 +41,7 @@ function App () {
 
 
 function Pawn() {                                              
-    const [collect, drag] = useDrag({
+    const [collect, drag] = useDrag({            // collect = {isDragging}
         type: 'piece',
         item: () => ({
             name: 'name that identifies the item being dragged'

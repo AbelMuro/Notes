@@ -64,7 +64,7 @@ function Pawn() {
 
 
     return(
-        <div style={isDragging ? {opacity: 0} : {opacity: 1}} ref={drag}>
+        <div style={isDragging ? {opacity: 0} : {opacity: 1}} ref={(ref) => {drag(ref)}}>
         </div> 
     )
 }
@@ -103,7 +103,7 @@ function Squares() {
 
 
     return(
-        <div ref={drop}> 
+        <div ref={(ref) => {drop(ref)}}> 
         </div> 
     )
 }

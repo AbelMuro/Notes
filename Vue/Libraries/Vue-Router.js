@@ -137,6 +137,9 @@ const router = createRouter({
 
           router.push()                        // push() will navigate to a different route
           router.params.nameOfDynamicRoute     // params has access to the dynamic parameters of the URL
+          router.beforeEach((to, from, next) => { //method that is called before the user navigates to a different route
+              next()                               // 'to' and 'from' have the same properties as useRoute()
+          })
 */
   
 <script setup>

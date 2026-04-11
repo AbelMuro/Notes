@@ -20,8 +20,8 @@
             
                   compilerOptions: {
                       "paths": {
-                        "~/*": ["./*"],
-                        "!/*": ["Pages/Home/*"]            //this will resolve to ./src/Pages/Home/*
+                        "~/*": ["./src/*"],
+                        "!/*": ["./src/Pages/Home/*"]            //this will resolve to ./src/Pages/Home/*
                       }             
                   }
 

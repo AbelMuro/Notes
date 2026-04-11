@@ -19,11 +19,10 @@
             2) In your tsconfig.js file, add the following lines of code
             
                   compilerOptions: {
-                        "baseUrl": "./src",
-                            "paths": {
-                              "~/*": ["*"]
-                              "!/*": ["Pages/Home/*"]            //this will resolve to ./src/Pages/Home/*
-                            }             
+                      "paths": {
+                        "~/*": ["./*"],
+                        "!/*": ["Pages/Home/*"]            //this will resolve to ./src/Pages/Home/*
+                      }             
                   }
 
             3) npm install @babel/preset-typescript and update your webpack.config.js file again

@@ -219,17 +219,30 @@ myUser({                             //objects passed to the function above don'
 
 //==================================================== EVENT TYPES ====================================================
 /* 
-      Typescript also supports event types that can be used in event handlers
+      The real DOM has a list of built-in Event Types that can be used in
+      event handlers. 
+
+      Some libraries like React have their own Event types that must be used if
+      the event handler is assigned to a JSX element
 */
 
-import {ChangeEvent} from 'react';
+const handleClick = (e: ClickEvent<HTMLDivElement>) => {
+       e.target;
+}
 
-const handleClick = (e: ChangeEvent<HTMLInputElement>) => {
+const handleChange = (e: ChangeEvent<HTMLInputElement>){
       e.target;
 }
 
 
+const handleSubmit = (e: SubmitEvent) => {
+        e.preventDefault();
+        const form = e.target as HTMLFormElement;
+        const title = form.elements.namedItem('title') as HTMLInputElement;
+        const content = form.elements.namedItem('content') as HTMLTextAreaElement;
+        const category = form.elements.namedItem('category') as HTMLSelectElement;
 
+}
 
 
 

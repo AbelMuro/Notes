@@ -644,7 +644,16 @@
 
 <!-- Child Component -->
 <script setup>
-    const {message} = defineProps({message: String});              // build in function in Vue
+    import {PropType} from 'vue';
+        
+    const {message} = defineProps({
+                message: String,
+                messageTwo: {
+                        type: String,
+                        required: true
+                },
+                someFunction : Function as PropType<(payload: PointerEvent) => void>
+        });              
 </script>
 
 <template>
@@ -670,7 +679,7 @@
 
 <template>
     <ChildComponent>
-            <div> hello world </div>        //this is the content that will be passed to the child component as child props
+            <div> hello world </div>        //this is the content that will be passed in the child component as child props
     </ChildComponent>
 </template>
 
@@ -685,7 +694,7 @@
         Goodbye world
     </div>
     <slot>
-        Hello world                   // this is fallback content, will be replaced by child props
+        Hello world                   // this is fallback content, will be replaced by <div> hello world </div>
      </slot>
 </template>
 

@@ -23,6 +23,8 @@
 	    const {username, email, password} = req.body;	
 	    const image = req.file;					    
 		/* 
+			You can upload an image to MySQL using the following file properties
+		
 		  req.file = {
 			fieldname,			The name of the form field <input name='image'>
 			originalname,			The original name of the uploaded file

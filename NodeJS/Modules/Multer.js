@@ -31,7 +31,7 @@
 			encoding,			The encoding type (7bit or base64)
 			mimetype,			The file's MIME type (e.g., 'image/png', 'image/jpeg')
 			size,				The size of the file in bytes
-			buffer,				The raw binary data as an object
+			buffer,				The raw binary data as an object (this property must be assigned to a SQL column that accepts BLOB objects)
 		    }
 		*/
 	});

@@ -54,7 +54,6 @@
 
 
 
-
 //------------------------------------------------- Interfaces
 interface Backpack<T> {                  //interfaces can also have generics
   add: (obj: T) => void;                 //add() method will accept an argument of type string
@@ -62,21 +61,6 @@ interface Backpack<T> {                  //interfaces can also have generics
 }
 
 let stringBackpack: Backpack<string>;       //declaring an object with the data type 'Backpack', you must pass a real data type
-
-
-
-// How to import and exports interfaces
-
-// Types.ts
-
-      export interface = {
-            name: string
-      }
-
-// index.ts
-
-      import type { Bookmark } from "./Types";
-      export type {Bookmark};
 
 
 
@@ -97,18 +81,32 @@ type open = string;
 let isOpen : open = 'closed'; 
 
 
-// How to import and exports types
+
+
+//-------------------------------- How to import and exports types
 
 // Types.ts
 
-      export type = {
+      export type MyType = {
             name: string
       }
 
+      type OtherType = {
+            name: string
+      }
+
+      export default OtherType;
+
 // index.ts
 
-      import type { Bookmark } from "./Types";
+      import type OtherInterface from './Types';
+      import type { MyInterface } from "./Types";
+
+      export default OtherInterface;
       export type {Bookmark};
+
+
+
 
 
 //---------------------------------- Primitive types

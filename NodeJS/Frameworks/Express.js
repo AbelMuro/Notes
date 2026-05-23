@@ -130,7 +130,7 @@
     })
 
     // 'delete' request
-    app.delete('/account/:id/:type', (req, res) => {
+    app.delete('/account/:id/:type', (req, res) => {	         // fetch(`www.url.com/account/${id}`)
         const id = req.params.id;						        // req.params is used to get the parameters of the route URL
         const type = req.params.type;
         res.send('data has been deleted')

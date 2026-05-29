@@ -20,7 +20,9 @@
                   The event reaches the target element.
                   addEventListeners on the target fire (regardless of capture/bubble setting).
 */
-                      document.addEventListener("click", () => {}); 
+                      document.addEventListener("click", (e) => {
+                          e.target;                              //this will return the element that was clicked on (the target element)
+                      }); 
 
 
 /* 

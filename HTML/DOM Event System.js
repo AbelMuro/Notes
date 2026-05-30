@@ -22,6 +22,8 @@
 */
                       document.addEventListener("click", (e) => {
                           e.target;                              //this will return the element that was clicked on (the target element)
+                          e.target.closest('.className');        //this will return a boolean value indicating if the target is either '.className' or any of its descendants
+                          e.target.classList.contains('.className');       //self explanatory          
                       }); 
 
 

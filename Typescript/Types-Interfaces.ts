@@ -16,6 +16,7 @@ type customDataType = {
       m: string | number,                //either string or a number value are acceptable
       [key: string] : number,            //this syntax can represent any property name 
       list: Array<string>,               //value must be an array of strings
+      method: (value : string) => number //accepts the function with the following signature 
 }
 
 interface customDataType = {

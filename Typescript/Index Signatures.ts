@@ -11,3 +11,14 @@
 type x = {
   [key : string] : string                  // [key: string] can represent any property name
 }
+
+
+type x = Record<string, number>            // this means [key: string] : number
+
+
+
+// if you want to restrict the property names for an object, you can do the following
+
+type names = 'carlos' | 'david' | 'mark' | 'stefan';
+
+type x = Record<names, string>;

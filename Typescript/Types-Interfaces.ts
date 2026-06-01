@@ -2,9 +2,26 @@
                   TYPES and INTERFACES
                   
       Both keywords are used to statically type a custom data type to a variables/array/function
+      
+      Differences between types and interfaces
 
-      Types should be used if you need better manipulation of the properties for the custom data type
-      you can better decide which properties can be included based on some condition
+          - Interfaces can merge, but types can't
+
+              interface A { x: number }
+              interface A { y: number }           // A becomes { x: number; y: number }
+
+          - Interfaces can use the extend keyword to extend a data type, but types can't
+
+              interface A { x: number }
+              interface B extends A {y: string}   // B becomes { x: number, y: string}
+
+          - Types can use Unions, primites and tuples, but interfaces can't (at the top level)
+
+              type A = string | number
+              type A = string;
+              type A = (x: number) => void;
+              type A = Array<string>
+
 */
 
 
@@ -19,7 +36,7 @@ type customDataType = {
       method: (value : string) => number //accepts the function with the following signature 
 }
 
-interface customDataType = {
+interface customDataType {
       x: number,
       y: string,
       z?: string,                        //the question mark means that the property is optional

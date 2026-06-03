@@ -151,6 +151,7 @@ const router = createRouter({
         router.push('/home');
         router.push({      
               name: 'home',                  // only works if the route in createRouter has the same name
+              state: {id: 123}               // you can pass data to another component by using the state property (you must useRouter() and the state property to use this data)
               params: {                      // the following properties will update the original URL
                     id: ''
               },

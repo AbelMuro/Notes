@@ -211,7 +211,12 @@ const router = createRouter({
 */
 
 <template>
-    <RouterView/>            
+    <RouterView/>     
+
+    <RouterView :is="{Component}">                        /* You can also display a fallback UI if the RouterView is not currently being used*/
+        <component :is={Component}/>
+        <Fallback v-if={!Component}/>
+    <RouterView/>
 </template>
 
 

@@ -14,3 +14,13 @@
                         which can improve the performance and user experience of server-side rendering     
 
 */
+
+
+import ReactDOM, {hydrateRoot} 'react-dom/client';             //importing methods from built in packages in react
+import App from './components';
+
+const root = document.getElementById('root')                                 
+
+//For server-side rendering            
+const hydrateRoot = hydrateRoot(root);     // Create a root and attach React to the existing HTML
+hydrateRoot.render(<App />);

@@ -2,7 +2,17 @@
 /* 
             An action is an object that is sent to the reducer, the reducer will then use this object to update the state
             this will re-render all subscribed components 
+
+            The typical syntax for every action follows the following format.
+            
+               const action = {
+                   type: 'UPDATE_NAME',
+                   payload: 'new name'
+                }
 */
+
+
+
 
 //------------------- useDispatch() hook
 /* 
@@ -24,6 +34,9 @@ function App() {
         </button>
     )
 }
+
+
+
 
 
 

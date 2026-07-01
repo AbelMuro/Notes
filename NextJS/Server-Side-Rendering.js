@@ -3,10 +3,13 @@
                        Server side rendering is the process of rendering your application on the server and sending 
                        it to the client as fully rendered HTML pages 
                        
-                                1. First, we fetch data from the server for the entire application.                      
-                                2. Then we render the HTML for the entire application in the server and send it to the client
-                                3. Load javascript to the client for the entire application
-                                4. Then Hydrate the page for the entire application (rendering components and attaching event handlers)  
+                            1) The browser sends an HTTP request to the server.
+                            
+                            2) The server processes the request, fetches necessary data, and renders the HTML.
+                            
+                            3) The fully formed HTML is sent to the client, which displays it instantly.
+                            
+                            4) Optional JavaScript is then loaded by the browser to add interactivity (hydration) .
   
 
     For a page to use server side rendering, the file needs to export getServerSideProps() from the file

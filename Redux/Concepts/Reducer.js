@@ -1,10 +1,10 @@
 //================================================== REDUCER ==============================================
 /* 
-            The reducer is a function that uses action objects to mutate state data
-            reducer must be a pure function, meaning it must not change the state directly 
-            and must return a new state if change occured, but must return old state if no change occured
-            to make changes to the state object in the reducer, you want to make use of these array functions
-            that return an updated version of the array and doesnt mutate the original array
+            The reducer is a function within the Store that is responsible for updating the global state. The reducer will not 
+            mutate the global state directly, instead it will return a new global state. Redux will compare the new state with the 
+            old state, and if the states are different, then a re-render will occur. It is because of this reason the global state 
+            should never be mutated directly. If the global state is mutated directly within the global store and returned, Redux will 
+            compare the old state with the old state, as a result, Redux will not trigger a re-render.
 */
             import { createAction, createReducer } from '@reduxjs/toolkit'
             

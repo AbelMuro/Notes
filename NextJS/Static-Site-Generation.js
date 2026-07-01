@@ -4,12 +4,20 @@
          STATIC GENERATION is the pre-rendering method that generates the HTML at build time. The pre-rendered HTML is then re-used on each request.
          For a page to use static site generation, the file needs to export getStaticProps() from the file.
 
+                  1) The developer will compile the web app in a server 
+                     and the HTML will be generated during compile time
+
+                  2) The browser will then send a request to the server for the page
+
+                  3) The server will send the fully generated html and the javascript bundle to the browser
+
+                  4) The browser will then load (hydrate) the html with the javascript
+                     
+
          -Static-site generation should be used for web apps where the content doesn't change often, SEO matters, and the speed is everything
-         
-           1) When a page uses static site generation, Next.js will call getStaticProps() to retrieve some kind of data. 
-           
-           2) Once it has the data, it will be passed to the page as props. 
-         
+              
+         When a page uses static site generation, Next.js will call getStaticProps() to retrieve some kind of data.   
+         Once it has the data, it will be passed to the page as props.   
          This process only happens once, and it happens during build time.
 
          DO NOT USE REACT HOOKS OR CLASSES IN STATIC SITE GENERATION

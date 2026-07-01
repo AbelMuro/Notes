@@ -28,3 +28,20 @@ root.render(
         <App/>  
     </Provider>
 )
+
+
+// ------------------------ accessing the state from the store
+/* 
+            You can access the state from the store without subscribing 
+            the component that is using it. The store object that is 
+            returned from configureStore() has the getState() method
+            that retrieves the state.
+*/
+
+
+import {configureStore} from '@reduxjs/toolkit';
+
+const store = configureStore({reducer: myReducer});
+
+const state = store.getState();                                              //gets the complete state from the store
+const todos = store.getState(state => state.todos)                           //accessing a slice from the state

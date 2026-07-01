@@ -1,4 +1,30 @@
 
+//============================================= HTML DOCUMENT =============================================
+/* 
+      The page _document.js is used to modify the html document of your next.js application.
+
+          /pages/_document.js
+
+     All the following components should be used in the _document.js file
+*/
+
+import { Html, Head, Main, NextScript } from 'next/document';
+
+export default function Document() {
+      return (
+            <Html>
+              <Head />
+              <body>
+                <Main />
+                <NextScript />
+              </body>
+            </Html>
+      );
+}
+
+
+
+
 //--------------------------------------------- HTML COMPONENT ---------------------------------------------
 /* 
     Html component can be used to modify the <html/> tag in your html file

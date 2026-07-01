@@ -87,39 +87,6 @@ function HooksThree() {
     )                               
 }       
 
-//------------------------------------- MAPPING LIFECYCLE METHODS WITH USEEFFECT() -------------------------------------
-
-// Mounting Phase
-
-useEffect(() => {          //getDerivedStateFromProps()
-},[props.value]);
-
-useEffect(() => {          //componentDidMount()
-},[]);
-
-
-
-//updating phase
-
-useEffect(() => {          //getDerivedStateFromProps()
-},[props.value]);
-
-memo();                    //shouldComponentUpdate()
-
-useEffect(() => {          //componentDidUpdate()
-});
-
-useCustomHook(() => {      // getSnapshotBeforeUpdate()                  
-})                         // you would have to implement your own custom hook to replicate this lifecycle method
-
-
-//unmounting phase
-
-useEffect(() => {
-    const unmount = () => {}; //function must be defined and declared inside the local scope of the useEffect
-    return unmount;       //componentWillUnmount
-})
-
 
 
 

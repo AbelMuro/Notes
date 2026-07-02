@@ -62,3 +62,85 @@ export default useCounterStore;
 
 
 
+
+
+//========================================== ACCESSING/UPDATING THE STATE FROM THE STORE =====================================================
+/* 
+      There are two different ways of accessing the properties and actions of the store
+      You can use storeToRefs() or you can simply destructure the state within the single 
+      file component
+
+      -storeToRefs() will keep the reactivity of the state, causing a re-render of
+      the single file component
+
+      -Destructuring the state will lose the reactivity of the state, this will NOT
+      cause a re-render of the single file component
+
+            -USEFULL STORE METHODS
+
+                  const store = useCounterStore();
+                  
+                  store.$state = {count: 24};            // $state() will replace the entire state      
+                  store.$reset();                        // $reset() will reset all properties of the state to their initial value (this only works for options API stores)
+                  store.$onAction((action) => {          // $onAction() will return a function that can be called to remove the listener (onAction is an event listener)
+                        action.name;                     // name of the action
+                        action.store;                    // name of the store
+                        action.args;                     // arguments of the action
+                        action.after((result) => {});    // function that is called after the action resolves
+                        action.onError((error) => {});   // function that is called if an error was thrown
+                  }, true)                                   //the second argument of $onAction() specifies if the method should be kept even after the component has been unmounted
+                  store.$patch({                         // $patch() can be used to update multipe properties of the state     
+                        count: 2,
+                        age: 120,
+                        name: 'Carlos',
+                  });    
+                  store.$patch((state) => {              // $patch() can also accept a function for more complex logic
+                        state.count++;
+                        state.age = 1244;
+                        state.name = 'David';
+                  })
+                  store.$subscribe((mutation, state) => {  // $subscribe() is similar to watch() but it will only trigger once after $patch() is called with a callback
+                        mutation.type;                     // 'direct' | 'patch object' | 'patch function'
+                        mutation.storeId;                  // 'counter'
+                        mutation.payload;                  // patch object passed to .$patch()
+                  }, {detached: true})                     // the second argument accepts the same property objects as the third argument of the watch method
+                                                              detached: true will 'detach' the subscribe method from the component, so event after the component
+                                                              has been unmounted, the subscribe method will continue to persist
+*/
+
+// Composition API only
+<script setup>
+      import useCounterStore from '~/Store';
+      import {storeToRefs} from 'pinia';
+
+      const store = useCounterStore();                                //the returned object will have all the properties and actions of the state
+
+      const {count} = storeToRefs(store);                             //accessing the properties of the state while maintaining reactivity
+      const {count} = store;                                          //accessing the properties of the state, but breaking reactivity
+      const {increment} = store;                                      //all actions/functions should be destructured
+
+</script>
+
+
+
+
+// Options API only
+<script>
+      import { mapState, mapActions, mapWritableState } from 'pinia'
+      import { useCounterStore } from '../stores/counter'
+      
+      export default {
+              computed: {
+                ...mapState(useCounterStore, ['count']),                  // the component can access the count property of the global state
+                ...mapWritableState(useCounterStore, ['count']),          // the component can access AND mutate the count property of the global state 
+              },
+              methods: {
+                ...mapActions(useCounterStore, ['increment']),            // the component can access the increment action of the global state
+              }
+      }     
+</script>
+
+
+
+
+

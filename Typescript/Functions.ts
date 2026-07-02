@@ -12,4 +12,4 @@ function getUser(): string {            //object returned must be of type string
       
 }    
 
-const user = myUser('name of user');
+let x : ReturnType<typeof setTimeout>;  //x will only accept the object/value that is returned from setTimeout 

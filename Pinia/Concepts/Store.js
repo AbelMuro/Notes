@@ -64,7 +64,7 @@ export default useCounterStore;
 
 
 
-//========================================== ACCESSING/UPDATING THE STATE FROM THE STORE =====================================================
+//========================================== ACCESSING THE STATE FROM THE STORE =====================================================
 /* 
       There are two different ways of accessing the properties and actions of the store
       You can use storeToRefs() or you can simply destructure the state within the single 
@@ -142,5 +142,32 @@ export default useCounterStore;
 
 
 
+
+
+
+
+
+            
+
+            
+
+//========================================== SUBSCRIBING COMPONENTS TO THE STORE =====================================================
+/* 
+      To subscribe components to the store, you must make sure that the properties of the state are imported to the 
+      component while maintaining its reactivity in Vue. You can maintain the reactivity of the state by using storeToRefs()
+      method. As long as the state properties have their reactivity maintained, then any changes made to those properties will 
+      cause a re-render.
+*/
+
+
+
+<script setup>
+      import useCounterStore from '~/Store';
+      import {storeToRefs} from 'pinia';
+
+      const store = useCounterStore();                                //the returned object will have all the properties and actions of the state
+      const {count} = storeToRefs(store);                             //accessing the properties of the state while maintaining reactivity
+
+</script>
 
 

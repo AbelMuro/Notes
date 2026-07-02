@@ -1,0 +1,4 @@
+/* 
+                                ACTIONS
+            Actions are setter methods in pinia that are used to update the properties of the global state
+*/

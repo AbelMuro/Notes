@@ -7,7 +7,7 @@
         import MyComponent from './SomeFile';              //SomeFile is either a .ts or .tsx file
      
 
-            0) npm install @types/react @types/react-dom ts-loader typescript -D
+            0) npm install ts-loader typescript -D
 
             1) Create a tsconfig.json file and put it in the root directory
 
@@ -25,20 +25,10 @@
                             "outDir": "./dist",
                             "rootDir": "./src"
                         },
-                        "include": ["src", "global.d.ts"]
+                        "include": ["src"]
                     }
-      
-            2) Create a global.d.ts file and also put it in the root directory
-               The code below will enable the following syntax
-               import * as styles from './styles.module.css';
-
-                  declare module '*.module.css' {
-                        const classes: { [key: string]: string };
-                        export = classes;
-                  }
-
             
-            3)  Then add the following lines of code to your webpack.config.js file
+            2)  Then add the following lines of code to your webpack.config.js file
                   module.exports = {
                         module: {
                             rules: [    

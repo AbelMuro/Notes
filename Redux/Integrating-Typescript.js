@@ -28,9 +28,16 @@
                                     export default Store;
 
                         3) In your reducer, make sure to create cases similar to the one below
-                                    import { PayloadAction } from '@reduxjs/toolkit'
+                                    import { PayloadAction, createAction } from '@reduxjs/toolkit'
+                                    
+                                    type InitialState = {
+                                        display: boolean,
+                                        message: string
+                                    }
 
-                                    .addCase(showPopup, (state, action: PayloadAction<string>) => {                       
+                                    const showPopup = createAction<string>('SHOW_POPUP')
+
+                                    .addCase(showPopup, (state : InitialState, action: PayloadAction<string>) => {                       
                                             state.open = true;
                                             state.message = action.payload;
                                     })

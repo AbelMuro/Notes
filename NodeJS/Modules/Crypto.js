@@ -20,7 +20,7 @@
 
 	app.post('/hash', () => {
 		const message = 'Hello World'
-    		const hashObject = crypto.createHash('sha256')				// we create a hash object (instance of the crypto.Hash() class) and specify the 'sha256' hashing algorithm
+    	const hashObject = crypto.createHash('sha256')				// we create a hash object (instance of the crypto.Hash() class) and specify the 'sha256' hashing algorithm
 		const updatedHashObject = hashObject.update(message);     		// we update the hash object with the data we want to hash
 		const hashedMessage = updatedHashObject.digest('hex');			// we finalize the hashing process by converting the hash object into a Hexadecimal string
 	})
@@ -34,7 +34,7 @@
 */
 
 	app.post('/token', () => {
-		const buffer = crypto.randomBytes(32).toString('hex');			// we create a buffer (raw binary data) that has 32 random bytes
+		const buffer = crypto.randomBytes(32);			// we create a buffer (raw binary data) that has 32 random bytes
 		const token = buffer.toString('hex');					// we convert the buffer into a Hexadecimal string
 	})
 	

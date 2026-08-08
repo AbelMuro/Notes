@@ -16,14 +16,12 @@ const crypto = require('crypto');
 
 app.put('/forgot_password', async (req, res) => {
 	const resetToken = crypto.randomBytes(32).toString('hex');
-	const resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');		//we create the reset token
+	const hashedResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');		//we create the reset token
 	const resetPasswordExpires = Date.now() + 10 * 60 * 1000;						//we set the expiration date for the token
+	const resetLink = `http://localhost:3000/reset-password${resetToken}`;
 
-	updateAccountDataInDatabase(resetPasswordToken, resetPasswordExpires);
-
-	const resetPasswordLink = `http://localhost:3000/reset/${resetToken}`
-
-	sendEmailToUserWithResetLink(resetPasswordLink);							//use nodemailer to send emails (go to node.js )
+	updateAccountDataInDatabase(hashedResetToken, resetPasswordExpires);
+	sendEmailToUserWithResetLink(resetLink);							//use nodemailer to send emails (go to node.js )
 
 	res.status(200).send('Email sent successfully');
 })

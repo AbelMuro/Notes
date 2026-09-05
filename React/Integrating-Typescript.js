@@ -3,7 +3,7 @@
 
             0) Follow the instructions for integrating typescript with webpack
 
-            1) npm install @types/react @types/react-dom
+            1) npm install @types/react @types/react-dom ts-loader 
 
       
             2) Create a global.d.ts file and also put it in the root directory

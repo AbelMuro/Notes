@@ -19,10 +19,24 @@
             3)  In your tsconfig.json file, add the following lines of code
 
                {
-                "compilerOptions": {
-                     ...
-                },
-                "include": ["src", "global.d.ts"]   
-            }
+                   "compilerOptions": {
+                       "target": "ESNext",
+                       "module": "ESNext",
+                       "moduleResolution": "Node",
+                       "jsx": "react-jsx",
+                       "strict": true,
+                       "allowJs": true,
+                       "allowSyntheticDefaultImports": true,
+                       "esModuleInterop": true,
+                       "skipLibCheck": true,
+                       "outDir": "./dist",
+                       "rootDir": "./src",
+                       "paths": {
+                           "~/*": ["./src/*"],
+                           "!/*": ["./src/Pages/*"]
+                       }  
+                   },
+                   "include": ["src", "global.d.ts"]
+               }
 
 */

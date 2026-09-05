@@ -7,8 +7,7 @@
 
       
             2) Create a global.d.ts file and also put it in the root directory
-               The code below will enable the following syntax
-               -import * as styles from './styles.module.css';
+               The code below will enable the following syntax (import * as styles from './styles.module.css';)
 
                   declare module '*.module.css' {
                         const classes: { [key: string]: string };

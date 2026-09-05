@@ -7,6 +7,7 @@
                npm install @types/react-dom 
                npm install ts-loader   -D
                npm install @babel/preset-typescript -D
+               npm install typescript
 
       
             2) Create a global.d.ts file and also put it in the root directory

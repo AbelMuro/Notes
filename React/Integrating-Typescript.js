@@ -3,7 +3,10 @@
 
             0) Follow the instructions for integrating typescript with webpack
 
-            1) npm install @types/react @types/react-dom ts-loader 
+            1) npm install @types/react 
+               npm install @types/react-dom 
+               npm install ts-loader   -D
+               npm install @babel/preset-typescript -D
 
       
             2) Create a global.d.ts file and also put it in the root directory
@@ -12,6 +15,27 @@
                   declare module '*.module.css' {
                         const classes: { [key: string]: string };
                         export = classes;
+                  }
+
+
+            3) In your webpack.config.js file, make sure you do the following updates
+
+                  module.exports = {
+                         rules: [
+                                 {                                 
+                                     test: /\.(js|ts|tsx)$/, 
+                                     use: {
+                                         loader: 'babel-loader',  
+                                         options: {
+                                             presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],           
+                                         }  
+                                     }                                                                 
+                                 },
+                         ],
+                  
+                         resolve: {
+                             extensions: ['.tsx', '.ts', '.js'],
+                         },
                   }
 
             
@@ -29,11 +53,7 @@
                        "esModuleInterop": true,
                        "skipLibCheck": true,
                        "outDir": "./dist",
-                       "rootDir": "./src",
-                       "paths": {
-                           "~/*": ["./src/*"],
-                           "!/*": ["./src/Pages/*"]
-                       }  
+                       "rootDir": "./src", 
                    },
                    "include": ["src", "global.d.ts"]
                }

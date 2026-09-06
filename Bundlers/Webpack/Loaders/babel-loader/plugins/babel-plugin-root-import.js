@@ -31,7 +31,7 @@
                         module: {
                               rules: [
                                     {                                 
-                                        test: /\.js?$/, 
+                                        test: /\.(js|ts|tsx)?$/, 
                                         use: {
                                             loader: 'babel-loader',  
                                             options: {

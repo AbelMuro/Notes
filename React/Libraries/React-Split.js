@@ -7,12 +7,14 @@ import Split from 'react-split';
 function Example() {
     return(
       <Split
+            className={'split-container'}
             sizes={[50, 50]}                                //the initial size in percentage of both child elements
             minSize={[200, 200]}                            //the minimum size of each element in pixels
             gutterSize={20}                                 //the width of the bar that is used to resize the child elements
             gutterAlign="center"                            // center means that both child elements will be shrunk to make room for the bar, start will shrink the first element, end will shrink the second element
             snapOffset={50}                                 // this will give a snap effect when the bar is moved
             dragInterval={20}                               // Defaults to 1 for smooth dragging, but can be set to a pixel value to give more control over the resulting sizes
+            direction='horizontal'
             cursor="col-resize"
       >
           <FirstElement/>
@@ -23,18 +25,26 @@ function Example() {
 
 /* 
     //you must define the following class selectors to make the bar visible
-    // you may need to use positional properties to place the gutter in the Split component
 
-    .gutter {
-        background-color: var(--gutter);                
+
+    .split-container{                            //this class will be assigned to the split component
+        display: flex;
+        height: 100vh;
+    }
+
+    .gutter {                                    //this class will be assigned to the bar that enables the user to expand or shrink the component
+        background-color: black;                
         background-repeat: no-repeat;
         background-position: 50%;
         cursor: col-resize;
+        width: 30px;                               
+        height: 100%;
     }
-
+    
     .gutter.gutter-horizontal {
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
     }
+
 
 
 */

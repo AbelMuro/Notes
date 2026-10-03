@@ -3,10 +3,17 @@
 
 import Split from 'react-split';
 
+/* 
+    keep in mind that the split component using the width and height properties to resize the elements within its container
+    if you want to make the component responsive on tablet and mobile devices, you have to change the key prop to force a re-render 
+    that removes the old width and height properties
+*/
+
 
 function Example() {
     return(
       <Split
+            key={'horizontal'}                              //keep in mind that using the key prop can destroy the old values in width and height
             className={'split-container'}
             sizes={[50, 50]}                                //the initial size in percentage of both child elements
             minSize={[200, 200]}                            //the minimum size of each element in pixels

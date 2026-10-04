@@ -19,6 +19,17 @@
                                         setLoading(false)                // scheduling another state update
                                   }                                      // once we exit from the function, React will trigger the state update and re-render for setLoading(false) 
 
+
+
+                                                          RENDERING PROCESS
+
+                      When a render happens, the function component will be called again. 
+                      All the event handlers will be re-created,
+                      but the component instance (state, props, etc..) will remain the same.
+                      The Render() function will also be called again, but only certain parts of its 
+                      corresponding element (DOM node) will be updated
+
+
 */
 
 

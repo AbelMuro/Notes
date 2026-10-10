@@ -1,21 +1,14 @@
 //using leaflet interactive maps for react
 
-//remember to put the following lines in yout HTML file!
 /*
-    <link 
-        rel="stylesheet" 
-        href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-        crossorigin=""/>
-            
-    <script 
-        src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-        crossorigin="">
-    </script>
+    npm install leaflet
 */
 
+
 import React, {useEffect, useState} from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
 
 function Map({lat, long}) {
     const [map, setMap] = useState();

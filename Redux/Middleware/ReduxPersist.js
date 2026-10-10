@@ -77,6 +77,7 @@ import RootReducer from './Reducers';
 const config = getPersistConfig({
     key: 'root',
     storage,
+    rootReducer: Reducer,
     whitelist: ['theme', 'theme.color', 'theme.color.saturation'],  
 });
 

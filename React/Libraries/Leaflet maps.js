@@ -33,8 +33,9 @@ function Map({lat, long}) {
             popupAnchor: [-3, -76],
         })
 
-        L.marker([lat, long], {icon: icon}).addTo(map);            // you can exclude the second argument if you want to use the default icon  
-        L.marker([lat, long], {icon: icon}).addTo(map);             //you can add as many markers to the map like this
+       const marker =  L.marker([lat, long], {icon: icon})                 // you can exclude the second argument if you want to use the default icon  
+       marker.addTo(map);       
+       marker.remove();                                                    //you can remove any marker by using the remove method
     }
     
 

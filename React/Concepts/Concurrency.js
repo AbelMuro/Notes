@@ -37,7 +37,7 @@
 // The component below will have an input and will have a long list of movie names displayed below it
 // The component below basically has the logic that the search state updates are going to have priority over the results state updates
 
-import {useState, useTransition} from 'react';
+import {useState, useTransition, useEffect} from 'react';
 
 function SearchBar() {
     const [search, setSearch] = useState('');
@@ -46,28 +46,24 @@ function SearchBar() {
 
     const handleSearch = (e) => {
         setSearch(e.target.value);
+    }
+
+    useEffect(() => {
         startTransition(() => {
             fetch('url')
                 .then(response => response.json())
                 .then(results => setResults(results))
-        })
-    }
+        });
+    }, [search])
 
     return(
         <fieldset className={styles.inputContainer}>
             <input 
                 type='text' 
-                className={styles.searchBar} 
                 value={search}
                 onChange={handleSearch}
-                placeholder='Search for movies or TV series'
              />
              {isPending && <span> 'Loading..' </span>}                //fallback loading UI
-             {results.map((result) => {                               //state that will be updated when search state stops being updated
-                     return(
-                         //display results;
-                     )
-             })}
         </fieldset
 
     )

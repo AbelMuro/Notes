@@ -7,6 +7,14 @@
                                 
                                 BACK-END-DEVELOPMENT: development of server-side logic and databases
 
+								BUNDLERS: bundlers are a tool that web developers use to 'bundle' all of the files in a project into
+										  one or more optimized files that the web browser can load efficiently. Bundlers are also used
+										  to transform code into javascript so that the web browser can understand. Typescript and JSX are
+										  not understood by the browser, so the bundler will use loaders to transform them into javascript
+
+
+								JAVASCRIPT ENGINE: the javscript engine is a part of the browser that actually compiles javascript code into machine code.
+
                                 API: application programming interface. They are interfaces that enable interaction between two software applications.
                                      this interface must be used if one software app wants to request resources from another software app
 
@@ -24,7 +32,33 @@
                                         APPLICATION-SERVER: a server that runs instructions and processes requests from other computers and sends responses (Node.js) 
                                         DATABASE-SERVER: a server that manages and stores data (SQL, noSQL)
 
-                                BROWSER:
+								HTTP: HTTP stands for hyper text transfer protocol, it's a protocol that describes how a web browser and a web server communicates with each other.
+									  The web browser will send a request to the web server and will wait for a response from the web server.
+
+								CORS (Cross Origin Resource Sharing): 
+										is a 'HTTP-header based mechanism' that allows a server to specify which domains/scheme/port are ALLOWED 
+								        to get resources from the server. CORS relies on a mechanism called Pre-flight requests and responses. The browser will send a pre-flight request
+									 	to the server (The pre-flight request will contain the HTTP method and the domain of the client). The server will receive the pre-flight request 
+								        and check if the domain of the client is allowed to make requests to the server and if the client is allowed to use the HTTP method. 
+									 	Then the server will send a pre-flight response to the client, notifying them if they are allowed to make fetch requests to the server
+										
+												-Pre-flight request		
+													OPTIONS /resource/foo
+													Access-Control-Request-Method: DELETE				
+													Access-Control-Request-Headers: origin, x-requested-with
+													Origin: https://foo.bar.org
+											
+												-Pre-flight response
+													HTTP/1.1 204 No Content
+													Connection: keep-alive
+													Access-Control-Allow-Origin: https://foo.bar.org
+													Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE	
+													Access-Control-Max-Age: 86400
+													
+												Since the pre-flight response contains the delete method in one of the headers,
+												then that means the client can send delete requests to the server
+
+                                WEB BROWSER:
                                           1) When you first type-in the URL of a website (www.google.com), the browser will check the DNS(Domain Name System) of the URL.
                                              The browser will use the DNS to translate the human-readable URL into the corresponding IP address of the server that is hosting the website 
 
@@ -34,20 +68,20 @@
 	                                              If the server uses server-side rendering, then the server will generate the website in the server first before sending a response
 	                                              If the server uses client-side rendering, then the server will first send the HTML files to the browser, then the JS files
 			
-			                  4) Then the browser will start building an HTML-only DOM tree. This tree is updated when the HTML elements are removed, updated or added
-		     	     
-			                  5) Then the browser will build a CSS-only DOM tree. This tree is updated when a reflow occurs. A reflow will occur when certain CSS properties are
-		     			     updated (width, height, margin, padding). Other css properties (transform, opacity, background, clip-path) will not cause a reflow
+						                  4) Then the browser will start building an HTML-only DOM tree. This tree is updated when the HTML elements are removed, updated or added
+					     	     
+						                  5) Then the browser will build a CSS-only DOM tree. This tree is updated when a reflow occurs. A reflow will occur when certain CSS properties are
+					     			     	 updated (width, height, margin, padding). Other css properties (transform, opacity, background, clip-path) will not cause a reflow
+						
+						                  6) The browser will combine these two trees to form the Render DOM tree. This is what actually gets displayed on the screen.
+						              
+						                  7) The browser will calculate precise positions and sizes of the elements in the Render tree, this process is called layout calculation (reflow)
 			
-			                  6) The browser will combine these two trees to form the Render DOM tree. This is what actually gets displayed on the screen.
-			              
-			                  7) The browser will calculate precise positions and sizes of the elements in the Render tree, this process is called layout calculation (reflow)
-
-  					  8) The browser will paint the elements on the screen.
-
-					  9) The browser may create separate layers for different elements, this process is called Compositing. The render tree will start with a 
-       					     default layer where all elements are initially placed. If an element has 'position: absolute' or 'transform: translate()', then it will 
-		 			     have its own layer in the render tree. 
+					  					  8) The browser will paint the elements on the screen.
+					
+										  9) The browser may create separate layers for different elements, this process is called Compositing. The render tree will start with a 
+					       					 default layer where all elements are initially placed. If an element has 'position: absolute' or 'transform: translate()', then it will 
+							 			     have its own layer in the render tree. 
 	     
     
 */
@@ -63,14 +97,6 @@
 
 
        
-//======================================================= HTTP ===========================================================================     
-// HTTP stands for hyper text transfer protocol, it's a protocol that describes how a web browser and a web server communicates with each other.
-// The web browser will send a request to the web server and will wait for a response from the web server.
-/* HTTP VERBS: are methods that we use to interact with the web server and database
-	      GET method
-	      POST method
-	      DELETE method
-	      PUT method
 
 
 
@@ -79,46 +105,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-//======================================================= CORS ===========================================================================    
-/* 
-	 CORS (Cross Origin Resource Sharing)	is a 'HTTP-header based mechanism' that allows a server to specify which domains/scheme/port are ALLOWED 
-         to get resources from the server. CORS relies on a mechanism called Pre-flight requests and responses. The browser will send a pre-flight request
-	 to the server (The pre-flight request will contain the HTTP method and the domain of the client). The server will receive the pre-flight request 
-         and check if the domain of the client is allowed to make requests to the server and if the client is allowed to use the HTTP method. 
-	 Then the server will send a pre-flight response to the client, notifying them if they are allowed to make fetch requests to the server
-*/
-   
-	       
-/* 
-	Pre-flight request		
-		OPTIONS /resource/foo
-		Access-Control-Request-Method: DELETE					<-------------
-		Access-Control-Request-Headers: origin, x-requested-with
-		Origin: https://foo.bar.org
-
-	Pre-flight response
-		HTTP/1.1 204 No Content
-		Connection: keep-alive
-		Access-Control-Allow-Origin: https://foo.bar.org
-		Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE		<-------------
-		Access-Control-Max-Age: 86400
-		
-	Since the pre-flight response contains the delete method in one of the headers,
-	then that means the client can send delete requests to the server
-
-*/
 
 
 
@@ -194,10 +180,3 @@
 
 
 
-
-
-
-
-                                          4) The server will then send a response to the browser, containing all the files necessary for the website
-
-                                          5) The browser interprets the HTML, applies CSS for styling, executes JavaScript for interactivity, and starts displaying content on your screen.

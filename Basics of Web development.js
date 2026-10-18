@@ -65,9 +65,7 @@
                                           2) Once the browser knows the IP address of the server, it will make a request to that server, asking for all the resources of the website (HTML files, css files, JS files)
 
                                           3) The server will process the request and decide what content to send to the browser
-	                                              If the server uses server-side rendering, then the server will generate the website in the server first before sending a response
-	                                              If the server uses client-side rendering, then the server will first send the HTML files to the browser, then the JS files
-			
+	
 						                  4) Then the browser will start building an HTML-only DOM tree. This tree is updated when the HTML elements are removed, updated or added
 					     	     
 						                  5) Then the browser will build a CSS-only DOM tree. This tree is updated when a reflow occurs. A reflow will occur when certain CSS properties are

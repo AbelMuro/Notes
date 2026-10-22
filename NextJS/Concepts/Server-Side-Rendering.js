@@ -1,7 +1,8 @@
 //==================================================== SERVER-SIDE RENDERING ==============================================================================
 /*  
                        Server side rendering is the process of rendering your application on the server and sending 
-                       it to the client as fully rendered HTML pages 
+                       it to the client as fully rendered HTML pages.
+                       You should use SSR for public-facing websites, E-commerce websites, Blogs, 
                        
                             1) The browser sends an HTTP request to the server.
                             

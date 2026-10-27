@@ -198,18 +198,4 @@ function Uncontrolled() {
         )
 }
 
-// ------------------------------------- SERVER COMPONENTS -------------------------------------
-/* 
-        Server components are components that only run on the server. They are not included in the bundle
-        and are typically used to fetch data from the database without forcing the browser to make a fetch 
-        request to an API route
-
-                Without server components
-
-                        Client → API Route → Database
-
-                With server components
-                
-                        Server Component → Database
-*/
 

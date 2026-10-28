@@ -544,3 +544,16 @@ function MyApp() {
     )
 }
 
+
+
+
+// ======================================= <ACTIVITY> ===================================
+/* 
+       The activity api allows a component to preserve its state even after its been unmounted
+*/
+
+
+
+
+
+

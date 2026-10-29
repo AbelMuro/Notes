@@ -547,10 +547,24 @@ function MyApp() {
 
 
 
+
+
 // ======================================= <ACTIVITY> ===================================
 /* 
        The activity api allows a component to preserve its state even after its been unmounted
 */
+
+import {Activity} from 'react';
+
+function App() {
+    const [state, setState] = useState();
+
+    return (
+        <Activity mode={state === true ? 'visible' : 'hidden'}>
+            <ChildComponent/>
+        </Activity>
+    )
+}
 
 
 

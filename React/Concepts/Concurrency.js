@@ -70,8 +70,36 @@ function SearchBar() {
 }
 
 
+//------------------------------------- START-TRANSITION HOOK -------------------------------------
+/*
+    StartTransition is a function in react that lets you mark an operation as non-urgent
+*/
 
 
+import {startTransition} from 'react';
+
+
+function App() {
+  const [search, setSearch] = useState('');
+
+
+  const handleChange = (e) => {
+      const input = e.target.value;
+  }
+
+  useEffect(() => {
+      startTransition(() => {
+        fetch('url');
+      })
+  }, [search])
+
+  return (
+      <input type='text' value={search} onChange={handleChange}/>
+  )
+}
+
+
+  
 
 
 //------------------------------------- USE DEFFERED VALUE() HOOK -------------------------------------

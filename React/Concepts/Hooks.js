@@ -9,6 +9,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 //------------------------------------- USE STATE() HOOK -------------------------------------
 
 // useState() hook lets you declare a state object and a function that can be used to update that state object...
@@ -45,6 +58,18 @@ function HooksTwo() {
         </>
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -91,6 +116,18 @@ function HooksThree() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 //------------------------------------- USE LAYOUT EFFECT() HOOK -------------------------------------
 //useLayoutEffect is similar to useEffect(), the difference here is that useLayoutEffect() gets called BEFORE each render.
 //this is usefull if you want to make changes to the DOM after the state object is updated.
@@ -116,6 +153,24 @@ function Example() {
               </button>
         )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -159,6 +214,23 @@ function AnotherComponent() {
     const {stateOne, setStateOne} = useContext(Context);                //you can use any variable or function in the value object ABOVE
    // ....
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -249,6 +321,25 @@ function Ref() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //------------------------------------- FORWARD REF() HOOK -------------------------------------
 //you can use useRef() and forwardRef() together to make a parent component have control over an element in a child component
 //keep in mind that forwardRef() on a component has the same functionality as a regular React component,
@@ -274,6 +365,22 @@ const ChildComponent = forwardRef((props, ref) => {
            <div ref={ref}> greetings </div>
         )
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -329,6 +436,28 @@ const ChildComponent = forwardRef((props, ref) => {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //------------------------------------- USE REDUCER() HOOK -------------------------------------
 // useReducer() can be used to extract state management logic out of a component
 // however, the component will still be a statefull componenent, because it still owns the state object
@@ -381,6 +510,24 @@ function MyComponent() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //------------------------------------- USE CALLBACK() HOOK -------------------------------------
 //useCallback() can be used to force a function to only be recreated when a certain variable changes
 //useCallback() was designed to be used with a memoized component(component that gets exported with memo())
@@ -402,6 +549,23 @@ function UsingCallbackHook() {
         </>
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -449,6 +613,24 @@ function expensiveCalculation() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //------------------------------------- USEID() HOOK -------------------------------------
 // useID() can be used to generate a unique id
 
@@ -461,6 +643,22 @@ function App() {
                 </div>
         )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //------------------------------------- CUSTOM HOOKS -------------------------------------
 // Custom hooks are designed to share code between functional components
@@ -482,6 +680,13 @@ function useFetch(url) {
         
         return [data, makeFetch];                               //the state must be returned from this hook to cause a re-render on the parent component
 }                                                               //you can also pass the setData function to cause a re-render in this hook AND the parent component
+
+
+
+
+
+
+
 
 
 
@@ -549,6 +754,23 @@ function MyApp() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ======================================= <ACTIVITY> ===================================
 /* 
        The activity api allows a component to preserve its state even after its been unmounted
@@ -566,6 +788,70 @@ function App() {
     )
 }
 
+
+
+
+
+
+
+
+
+
+
+
+// ======================================= <SUSPENSE> ===================================
+/* 
+    Suspense is a component in React that can display a loading screen when another component
+    is not finished lazily loading
+*/
+
+
+import {Suspense} from 'react';
+const SettingsPage = React.lazy(() => import("./SettingsPage"));
+
+
+
+function App() {
+    return (
+        <Suspense fallback={<Loading/>}>
+            <SettingsPage/>
+        </Suspense>
+    )
+}
+
+
+
+
+//---------------------- You can also use Suspense to display a loading screen when waiting for a fetch request
+
+import {Suspense} from 'react';
+
+function App() {
+    return (
+        <Suspense fallback={<Loading/>}>
+            <MainContent/>
+        </Suspense>
+    )
+}
+
+
+
+
+
+
+//-------------------- anotherFile.js
+
+import {use} from 'react';
+
+function MainContent() {
+    const data = use(fetchData());            //fetchData() must return a promise
+
+    return (
+        <div>
+            {data.name}
+        </div>
+    )
+}
 
 
 

@@ -223,3 +223,34 @@ export default function Home() {
             />
     )
 }
+
+
+
+
+
+      
+
+//---------------------------------------------  SERVER COMPONENT ---------------------------------------------
+/* 
+      Server components are components that are run on the server. They are not included in the bundle that is sent to the 
+      browser. Every component in a Next.js app will be a server component by default.
+
+      The component below is a server component because its async and it doesn't use the "use client" directive
+*/
+
+      async function getUsers() {
+              const users = getDataFromDatabase();
+
+              return users;
+        }
+            
+       export default async function UsersPage() {
+              const users = await getUsers();
+            
+              return (
+                    {users.map(() => {
+                          
+                    })}
+              );
+         }
+      

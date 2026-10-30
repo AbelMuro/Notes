@@ -1,8 +1,0 @@
-/* 
-
-                                        SERVER COMPONENTS
-
-      Server components are components that are run on the server. They are not included 
-      in the bundle that is sent to the browser
-
-*/

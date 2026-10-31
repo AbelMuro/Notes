@@ -1,3 +1,5 @@
+<script>
+
 /*
                                                 REACTIVITY SYSTEM:
         -Deep Reactivity: all nested objects and arrays will be tracked within the state object
@@ -47,6 +49,6 @@
         When the state change above occurs, Vue will update the Real DOM by updating the first <div> only, 
          {{state[0] = 'apple'}}      to     {{state[0] = 'lettuce'}} 
         Vue will leave everything else alone.   
-
-
 */
+
+</script>

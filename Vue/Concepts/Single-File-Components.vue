@@ -4,6 +4,11 @@
     The template tag will automatically be exported from the file
 -->
 
+
+
+
+
+
 <!-- script tag allows you to write JS code (Keep in mind, the script tag is only called once, a re-render will NOT execute the script tag again) -->
 <script setup>
     const x = 2 + "3";
@@ -14,13 +19,11 @@
 </script>
 
 
-
 <!-- template tag allows you to use HTML syntax to declare and define your DOM elements (template tag will automatically be exported from this file)-->
 <template>
     <p class="myClass"> Hello World </p>                                     
     <button v-on:click="otherFunc"> Click Here </button>                    <!-- Any variable or function exported using setup() will be available in the template-->
 </template>
-
 
 
 <!-- style tag allows you to use css (remember to use scoped attribute to make sure the styles are scoped locally to a file)-->
@@ -35,6 +38,19 @@
         }
     }
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -69,6 +85,28 @@
 <template>
        <div> Hello World </div>
 </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- 

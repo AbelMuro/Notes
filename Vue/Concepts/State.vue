@@ -1,3 +1,5 @@
+<script>
+
 /* 
                                  STATE UPDATE PROCESS
                                  
@@ -102,9 +104,10 @@
 
 */
 
-// All state objects and functions will be exported from the script when you use the setup attribute 
+</script>
+
 <script setup>                             
-    import {ref, reactive, nextTick} from 'vue';
+    import {ref, reactive, nextTick} from 'vue';    // All state objects and functions will be exported from the script when you use the setup attribute 
     
     const count = ref(0);                  //Declaring state object with initial value of 0 
     const state = reactive({ count: 0 })   //Declaring state object with initial value of {count: 0}

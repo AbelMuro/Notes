@@ -1,3 +1,4 @@
+<script>
 /* 
                                                    RENDERING PROCESS
         Vue uses a variation of the Reconciliation algorithm that React uses, but Vue implements its Reactivity system in the algorithm
@@ -12,3 +13,5 @@
            Once the comparison is complete, the real dom will be updated accordingly
 
 */
+
+  </script>

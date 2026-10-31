@@ -16,7 +16,8 @@
                                             ReactDOM.render(<App />, rootEl)  
 
 
-                      You can use the following Hooks to implement debouncing/concurrency
+                      You can use the following Hooks to implement debouncing/concurrency. Keep in mind,
+                      React will decided the best time to update the deferred state/function.
   
 */
 

@@ -1,3 +1,4 @@
+<script>
 /* 
                                                   TWO WAY DATA BINDING
         Vue primarily uses two way data binding with the 'v-model' directive and the defineModel() function. A parent component can pass 
@@ -6,3 +7,5 @@
         synced. Any changes made to the state by the child component will reflect the state in the parent component, and vice versa
 
 */
+
+</script>

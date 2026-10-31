@@ -122,7 +122,7 @@ function App() {
 function App() {
   const [search, setSearch] = useState('');                               //This state is high priority
   const [results, setResults] = useState([]);
-  const deferredSearch = useDeferredValue(search, {timeoutMs: 1000});     //This state copy is low priority (the second argument can be used to delay the state update for 1 second)
+  const deferredSearch = useDeferredValue(search);     //This state copy is low priority (the second argument can be used to delay the state update for 1 second)
 
   const handleSearch = (event) => {
      setSearch(event.target.value);

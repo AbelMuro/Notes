@@ -47,7 +47,7 @@ function Pawn() {
             name: 'name that identifies the item being dragged'
         }),
         isDragging: (monitor) => { 
-            const square = monitor.getItem();            
+            const square = monitor.getItem();  //method that returns the object that is defined in the item method above          
             return true or false;            //this condition will set the value for 'isDragging'
         },
         canDrag: () => {                      
@@ -92,11 +92,12 @@ function Squares() {
     const [collect, drop] = useDrop({
         accept: 'piece',                         
         collect: (monitor) => ({                  // collect function will populate the properties of the collect object returned from useDrop()
-            handlerId: monitor.getHandlerId()  
+            handlerId: monitor.getHandlerId(),
+            isOver: monitor.isOver()
         }),
-        hover: (item, monitor) => {               // hover function is called when an item being dragged is hovering on top of the container
+        hover: (draggedItem, monitor) => {               // hover function is called when an item being dragged is hovering on top of the container
         },
-        drop: (item, monitor) => {                // drop function is called when an item is dropped on top of the container
+        drop: (droppedItem, monitor) => {                // drop function is called when an item is dropped on top of the container
                                                   
         }
     })

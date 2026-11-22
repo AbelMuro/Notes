@@ -6,57 +6,39 @@
 
 						      FEATURES OF NODE.JS
 
-			    	           		 MODULAR SYSTEM
-		     	Node.js uses a modular system that allows the developer to break the application into smaller, re-usable components.
-		      	Typically, every component is imported and used with the require() function
-		
-					  		 SINGLE-THREADED
-		        Node.js is single threaded, which means that it can only perform one task at a time.
 
-   							 NON-BLOCKING I/O
-	  	        Node.js uses the event loop to ensure that tasks being performed are not blocking or halting other tasks.
 
-     							    STREAMS
-			Node.js uses streams to process large amounts of data. A stream is a continuous flow of data (binary, strings, files) 
-   			that is loaded asychronously. The stream will break down large data into chunks, and these chunks will contain raw binary data.
-      			The chunks are then stored into a buffer
+								SINGLE-THREADED
+								
+				Node.js uses javascript, and javascript is single threaded.
 
-  							     BUFFERS
-	      		Node.js uses buffers to store raw binary data. They are a temporary storage for the raw binary data of files or other large data.
-			Buffers can be used to manipulate the data, such as writing new text to a text file.
-		  
-		  			    		   EVENT LOOP
-			 Node.js uses the event loop to process and handle tasks, even though Node.js is single-threaded, we use the
-    			 event loop to simultaneously perform multiple tasks. All synchronous tasks are placed in the call-stack,
-		  	 and executed one by one. All asynchronous tasks are taken out of the call-stack and processed in a different 
-		    	 thread (this thread is NOT part of node.js). Once the asynchronous task has completed in the 
-		         separate thread, it will then be placed in the Queue. Once the call-stack is empty, all tasks in the 
-			 queue then get placed in the call-stack for execution in the main node.js thread. Keep in mind that the queue
-    			 divides its tasks into microtasks and macrotasks; microtasks(promises) have a higher priority, and macrotasks(setTimeout) 
-			 have a lower priority
 
-				   NODE.JS THREAD			    SEPARATE THREAD											 	
-			 	
-				     Call stack												  	  
-			  	   |		|										
-				   |		|												
-				   |  syncFunc	|											
-				   |  AsyncFunc	| --------------> this async function is taken out of the call stack 	
-				   |  syncFunc	|		  and processed in a separate thread. Once the function				
-				   |  syncFunc	|                 finishes processing, it gets placed in the Queue				
-				   |  syncFunc	|				|								
-				   -------------				|								
-					^					|
-					| 					|	
-				       Queue					|
-				   |		|				|
-				   |		|	<---------------------- |
-				   |		|
-				   |		|
-				   |		|
-				   | AsyncFunc  |
-				    ----------			The Queue will complete all microtasks before completing macrotasks
+									LIBUV
+									
+				Libuv is a built-in library in Node.js that handles asynchronous I/O operations  
+				(I/O is where Node.js has to communicate with anything outside the servers memory/cpu)
+				such as reading files, networking, DNS lookups and thread-pool management.
+				By default, Libuv uses 4 threads for the following operations...
 
+						fs.readFile()      				// disk I/O
+						fetch()            				// network I/O
+						http.createServer()				// network I/O
+						dns.lookup()       				// DNS I/O
+
+				Libuv has its own event loop that is used outside the scope of the thread
+				of javascript. Libuv can also handle other asynchronous non-I/O operations 
+				such as...
+
+						setTimeout()
+						crypto.pbkdf2(...)
+						zlib.gzip(...)
+
+
+
+
+
+
+									
     
 		HOW TO INSTALL NODE.JS
 

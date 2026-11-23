@@ -3,16 +3,15 @@
 
         node-project/
             server.js
-            movie.mp4
+            uploads/
+                    movie.mp4
 */
 
-const fs = require('fs');
+const path = require('path');
 
-app.get('/download-movie', (req, res) => {
-    res.setHeader(
-      'Content-Type',
-      'video/mp4'
-    );
-  
-    fs.createReadStream('movie.mp4').pipe(res);
-})
+app.get('/download/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, 'uploads', filename);
+
+  res.download(filePath);
+});

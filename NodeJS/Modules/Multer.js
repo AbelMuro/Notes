@@ -7,7 +7,7 @@
  	and store it as a buffer in memory.
 
 	multer.memoryStorage();					// this method will temporarily save the file in RAM
-	multer.diskStorage(					// this method will save the file in the servers disk
+	multer.diskStorage(					    // this method will save the file in the servers disk
  	    destination: './uploads/',					// first argument is the location of the folder that will store the file
 	    filename: (req, file, cb) => {				// second argument is the name of the file being uploaded to the ./uploads folder in your node.js app	
 		cb(null, `${Date.now()}-${file.originalname}`)	

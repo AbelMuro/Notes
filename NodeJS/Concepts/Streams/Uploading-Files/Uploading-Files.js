@@ -1,22 +1,27 @@
 /* 
         Uploading files using streams
+
+        node-project/
+                server.js
+                /uploads
 */
 
+const multer = require('multer');
+const upload = multer({dest: 'uploads/'});                   
 
-const fs = require('fs');
+app.post('/upload', upload.single('file'), (req, res) => {
+    console.log(req.file);
 
-app.post('/upload', (req, res) => {
-    const filePath = path.join(__dirname, 'uploads', 'upload.zip');
-    const writeStream = fs.createWriteStream(filepath);
-  
-    req.pipe(writeStream);                        // this only works if the client sends the raw bytes of the file in the request body
-  
-    writeStream.on('finish', () => {
-      res.status(200).send('Upload complete');
-    });
-  
-    writeStream.on('error', err => {
-      console.error(err);
-      res.status(500).send('Upload failed');
-    });
-});
+    res.status(200).json({message: 'Upload successful', filename: req.file.filename, originalName: req.file.originalname});
+  }
+);
+
+
+
+
+//front end
+
+<form action="http://localhost:3000/upload" method="POST" enctype="multipart/form-data">
+  <input type="file" name="file" />
+  <button type="submit">Upload</button>
+</form>

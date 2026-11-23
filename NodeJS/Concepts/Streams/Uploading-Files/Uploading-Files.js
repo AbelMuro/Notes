@@ -7,8 +7,17 @@
 */
 
 const multer = require('multer');
-const upload = multer({dest: 'uploads/'});                   
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
 
+const upload = multer({dest: 'uploads/'} or {storage});              // if you want to preserve the original name of the file, use {storage}             
+                                                                     // otherwise, mutler will generate a name for the file
 app.post('/upload', upload.single('file'), (req, res) => {
     console.log(req.file);
 

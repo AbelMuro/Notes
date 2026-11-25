@@ -29,8 +29,30 @@
 				   |		        |
 				   |		        |
 				   |		        |
-				   | AsyncFunc  |		      The Queue will complete all microtasks before completing macrotasks
+				   | AsyncFunc      |		      The Queue will complete all microtasks before completing macrotasks
 				    ----------	
+
+
+
+						MicroTasks: 
+								These tasks are asynchronous operations that have the highest priority
+								The following are examples of microtasks
+
+									   - Promise.then()
+									   - Promise.catch()
+									   - Promise.finally()
+									   - await fetch()
+
+						MacroTasks:
+								These tasks are asynchronous operations that have the lowest priority
+								The following are examples of macrotasks...
+
+									   - Timers (setTimeout, setInterval)
+									   - Poll (I/O)
+									   - Check (setImmediate)
+
+
+
 
 
 */

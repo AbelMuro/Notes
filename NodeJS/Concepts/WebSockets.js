@@ -12,7 +12,6 @@
     
     const app = express();
     const server = app.listen(3000);
-    
     const wss = new WebSocket.Server({server});
     
     wss.on('connection', socket => {
@@ -28,3 +27,6 @@
             client.send(JSON.stringify({type: 'chat', username: data.username, message: data.message}));
         });
     });
+
+
+

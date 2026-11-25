@@ -6,8 +6,8 @@
 
                 Readable      - req is a readable stream
                 Writable      - res is a writable stream
-                Duplex
-                Transform
+                Duplex        - read and write
+                Transform     - Modify Data as it passes through
 
                 Streams are mostly used for downloading and uploading files to and from the server
 */  

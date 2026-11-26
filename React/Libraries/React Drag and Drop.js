@@ -89,7 +89,7 @@ function Pawn() {
 
 function Squares() {
     
-    const [collect, drop] = useDrop({
+    const [collect, drop, preview] = useDrop({
         accept: 'piece',                         
         collect: (monitor) => ({                  // collect function will populate the properties of the collect object returned from useDrop()
             handlerId: monitor.getHandlerId(),
@@ -144,7 +144,69 @@ function Card({card, setCard, itemId}) {
             //display card with styling here
         </div>
     )
-
-  
 }
+
+
+
+
+
+
+//-------------------- useDragLayer()
+/* 
+    You can use this hook to create a custom snapshot of an item that is being dragged instead of 
+    relying on the snapshot created by the browser.
+
+    The following hook should be rendered once in the root of the app
+*/
+
+
+
+function CustomSnapshot(){
+    const {item, currentOffset, isDragging} = useDragLayer((monitor) => ({
+        item: monitor.getItem(),
+        isDragging: monitor.isDragging(),
+        currentOffset: monitor.getSourceClientOffset()
+    }));
+
+    if(!isDragging) return null
+
+    return (
+        <div className={styles.container} style={{position: 'fixed', left: currentOffset.x, top: currentOffset.y}}>
+            <h1>
+                {item.name}
+            </h1>
+            <p>
+                {item.desc}    
+            </p>
+        </div>
+    )
+    
+}
+
+
+//------------------ Removing snapshot of dragged item
+/* 
+    You can remove the default snapshot that the browser takes of an item that is being dragged
+    by using getEmptyImage() and calling the preview function from useDrag()
+*/
+
+import { getEmptyImage } from 'react-dnd-html5-backend';
+
+function Card() {
+    const [_, _,  preview] = useDrag();
+
+    useEffect(() => {
+        preview(getEmptyImage());
+    }, [preview])
+
+    return (
+        <div>
+
+        </div>
+    )
+}
+
+
+
+
 
